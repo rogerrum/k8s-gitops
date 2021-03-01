@@ -2,4 +2,4 @@
 
 repo:
   url: https://github.com/rogerrum/k8s-gitops.git
-  revision: master
+  revision: main
