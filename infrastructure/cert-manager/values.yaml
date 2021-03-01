@@ -1,0 +1,25 @@
+cert-manager:
+  installCRDs: true
+  webhook:
+    enabled: true
+    tolerations:
+      - key: "arm"
+        operator: "Exists"
+  extraArgs:
+    - --dns01-recursive-nameservers=1.1.1.1:53
+    - --dns01-recursive-nameservers-only
+  tolerations:
+    - key: "arm"
+      operator: "Exists"
+  cainjector:
+    replicaCount: 1
+    # extraArgs:
+    #   - --leader-elect=false
+    tolerations:
+      - key: "arm"
+        operator: "Exists"
+  prometheus:
+    enabled: false
+    servicemonitor:
+      enabled: false
+      prometheusInstance: monitoring
