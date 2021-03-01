@@ -1,0 +1,30 @@
+ingress-nginx:
+  controller:
+    replicaCount: 2
+    config:
+      custom-http-errors: 404,401,403,500,503
+      hsts-max-age: "31449600"
+      # global-auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local/oauth2/auth"
+      # global-auth-signin: "https://auth.$server_name/oauth2/start"
+    use-forwarded-headers: "true"
+    service:
+      loadBalancerIP: 192.168.100.150
+      externalTrafficPolicy: Local
+    metrics:
+      enabled: false
+      serviceMonitor:
+        enabled: false
+        namespace: kube-system
+      prometheusRule:
+        enabled: false
+    tolerations:
+      - key: "arm"
+        operator: "Exists"
+    extraArgs:
+      default-ssl-certificate: "cert-manager/acme-crt-secret"
+    resources:
+      requests:
+        memory: 500Mi
+        cpu: 25m
+      limits:
+        memory: 600Mi
