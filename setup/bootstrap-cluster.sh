@@ -76,6 +76,7 @@ initArgo() {
 
 kubeConfig() {
   sudo cp /etc/rancher/k3s/k3s.yaml kubeconfig
+  sudo chown $(id -u):$(id -g) kubeconfig
   sudo chmod go-r kubeconfig
   sed -i -e 's/127.0.0.1/rancher.rsr.net/g' kubeconfig
   export KUBECONFIG="$REPO_ROOT/setup/kubeconfig"
