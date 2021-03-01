@@ -1,0 +1,16 @@
+botkube:
+  communications:
+    slack:
+      enabled: true
+      channel: 'kube-notifications'
+      token: '$BOTKUBE_SLACK_TOKEN'
+      notiftype: short
+    discord:
+      enabled: true
+      token: '$BOTKUBE_DISCORD_TOKEN'
+      botid: '805334803678756875'
+      channel: '805338328525307944'
+      notiftype: short
+    webhook:
+      enabled: false
+      url: '$DISCORD_BOTKUBE_WEBHOOK_URL'
