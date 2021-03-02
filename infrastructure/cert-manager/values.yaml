@@ -19,7 +19,7 @@ cert-manager:
       - key: "arm"
         operator: "Exists"
   prometheus:
-    enabled: false
+    enabled: true
     servicemonitor:
-      enabled: false
+      enabled: true
       prometheusInstance: monitoring
