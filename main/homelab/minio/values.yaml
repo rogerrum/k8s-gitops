@@ -32,7 +32,7 @@ minio:
     enabled: false
   metrics:
     serviceMonitor:
-      enabled: false
+      enabled: true
   nasgateway:
     enabled: true
     # Number of parallel instances
