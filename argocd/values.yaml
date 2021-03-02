@@ -37,6 +37,10 @@ argo-cd:
           - update
           - delete
           - patch
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
 
   server:
     ingress:
@@ -75,3 +79,15 @@ argo-cd:
           generate:
             command: ["/bin/sh", "-c"]
             args: ["kubectl -n $SECRET_NAMESPACE  get secrets/$SECRET_NAME -o jsonpath='{.data.values}' | base64 --decode > values-secure.yaml  && helm template . --name-template $ARGOCD_APP_NAME --namespace $ARGOCD_APP_NAMESPACE -f values-secure.yaml --include-crds > all.yaml && kustomize build"]
+
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+
+  controller:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
