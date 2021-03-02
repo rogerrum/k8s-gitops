@@ -186,6 +186,9 @@ loadSecretsToVault() {
   helmVault "main/monitoring/botkube/botkube-helm-values.txt"
   secretVault "main/homelab/minio/minio-secret.txt"
 
+  secretVault "main/monitoring/grafana/grafana-secret.txt"
+  helmVault "main/monitoring/thanos/thanos-helm-values.txt"
+
   #vault kv put secrets/flux-system/discord-webhook address="$DISCORD_FLUX_WEBHOOK_URL"
   #kvault "main/kube-system/kured/kured-helm-values.txt"
  # kvault "kube-system/oauth2-proxy/oauth2-proxy-helm-values.txt"
