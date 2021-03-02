@@ -11,11 +11,11 @@ metallb:
           - 192.168.100.2-192.168.100.254
         avoid-buggy-ips: true
   prometheusRule:
-    enabled: false
+    enabled: true
   prometheus:
-    enabled: false
+    enabled: true
     serviceMonitor:
-      enabled: false
+      enabled: true
     prometheusRule:
       enabled: false
   controller:
