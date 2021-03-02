@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: main/monitoring/kube-prometheus-stack
+    repoURL: {{ .Values.repo.url }}
+    targetRevision: {{ .Values.repo.revision }}
+    helm:
+      valueFiles:
+        - values.yaml
+  {{/*    plugin:*/}}
+  {{/*      name: secret-to-helm*/}}
+  {{/*      env:*/}}
+  {{/*        - name: SECRET_NAME*/}}
+  {{/*          value: "kube-prometheus-stack-helm-values"*/}}
+  {{/*        - name: SECRET_NAMESPACE*/}}
+  {{/*          value: "monitoring"*/}}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
