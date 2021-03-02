@@ -37,7 +37,7 @@ kube-prometheus-stack:
     ingress:
       enabled: true
       annotations:
-        kubernetes.io/ingress.class: "nginx"
+#        kubernetes.io/ingress.class: "nginx"
 #        nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
 #        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
       hosts: [ prom-alert.rsr.net ]
@@ -52,17 +52,17 @@ kube-prometheus-stack:
         # group_wait: 30s
         # group_interval: 5m
         # repeat_interval: 6h
-        receiver: 'slack-notifications'
+        #receiver: 'slack-notifications'
         # receiver: 'pagerduty'
-        routes:
-          - match:
-              alertname: Watchdog
-            receiver: 'null'
-          - receiver: 'pagerduty'
-            match:
-              severity: critical
-            continue: true
-          - receiver: 'slack-notifications'
+#        routes:
+#          - match:
+#              alertname: Watchdog
+#            receiver: 'null'
+#          - receiver: 'pagerduty'
+#            match:
+#              severity: critical
+#            continue: true
+#          - receiver: 'slack-notifications'
       inhibit_rules:
         - source_match:
             severity: 'critical'
@@ -113,7 +113,7 @@ kube-prometheus-stack:
     ingress:
       enabled: true
       annotations:
-        kubernetes.io/ingress.class: "nginx"
+#        kubernetes.io/ingress.class: "nginx"
 #        nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
 #        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
       hosts: [ prom-server.rsr.net ]
