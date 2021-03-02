@@ -55,12 +55,16 @@ grafana:
       1-node-exporter:
         url: https://grafana.com/api/dashboards/11074/revisions/9/download
         datasource: Prometheus
+      argo-cd:
+        url: https://raw.githubusercontent.com/argoproj/argo-cd/v1.8.6/examples/dashboard.json
+        datasource: Prometheus
 #      blocky:
 #        url: https://raw.githubusercontent.com/0xERR0R/blocky/v0.12/docs/blocky-grafana.json
 #        datasource: Prometheus
 #      cable-modem-stats:
 #        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/cable_modem_stats.json
         # datasource: cable_modem_stats
+
       # Ref: https://grafana.com/grafana/dashboards/2842
 #      ceph-cluster:
 #        gnetId: 2842
