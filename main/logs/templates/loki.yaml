@@ -1,0 +1,41 @@
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: loki-helm-values
+  namespace: logs
+spec:
+  keys:
+    - values
+  path: secrets/main/logs/loki/loki-helm-values
+  type: Opaque
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: logs
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: main/logs/loki
+    repoURL: {{ .Values.repo.url }}
+    targetRevision: {{ .Values.repo.revision }}
+    plugin:
+      name: secret-to-helm
+      env:
+        - name: SECRET_NAME
+          value: "loki-helm-values"
+        - name: SECRET_NAMESPACE
+          value: "logs"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
