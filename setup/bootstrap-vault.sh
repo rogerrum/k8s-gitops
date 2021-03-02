@@ -179,7 +179,7 @@ loadSecretsToVault() {
   vault kv put secrets/cert-manager/cloudflare-api-key api-key="$CF_API_KEY"
   vault kv put secrets/argocd/argocd-slack-token slack-token="$ARGO_SLACK_TOKEN"
 
-  vault kv put secrets/kured/kured-discord-token slack-token="$DISCORD_KURED_WEBHOOK_URL"
+  vault kv put secrets/kured/kured-discord-token discord-token="$DISCORD_KURED_WEBHOOK_URL"
 
 
   ####################
