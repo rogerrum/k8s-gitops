@@ -1,0 +1,7 @@
+name: thanos
+apiVersion: v2
+version: 1.0.0
+dependencies:
+  - name: thanos
+    version: 0.4.2
+    repository: https://kubernetes-charts.banzaicloud.com
