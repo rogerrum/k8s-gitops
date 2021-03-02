@@ -25,6 +25,7 @@ node-red:
     data:
       enabled: true
       storageClass: "longhorn"
+      accessMode: ReadWriteOnce
       size: "5Gi"
   podAnnotations:
     backup.velero.io/backup-volumes: data
