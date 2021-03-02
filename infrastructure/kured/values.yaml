@@ -1,0 +1,23 @@
+kured:
+  image:
+    repository: raspbernetes/kured
+    tag: 1.6.1
+  updateStrategy: RollingUpdate
+  configuration:
+    startTime: "0:00"
+    endTime: "4:00"
+    timeZone: "America/Chicago"
+  tolerations:
+    - key: "arm"
+      operator: "Exists"
+    - key: "node-role.kubernetes.io/master"
+      operator: "Exists"
+  metrics:
+    create: true
+
+  extraEnvVars:
+    - name: slackHookUrl
+      valueFrom:
+        secretKeyRef:
+          name: kured-discord-secret
+          key: discord-token
