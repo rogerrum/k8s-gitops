@@ -68,6 +68,16 @@ loki-stack:
     tolerations:
       - key: "arm"
         operator: "Exists"
+    affinity:
+     podAntiAffinity:
+       requiredDuringSchedulingIgnoredDuringExecution:
+       - labelSelector:
+           matchExpressions:
+           - key: app
+             operator: In
+             values:
+             - loki
+         topologyKey: "kubernetes.io/hostname"
   promtail:
     # image:
     #   repository: grafana/promtail
