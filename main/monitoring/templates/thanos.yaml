@@ -1,0 +1,41 @@
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: thanos-helm-values
+  namespace: monitoring
+spec:
+  keys:
+    - values
+  path: secrets/main/monitoring/thanos/thanos-helm-values
+  type: Opaque
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: thanos
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: main/monitoring/thanos
+    repoURL: {{ .Values.repo.url }}
+    targetRevision: {{ .Values.repo.revision }}
+    plugin:
+      name: secret-to-helm
+      env:
+        - name: SECRET_NAME
+          value: "thanos-helm-values"
+        - name: SECRET_NAMESPACE
+          value: "monitoring"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
