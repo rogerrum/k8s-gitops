@@ -189,17 +189,16 @@ loadSecretsToVault() {
   secretVault "main/monitoring/grafana/grafana-secret.txt"
   helmVault "main/monitoring/thanos/thanos-helm-values.txt"
 
+  helmVault "main/logs/loki/loki-helm-values.txt"
+
   #vault kv put secrets/flux-system/discord-webhook address="$DISCORD_FLUX_WEBHOOK_URL"
   #kvault "main/kube-system/kured/kured-helm-values.txt"
  # kvault "kube-system/oauth2-proxy/oauth2-proxy-helm-values.txt"
-  #kvault "main/logs/loki/loki-helm-values.txt"
   #
  # kvault "monitoring/kube-prometheus-stack/kube-prometheus-stack-helm-values.txt"
- # kvault "monitoring/thanos/thanos-helm-values.txt"
  # kvault "monitoring/uptimerobot-prometheus/uptimerobot-prometheus-helm-values.txt"
  # kvault "default/frigate/frigate-helm-values.txt"
  # kvault "default/home-assistant/home-assistant-helm-values.txt"
- # kvault "main/default/minio/minio-helm-values.txt"
 #  kvault "default/monica/monica-helm-values.txt"
  # kvault "default/plex/plex-helm-values.txt"
  # kvault "default/rtorrent-flood/rtorrent-flood-helm-values.txt"
