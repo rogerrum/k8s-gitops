@@ -19,6 +19,7 @@ need "vault"
 need "kubectl"
 need "sed"
 need "jq"
+need "yq"
 
 . "$REPO_ROOT"/setup/.env
 
@@ -35,6 +36,15 @@ helmVault() {
     printf '%s' "$output" | vault kv put "$name" values=-
   fi
 }
+
+ymlVault() {
+  name="secrets/$(dirname "$@")/$(basename -s .txt "$@")"
+  echo "Writing $name to vault"
+  if output=$(envsubst < "$REPO_ROOT/$*"); then
+    printf '%s' "$output" | yq eval-all -j | xargs vault kv put "$name"
+  fi
+}
+
 
 secretVault() {
   name="secrets/$(dirname "$@")/$(basename -s .txt "$@")"
@@ -193,6 +203,8 @@ loadSecretsToVault() {
   helmVault "main/monitoring/thanos/thanos-helm-values.txt"
 
   helmVault "main/logs/loki/loki-helm-values.txt"
+
+  ymlVault "main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret.txt"
 
   #vault kv put secrets/flux-system/discord-webhook address="$DISCORD_FLUX_WEBHOOK_URL"
   #kvault "main/kube-system/kured/kured-helm-values.txt"
