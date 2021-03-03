@@ -39,11 +39,15 @@ helmVault() {
 prometheusVault() {
   name="secrets/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret"
   echo "Writing $name to vault"
-  if output1=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-alertmanager.txt"); then
-    if output2=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-custom-template.txt"); then
-      printf 'alertmanager.yaml=%s pagerduty-custom.tmpl=%s' "$output1" "$output2" | xargs vault kv put "$name"
-    fi
+  if output=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-alertmanager.txt"); then
+    printf '%s' "$output" > alertmanager.txt
   fi
+  if output=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-custom-template.txt"); then
+    printf '%s' "$output"  > template.txt
+  fi
+  vault kv put "$name" alertmanager.yaml=@alertmanager.txt pagerduty-custom.tmpl=@template.txt
+  rm alertmanager.txt
+  rm template.txt
 }
 
 
