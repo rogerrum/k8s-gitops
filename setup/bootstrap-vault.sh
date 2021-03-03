@@ -40,14 +40,11 @@ prometheusVault() {
   name="secrets/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret"
   echo "Writing $name to vault"
   if output=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-alertmanager.txt"); then
-    printf '%s' "$output" > alertmanager.txt
+    printf '%s' "$output" | vault kv put "$name" alertmanager.yaml=-
   fi
   if output=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-custom-template.txt"); then
-    printf '%s' "$output"  > template.txt
+    printf '%s' "$output" | vault kv patch "$name" pagerduty-custom.tmpl=-
   fi
-  vault kv put "$name" alertmanager.yaml=@alertmanager.txt pagerduty-custom.tmpl=@template.txt
-#  rm alertmanager.txt
-#  rm template.txt
 }
 
 
