@@ -43,9 +43,9 @@ prometheusVault() {
   if output=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-alertmanager.txt"); then
     printf '%s' "$output" | vault kv put "$name" alertmanager.yaml=-
   fi
-#  if output=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-custom-template.txt"); then
-#    printf '%s' "$output" | vault kv patch "$name" pagerduty-custom.tmpl=-
-#  fi
+  if output=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-custom-template.txt"); then
+    printf '%s' "$output" | vault kv patch "$name" pagerduty-custom.tmpl=-
+  fi
 }
 
 
