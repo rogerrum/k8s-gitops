@@ -39,6 +39,7 @@ helmVault() {
 prometheusVault() {
   name="secrets/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret"
   echo "Writing $name to vault"
+  vault kv delete "$name"
   if output=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-alertmanager.txt"); then
     printf '%s' "$output" | vault kv put "$name" alertmanager.yaml=-
   fi
