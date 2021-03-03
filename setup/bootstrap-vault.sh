@@ -41,7 +41,7 @@ ymlVault() {
   name="secrets/$(dirname "$@")/$(basename -s .txt "$@")"
   echo "Writing $name to vault"
   if output=$(envsubst < "$REPO_ROOT/$*"); then
-    printf '%s' "$output" | yq eval-all -j | xargs vault kv put "$name"
+    printf '%s' "$output" | yq eval-all -j | vault kv put "$name" -
   fi
 }
 
