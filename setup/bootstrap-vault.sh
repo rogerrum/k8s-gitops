@@ -46,8 +46,8 @@ prometheusVault() {
     printf '%s' "$output"  > template.txt
   fi
   vault kv put "$name" alertmanager.yaml=@alertmanager.txt pagerduty-custom.tmpl=@template.txt
-  rm alertmanager.txt
-  rm template.txt
+#  rm alertmanager.txt
+#  rm template.txt
 }
 
 
