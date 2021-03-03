@@ -19,7 +19,6 @@ need "vault"
 need "kubectl"
 need "sed"
 need "jq"
-need "yq"
 
 . "$REPO_ROOT"/setup/.env
 
@@ -37,11 +36,13 @@ helmVault() {
   fi
 }
 
-ymlVault() {
-  name="secrets/$(dirname "$@")/$(basename -s .txt "$@")"
+prometheusVault() {
+  name="secrets/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret"
   echo "Writing $name to vault"
-  if output=$(envsubst < "$REPO_ROOT/$*"); then
-    printf '%s' "$output" | yq eval-all -j | vault kv put "$name" -
+  if output1=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-alertmanager.txt"); then
+    if output2=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-custom-template.txt"); then
+      printf 'alertmanager.yaml=%s pagerduty-custom.tmpl=%s' "$output1" "$output2" | vault kv put "$name" -
+    fi
   fi
 }
 
@@ -204,7 +205,7 @@ loadSecretsToVault() {
 
   helmVault "main/logs/loki/loki-helm-values.txt"
 
-  ymlVault "main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret.txt"
+  prometheusVault
 
   #vault kv put secrets/flux-system/discord-webhook address="$DISCORD_FLUX_WEBHOOK_URL"
   #kvault "main/kube-system/kured/kured-helm-values.txt"
