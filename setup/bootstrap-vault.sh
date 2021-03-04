@@ -209,6 +209,8 @@ loadSecretsToVault() {
 
   prometheusVault
 
+  secretVault "infrastructure/longhorn/longhorn-backup-secret.txt"
+
   #vault kv put secrets/flux-system/discord-webhook address="$DISCORD_FLUX_WEBHOOK_URL"
   #kvault "main/kube-system/kured/kured-helm-values.txt"
  # kvault "kube-system/oauth2-proxy/oauth2-proxy-helm-values.txt"
@@ -237,6 +239,7 @@ if [ $FIRST_RUN == 0 ]; then
   setupVaultSecretsOperator
 fi
 
-loadSecretsToVault
+#loadSecretsToVault
+secretVault "infrastructure/longhorn/longhorn-backup-secret.txt"
 
 kill $VAULT_FWD_PID
