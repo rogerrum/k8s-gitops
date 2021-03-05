@@ -115,16 +115,32 @@ setupAuth() {
     crl_distribution_points="http:///vault.kube-system.svc:8200/v1/pki/crl"
 }
 
+cleanCertManager() {
+
+  vault write pki_int/tidy \
+    safety_buffer=5s \
+    tidy_cert_store=true \
+    tidy_revocation_list=true
+
+  vault secrets disable pki
+  vault secrets disable pki_int
+
+}
+
+
 export KUBECONFIG="$REPO_ROOT/setup/kubeconfig"
 export VAULT_ADDR='http://127.0.0.1:8200'
 
 portForwardVault
 loginVault
 
+cleanCertManager
+
 createRootCert
 createIntCert
 createRole
 setupPolicy
+setupAuth
 
 #  # mount on other nodes
 #    mount -t nfs -o proto=tcp,port=2049 192.168.50.108:/export/dell-nfs /dell-nfs
