@@ -65,9 +65,9 @@ createIntCert() {
   vault secrets enable -path=pki_int pki
   vault secrets tune -max-lease-ttl=43800h pki_int
 
-  vault write -format=json pki_int/intermediate/generate/internal common_name="rsr.net Intermediate Authority" jq -r '.data.csr' >pki_intermediate.csr
+  vault write -format=json pki_int/intermediate/generate/internal common_name="rsr.net Intermediate Authority" | jq -r '.data.csr' >pki_intermediate.csr
 
-  vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr format=pem_bundle ttl="43800h" jq -r '.data.certificate' >intermediate.cert.pem
+  vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr format=pem_bundle ttl="43800h" | jq -r '.data.certificate' >intermediate.cert.pem
 
   vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem
 }
@@ -111,8 +111,8 @@ setupAuth() {
     ttl=24h
 
   vault write pki/config/urls \
-    issuing_certificates="http:///vault.kube-system.svc:8200/v1/pki/ca" \
-    crl_distribution_points="http:///vault.kube-system.svc:8200/v1/pki/crl"
+    issuing_certificates="http://vault.kube-system.svc:8200/v1/pki/ca" \
+    crl_distribution_points="http://vault.kube-system.svc:8200/v1/pki/crl"
 }
 
 cleanCertManager() {
