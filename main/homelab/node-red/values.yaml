@@ -22,6 +22,7 @@ node-red:
     tls:
       - hosts:
           - "node-red.rsr.net"
+        secretName: node-red-cert
   persistence:
     data:
       enabled: true
