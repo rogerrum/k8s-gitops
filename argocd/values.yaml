@@ -47,6 +47,10 @@ argo-cd:
       enabled: true
       hosts:
         - argo.rsr.net
+      tls:
+        - hosts:
+            - "argo.rsr.net"
+          secretName: argo-cert
     extraArgs:
       - --insecure
     config:
