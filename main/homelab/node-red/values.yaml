@@ -18,9 +18,9 @@ node-red:
         paths:
           - path: /
             pathType: Prefix
-#    tls:
-#      - hosts:
-#          - "node-red.rsr.net"
+    tls:
+      - hosts:
+          - "node-red.rsr.net"
   persistence:
     data:
       enabled: true
