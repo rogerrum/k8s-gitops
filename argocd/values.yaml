@@ -45,12 +45,15 @@ argo-cd:
   server:
     ingress:
       enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: vault-issuer
+        cert-manager.io/common-name: argo.rsr.net
       hosts:
         - argo.rsr.net
       tls:
         - hosts:
             - "argo.rsr.net"
-          secretName: argo-cert
+          secretName: argo-cert-tls
     extraArgs:
       - --insecure
     config:
