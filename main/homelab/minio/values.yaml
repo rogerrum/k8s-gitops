@@ -15,10 +15,12 @@ minio:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: minio.rsr.net
     hosts: [ minio.rsr.net ]
-#    tls:
-#      - hosts:
-#          - minio.rsr.net
+    tls:
+      - hosts:
+          - minio.rsr.net
   tolerations:
     - key: "arm"
       operator: "Exists"
