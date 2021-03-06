@@ -21,6 +21,7 @@ minio:
     tls:
       - hosts:
           - minio.rsr.net
+        secretName: minio-cert-tls
   tolerations:
     - key: "arm"
       operator: "Exists"
