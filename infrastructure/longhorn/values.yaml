@@ -10,4 +10,8 @@ longhorn:
   ingress:
     enabled: true
     host: longhorn.rsr.net
-
+    tlsSecret: longhorn-cert
+    tls: true
+    annotations:
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: longhorn.rsr.net
