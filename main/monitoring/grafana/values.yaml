@@ -25,10 +25,13 @@ grafana:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: "nginx"
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: grafana.rsr.net
     hosts: [ grafana.rsr.net ]
-#    tls:
-#      - hosts:
-#          - grafana.rsr.net
+    tls:
+      - hosts:
+          - grafana.rsr.net
+        secretName: grafana-cert-tls
   plugins:
     - natel-discrete-panel
     - pr0ps-trackmap-panel
@@ -211,7 +214,7 @@ grafana:
   grafana.ini:
     server:
 #      root_url: "https://grafana.rsr.net"
-      root_url: "http://grafana.rsr.net"
+      root_url: "https://grafana.rsr.net"
     # security:
     #   admin_user: roger@?.com
     paths:
