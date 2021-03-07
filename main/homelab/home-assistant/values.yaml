@@ -96,7 +96,7 @@ home-assistant:
                 pathType: Prefix
         tls:
           - hosts:
-              - hass-config.rsr.net
+              - ha-config.rsr.net
             secretName: ha-config-cert-tls
       volumeMounts:
         - name: config
