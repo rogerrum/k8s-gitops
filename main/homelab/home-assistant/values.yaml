@@ -55,7 +55,8 @@ home-assistant:
     config:
       enabled: true
       storageClass: "longhorn"
-      accessMode: ReadWriteOnce
+      accessMode: ReadWriteMany
+      skipuninstall: true
       size: "10Gi"
 
 #  additionalVolumeMounts:
