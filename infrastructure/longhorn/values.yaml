@@ -4,7 +4,7 @@ longhorn:
   defaultSettings:
     defaultReplicaCount: 3
     createDefaultDiskLabeledNodes: true
-    backupTarget: s3://longhorn@minio/backups
+    backupTarget: s3://longhorn@us-east-1/
     backupTargetCredentialSecret: longhorn-backup-secret
     storageMinimalAvailablePercentage: "10"
   ingress:
