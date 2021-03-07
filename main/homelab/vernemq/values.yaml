@@ -19,4 +19,12 @@ vernemq:
       value: "yes"
     - name: DOCKER_VERNEMQ_ALLOW_ANONYMOUS
       value: "on"
+    - name: DOCKER_VERNEMQ_PLUGINS__VMQ_BRIDGE
+      value: "on"
+    - name: DOCKER_VERNEMQ_VMQ_BRIDGE__TCP__BR0
+      value: "192.168.1.241:2883"
+    - name: DOCKER_VERNEMQ_VMQ_BRIDGE__TCP__BR0__TRY_PRIVATE
+      value: "off"
+    - name: DOCKER_VERNEMQ_VMQ_BRIDGE__TCP__BR0__TOPIC__1
+      value: "event/metering/# in 0"
   podAntiAffinity: hard
