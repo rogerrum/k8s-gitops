@@ -6,6 +6,10 @@ home-assistant:
     TZ: "America/Chicago"
   hostNetwork: true
   dnsPolicy: ClusterFirstWithHostNet
+
+  securityContext:
+    privileged: true
+
   service:
     type: LoadBalancer
     loadBalancerIP: 192.168.100.55
