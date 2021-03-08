@@ -84,6 +84,8 @@ kube-prometheus-stack:
         operator: "Exists"
       - key: "node-role.kubernetes.io/master"
         operator: "Exists"
+      - key: "arm64"
+        operator: "Exists"
   prometheus:
     ingress:
       enabled: true
