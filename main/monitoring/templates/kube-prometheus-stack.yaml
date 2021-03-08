@@ -12,8 +12,10 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   ignoreDifferences:
-  - jsonPointers:
-    - /imagePullSecrets
+  - group: admissionregistration.k8s.io/v1
+    kind: MutatingWebhookConfiguration
+    jsonPointers:
+    - /webhooks/0/failurePolicy
   source:
     path: main/monitoring/kube-prometheus-stack
     repoURL: {{ .Values.repo.url }}
