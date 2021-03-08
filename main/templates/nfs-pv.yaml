@@ -36,3 +36,41 @@ spec:
   resources:
     requests:
       storage: 1Mi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: zwave2mqtt
+spec:
+  storageClassName: nfs
+  capacity:
+    storage: 1Mi
+  accessModes:
+    - ReadWriteOnce
+  claimRef:
+    name: zwave2mqtt
+    namespace: default
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 192.168.50.108
+    path: "/export/dell-nfs/PV/zwave2mqtt"
+  mountOptions:
+  - nfsvers=3
+  - tcp
+  - intr
+  - hard
+  - noatime
+  - nodiratime
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zwave2mqtt
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nfs
+  resources:
+    requests:
+      storage: 1Mi
