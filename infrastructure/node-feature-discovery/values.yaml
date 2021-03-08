@@ -14,7 +14,6 @@ node-feature-discovery:
       # - storage
       # - system
       - usb
-
     # node-feature-discovery configuration - see https://github.com/kubernetes-sigs/node-feature-discovery/blob/master/nfd-worker.conf.example for example
     config: |
       sources:
@@ -34,14 +33,14 @@ node-feature-discovery:
             matchOn:
               - usbId:
                   class: ["02"]
-                  vendor: ["0658"]
-                  device: ["0200"]
+                  vendor: ["10c4"]
+                  device: ["8a2a"]
           - name: "zigbee"
             matchOn:
               - usbId:
                   class: ["02"]
-                  vendor: ["0658"]
-                  device: ["0200"]
+                  vendor: ["10c4"]
+                  device: ["8a2a"]
     #          - name: "coral-tpu"
     #            matchOn:
     #              - usbId:
