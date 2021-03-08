@@ -28,9 +28,10 @@ zwave2mqtt:
     config:
       enabled: true
       mountPath: /usr/src/app/store
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-      size: "1Gi"
+      existingClaim: zwave2mqtt
+#      storageClass: "longhorn"
+#      accessMode: ReadWriteOnce
+#      size: "1Gi"
   podAnnotations:
     backup.velero.io/backup-volumes: config
   additionalVolumeMounts:
