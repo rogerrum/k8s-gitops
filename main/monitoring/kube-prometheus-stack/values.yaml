@@ -86,6 +86,7 @@ kube-prometheus-stack:
         operator: "Exists"
       - key: "arm64"
         operator: "Exists"
+        effect: NoSchedule
   prometheus:
     ingress:
       enabled: true
