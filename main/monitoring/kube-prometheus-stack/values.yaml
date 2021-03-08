@@ -84,6 +84,10 @@ kube-prometheus-stack:
         operator: "Exists"
       - key: "node-role.kubernetes.io/master"
         operator: "Exists"
+      - key: "disable-node-exp"
+        operator: "Exists"
+        effect: "NoSchedule"
+
   prometheus:
     ingress:
       enabled: true
