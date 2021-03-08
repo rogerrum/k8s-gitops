@@ -78,16 +78,12 @@ kube-prometheus-stack:
     enabled: false
   prometheus-node-exporter:
     tolerations:
-      - key: "arm"
+      - key: "arm1"
         operator: "Exists"
       - key: "armhf"
         operator: "Exists"
       - key: "node-role.kubernetes.io/master"
         operator: "Exists"
-      - key: "disable-node-exp"
-        operator: "Exists"
-        effect: "NoSchedule"
-
   prometheus:
     ingress:
       enabled: true
