@@ -52,8 +52,8 @@ spec:
     namespace: default
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: 192.168.50.108
-    path: "/export/dell-nfs/PV/zwave2mqtt"
+    server: 192.168.50.110
+    path: "/export/ha/zwave2mqtt"
   mountOptions:
   - nfsvers=3
   - tcp
