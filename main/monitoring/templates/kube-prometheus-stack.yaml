@@ -16,6 +16,10 @@ spec:
     kind: MutatingWebhookConfiguration
     jsonPointers:
     - /webhooks/0/failurePolicy
+  - group: v1
+    kind: ServiceAccount
+    jsonPointers:
+    - /imagePullSecrets
   source:
     path: main/monitoring/kube-prometheus-stack
     repoURL: {{ .Values.repo.url }}
