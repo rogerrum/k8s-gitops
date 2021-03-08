@@ -11,6 +11,9 @@ spec:
     namespace: monitoring
     server: https://kubernetes.default.svc
   project: default
+  ignoreDifferences:
+  - jsonPointers:
+    - /imagePullSecrets
   source:
     path: main/monitoring/kube-prometheus-stack
     repoURL: {{ .Values.repo.url }}
