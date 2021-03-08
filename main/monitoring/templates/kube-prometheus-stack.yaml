@@ -12,8 +12,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   ignoreDifferences:
-  - group: admissionregistration.k8s.io/v1
-    kind: MutatingWebhookConfiguration
+  - kind: MutatingWebhookConfiguration
     jsonPointers:
     - /webhooks/0/failurePolicy
   - kind: ServiceAccount
