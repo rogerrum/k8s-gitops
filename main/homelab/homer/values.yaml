@@ -35,7 +35,7 @@ homer:
       enabled: true
       image:
         repository: codercom/code-server
-        tag: 3.9.0
+        tag: 3.9.1
       workingDir: "/www/assets"
       args:
         - --user-data-dir
