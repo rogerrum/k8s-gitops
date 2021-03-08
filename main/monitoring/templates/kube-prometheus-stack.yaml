@@ -16,8 +16,7 @@ spec:
     kind: MutatingWebhookConfiguration
     jsonPointers:
     - /webhooks/0/failurePolicy
-  - group: v1
-    kind: ServiceAccount
+  - kind: ServiceAccount
     jsonPointers:
     - /imagePullSecrets
   source:
