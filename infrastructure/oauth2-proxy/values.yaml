@@ -20,12 +20,12 @@ oauth2-proxy:
         secretName: oauth2-proxy-cert-tls
   extraArgs:
     provider: oidc
-    oidc-issuer-url: https://rogerrum.us.auth0.com/
+    oidc-issuer-url: "https://rogerrum.us.auth0.com/"
     skip-provider-button:
     pass-authorization-header:
     email-domain: "*"
-    cookie-domain: .rsr.net
-    whitelist-domain: .rsr.net
+    cookie-domain: ".rsr.net"
+    whitelist-domain: ".rsr.net"
 
   config:
     existingSecret: oauth2-proxy-secret
