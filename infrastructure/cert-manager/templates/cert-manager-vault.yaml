@@ -12,7 +12,7 @@ metadata:
   name: vault-issuer
 spec:
   vault:
-    path: pki_int/sign/rsr-dot-net
+    path: pki/sign/rsr-dot-net
     server: http://vault.kube-system.svc:8200
     auth:
       kubernetes:
