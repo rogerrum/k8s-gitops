@@ -212,6 +212,8 @@ loadSecretsToVault() {
   secretVault "infrastructure/longhorn/longhorn-backup-secret.txt"
   secretVault "main/homelab/home-assistant/home-assistant-postgresql-secret.txt"
 
+  secretVault "infrastructure/oauth2-proxy/oauth2-proxy-secret.txt"
+
   #vault kv put secrets/flux-system/discord-webhook address="$DISCORD_FLUX_WEBHOOK_URL"
   #kvault "main/kube-system/kured/kured-helm-values.txt"
  # kvault "kube-system/oauth2-proxy/oauth2-proxy-helm-values.txt"
@@ -242,6 +244,7 @@ fi
 
 #loadSecretsToVault
 
-secretVault "main/homelab/home-assistant/home-assistant-postgresql-secret.txt"
+secretVault "infrastructure/oauth2-proxy/oauth2-proxy-secret.txt"
+
 
 kill $VAULT_FWD_PID
