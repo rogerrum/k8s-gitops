@@ -10,9 +10,14 @@ oauth2-proxy:
     enabled: true
     path: /oauth2
     hosts: [ auth.rsr.net ]
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: auth.rsr.net
     tls:
       - hosts:
           - auth.rsr.net
+        secretName: oauth2-proxy-cert-tls
   extraArgs:
     provider: oidc
     oidc-issuer-url: https://rogerrum.us.auth0.com/
