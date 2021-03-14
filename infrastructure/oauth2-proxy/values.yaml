@@ -1,0 +1,26 @@
+oauth2-proxy:
+  image:
+    repository: "quay.io/oauth2-proxy/oauth2-proxy"
+    tag: "v7.0.1"
+  replicaCount: 2
+  # tolerations:
+  #   - key: "arm"
+  #     operator: "Exists"
+  ingress:
+    enabled: true
+    path: /oauth2
+    hosts: [ auth.rsr.net ]
+    tls:
+      - hosts:
+          - auth.rsr.net
+  extraArgs:
+    provider: oidc
+    oidc-issuer-url: https://rogerrum.us.auth0.com/
+    skip-provider-button:
+    pass-authorization-header:
+    email-domain: "*"
+    cookie-domain: .rsr.net
+    whitelist-domain: .rsr.net
+
+  config:
+    existingSecret: oauth2-proxy-secret
