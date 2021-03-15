@@ -26,5 +26,5 @@ vernemq:
     - name: DOCKER_VERNEMQ_VMQ_BRIDGE__TCP__BR0__TRY_PRIVATE
       value: "off"
     - name: DOCKER_VERNEMQ_VMQ_BRIDGE__TCP__BR0__TOPIC__1
-      value: "event/metering/# in 0"
+      value: "event/metering/* in 0"
   podAntiAffinity: hard
