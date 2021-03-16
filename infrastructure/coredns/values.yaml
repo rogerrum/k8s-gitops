@@ -1,0 +1,60 @@
+coredns:
+  replicaCount: 3
+  serviceType: LoadBalancer
+  prometheus:
+    service:
+      enabled: true
+    monitor:
+      enabled: true
+  service:
+    externalTrafficPolicy: Local
+    loadBalancerIP: 192.168.100.99
+    annotations:
+      metallb.universe.tf/allow-shared-ip: coredns
+  rbac:
+    create: true
+  isClusterService: false
+  servers:
+    - zones:
+        - zone: rsr.net.
+          scheme: dns://
+          use_tcp: false
+        - zone: techbuzzworld.com.
+          scheme: dns://
+          use_tcp: false
+      port: 53
+      plugins:
+        - name: errors
+        - name: health
+          configBlock: |-
+            lameduck 5s
+        - name: ready
+        # - name: kubernetes
+        #   parameters: cluster.local in-addr.arpa ip6.arpa
+        #   configBlock: |-
+        #     pods insecure
+        #     fallthrough in-addr.arpa ip6.arpa
+        #     ttl 30
+        - name: prometheus
+          parameters: 0.0.0.0:9153
+        - name: forward
+          parameters: . /etc/resolv.conf
+        - name: cache
+          parameters: 30
+        - name: loop
+        - name: reload
+        - name: loadbalance
+        - name: file
+          parameters: /etc/coredns/rsr.net
+        - name: file
+          parameters: /etc/coredns/techbuzzworld.com
+  zoneFiles:
+    - filename: rsr.net
+      domain: rsr.net
+      contents: |
+        *.rsr.net. IN A   192.168.100.150
+        rsr.net. IN A   192.168.100.150
+    - filename: techbuzzworld.com
+      domain: techbuzzworld.com
+      contents: |
+        8003.techbuzzworld.com. IN A   192.168.100.150
