@@ -52,9 +52,11 @@ coredns:
     - filename: rsr.net
       domain: rsr.net
       contents: |
+        rsr.net.   IN SOA sns.dns.icann.com. noc.dns.icann.com. 2015082541 7200 3600 1209600 3600
         *.rsr.net. IN A   192.168.100.150
-        rsr.net. IN A   192.168.100.150
+        rsr.net.   IN A   192.168.100.150
     - filename: techbuzzworld.com
       domain: techbuzzworld.com
       contents: |
-        8003.techbuzzworld.com. IN A   192.168.100.150
+        8003.techbuzzworld.com.   IN SOA etta.ns.cloudflare.com. dns.cloudflare.com. 2020100600 10000 2400 604800 3600
+        8003.techbuzzworld.com.   IN A   192.168.100.150
