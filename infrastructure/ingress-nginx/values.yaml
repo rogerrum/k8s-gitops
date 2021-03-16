@@ -28,3 +28,14 @@ ingress-nginx:
         cpu: 25m
       limits:
         memory: 600Mi
+  defaultBackend:
+    enabled: true
+    image:
+      repository: billimek/custom-error-pages
+      tag: 0.4.4
+    resources:
+      requests:
+        memory: 250Mi
+        cpu: 25m
+      limits:
+        memory: 350Mi
