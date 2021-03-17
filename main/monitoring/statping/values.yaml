@@ -1,0 +1,40 @@
+statping:
+  image:
+    repository: statping/statping
+    tag: "v0.90.65"
+
+  postgresql:
+    # -- By default uses an internal postgress. Disable if you use your own Postgres.
+    enabled: false
+
+  # See more environment variables in the statping documentation
+  # https://github.com/statping/statping/wiki/Config-with-.env-File
+  env:
+    # -- Name of the Statping instance
+    NAME: RSR Statping
+    # -- External URL you use to connect to the statping (the one you enter in your browser)
+    VIRTUAL_HOST: "stats.rsr.net"
+    # -- dashboard admin email
+    ADMIN_EMAIL: rogerrum@gmail.com
+    DB_DATABASE: "statping"
+    DB_USER: "statping"
+
+  envFrom:
+    - secretRef:
+        name: statping-secret
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: stats.rsr.net
+    hosts:
+      - host: stats.rsr.net
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - stats.rsr.net
+        secretName: stats-cert-tls
