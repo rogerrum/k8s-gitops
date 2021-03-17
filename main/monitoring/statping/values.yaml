@@ -18,21 +18,20 @@ statping:
     ADMIN_EMAIL: rogerrum@gmail.com
     DB_DATABASE: "statping"
     DB_USER: "statping"
+
+  envValueFrom:
     DB_PASS:
-      valueFrom:
-        secretKeyRef:
-          name: statping-secret
-          key: DB_PASS
+      secretKeyRef:
+        name: statping-secret
+        key: DB_PASS
     DB_HOST:
-      valueFrom:
-        secretKeyRef:
-          name: statping-secret
-          key: DB_HOST
+      secretKeyRef:
+        name: statping-secret
+        key: DB_HOST
     ADMIN_PASSWORD:
-      valueFrom:
-        secretKeyRef:
-          name: statping-secret
-          key: DB_HOST
+      secretKeyRef:
+        name: statping-secret
+        key: DB_HOST
 
   ingress:
     enabled: true
