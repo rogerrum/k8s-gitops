@@ -214,6 +214,7 @@ loadSecretsToVault() {
 
   secretVault "infrastructure/oauth2-proxy/oauth2-proxy-secret.txt"
   secretVault "infrastructure/postgresql/postgresql-secret.txt"
+  secretVault "main/monitoring/statping/statping-secret.txt"
 
   #vault kv put secrets/flux-system/discord-webhook address="$DISCORD_FLUX_WEBHOOK_URL"
   #kvault "main/kube-system/kured/kured-helm-values.txt"
@@ -245,7 +246,7 @@ fi
 
 #loadSecretsToVault
 
-secretVault "infrastructure/postgresql/postgresql-secret.txt"
+secretVault "main/monitoring/statping/statping-secret.txt"
 
 
 kill $VAULT_FWD_PID
