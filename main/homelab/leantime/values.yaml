@@ -15,6 +15,7 @@ env:
   LEAN_DB_USER: leantime
   LEAN_DB_HOST: mysql.kube-system.svc.cluster.local
   LEAN_DB_DATABASE: leantime
+  LEAN_APP_URL: https://leantime.rsr.net
 
 envValueFrom:
   LEAN_DB_PASSWORD:
