@@ -49,11 +49,12 @@ statping:
           - stats.rsr.net
         secretName: stats-cert-tls
 
-
+  # cert is needed for accessing the sites
   additionalVolumeMounts:
     - name: tls-cert
-      mountPath: "/etc/ssl/certs/custom"
+      mountPath: "/etc/ssl/certs"
       readOnly: true
+
   additionalVolumes:
     - name: tls-cert
       secret:
