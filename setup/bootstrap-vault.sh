@@ -216,6 +216,7 @@ loadSecretsToVault() {
   secretVault "infrastructure/postgresql/postgresql-secret.txt"
   secretVault "main/monitoring/statping/statping-secret.txt"
   helmVault "main/monitoring/statping/statping-helm-values.txt"
+  secretVault "infrastructure/mysql/mysql-secret.txt"
 
 
   #vault kv put secrets/flux-system/discord-webhook address="$DISCORD_FLUX_WEBHOOK_URL"
@@ -248,6 +249,6 @@ fi
 
 #loadSecretsToVault
 
-helmVault "main/monitoring/statping/statping-helm-values.txt"
+secretVault "infrastructure/mysql/mysql-secret.txt"
 
 kill $VAULT_FWD_PID
