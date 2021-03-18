@@ -52,7 +52,7 @@ statping:
 
   additionalVolumeMounts:
     - name: tls-cert
-      mountPath: "/etc/ssl/certs/"
+      mountPath: "/etc/ssl/certs/custom"
       readOnly: true
   additionalVolumes:
     - name: tls-cert
