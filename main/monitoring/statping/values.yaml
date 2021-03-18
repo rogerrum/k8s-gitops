@@ -19,19 +19,19 @@ statping:
     DB_DATABASE: "statping"
     DB_USER: "statping"
 
-#  envValueFrom:
-#    DB_PASS:
-#      secretKeyRef:
-#        name: statping-secret
-#        key: DB_PASS
-#    DB_HOST:
-#      secretKeyRef:
-#        name: statping-secret
-#        key: DB_HOST
-#    ADMIN_PASSWORD:
-#      secretKeyRef:
-#        name: statping-secret
-#        key: DB_HOST
+  #  envValueFrom:
+  #    DB_PASS:
+  #      secretKeyRef:
+  #        name: statping-secret
+  #        key: DB_PASS
+  #    DB_HOST:
+  #      secretKeyRef:
+  #        name: statping-secret
+  #        key: DB_HOST
+  #    ADMIN_PASSWORD:
+  #      secretKeyRef:
+  #        name: statping-secret
+  #        key: DB_HOST
 
   ingress:
     enabled: true
@@ -47,4 +47,14 @@ statping:
     tls:
       - hosts:
           - stats.rsr.net
+        secretName: stats-cert-tls
+
+
+  additionalVolumeMounts:
+    - name: tls-cert
+      mountPath: "/etc/ssl/certs/"
+      readOnly: true
+  additionalVolumes:
+    - name: tls-cert
+      secret:
         secretName: stats-cert-tls
