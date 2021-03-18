@@ -1,0 +1,48 @@
+# Default values for clarkson.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: leantime/leantime
+  tag: "2.1.7"
+  pullPolicy: IfNotPresent
+
+strategy:
+  type: Recreate
+
+env:
+  TZ: "America/Chicago"
+  LEAN_DB_USER: leantime
+  LEAN_DB_HOST: mysql.kube-system.svc.cluster.local
+  LEAN_DB_DATABASE: leantime
+
+envValueFrom:
+  LEAN_DB_PASSWORD:
+    secretKeyRef:
+      name: leantime-secret
+      key: MYSQL_PASSWORD
+
+service:
+  port:
+    port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: vault-issuer
+    cert-manager.io/common-name: leantime.rsr.net
+  hosts:
+    - host: "leantime.rsr.net"
+      paths:
+        - path: "/"
+          pathType: Prefix
+  tls:
+    - hosts:
+        - leantime.rsr.net
+      secretName: leantime-cert-tls
+
+persistence:
+  config:
+    enabled: false
+    emptyDir: false
