@@ -62,3 +62,4 @@ statping:
         secretName: stats-cert-tls
         items:
           - key: "ca.crt"
+            path: /etc/ssl/certs
