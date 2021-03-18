@@ -220,7 +220,7 @@ loadSecretsToVault() {
   secretVault "main/monitoring/statping/statping-secret.txt"
   helmVault "main/monitoring/statping/statping-helm-values.txt"
   secretVault "infrastructure/mysql/mysql-secret.txt"
-  helmVault "main/homelab/clarkson/clarkson-helm-values.txt"
+  secretVault "main/homelab/clarkson/clarkson-secret.txt"
 
 }
 
@@ -237,6 +237,6 @@ fi
 
 #loadSecretsToVault
 
-helmVault "main/homelab/clarkson/clarkson-helm-values.txt"
+secretVault "main/homelab/clarkson/clarkson-secret.txt"
 
 kill $VAULT_FWD_PID
