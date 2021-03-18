@@ -1,0 +1,7 @@
+name: clarkson
+apiVersion: v2
+version: 1.0.0
+dependencies:
+  - name: clarkson
+    version: 0.1.11
+    repository: https://nicholaswilde.github.io/helm-charts/
