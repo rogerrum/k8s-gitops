@@ -3,7 +3,9 @@ mysql:
     repository: bitnami/mysql
     tag: 8.0.23-debian-10-r28
 
-  existingSecret: mysql-secret
+  auth:
+    existingSecret: mysql-secret
+
   persistence:
     enabled: true
     storageClass: "longhorn"
