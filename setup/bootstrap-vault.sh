@@ -8,11 +8,10 @@ export REPO_ROOT=$(git rev-parse --show-toplevel)
 export REPLIACS="0 1 2"
 
 need() {
-    if ! command -v "$1" &> /dev/null
-    then
-        echo "Binary '$1' is missing but required"
-        exit 1
-    fi
+  if ! command -v "$1" &>/dev/null; then
+    echo "Binary '$1' is missing but required"
+    exit 1
+  fi
 }
 
 need "vault"
@@ -31,7 +30,7 @@ message() {
 helmVault() {
   name="secrets/$(dirname "$@")/$(basename -s .txt "$@")"
   echo "Writing $name to vault"
-  if output=$(envsubst < "$REPO_ROOT/$*"); then
+  if output=$(envsubst <"$REPO_ROOT/$*"); then
     printf '%s' "$output" | vault kv put "$name" values=-
   fi
 }
@@ -40,19 +39,18 @@ prometheusVault() {
   name="secrets/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret"
   echo "Writing $name to vault"
   vault kv delete "$name"
-  if output=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-alertmanager.txt"); then
+  if output=$(envsubst <"$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-alertmanager.txt"); then
     printf '%s' "$output" | vault kv put "$name" alertmanager.yaml=-
   fi
-  if output=$(envsubst < "$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-custom-template.txt"); then
+  if output=$(envsubst <"$REPO_ROOT/main/monitoring/kube-prometheus-stack/kube-prometheus-stack-secret-custom-template.txt"); then
     printf '%s' "$output" | vault kv patch "$name" pagerduty-custom.tmpl=-
   fi
 }
 
-
 secretVault() {
   name="secrets/$(dirname "$@")/$(basename -s .txt "$@")"
   echo "Writing $name to vault"
-  if output=$(envsubst < "$REPO_ROOT/$*"); then
+  if output=$(envsubst <"$REPO_ROOT/$*"); then
     printf '%s' "$output" | xargs vault kv put "$name"
   fi
 }
@@ -61,11 +59,11 @@ initVault() {
   message "initializing and unsealing vault (if necesary)"
   VAULT_READY=1
   while [ $VAULT_READY != 0 ]; do
-    kubectl -n kube-system wait --for condition=Initialized pod/vault-0 > /dev/null 2>&1
+    kubectl -n kube-system wait --for condition=Initialized pod/vault-0 >/dev/null 2>&1
     VAULT_READY="$?"
-    if [ $VAULT_READY != 0 ]; then 
+    if [ $VAULT_READY != 0 ]; then
       echo "waiting for vault pod to be somewhat ready..."
-      sleep 10; 
+      sleep 10
     fi
   done
   sleep 2
@@ -94,13 +92,13 @@ initVault() {
 
     # sed -i operates differently in OSX vs linux
     if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "darwin system"
-        sed -i '' "s~VAULT_ROOT_TOKEN=\".*\"~VAULT_ROOT_TOKEN=\"$VAULT_ROOT_TOKEN\"~" "$REPO_ROOT"/setup/.env
-        sed -i '' "s~VAULT_RECOVERY_TOKEN=\".*\"~VAULT_RECOVERY_TOKEN=\"$VAULT_RECOVERY_TOKEN\"~" "$REPO_ROOT"/setup/.env
+      echo "darwin system"
+      sed -i '' "s~VAULT_ROOT_TOKEN=\".*\"~VAULT_ROOT_TOKEN=\"$VAULT_ROOT_TOKEN\"~" "$REPO_ROOT"/setup/.env
+      sed -i '' "s~VAULT_RECOVERY_TOKEN=\".*\"~VAULT_RECOVERY_TOKEN=\"$VAULT_RECOVERY_TOKEN\"~" "$REPO_ROOT"/setup/.env
     else
-        echo "non-darwin (linux?) system"
-        sed -i'' "s~VAULT_ROOT_TOKEN=\".*\"~VAULT_ROOT_TOKEN=\"$VAULT_ROOT_TOKEN\"~" "$REPO_ROOT"/setup/.env
-        sed -i'' "s~VAULT_RECOVERY_TOKEN=\".*\"~VAULT_RECOVERY_TOKEN=\"$VAULT_RECOVERY_TOKEN\"~" "$REPO_ROOT"/setup/.env
+      echo "non-darwin (linux?) system"
+      sed -i'' "s~VAULT_ROOT_TOKEN=\".*\"~VAULT_ROOT_TOKEN=\"$VAULT_ROOT_TOKEN\"~" "$REPO_ROOT"/setup/.env
+      sed -i'' "s~VAULT_RECOVERY_TOKEN=\".*\"~VAULT_RECOVERY_TOKEN=\"$VAULT_RECOVERY_TOKEN\"~" "$REPO_ROOT"/setup/.env
     fi
     echo "SAVE THESE VALUES!"
 
@@ -164,8 +162,14 @@ EOF
 
   export VAULT_SECRETS_OPERATOR_NAMESPACE=$(kubectl -n kube-system get sa vault-secrets-operator -o jsonpath="{.metadata.namespace}")
   export VAULT_SECRET_NAME=$(kubectl -n kube-system get sa vault-secrets-operator -o jsonpath="{.secrets[*]['name']}")
-  export SA_JWT_TOKEN=$(kubectl -n kube-system get secret $VAULT_SECRET_NAME -o jsonpath="{.data.token}" | base64 --decode; echo)
-  export SA_CA_CRT=$(kubectl -n kube-system get secret $VAULT_SECRET_NAME -o jsonpath="{.data['ca\.crt']}" | base64 --decode; echo)
+  export SA_JWT_TOKEN=$(
+    kubectl -n kube-system get secret $VAULT_SECRET_NAME -o jsonpath="{.data.token}" | base64 --decode
+    echo
+  )
+  export SA_CA_CRT=$(
+    kubectl -n kube-system get secret $VAULT_SECRET_NAME -o jsonpath="{.data['ca\.crt']}" | base64 --decode
+    echo
+  )
   export K8S_HOST=$(kubectl -n kube-system config view --minify -o jsonpath='{.clusters[0].cluster.server}')
 
   # Verify the environment variables
@@ -194,7 +198,6 @@ loadSecretsToVault() {
 
   vault kv put secrets/kured/kured-discord-token discord-token="$DISCORD_KURED_WEBHOOK_URL"
 
-
   ####################
   # helm chart values
   ####################
@@ -217,24 +220,9 @@ loadSecretsToVault() {
   secretVault "main/monitoring/statping/statping-secret.txt"
   helmVault "main/monitoring/statping/statping-helm-values.txt"
   secretVault "infrastructure/mysql/mysql-secret.txt"
+  helmVault "main/homelab/clarkson/clarkson-helm-values.txt"
 
-
-  #vault kv put secrets/flux-system/discord-webhook address="$DISCORD_FLUX_WEBHOOK_URL"
-  #kvault "main/kube-system/kured/kured-helm-values.txt"
- # kvault "kube-system/oauth2-proxy/oauth2-proxy-helm-values.txt"
-  #
- # kvault "monitoring/kube-prometheus-stack/kube-prometheus-stack-helm-values.txt"
- # kvault "monitoring/uptimerobot-prometheus/uptimerobot-prometheus-helm-values.txt"
- # kvault "default/frigate/frigate-helm-values.txt"
- # kvault "default/home-assistant/home-assistant-helm-values.txt"
-#  kvault "default/monica/monica-helm-values.txt"
- # kvault "default/plex/plex-helm-values.txt"
- # kvault "default/rtorrent-flood/rtorrent-flood-helm-values.txt"
- # kvault "default/teslamate/teslamate-helm-values.txt"
- # kvault "main/velero/velero/velero-helm-values.txt"
-  # kvault "monitoring/kube-prometheus-stack/kube-prometheus-stack-helm-values.txt"
 }
-
 
 FIRST_RUN=1
 export KUBECONFIG="$REPO_ROOT/setup/kubeconfig"
@@ -243,12 +231,12 @@ export VAULT_ADDR='http://127.0.0.1:8200'
 initVault
 portForwardVault
 loginVault
-if [ $FIRST_RUN == 0 ]; then 
+if [ $FIRST_RUN == 0 ]; then
   setupVaultSecretsOperator
 fi
 
 #loadSecretsToVault
 
-secretVault "infrastructure/mysql/mysql-secret.txt"
+helmVault "main/homelab/clarkson/clarkson-helm-values.txt"
 
 kill $VAULT_FWD_PID

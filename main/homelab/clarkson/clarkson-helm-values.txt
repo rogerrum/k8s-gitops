@@ -1,0 +1,3 @@
+clarkson:
+  secret:
+    MYSQL_PASSWORD: "$CLARKSON_DB_PASSWORD"
