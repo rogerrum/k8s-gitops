@@ -10,14 +10,14 @@ statping:
   # See more environment variables in the statping documentation
   # https://github.com/statping/statping/wiki/Config-with-.env-File
   env:
-    # -- Name of the Statping instance
     NAME: RSR Statping
-    # -- External URL you use to connect to the statping (the one you enter in your browser)
+    DESCRIPTION: RSR Home Lab Status
     VIRTUAL_HOST: "stats.rsr.net"
     # -- dashboard admin email
     ADMIN_EMAIL: rogerrum@gmail.com
     DB_DATABASE: "statping"
     DB_USER: "statping"
+    DISABLE_LOGS: true
 
   #  envValueFrom:
   #    DB_PASS:
@@ -53,9 +53,12 @@ statping:
   additionalVolumeMounts:
     - name: tls-cert
       mountPath: "/etc/ssl/certs"
+      subPath: "ca.crt"
       readOnly: true
 
   additionalVolumes:
     - name: tls-cert
       secret:
         secretName: stats-cert-tls
+        items:
+          - key: "ca.crt"
