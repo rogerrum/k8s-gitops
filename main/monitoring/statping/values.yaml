@@ -52,7 +52,7 @@ statping:
   # cert is needed for accessing the sites
   additionalVolumeMounts:
     - name: tls-cert
-      mountPath: "/etc/ssl/certs"
+      mountPath: "/etc/ssl/certs/ca.crt"
       subPath: "ca.crt"
       readOnly: true
 
@@ -60,6 +60,3 @@ statping:
     - name: tls-cert
       secret:
         secretName: stats-cert-tls
-        items:
-          - key: "ca.crt"
-            path: ca.crt
