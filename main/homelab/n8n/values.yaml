@@ -1,0 +1,56 @@
+# Default values for n8n.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: n8nio/n8n
+  tag: 0.110.3
+  pullPolicy: IfNotPresent
+
+strategy:
+  type: Recreate
+
+env:
+  TZ: "America/Chicago"
+  GENERIC_TIMEZONE: "America/Chicago"
+  DB_TYPE: postgresdb
+  DB_POSTGRESDB_HOST: postgresql.kube-system.svc.cluster.local
+  DB_POSTGRESDB_DATABASE: n8n
+  DB_POSTGRESDB_USER: n8n
+  N8N_HOST: n8n.rsr.net
+#  N8N_PROTOCOL: https
+
+envValueFrom:
+  DB_POSTGRESDB_PASSWORD:
+    secretKeyRef:
+      name: n8n-secret
+      key: DB_POSTGRESDB_PASSWORD
+  N8N_ENCRYPTION_KEY:
+    secretKeyRef:
+      name: n8n-secret
+      key: N8N_ENCRYPTION_KEY
+
+service:
+  port:
+    port: 5678
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: vault-issuer
+    cert-manager.io/common-name: n8n.rsr.net
+  hosts:
+    - host: "n8n.rsr.net"
+      paths:
+        - path: "/"
+          pathType: Prefix
+  tls:
+    - hosts:
+        - n8n.rsr.net
+      secretName: n8n-cert-tls
+
+persistence:
+  config:
+    enabled: false
+    emptyDir: false
