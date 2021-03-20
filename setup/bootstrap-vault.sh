@@ -239,6 +239,6 @@ fi
 
 #loadSecretsToVault
 
-helmVault "main/monitoring/botkube/botkube-helm-values.txt"
+vault kv put secrets/kured/kured-discord-token discord-token="$DISCORD_KURED_WEBHOOK_URL"
 
 kill $VAULT_FWD_PID
