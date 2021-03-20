@@ -239,6 +239,6 @@ fi
 
 #loadSecretsToVault
 
-secretVault "main/homelab/n8n/n8n-secret.txt"
+helmVault "main/monitoring/botkube/botkube-helm-values.txt"
 
 kill $VAULT_FWD_PID
