@@ -88,7 +88,7 @@ argocd-notifications:
                 {
                   "title": "{{ .app.metadata.name}}",
                   "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
-                  "color": "#18be52",
+                  "color": 1621586,
                   "fields": [
                   {
                     "name": "Sync Status",
@@ -164,7 +164,7 @@ argocd-notifications:
                 {
                   "title": "{{ .app.metadata.name}}",
                   "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
-                  "color": "#f4c030",
+                  "color": 16039984,
                   "fields": [
                   {
                     "name": "Sync Status",
@@ -306,7 +306,7 @@ argocd-notifications:
                 {
                   "title": "{{ .app.metadata.name}}",
                   "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
-                  "color": "#0DADEA",
+                  "color": 896490,
                   "fields": [
                   {
                     "name": "Sync Status",
@@ -382,7 +382,7 @@ argocd-notifications:
                 {
                   "title": "{{ .app.metadata.name}}",
                   "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
-                  "color": "#E96D76",
+                  "color": 15297910,
                   "fields": [
                   {
                     "name": "Sync Status",
@@ -427,7 +427,7 @@ argocd-notifications:
                 {
                   "title": "{{ .app.metadata.name}}",
                   "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
-                  "color": "#18be52",
+                  "color": 1621586,
                   "fields": [
                   {
                     "name": "Sync Status",
