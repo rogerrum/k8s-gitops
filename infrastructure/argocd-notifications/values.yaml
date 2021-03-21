@@ -463,8 +463,8 @@ argocd-notifications:
         - on-sync-failed
         - on-sync-running
         - on-sync-status-unknown
-        - on-sync-succeeded
         - on-health-degraded
+#        - on-sync-succeeded
 
   notifiers:
     # For more information: https://argocd-notifications.readthedocs.io/en/stable/services/overview/
