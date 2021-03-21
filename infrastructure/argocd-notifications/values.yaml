@@ -475,3 +475,5 @@ argocd-notifications:
 #    service.slack: |
 #      token: $slack-token
 #      icon: https://avatars.githubusercontent.com/u/30269780
+
+  logLevel: debug
