@@ -469,6 +469,9 @@ argocd-notifications:
     # For more information: https://argocd-notifications.readthedocs.io/en/stable/services/overview/
     service.webhook.discord: |
       url: $discord-webhook
+      headers:
+      - name: Content-Type
+        value: application/json
 #    service.slack: |
 #      token: $slack-token
 #      icon: https://avatars.githubusercontent.com/u/30269780
