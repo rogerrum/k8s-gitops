@@ -1,5 +1,5 @@
 argocd-notifications:
-  argocdUrl: http://argo.rsr.net
+  argocdUrl: https://argo.rsr.net
   secret:
     create: false
   triggers:
