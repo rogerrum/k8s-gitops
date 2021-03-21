@@ -224,6 +224,8 @@ loadSecretsToVault() {
   secretVault "main/homelab/leantime/leantime-secret.txt"
   secretVault "main/homelab/n8n/n8n-secret.txt"
 
+  vault kv put secrets/argocd/argocd-discord-webhook discord-webhook="$DISCORD_ARGO_WEBHOOK_URL"
+
 }
 
 FIRST_RUN=1
@@ -239,6 +241,6 @@ fi
 
 #loadSecretsToVault
 
-vault kv put secrets/kured/kured-discord-token discord-token="$DISCORD_KURED_WEBHOOK_URL"
+vault kv put secrets/argocd/argocd-discord-webhook discord-webhook="$DISCORD_ARGO_WEBHOOK_URL"
 
 kill $VAULT_FWD_PID
