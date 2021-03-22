@@ -243,7 +243,6 @@ fi
 
 #loadSecretsToVault
 
-secretVault "main/monitoring/alertmanager-discord/alertmanager-discord-secret.txt"
-
+prometheusVault
 
 kill $VAULT_FWD_PID
