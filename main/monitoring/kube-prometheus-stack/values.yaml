@@ -42,8 +42,8 @@ kube-prometheus-stack:
         kubernetes.io/ingress.class: "nginx"
         cert-manager.io/cluster-issuer: vault-issuer
         cert-manager.io/common-name: prom-alert.rsr.net
-        nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
+#        nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
+#        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
       hosts: [ prom-alert.rsr.net ]
       tls:
         - hosts:
