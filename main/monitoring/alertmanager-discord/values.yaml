@@ -1,0 +1,29 @@
+# Default values for clarkson.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: benjojo/alertmanager-discord
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+strategy:
+  type: Recreate
+
+envValueFrom:
+  DISCORD_WEBHOOK:
+    secretKeyRef:
+      name: alertmanager-discord-secret
+      key: DISCORD_WEBHOOK
+
+service:
+  port:
+    port: 9094
+
+ingress:
+  enabled: false
+
+persistence:
+  config:
+    enabled: false
+    emptyDir: false
