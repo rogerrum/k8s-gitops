@@ -226,6 +226,8 @@ loadSecretsToVault() {
 
   vault kv put secrets/argocd/argocd-discord-webhook discord-webhook="$DISCORD_ARGO_WEBHOOK_URL"
 
+  secretVault "main/monitoring/alertmanager-discord/alertmanager-discord-secret.txt"
+
 }
 
 FIRST_RUN=1
@@ -241,6 +243,7 @@ fi
 
 #loadSecretsToVault
 
-vault kv put secrets/argocd/argocd-discord-webhook discord-webhook="$DISCORD_ARGO_WEBHOOK_URL"
+secretVault "main/monitoring/alertmanager-discord/alertmanager-discord-secret.txt"
+
 
 kill $VAULT_FWD_PID
