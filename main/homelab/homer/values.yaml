@@ -25,10 +25,9 @@ homer:
   persistence:
     config:
       enabled: true
-      existingClaim: homer-config-backup
-#      storageClass: "longhorn"
-#      accessMode: ReadWriteOnce
-#      size: "1Gi"
+      storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      size: "1Gi"
   podAnnotations:
     backup.velero.io/backup-volumes: config
   addons:
