@@ -15,9 +15,9 @@ kured:
   metrics:
     create: true
 
-  extraEnvVars:
-    - name: slackHookUrl
-      valueFrom:
-        secretKeyRef:
-          name: kured-discord-secret
-          key: discord-token
+#  extraEnvVars:
+#    - name: slackHookUrl
+#      valueFrom:
+#        secretKeyRef:
+#          name: kured-discord-secret
+#          key: discord-token

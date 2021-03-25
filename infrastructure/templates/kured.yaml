@@ -1,9 +1,20 @@
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: kured-helm-values
+  namespace: kube-system
+spec:
+  keys:
+    - values
+  path: secrets/infrastructure/kured/kured-helm-values
+  type: Opaque
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: kured
   annotations:
-    argocd.argoproj.io/sync-wave: "-2"
+    argocd.argoproj.io/sync-wave: "0"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -15,9 +26,13 @@ spec:
     path: infrastructure/kured
     repoURL: {{ .Values.repo.url }}
     targetRevision: {{ .Values.repo.revision }}
-    helm:
-      valueFiles:
-        - values.yaml
+    plugin:
+      name: secret-to-helm
+      env:
+        - name: SECRET_NAME
+          value: "kured-helm-values"
+        - name: SECRET_NAMESPACE
+          value: "kube-system"
   syncPolicy:
     automated:
       prune: true
