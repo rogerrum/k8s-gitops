@@ -209,6 +209,7 @@ loadSecretsToVault() {
   helmVault "main/monitoring/thanos/thanos-helm-values.txt"
 
   helmVault "main/logs/loki/loki-helm-values.txt"
+  helmVault "infrastructure/kured/kured-helm-values.txt"
 
   prometheusVault
 
@@ -242,7 +243,6 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
-
-prometheusVault
+helmVault "infrastructure/kured/kured-helm-values.txt"
 
 kill $VAULT_FWD_PID
