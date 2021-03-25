@@ -1,2 +1,3 @@
-extraArgs:	
-  slack-hook-url: "$DISCORD_KURED_WEBHOOK_URL"
+kured:
+  extraArgs:
+    slack-hook-url: "$DISCORD_KURED_WEBHOOK_URL"
