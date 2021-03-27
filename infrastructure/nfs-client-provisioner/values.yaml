@@ -1,7 +1,7 @@
 nfs-subdir-external-provisioner:
   image:
     repository: gcr.io/k8s-staging-sig-storage/nfs-subdir-external-provisioner
-    tag: v4.0.1
+    tag: v4.0.2
   nfs:
     server: "192.168.50.108"
     path: "/export/dell-nfs"
