@@ -28,6 +28,7 @@ homer:
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
       size: "1Gi"
+      skipuninstall: true
   podAnnotations:
     backup.velero.io/backup-volumes: config
   addons:
