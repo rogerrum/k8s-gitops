@@ -124,7 +124,7 @@ home-assistant:
 #      cpu: 100m
 #      memory: 1000Mi
   postgresql:
-    enabled: true
+    enabled: false
     existingSecret: home-assistant-postgresql-secret
     postgresqlUsername: home-assistant
     postgresqlDatabase: home-assistant
