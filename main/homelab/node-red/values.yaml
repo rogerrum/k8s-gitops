@@ -30,6 +30,7 @@ node-red:
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
       size: "5Gi"
+      skipuninstall: true
   podAnnotations:
     backup.velero.io/backup-volumes: data
   tolerations:
