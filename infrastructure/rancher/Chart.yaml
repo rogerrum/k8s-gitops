@@ -3,5 +3,5 @@ apiVersion: v2
 version: 1.0.0
 dependencies:
   - name: rancher
-    version: "2.5.5"
+    version: "2.5.7"
     repository: https://releases.rancher.com/server-charts/latest
