@@ -3,6 +3,7 @@ argo-cd:
 
   global:
     image:
+      repository: argoproj/argocd
       tag: v1.8.4
   dex:
     enabled: false
@@ -98,3 +99,8 @@ argo-cd:
       enabled: true
       serviceMonitor:
         enabled: true
+
+  redis:
+    image:
+      repository: redis
+      tag: 5.0.10-alpine
