@@ -25,6 +25,8 @@ minio:
   tolerations:
     - key: "arm"
       operator: "Exists"
+    - key: "arm64"
+      operator: "Exists"
   resources:
     requests:
       memory: 350Mi
