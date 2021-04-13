@@ -117,6 +117,8 @@ home-assistant:
   tolerations:
     - key: "arm"
       operator: "Exists"
+    - key: "arm64"
+      operator: "Exists"
 #  resources:
 #    limits:
 #      memory: 2500Mi
