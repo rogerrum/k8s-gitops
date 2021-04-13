@@ -66,6 +66,8 @@ loki-stack:
       prometheus.io/port: "http-metrics"
       # backup.velero.io/backup-volumes: storage
     tolerations:
+      - key: "arm64"
+        operator: "Exists"
       - key: "arm1"
         operator: "Exists"
     affinity:
@@ -85,6 +87,8 @@ loki-stack:
     serviceMonitor:
       enabled: true
     tolerations:
+      - key: "arm64"
+        operator: "Exists"
       - key: "arm1"
         operator: "Exists"
       - key: "node-role.kubernetes.io/master"
