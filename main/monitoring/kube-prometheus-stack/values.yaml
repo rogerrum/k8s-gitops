@@ -81,6 +81,8 @@ kube-prometheus-stack:
     enabled: false
   prometheus-node-exporter:
     tolerations:
+      - key: "arm64"
+        operator: "Exists"
       - key: "arm1"
         operator: "Exists"
       - key: "armhf"
