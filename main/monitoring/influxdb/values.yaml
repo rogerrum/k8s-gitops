@@ -40,3 +40,5 @@ influxdb:
   tolerations:
     - key: "arm"
       operator: "Exists"
+    - key: "arm64"
+      operator: "Exists"
