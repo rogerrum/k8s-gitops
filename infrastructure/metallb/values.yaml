@@ -26,6 +26,8 @@ metallb:
     tolerations:
       - key: "arm"
         operator: "Exists"
+      - key: "arm64"
+        operator: "Exists"
   speaker:
     image:
       registry: docker.io
@@ -33,6 +35,8 @@ metallb:
       tag: v0.9.6
     tolerations:
       - key: "arm"
+        operator: "Exists"
+      - key: "arm64"
         operator: "Exists"
       - key: "armhf"
         operator: "Exists"
