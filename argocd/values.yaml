@@ -103,4 +103,4 @@ argo-cd:
   redis:
     image:
       repository: redis
-      tag: 5.0.10-alpine
+      tag: 5.0.12-alpine
