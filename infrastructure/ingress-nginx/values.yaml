@@ -20,6 +20,8 @@ ingress-nginx:
     tolerations:
       - key: "arm"
         operator: "Exists"
+      - key: "arm64"
+        operator: "Exists"
     extraArgs:
       default-ssl-certificate: "cert-manager/acme-crt-secret"
     resources:
