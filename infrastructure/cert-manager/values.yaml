@@ -5,11 +5,15 @@ cert-manager:
     tolerations:
       - key: "arm"
         operator: "Exists"
+      - key: "arm64"
+        operator: "Exists"
   extraArgs:
     - --dns01-recursive-nameservers=1.1.1.1:53
     - --dns01-recursive-nameservers-only
   tolerations:
     - key: "arm"
+      operator: "Exists"
+    - key: "arm64"
       operator: "Exists"
   cainjector:
     replicaCount: 1
@@ -18,7 +22,9 @@ cert-manager:
     tolerations:
       - key: "arm"
         operator: "Exists"
-  prometheus:
+      - key: "arm64"
+        operator: "Exists"
+    prometheus:
     enabled: true
     servicemonitor:
       enabled: true
