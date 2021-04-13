@@ -10,6 +10,8 @@ kured:
   tolerations:
     - key: "arm"
       operator: "Exists"
+    - key: "arm64"
+      operator: "Exists"
     - key: "node-role.kubernetes.io/master"
       operator: "Exists"
   metrics:
