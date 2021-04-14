@@ -7,6 +7,7 @@ longhorn:
     backupTarget: s3://longhorn@us-east-1/
     backupTargetCredentialSecret: longhorn-backup-secret
     storageMinimalAvailablePercentage: "10"
+    taintToleration: arm64=true:NoExecute
   ingress:
     enabled: true
     host: longhorn.rsr.net
