@@ -59,7 +59,11 @@ node-feature-discovery:
         effect: "NoSchedule"
       - key: arm
         operator: Exists
+      - key: arm64
+        operator: Exists
   worker:
     tolerations:
       - key: arm
+        operator: Exists
+      - key: arm64
         operator: Exists
