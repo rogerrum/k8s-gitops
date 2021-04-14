@@ -17,7 +17,7 @@ statping:
     ADMIN_EMAIL: rogerrum@gmail.com
     DB_DATABASE: "statping"
     DB_USER: "statping"
-    DISABLE_LOGS: true
+    DISABLE_LOGS: false
 
   #  envValueFrom:
   #    DB_PASS:
