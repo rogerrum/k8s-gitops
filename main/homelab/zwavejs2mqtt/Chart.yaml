@@ -1,0 +1,7 @@
+name: zwavejs2mqtt
+apiVersion: v2
+version: 1.0.0
+dependencies:
+  - name: zwavejs2mqtt
+    version: 3.5.0
+    repository: https://k8s-at-home.com/charts/
