@@ -59,25 +59,23 @@ home-assistant:
   persistence:
     config:
       enabled: true
-      existingClaim: home-assistant-pvc
-#      storageClass: "longhorn"
-#      accessMode: ReadWriteMany
-#      skipuninstall: true
-#      size: "10Gi"
+#      existingClaim: home-assistant-pvc
+      storageClass: "longhorn"
+      accessMode: ReadWriteMany
+      skipuninstall: true
+      size: "10Gi"
 
-  additionalVolumeMounts:
-    - name: zigbee-usb
-      mountPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if01-port0
-
-  additionalVolumes:
-    - name: zigbee-usb
-      hostPath:
-        path: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if01-port0
-  podAnnotations:
-    backup.velero.io/backup-volumes: config
+#  additionalVolumeMounts:
+#    - name: zigbee-usb
+#      mountPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if01-port0
+#
+#  additionalVolumes:
+#    - name: zigbee-usb
+#      hostPath:
+#        path: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if01-port0
   addons:
     codeserver:
-      enabled: false
+      enabled: true
       image:
         repository: codercom/code-server
         tag: 3.10.1
@@ -93,8 +91,8 @@ home-assistant:
           kubernetes.io/ingress.class: "nginx"
           cert-manager.io/cluster-issuer: vault-issuer
           cert-manager.io/common-name: ha-config.rsr.net
-        #          nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
-        #          nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
+          nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
+          nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
         hosts:
           - host: ha-config.rsr.net
             paths:
@@ -108,15 +106,15 @@ home-assistant:
         - name: config
           mountPath: /config
 
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - { key: "feature.node.kubernetes.io/custom-zigbee", operator: In, values: [ "true" ] }
+#  affinity:
+#    nodeAffinity:
+#      requiredDuringSchedulingIgnoredDuringExecution:
+#        nodeSelectorTerms:
+#          - matchExpressions:
+#              - { key: "feature.node.kubernetes.io/custom-zigbee", operator: In, values: [ "true" ] }
   tolerations:
-    - key: "arm"
-      operator: "Exists"
+#    - key: "arm"
+#      operator: "Exists"
     - key: "arm64"
       operator: "Exists"
 #  resources:
