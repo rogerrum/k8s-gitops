@@ -23,7 +23,7 @@ vault:
     standalone:
       enabled: "false"
     ha:
-      enabled: "true"
+      enabled: true
       replicas: 3
       raft:
         enabled: true
