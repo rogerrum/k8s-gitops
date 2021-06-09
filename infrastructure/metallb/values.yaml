@@ -32,7 +32,7 @@ metallb:
     image:
       registry: docker.io
       repository: metallb/speaker
-      tag: v0.9.6
+      tag: v0.10.1
     tolerations:
       - key: "arm"
         operator: "Exists"
