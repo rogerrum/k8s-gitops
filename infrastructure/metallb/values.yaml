@@ -17,12 +17,11 @@ metallb:
     serviceMonitor:
       enabled: true
     prometheusRule:
-      enabled: false
+      enabled: true
   controller:
     image:
-      registry: docker.io
-      repository: metallb/controller
-      tag: v0.9.6
+      repository: quay.io/metallb/controller
+      tag: v0.10.1
     tolerations:
       - key: "arm"
         operator: "Exists"
@@ -30,8 +29,7 @@ metallb:
         operator: "Exists"
   speaker:
     image:
-      registry: docker.io
-      repository: metallb/speaker
+      repository: quay.io/metallb/speaker
       tag: v0.10.1
     tolerations:
       - key: "arm"
@@ -39,4 +37,6 @@ metallb:
       - key: "arm64"
         operator: "Exists"
       - key: "armhf"
+        operator: "Exists"
+      - key: "node-role.kubernetes.io/master"
         operator: "Exists"
