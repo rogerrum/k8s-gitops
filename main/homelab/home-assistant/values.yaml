@@ -12,24 +12,26 @@ home-assistant:
     privileged: true
 
   service:
-    type: LoadBalancer
-    loadBalancerIP: 192.168.100.55
+    main:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.100.55
   ingress:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: "nginx"
-    #      cert-manager.io/cluster-issuer: letsencrypt-prod
-    #      cert-manager.io/common-name: 8003.techbuzzworld.com
-    hosts:
-      - host: 8003.techbuzzworld.com
-        paths:
-          - path: /
-            pathType: Prefix
-    tls:
-      - hosts:
-          - "8003.techbuzzworld.com"
-    #        secretName: ha-cert-ext-tls
-    additionalIngresses:
+    main:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "nginx"
+      #      cert-manager.io/cluster-issuer: letsencrypt-prod
+      #      cert-manager.io/common-name: 8003.techbuzzworld.com
+      hosts:
+        - host: 8003.techbuzzworld.com
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - "8003.techbuzzworld.com"
+      #        secretName: ha-cert-ext-tls
+    internal:
       - enabled: true
         nameSuffix: "internal"
         annotations:
