@@ -32,22 +32,22 @@ home-assistant:
             - "8003.techbuzzworld.com"
       #        secretName: ha-cert-ext-tls
     internal:
-      - enabled: true
-        nameSuffix: "internal"
-        annotations:
-          nginx.org/websocket-services: home-assistant
-          cert-manager.io/cluster-issuer: vault-issuer
-          cert-manager.io/common-name: ha.rsr.net
-        hosts:
-          - host: ha.rsr.net
-            paths:
-              - path: /
-                # Ignored if not kubeVersion >= 1.14-0
-                pathType: Prefix
-        tls:
-          - hosts:
-              - "ha.rsr.net"
-            secretName: ha-cert-int-tls
+      enabled: true
+      nameSuffix: "internal"
+      annotations:
+        nginx.org/websocket-services: home-assistant
+        cert-manager.io/cluster-issuer: vault-issuer
+        cert-manager.io/common-name: ha.rsr.net
+      hosts:
+        - host: ha.rsr.net
+          paths:
+            - path: /
+              # Ignored if not kubeVersion >= 1.14-0
+              pathType: Prefix
+      tls:
+        - hosts:
+            - "ha.rsr.net"
+          secretName: ha-cert-int-tls
   prometheus:
     serviceMonitor:
       enabled: false
