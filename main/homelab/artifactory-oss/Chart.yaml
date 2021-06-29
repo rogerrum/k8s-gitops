@@ -1,0 +1,7 @@
+name: artifactory-oss
+apiVersion: v2
+version: 1.0.0
+dependencies:
+  - name: artifactory-oss
+    version: "4.19.4"
+    repository: https://charts.jfrog.io
