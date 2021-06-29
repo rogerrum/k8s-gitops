@@ -9,9 +9,9 @@ artifactory-oss:
       hosts:
         - artifactory.rsr.net
       tls:
-        - secretName: artifactory-tls
-        hosts:
-          - artifactory.rsr.net
+        - hosts:
+            - artifactory.rsr.net
+          secretName: artifactory-cert-tls
 
     nginx:
       enabled: false
