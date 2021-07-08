@@ -7,9 +7,10 @@ zwavejs2mqtt:
   securityContext:
     privileged: true
   service:
-    additionalPorts:
-    - name: websocket
-      port: 3000
+    main:
+      additionalPorts:
+      - name: websocket
+        port: 3000
   ingress:
     main:
       enabled: true
