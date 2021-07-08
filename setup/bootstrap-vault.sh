@@ -243,6 +243,6 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
-helmVault "infrastructure/kured/kured-helm-values.txt"
+helmVault "main/logs/loki/loki-helm-values.txt"
 
 kill $VAULT_FWD_PID
