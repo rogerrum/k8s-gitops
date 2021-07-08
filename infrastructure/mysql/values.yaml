@@ -1,7 +1,7 @@
 mysql:
   image:
     repository: bitnami/mysql
-    tag: 8.0.23-debian-10-r28
+    tag: 8.0.25-debian-10-r28
 
   auth:
     existingSecret: mysql-secret
