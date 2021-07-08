@@ -6,20 +6,21 @@ grocy:
     TZ: "America/Chicago"
 
   ingress:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: nginx
-      cert-manager.io/cluster-issuer: vault-issuer
-      cert-manager.io/common-name: grocy.rsr.net
-    hosts:
-      - host: grocy.rsr.net
-        paths:
-          - path: /
-            pathType: Prefix
-    tls:
-      - hosts:
-          - grocy.rsr.net
-        secretName: grocy-cert-tls
+    main:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/cluster-issuer: vault-issuer
+        cert-manager.io/common-name: grocy.rsr.net
+      hosts:
+        - host: grocy.rsr.net
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - grocy.rsr.net
+          secretName: grocy-cert-tls
   persistence:
     config:
       enabled: true
