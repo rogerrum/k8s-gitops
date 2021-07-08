@@ -25,7 +25,7 @@ thanos:
     type: S3
     config:
       bucket: "thanos"
-      endpoint: "minio.default.svc:9000"
+      endpoint: "minio-temp.default.svc:9000"
       region: ""
       insecure: true
       signature_version2: false
