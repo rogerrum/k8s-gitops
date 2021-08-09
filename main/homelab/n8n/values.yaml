@@ -4,7 +4,7 @@
 
 image:
   repository: n8nio/n8n
-  tag: 0.129.0
+  tag: 0.133.0
   pullPolicy: IfNotPresent
 
 strategy:
