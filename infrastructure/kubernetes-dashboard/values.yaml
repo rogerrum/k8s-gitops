@@ -1,0 +1,19 @@
+kubernetes-dashboard:
+  image:
+    repository: kubernetesui/dashboard
+    tag: v2.3.1
+
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: dashboard.rsr.net
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+      hosts:
+        - dashboard.rsr.net
+      tls:
+        - hosts:
+            - dashboard.rsr.net
+          secretName: dashboard-cert-tls
