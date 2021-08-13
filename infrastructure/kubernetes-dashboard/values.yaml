@@ -11,9 +11,9 @@ kubernetes-dashboard:
       cert-manager.io/cluster-issuer: vault-issuer
       cert-manager.io/common-name: dashboard.rsr.net
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-      hosts:
-        - dashboard.rsr.net
-      tls:
-        - hosts:
-            - dashboard.rsr.net
-          secretName: dashboard-cert-tls
+    hosts:
+      - dashboard.rsr.net
+    tls:
+      - hosts:
+          - dashboard.rsr.net
+        secretName: dashboard-cert-tls
