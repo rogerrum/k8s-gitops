@@ -11,6 +11,8 @@ kubernetes-dashboard:
       cert-manager.io/cluster-issuer: vault-issuer
       cert-manager.io/common-name: dashboard.rsr.net
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+      nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
+      nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
     hosts:
       - dashboard.rsr.net
     tls:
