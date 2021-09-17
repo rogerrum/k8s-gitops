@@ -1,0 +1,25 @@
+portainer:
+  image:
+    repository: portainer/portainer-ce
+    tag: 2.6.3
+
+  service:
+    type: ClusterIP
+
+  persistence:
+    storageClass: "longhorn"
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: portainer.rsr.net
+    hosts:
+      - host: portainer.rsr.net
+        paths:
+          - /
+    tls:
+      - hosts:
+          - portainer.rsr.net
+        secretName: portainer-cert-tls
