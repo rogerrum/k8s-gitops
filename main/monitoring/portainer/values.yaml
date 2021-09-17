@@ -17,8 +17,6 @@ portainer:
       cert-manager.io/common-name: portainer.rsr.net
     hosts:
       - host: portainer.rsr.net
-        paths:
-          - /
     tls:
       - hosts:
           - portainer.rsr.net
