@@ -42,3 +42,10 @@ persistence:
     enabled: false
     emptyDir: false
 #    storageClass: "longhorn"
+
+
+tolerations:
+#    - key: "arm"
+#      operator: "Exists"
+  - key: "arm64"
+    operator: "Exists"
