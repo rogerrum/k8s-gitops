@@ -1,0 +1,18 @@
+apiVersion: v2
+appVersion: 1.0.0
+description: CUPS instance that is meant as an AirPrint relay for printers
+name: airprint
+version: 0.0.1
+keywords:
+  - airprint
+  - print
+icon: https://raw.githubusercontent.com/rogerrum/icons/main/images/airprint.png
+sources:
+  - https://github.com/quadportnick/docker-cups-airprint
+maintainers:
+  - name: rogerrum
+    email: rogerrum@gmail.com
+dependencies:
+  - name: common
+    version: 3.1.0
+    repository: https://k8s-at-home.com/charts/
