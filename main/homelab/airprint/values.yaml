@@ -18,6 +18,8 @@ env:
   CUPSPASSWORD: "password"
 
 service:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.100.52
   port:
     port: 631
 
@@ -43,9 +45,3 @@ persistence:
     emptyDir: false
 #    storageClass: "longhorn"
 
-
-tolerations:
-#    - key: "arm"
-#      operator: "Exists"
-  - key: "arm64"
-    operator: "Exists"
