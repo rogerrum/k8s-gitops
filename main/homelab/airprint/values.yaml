@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: tigerj/cups-airprint
+  repository: drpsychick/airprint-bridge
   tag: "latest"
   pullPolicy: IfNotPresent
 
