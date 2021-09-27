@@ -16,6 +16,7 @@ env:
   TZ: "America/Chicago"
   CUPSADMIN: "admin"
   CUPSPASSWORD: "password"
+  CUPS_HOSTNAME: "airprint.rsr.net"
 
 service:
   type: LoadBalancer
