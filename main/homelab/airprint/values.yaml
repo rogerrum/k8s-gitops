@@ -17,6 +17,7 @@ env:
   CUPSADMIN: "admin"
   CUPSPASSWORD: "password"
   CUPS_HOSTNAME: "airprint.rsr.net"
+  CUPS_ENV_DEBUG: "yes"
 
 service:
   type: LoadBalancer
