@@ -30,7 +30,7 @@ metallb:
   speaker:
     image:
       repository: quay.io/metallb/speaker
-      tag: v0.10.2
+      tag: v0.10.3
     tolerations:
       - key: "arm"
         operator: "Exists"
