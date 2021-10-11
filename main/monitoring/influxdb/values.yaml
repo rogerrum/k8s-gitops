@@ -1,7 +1,7 @@
 influxdb:
   image:
     repository: "influxdb"
-    tag: "1.8.9"
+    tag: "1.8.10"
   service:
     type: LoadBalancer
   persistence:
