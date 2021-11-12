@@ -43,6 +43,15 @@ argo-cd:
       serviceMonitor:
         enabled: true
 
+    volumeMounts:
+      - name: helm-values
+        mountPath: /helm-values
+    volumes:
+      - name: helm-values
+        secret:
+          secretName: argo-helm-values
+          optional: true
+
   server:
     ingress:
       enabled: true
