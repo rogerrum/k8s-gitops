@@ -9,6 +9,9 @@ argo-cd:
     enabled: false
 
   repoServer:
+    autoscaling:
+      enabled: true
+      minReplicas: 2
     metrics:
       enabled: true
       serviceMonitor:
@@ -64,14 +67,24 @@ argo-cd:
       enabled: true
       serviceMonitor:
         enabled: true
+    autoscaling:
+      enabled: true
+      minReplicas: 2
 
   controller:
+    enableStatefulSet: true
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
 
   redis:
+    image:
+      repository: redis
+      tag: 5.0.14-alpine
+
+  redis-ha:
+    enabled: true
     image:
       repository: redis
       tag: 5.0.14-alpine
