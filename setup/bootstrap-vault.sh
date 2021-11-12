@@ -216,14 +216,16 @@ loadSecretsToVault() {
   # helm chart values
   ####################
 
-  helmVault "main/monitoring/botkube/botkube-helm-values.txt"
   secretVault "main/homelab/minio/minio-secret.txt"
-
   secretVault "main/monitoring/grafana/grafana-secret.txt"
-  helmVault "main/monitoring/thanos/thanos-helm-values.txt"
 
-  helmVault "main/logs/loki/loki-helm-values.txt"
-  helmVault "infrastructure/kured/kured-helm-values.txt"
+
+
+  argoHelmValueVault "main/monitoring/botkube/botkube-helm-values.txt"
+  argoHelmValueVault "main/monitoring/thanos/thanos-helm-values.txt"
+  argoHelmValueVault "main/logs/loki/loki-helm-values.txt"
+  argoHelmValueVault "infrastructure/kured/kured-helm-values.txt"
+  argoHelmValueVault "main/monitoring/statping/statping-helm-values.txt"
 
   prometheusVault
 
@@ -233,7 +235,6 @@ loadSecretsToVault() {
   secretVault "infrastructure/oauth2-proxy/oauth2-proxy-secret.txt"
   secretVault "infrastructure/postgresql/postgresql-secret.txt"
   secretVault "main/monitoring/statping/statping-secret.txt"
-  helmVault "main/monitoring/statping/statping-helm-values.txt"
   secretVault "infrastructure/mysql/mysql-secret.txt"
   secretVault "main/homelab/clarkson/clarkson-secret.txt"
   secretVault "main/homelab/leantime/leantime-secret.txt"
@@ -259,6 +260,10 @@ fi
 #loadSecretsToVault
 #helmVault "main/logs/loki/loki-helm-values.txt"
 
-argoHelmValueVault "main/logs/loki/loki-helm-values.txt"
+argoHelmValueVault "main/monitoring/botkube/botkube-helm-values.txt"
+argoHelmValueVault "main/monitoring/thanos/thanos-helm-values.txt"
+argoHelmValueVault "infrastructure/kured/kured-helm-values.txt"
+argoHelmValueVault "main/monitoring/statping/statping-helm-values.txt"
+
 
 kill $VAULT_FWD_PID
