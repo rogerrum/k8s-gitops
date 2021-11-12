@@ -29,7 +29,11 @@ message() {
 
 argoHelmValueVault() {
   name="secrets/argocd/argo-helm-values"
-  keyName="secrets/$(dirname "$@")/$(basename -s .txt "$@")"
+  keyName="$(basename -s -helm-values.txt "$@").yaml"
+  echo "Updating $name to vault - Adding key $keyName"
+  if output=$(envsubst <"$REPO_ROOT/$*"); then
+    printf '%s' "$output" | vault kv patch "$name" "$keyName"=-
+  fi
 }
 
 helmVault() {
