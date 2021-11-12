@@ -9,35 +9,6 @@ argo-cd:
     enabled: false
 
   repoServer:
-    serviceAccount:
-      create: true
-    rbac:
-      - apiGroups:
-          - ""
-        resources:
-          - secrets
-          - configmaps
-        verbs:
-          - create
-          - get
-          - list
-          - watch
-          - update
-          - patch
-          - delete
-      - apiGroups:
-          - argoproj.io
-        resources:
-          - applications
-          - appprojects
-        verbs:
-          - create
-          - get
-          - list
-          - watch
-          - update
-          - delete
-          - patch
     metrics:
       enabled: true
       serviceMonitor:
@@ -88,15 +59,6 @@ argo-cd:
           ignoreDifferences: |
             jsonPointers:
             - /webhooks/0/clientConfig/caBundle
-      configManagementPlugins: |
-        - name: secret-to-helm
-          init:
-            command: ["/bin/sh", "-c"]
-            args: ["helm dependency build || true"]
-          generate:
-            command: ["/bin/sh", "-c"]
-            args: ["kubectl -n $SECRET_NAMESPACE  get secrets/$SECRET_NAME -o jsonpath='{.data.values}' | base64 --decode > values-secure.yaml  && helm template . --name-template $ARGOCD_APP_NAME --namespace $ARGOCD_APP_NAMESPACE -f values-secure.yaml --include-crds > all.yaml && kustomize build"]
-
 
     metrics:
       enabled: true
