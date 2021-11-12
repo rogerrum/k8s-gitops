@@ -27,6 +27,11 @@ message() {
   echo "######################################################################"
 }
 
+argoHelmValueVault() {
+  name="secrets/argocd/argo-helm-values"
+  keyName="secrets/$(dirname "$@")/$(basename -s .txt "$@")"
+}
+
 helmVault() {
   name="secrets/$(dirname "$@")/$(basename -s .txt "$@")"
   echo "Writing $name to vault"
@@ -243,6 +248,8 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
-helmVault "main/logs/loki/loki-helm-values.txt"
+#helmVault "main/logs/loki/loki-helm-values.txt"
+
+argoHelmValueVault "main/logs/loki/loki-helm-values.txt"
 
 kill $VAULT_FWD_PID
