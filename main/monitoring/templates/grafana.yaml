@@ -18,13 +18,6 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-  {{/*    plugin:*/}}
-  {{/*      name: secret-to-helm*/}}
-  {{/*      env:*/}}
-  {{/*        - name: SECRET_NAME*/}}
-  {{/*          value: "grafana-helm-values"*/}}
-  {{/*        - name: SECRET_NAMESPACE*/}}
-  {{/*          value: "monitoring"*/}}
   syncPolicy:
     automated:
       prune: true
