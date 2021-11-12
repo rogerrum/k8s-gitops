@@ -36,7 +36,7 @@ argoHelmValueVault() {
       printf '%s' "$output" | vault kv patch "$name" "$keyName"=-
     else
       echo "Creating $name to vault - Adding key $keyName"
-      printf '%s' "$output" | vault kv patch "$name" "$keyName"=-
+      printf '%s' "$output" | vault kv put "$name" "$keyName"=-
     fi
   fi
 }
