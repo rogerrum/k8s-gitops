@@ -41,11 +41,12 @@ zwavejs2mqtt:
       accessMode: ReadWriteOnce
       size: "1Gi"
       skipuninstall: true
-  usb:
-    enabled: true
-    type: hostPath
-    hostPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if00-port0
-    hostPathType: CharDevice
+
+    usb:
+      enabled: true
+      type: hostPath
+      hostPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if00-port0
+      hostPathType: CharDevice
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
