@@ -226,6 +226,7 @@ loadSecretsToVault() {
   argoHelmValueVault "main/logs/loki/loki-helm-values.txt"
   argoHelmValueVault "infrastructure/kured/kured-helm-values.txt"
   argoHelmValueVault "main/monitoring/statping/statping-helm-values.txt"
+  argoHelmValueVault "main/homelab/emqx/emqx-helm-values.txt"
 
   prometheusVault
 
@@ -260,10 +261,7 @@ fi
 #loadSecretsToVault
 #helmVault "main/logs/loki/loki-helm-values.txt"
 
-argoHelmValueVault "main/monitoring/botkube/botkube-helm-values.txt"
-argoHelmValueVault "main/monitoring/thanos/thanos-helm-values.txt"
-argoHelmValueVault "infrastructure/kured/kured-helm-values.txt"
-argoHelmValueVault "main/monitoring/statping/statping-helm-values.txt"
+argoHelmValueVault "main/homelab/emqx/emqx-helm-values.txt"
 
 
 kill $VAULT_FWD_PID
