@@ -1,6 +1,6 @@
 zwave2mqtt:
   image:
-    repository: robertslando/zwave2mqtt
+    repository: robertslando/zwave2mqttx
     tag: 4.1.1
   env:
     TZ: "America/Chicago"
