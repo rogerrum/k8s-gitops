@@ -6,11 +6,13 @@ zwavejs2mqtt:
     TZ: "America/Chicago"
   securityContext:
     privileged: true
+
   service:
     main:
-      additionalPorts:
-      - name: websocket
-        port: 3000
+      ports:
+        websockets:
+          enabled: true
+          port: 3000
   ingress:
     main:
       enabled: true
@@ -39,13 +41,11 @@ zwavejs2mqtt:
       accessMode: ReadWriteOnce
       size: "1Gi"
       skipuninstall: true
-  additionalVolumeMounts:
-    - name: usb
-      mountPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if00-port0
-  additionalVolumes:
-    - name: usb
-      hostPath:
-        path: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if00-port0
+  usb:
+    enabled: true
+    type: hostPath
+    hostPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if00-port0
+    hostPathType: CharDevice
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
