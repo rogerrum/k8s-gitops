@@ -43,7 +43,7 @@ ingress:
 
 persistence:
   config:
-    enabled: false
+    enabled: true
     emptyDir: false
-#    storageClass: "longhorn"
+    storageClass: "longhorn"
 
