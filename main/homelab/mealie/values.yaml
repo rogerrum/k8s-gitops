@@ -10,12 +10,11 @@ mealie:
     POSTGRES_SERVER: postgresql.kube-system.svc.cluster.local
     POSTGRES_PORT: 5432
     POSTGRES_DB: mealie
-
-  envFrom:
     POSTGRES_PASSWORD:
-      secretKeyRef:
-        name: mealie-secret
-        key: POSTGRES_PASSWORD
+      envFrom:
+        secretKeyRef:
+          name: mealie-secret
+          key: POSTGRES_PASSWORD
 
   ingress:
     main:
