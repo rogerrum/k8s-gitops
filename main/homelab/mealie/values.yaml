@@ -11,7 +11,7 @@ mealie:
     POSTGRES_PORT: 5432
     POSTGRES_DB: mealie
 
-  envValueFrom:
+  envFrom:
     POSTGRES_PASSWORD:
       secretKeyRef:
         name: mealie-secret
