@@ -10,8 +10,8 @@ ingress-nginx:
     service:
       loadBalancerIP: 192.168.100.150
       externalTrafficPolicy: Local
-    ingressClassResource:
-      default: true
+#    ingressClassResource:
+#      default: true
     metrics:
       enabled: true
       serviceMonitor:
