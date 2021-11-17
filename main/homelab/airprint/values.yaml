@@ -12,6 +12,16 @@ strategy:
 
 hostNetwork: true
 
+probes:
+  startup:
+    enabled: false
+
+  liveness:
+    enabled: false
+
+  readiness:
+    enabled: false
+
 env:
   TZ: "America/Chicago"
   CUPS_ADMIN_USER: admin
