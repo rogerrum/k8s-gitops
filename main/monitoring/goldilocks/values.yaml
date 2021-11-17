@@ -11,8 +11,7 @@ goldilocks:
       hosts:
         - host: goldilocks.rsr.net
           paths:
-            - path: /
-              pathType: Prefix
+            - /
       tls:
         - hosts:
             - goldilocks.rsr.net
