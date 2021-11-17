@@ -105,10 +105,10 @@ argo-cd:
     resources:
       limits:
         cpu: 100m
-        memory: 128Mi
+        memory: 105Mi
       requests:
-        cpu: 50m
-        memory: 64Mi
+        cpu: 100m
+        memory: 105Mi
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
