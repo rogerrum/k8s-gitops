@@ -12,6 +12,9 @@ argo-cd:
     autoscaling:
       enabled: true
       minReplicas: 2
+      targetCPUUtilizationPercentage: 50
+      targetMemoryUtilizationPercentage: 50
+
     metrics:
       enabled: true
       serviceMonitor:
@@ -31,8 +34,8 @@ argo-cd:
         cpu: 4742m
         memory: 4282Mi
       requests:
-        cpu: 100m
-        memory: 128Mi
+        cpu: 4742m
+        memory: 4282M
 
     affinity:
       podAntiAffinity:
