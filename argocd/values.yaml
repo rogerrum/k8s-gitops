@@ -49,11 +49,11 @@ argo-cd:
                 - key: app.kubernetes.io/instance
                   operator: In
                   values:
-                    - argocd-repo-server
+                    - argocd
                 - key: app.kubernetes.io/component
                   operator: In
                   values:
-                    - controller
+                    - repo-server
             topologyKey: "kubernetes.io/hostname"
 
 
@@ -123,11 +123,11 @@ argo-cd:
                 - key: app.kubernetes.io/instance
                   operator: In
                   values:
-                    - argocd-server
+                    - argocd
                 - key: app.kubernetes.io/component
                   operator: In
                   values:
-                    - controller
+                    - server
             topologyKey: "kubernetes.io/hostname"
 
   controller:
