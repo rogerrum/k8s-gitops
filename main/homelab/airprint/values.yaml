@@ -11,6 +11,10 @@ strategy:
   type: Recreate
 
 hostNetwork: true
+dnsPolicy: ClusterFirstWithHostNet
+
+securityContext:
+  privileged: true
 
 probes:
   startup:
