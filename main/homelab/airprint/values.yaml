@@ -5,7 +5,7 @@
 image:
   repository: rogerrum/cups-airprint
   tag: "temp1"
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 strategy:
   type: Recreate
