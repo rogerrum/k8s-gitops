@@ -26,6 +26,14 @@ argo-cd:
           secretName: argo-helm-values
           optional: true
 
+    resources:
+      limits:
+        cpu: 50m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
+
   server:
     ingress:
       enabled: true
@@ -70,6 +78,13 @@ argo-cd:
     autoscaling:
       enabled: true
       minReplicas: 2
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi
 
   controller:
     enableStatefulSet: true
