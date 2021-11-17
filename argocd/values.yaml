@@ -34,6 +34,27 @@ argo-cd:
         cpu: 10m
         memory: 64Mi
 
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                    - argocd-repo-server
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values:
+                    - argocd-repo-server
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                    - controller
+            topologyKey: "kubernetes.io/hostname"
+
+
+
   server:
     ingress:
       enabled: true
@@ -85,6 +106,24 @@ argo-cd:
       requests:
         cpu: 50m
         memory: 64Mi
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                    - argocd-server
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values:
+                    - argocd-server
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                    - controller
+            topologyKey: "kubernetes.io/hostname"
 
   controller:
     enableStatefulSet: true
