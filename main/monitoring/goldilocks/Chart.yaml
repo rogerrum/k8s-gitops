@@ -1,0 +1,7 @@
+name: goldilocks
+apiVersion: v2
+version: 1.0.0
+dependencies:
+  - name: goldilocks
+    version: 4.0.1
+    repository:  https://charts.fairwinds.com/stable
