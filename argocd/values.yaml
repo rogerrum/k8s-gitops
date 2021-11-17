@@ -28,11 +28,11 @@ argo-cd:
 
     resources:
       limits:
-        cpu: 50m
-        memory: 128Mi
+        cpu: 500m
+        memory: 1024Mi
       requests:
-        cpu: 10m
-        memory: 64Mi
+        cpu: 100m
+        memory: 128Mi
 
     affinity:
       podAntiAffinity:
