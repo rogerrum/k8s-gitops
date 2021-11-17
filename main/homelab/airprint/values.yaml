@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: drpsychick/airprint-bridge
-  tag: "latest"
+  repository: rogerrum/cups-airprint
+  tag: "0.0.4"
   pullPolicy: IfNotPresent
 
 strategy:
@@ -14,14 +14,23 @@ hostNetwork: true
 
 env:
   TZ: "America/Chicago"
-  CUPSADMIN: "admin"
-  CUPSPASSWORD: "password"
+  CUPS_ADMIN_USER: admin
+  CUPS_ADMIN_PASSWORD: admin
+  CUPS_REMOTE_ADMIN: yes
+  CUPS_WEBINTERFACE: yes
+  CUPS_SHARE_PRINTERS: yes
+  CUPS_ACCESS_LOGLEVEL: access
+  CUPS_LOGLEVEL: info
+
+  CUPS_LPADMIN_PRINTER1: "lpadmin -p Air-Brother-HL-2270DW -D 'Airprinter Brother-HL-2270DW' -m 'HL2270DW.ppd' -o PageSize=A4 -v lpd://192.168.1.58/BINARY_P1"
+  CUPS_LPADMIN_PRINTER1_ENABLE: cupsenable Air-Brother-HL-2270DW
+  CUPS_LPADMIN_PRINTER1_ACCEPT: cupsaccept Air-Brother-HL-2270DW
   CUPS_HOSTNAME: "airprint.rsr.net"
   CUPS_ENV_DEBUG: "yes"
 
 service:
-  type: LoadBalancer
-  loadBalancerIP: 192.168.100.52
+#  type: LoadBalancer
+#  loadBalancerIP: 192.168.100.52
   port:
     port: 631
 
@@ -43,7 +52,13 @@ ingress:
 
 persistence:
   config:
-    enabled: true
-    emptyDir: false
-    storageClass: "longhorn"
+    enabled: false
+#    emptyDir: false
+#    storageClass: "longhorn"
+
+
+
+#docker run -d --rm -e CUPS_WEBINTERFACE="yes" --net=host -e CUPS_REMOTE_ADMIN="yes"  --name cups-setup rogerrum/cups-airprint:temp
+
+
 
