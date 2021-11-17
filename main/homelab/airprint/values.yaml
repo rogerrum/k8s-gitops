@@ -31,7 +31,6 @@ env:
   CUPS_SHARE_PRINTERS: yes
   CUPS_ACCESS_LOGLEVEL: access
   CUPS_LOGLEVEL: info
-
   CUPS_LPADMIN_PRINTER1: "lpadmin -p Air-Brother-HL-2270DW -D 'Airprinter Brother-HL-2270DW' -m 'HL2270DW.ppd' -o PageSize=A4 -v lpd://192.168.1.58/BINARY_P1"
   CUPS_LPADMIN_PRINTER1_ENABLE: cupsenable Air-Brother-HL-2270DW
   CUPS_LPADMIN_PRINTER1_ACCEPT: cupsaccept Air-Brother-HL-2270DW
@@ -39,8 +38,8 @@ env:
   CUPS_ENV_DEBUG: "yes"
 
 service:
-#  type: LoadBalancer
-#  loadBalancerIP: 192.168.100.52
+  type: LoadBalancer
+  loadBalancerIP: 192.168.100.52
   port:
     port: 631
 
