@@ -4,7 +4,7 @@
 
 image:
   repository: rogerrum/cups-airprint
-  tag: "0.0.4"
+  tag: "temp1"
   pullPolicy: IfNotPresent
 
 strategy:
