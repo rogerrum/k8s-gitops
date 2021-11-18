@@ -19,6 +19,19 @@ emqx:
           topologyKey: "kubernetes.io/hostname"
   emqxConfig:
     EMQX_ALLOW_ANONYMOUS: "false"
+    EMQX_BRIDGE__MQTT__POWER__START_TYPE: auto
+    EMQX_BRIDGE__MQTT__POWER__ADDRESS: 192.168.1.241:2883
+    EMQX_BRIDGE__MQTT__POWER__PROTO_VER: mqttv3
+    EMQX_BRIDGE__MQTT__POWER__BRIDGE_MODE: true
+    EMQX_BRIDGE__MQTT__POWER__CLEAN_START: true
+#    EMQX_BRIDGE__MQTT__POWER__USERNAME: user
+#    EMQX_BRIDGE__MQTT__POWER__PASSWORD: passw
+    EMQX_BRIDGE__MQTT__POWER__CLIENTID: bridge_power
+    EMQX_BRIDGE__MQTT__POWER__KEEPALIVE: 60s
+#    EMQX_BRIDGE__MQTT__POWER__FORWARD_MOUNTPOINT: bridge/aws/test/
+#    EMQX_BRIDGE__MQTT__POWER__FORWARDS: atlas/#
+    EMQX_BRIDGE__MQTT__POWER__SUBSCRIPTION__1__TOPIC: event/metering/* in 0
+    EMQX_BRIDGE__MQTT__POWER__SUBSCRIPTION__1__QOS: 1
   #   EMQX_ACL_NOMATCH: "deny"
 
   emqxAclConfig: >
@@ -33,7 +46,7 @@ emqx:
     {emqx_dashboard, true}.
     {emqx_telemetry, false}.
     {emqx_rule_engine, true}.
-    {emqx_bridge_mqtt, false}.
+    {emqx_bridge_mqtt, true}.
     {emqx_auth_mnesia, true}.
     {emqx_prometheus, true}.
   emqxLoadedModules: >
