@@ -1,9 +1,9 @@
 emqx:
   replicaCount: 3
   recreatePods: true
-#  service:
-#    type: LoadBalancer
-#    loadBalancerIP: 10.0.6.50
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 192.168.100.57
   tolerations:
     - key: "arm"
       operator: "Exists"
