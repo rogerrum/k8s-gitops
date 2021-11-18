@@ -30,9 +30,11 @@ emqx:
     EMQX_BRIDGE__MQTT__POWER__KEEPALIVE: 60s
 #    EMQX_BRIDGE__MQTT__POWER__FORWARD_MOUNTPOINT: bridge/aws/test/
 #    EMQX_BRIDGE__MQTT__POWER__FORWARDS: atlas/#
-    EMQX_BRIDGE__MQTT__POWER__SUBSCRIPTION__1__TOPIC: event/metering/* in 0
+    EMQX_BRIDGE__MQTT__POWER__SUBSCRIPTION__1__TOPIC: event/metering/*
     EMQX_BRIDGE__MQTT__POWER__SUBSCRIPTION__1__QOS: 1
+    EMQX_BRIDGE__MQTT__POWER__RECEIVE__MOUNTPOINT: receive/power/
   #   EMQX_ACL_NOMATCH: "deny"
+
 
   emqxAclConfig: >
     {allow, {user, "dashboard"}, subscribe, ["$SYS/#"]}.
