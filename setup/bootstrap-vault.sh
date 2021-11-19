@@ -33,7 +33,7 @@ argoHelmValueVault() {
   if output=$(envsubst <"$REPO_ROOT/$*"); then
     if vault kv get "$name"; then
       echo "Updating $name to vault - Adding key $keyName"
-      printf '%s' "$output" | vault kv patch "$name" "$keyName"=-
+      printf '%s' "$output" | vault kv patch -method rw "$name" "$keyName"=-
     else
       echo "Creating $name to vault - Adding key $keyName"
       printf '%s' "$output" | vault kv put "$name" "$keyName"=-
