@@ -262,6 +262,6 @@ fi
 #loadSecretsToVault
 #helmVault "main/logs/loki/loki-helm-values.txt"
 
-secretVault "main/homelab/mealie/mealie-secret.txt"
+argoHelmValueVault "main/homelab/emqx/emqx-helm-values.txt"
 
 kill $VAULT_FWD_PID
