@@ -8,7 +8,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: argocd
+    namespace: system-upgrade
     server: https://kubernetes.default.svc
   project: default
   source:
