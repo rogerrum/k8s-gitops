@@ -2,7 +2,7 @@
 
 resources:
 - system-upgrade-controller.yaml
-#- k3s-plan.yaml
+- k3s-plan.yaml
 
 #apiVersion: kustomize.config.k8s.io/v1beta1
 
