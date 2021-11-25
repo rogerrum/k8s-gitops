@@ -1,6 +1,6 @@
 argo-cd:
   installCRDs: false
-
+ 
   global:
     image:
       repository: argoproj/argocd
