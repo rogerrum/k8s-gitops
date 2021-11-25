@@ -1,0 +1,7 @@
+name: vpa
+apiVersion: v2
+version: 1.0.0
+dependencies:
+  - name: vpa
+    version: 0.5.0
+    repository:  https://charts.fairwinds.com/stable

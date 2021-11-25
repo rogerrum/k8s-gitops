@@ -1,7 +1,7 @@
-name: zwave2mqtt
+name: mealie
 apiVersion: v2
 version: 1.0.0
 dependencies:
-  - name: zwave2mqtt
-    version: 8.4.1
+  - name: mealie
+    version: 3.1.0
     repository: https://k8s-at-home.com/charts/

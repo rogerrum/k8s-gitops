@@ -33,7 +33,7 @@ argoHelmValueVault() {
   if output=$(envsubst <"$REPO_ROOT/$*"); then
     if vault kv get "$name"; then
       echo "Updating $name to vault - Adding key $keyName"
-      printf '%s' "$output" | vault kv patch "$name" "$keyName"=-
+      printf '%s' "$output" | vault kv patch -method rw "$name" "$keyName"=-
     else
       echo "Creating $name to vault - Adding key $keyName"
       printf '%s' "$output" | vault kv put "$name" "$keyName"=-
@@ -193,6 +193,7 @@ EOF
 
   # Tell Vault how to communicate with the Kubernetes cluster
   vault write auth/kubernetes/config \
+    issuer="https://kubernetes.default.svc.cluster.local" \
     token_reviewer_jwt="$SA_JWT_TOKEN" \
     kubernetes_host="$K8S_HOST" \
     kubernetes_ca_cert="$SA_CA_CRT"
@@ -204,6 +205,33 @@ EOF
     policies=vault-secrets-operator \
     ttl=24h
 }
+
+fixVaultSecretsOperator() {
+  message "Fixing vault for vault-secrets-operator"
+
+  export VAULT_SECRETS_OPERATOR_NAMESPACE=$(kubectl -n kube-system get sa vault-secrets-operator -o jsonpath="{.metadata.namespace}")
+  export VAULT_SECRET_NAME=$(kubectl -n kube-system get sa vault-secrets-operator -o jsonpath="{.secrets[*]['name']}")
+  export SA_JWT_TOKEN=$(
+    kubectl -n kube-system get secret $VAULT_SECRET_NAME -o jsonpath="{.data.token}" | base64 --decode
+    echo
+  )
+  export SA_CA_CRT=$(
+    kubectl -n kube-system get secret $VAULT_SECRET_NAME -o jsonpath="{.data['ca\.crt']}" | base64 --decode
+    echo
+  )
+  export K8S_HOST=$(kubectl -n kube-system config view --minify -o jsonpath='{.clusters[0].cluster.server}')
+
+  # Verify the environment variables
+  # env | grep -E 'VAULT_SECRETS_OPERATOR_NAMESPACE|VAULT_SECRET_NAME|SA_JWT_TOKEN|SA_CA_CRT|K8S_HOST'
+
+  # Tell Vault how to communicate with the Kubernetes cluster
+  vault write auth/kubernetes/config \
+    issuer="https://kubernetes.default.svc.cluster.local" \
+    token_reviewer_jwt="$SA_JWT_TOKEN" \
+    kubernetes_host="$K8S_HOST" \
+    kubernetes_ca_cert="$SA_CA_CRT"
+}
+
 
 loadSecretsToVault() {
   message "writing secrets to vault"
@@ -226,6 +254,7 @@ loadSecretsToVault() {
   argoHelmValueVault "main/logs/loki/loki-helm-values.txt"
   argoHelmValueVault "infrastructure/kured/kured-helm-values.txt"
   argoHelmValueVault "main/monitoring/statping/statping-helm-values.txt"
+  argoHelmValueVault "main/homelab/emqx/emqx-helm-values.txt"
 
   prometheusVault
 
@@ -239,6 +268,7 @@ loadSecretsToVault() {
   secretVault "main/homelab/clarkson/clarkson-secret.txt"
   secretVault "main/homelab/leantime/leantime-secret.txt"
   secretVault "main/homelab/n8n/n8n-secret.txt"
+  secretVault "main/homelab/mealie/mealie-secret.txt"
 
   vault kv put secrets/argocd/argocd-discord-webhook discord-webhook="$DISCORD_ARGO_WEBHOOK_URL"
 
@@ -260,10 +290,8 @@ fi
 #loadSecretsToVault
 #helmVault "main/logs/loki/loki-helm-values.txt"
 
-argoHelmValueVault "main/monitoring/botkube/botkube-helm-values.txt"
-argoHelmValueVault "main/monitoring/thanos/thanos-helm-values.txt"
-argoHelmValueVault "infrastructure/kured/kured-helm-values.txt"
-argoHelmValueVault "main/monitoring/statping/statping-helm-values.txt"
+#argoHelmValueVault "main/homelab/emqx/emqx-helm-values.txt"
 
+fixVaultSecretsOperator
 
 kill $VAULT_FWD_PID

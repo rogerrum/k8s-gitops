@@ -1,0 +1,10 @@
+vpa:
+  recommender:
+    extraArgs:
+      prometheus-address: |
+        http://thanos-query-http:10902/
+      storage: prometheus
+    updater:
+      enabled: false
+    admissionController:
+      enabled: false

@@ -4,7 +4,7 @@ argo-cd:
   global:
     image:
       repository: argoproj/argocd
-      tag: v1.8.7
+      tag: v2.1.7
   dex:
     enabled: false
 
@@ -12,6 +12,9 @@ argo-cd:
     autoscaling:
       enabled: true
       minReplicas: 2
+      targetCPUUtilizationPercentage: 85
+      targetMemoryUtilizationPercentage: 85
+
     metrics:
       enabled: true
       serviceMonitor:
@@ -25,6 +28,35 @@ argo-cd:
         secret:
           secretName: argo-helm-values
           optional: true
+
+    resources:
+      limits:
+        cpu: 5526m
+        memory: 4744M
+      requests:
+        cpu: 5526m
+        memory: 4744M
+
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                    - argocd-repo-server
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values:
+                    - argocd
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                    - repo-server
+            topologyKey: "kubernetes.io/hostname"
+
+
 
   server:
     ingress:
@@ -70,6 +102,33 @@ argo-cd:
     autoscaling:
       enabled: true
       minReplicas: 2
+      targetCPUUtilizationPercentage: 85
+      targetMemoryUtilizationPercentage: 85
+    resources:
+      limits:
+        cpu: 100m
+        memory: 105Mi
+      requests:
+        cpu: 100m
+        memory: 105Mi
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                    - argocd-server
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values:
+                    - argocd
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                    - server
+            topologyKey: "kubernetes.io/hostname"
 
   controller:
     enableStatefulSet: true

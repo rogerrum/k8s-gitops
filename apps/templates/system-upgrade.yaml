@@ -1,23 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: zwave2mqtt
+  name: system-upgrade
   annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/sync-wave: "-4"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: default
+    namespace: system-upgrade
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: main/homelab/zwave2mqtt
+    path: system-upgrade/
     repoURL: {{ .Values.repo.url }}
     targetRevision: {{ .Values.repo.revision }}
-    helm:
-      valueFiles:
-        - values.yaml
   syncPolicy:
     automated:
       prune: true

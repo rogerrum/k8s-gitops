@@ -1,0 +1,76 @@
+emqx:
+  replicaCount: 3
+  recreatePods: true
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 192.168.100.57
+  tolerations:
+    - key: "arm"
+      operator: "Exists"
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - emqx
+          topologyKey: "kubernetes.io/hostname"
+  emqxConfig:
+    EMQX_ALLOW_ANONYMOUS: "false"
+    EMQX_BRIDGE__MQTT__POWER__START_TYPE: auto
+    EMQX_BRIDGE__MQTT__POWER__ADDRESS: 192.168.1.241:2883
+    EMQX_BRIDGE__MQTT__POWER__PROTO_VER: mqttv3
+    EMQX_BRIDGE__MQTT__POWER__BRIDGE_MODE: true
+    EMQX_BRIDGE__MQTT__POWER__CLIENTID: bridge_power
+    EMQX_BRIDGE__MQTT__POWER__KEEPALIVE: 60s
+    EMQX_BRIDGE__MQTT__POWER__SUBSCRIPTION__1__TOPIC: event/metering/#
+    EMQX_BRIDGE__MQTT__POWER__SUBSCRIPTION__1__QOS: 1
+    EMQX_BRIDGE__MQTT__POWER__RECEIVE_MOUNTPOINT: receive/power/
+
+
+  emqxAclConfig: >
+    {allow, {user, "dashboard"}, subscribe, ["$SYS/#"]}.
+    {allow, {ipaddr, "127.0.0.1"}, pubsub, ["$SYS/#", "#"]}.
+    {allow, all, subscribe, ["$SYS/#", {eq, "#"}]}.
+    {allow, all}.
+  emqxLoadedPlugins: >
+    {emqx_management, true}.
+    {emqx_recon, true}.
+    {emqx_retainer, true}.
+    {emqx_dashboard, true}.
+    {emqx_telemetry, false}.
+    {emqx_rule_engine, true}.
+    {emqx_bridge_mqtt, true}.
+    {emqx_auth_mnesia, true}.
+    {emqx_prometheus, true}.
+  emqxLoadedModules: >
+    {emqx_mod_presence, true}.
+    {emqx_mod_delayed, false}.
+    {emqx_mod_rewrite, false}.
+    {emqx_mod_subscription, false}.
+    {emqx_mod_topic_metrics, true}.
+  resources:
+    limits:
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 150Mi
+
+  ingress:
+    dashboard:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/cluster-issuer: vault-issuer
+        cert-manager.io/common-name: emqx.rsr.net
+        nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
+        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
+      path: /
+      hosts:
+        - emqx.rsr.net
+      tls:
+        - hosts:
+            - emqx.rsr.net
+          secretName: emqx-cert-tls
