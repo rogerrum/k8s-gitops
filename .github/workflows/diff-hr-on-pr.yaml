@@ -27,10 +27,12 @@ jobs:
           filters: |
             changed:
               - 'Chart.yaml'
+              - 'values.yaml'
       - id: extract
         run: |
           filtered=$(grep -zl "name:" ${{ steps.filter.outputs.changed_files }} \
             | jq -nR '[inputs | select(length>0)]')
+          echo ${filtered}
           echo ::set-output name=files::${filtered}
 
   helm-release-diff:
