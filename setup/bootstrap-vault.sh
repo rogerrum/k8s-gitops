@@ -269,6 +269,7 @@ loadSecretsToVault() {
   secretVault "main/homelab/leantime/leantime-secret.txt"
   secretVault "main/homelab/n8n/n8n-secret.txt"
   secretVault "main/homelab/mealie/mealie-secret.txt"
+  secretVault "main/homelab/traccar/traccar-secret.txt"
 
   vault kv put secrets/argocd/argocd-discord-webhook discord-webhook="$DISCORD_ARGO_WEBHOOK_URL"
 
@@ -288,10 +289,6 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
-#helmVault "main/logs/loki/loki-helm-values.txt"
-
-#argoHelmValueVault "main/homelab/emqx/emqx-helm-values.txt"
-
-fixVaultSecretsOperator
+secretVault "main/homelab/traccar/traccar-secret.txt"
 
 kill $VAULT_FWD_PID
