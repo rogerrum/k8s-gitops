@@ -30,7 +30,7 @@ jobs:
               - '**/values.yaml'
       - id: extract
         run: |
-          filtered=$( echo "${{ steps.filter.outputs.changed_files }}" \
+          filtered=$( echo '${{ steps.filter.outputs.changed_files }}' \
             |  jq -r '.=[.[] | split("/") | del(.[-1]) |  join("/")  ] | unique')
           echo ${filtered}
           echo ::set-output name=files::${filtered}
