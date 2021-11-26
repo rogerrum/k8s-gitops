@@ -23,15 +23,15 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          list-files: shell
+          list-files: json
           filters: |
             changed:
               - '**/Chart.yaml'
               - '**/values.yaml'
       - id: extract
         run: |
-          filtered=$(grep -zl "" ${{ steps.filter.outputs.changed_files }} \
-            | jq -nR '[inputs | select(length>0)]')
+          filtered=$( echo ${{ steps.filter.outputs.changed_files }} \
+            |  jq -r '.=[.[] | split("/") | del(.[-1]) |  join("/")  ] | unique')
           echo ${filtered}
           echo ::set-output name=files::${filtered}
 
@@ -60,7 +60,7 @@ jobs:
           path: pr
       - id: diff
         run: |
-          chartLocation=$(basename "$(dirname "${{ matrix.file }}")")
+          chartLocation=${{ matrix.file }}
           helm dep update "live/$chartLocation"
           helm dep update "pr/$chartLocation"
           resources_live=$(helm template live/"$chartLocation")
