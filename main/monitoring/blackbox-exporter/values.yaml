@@ -1,0 +1,53 @@
+prometheus-blackbox-exporter:
+  fullnameOverride: blackbox-exporter
+  image:
+    repository: quay.io/prometheus/blackbox-exporter
+    tag: v0.19.0
+  allowIcmp: true
+  config:
+    modules:
+      icmp:
+        prober: icmp
+        timeout: 30s
+        icmp:
+          preferred_ip_protocol: "ip4"
+  serviceMonitor:
+    enabled: true
+    defaults:
+      labels:
+        release: prometheus
+      interval: 30s
+      scrapeTimeout: 30s
+    targets:
+      - name: router
+        url: 192.168.1.1
+        module: icmp
+#      - name: garage
+#        url: 192.168.1.19
+#        module: icmp
+#      - name: vacuum
+#        url: 192.168.1.28
+#        module: icmp
+      - name: nas
+        url: 192.168.1.115
+        module: icmp
+  prometheusRule:
+    enabled: true
+    additionalLabels:
+      app: prometheus-operator
+      release: prometheus
+    rules:
+      - alert: HostDown
+        expr: probe_success == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          message: The host {{"{{ $labels.target }}"}} is currently unreachable
+      - alert: SlowResponseTime
+        annotations:
+          message: The response time for {{"{{ $labels.target }}"}} has been greater than 30 seconds for 5 minutes.
+        expr: probe_duration_seconds > 30
+        for: 5m
+        labels:
+          severity: warning
