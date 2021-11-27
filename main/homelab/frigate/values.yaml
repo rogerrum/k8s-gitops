@@ -22,7 +22,7 @@ frigate:
       host: emqx.default.svc
       topic_prefix: frigate
       user: mqtt
-      password: '{FRIGATE_MQTT_PASSWORD}'
+      password: '${FRIGATE_MQTT_PASSWORD}'
     database:
       path: /data/frigate.db
     detectors:
@@ -63,10 +63,10 @@ frigate:
       basement_room:
         ffmpeg:
           inputs:
-            - path: {FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1
+            - path: ${FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1
               roles:
                 - detect
-            - path: {FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=0
+            - path: ${FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=0
               roles:
                 - rtmp
                 - record
