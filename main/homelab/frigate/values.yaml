@@ -27,8 +27,8 @@ frigate:
       path: /data/frigate.db
     detectors:
       cpu1:
-      type: cpu
-      num_threads: 2
+        type: cpu
+        num_threads: 2
       #coral:
         #type: edgetpu
         #device: usb
