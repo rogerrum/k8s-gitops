@@ -41,6 +41,11 @@ node-feature-discovery:
               - pciId:
                   class: ["0300"]
                   vendor: ["1002"]
+          - name: "nvidia-geforce"
+            matchOn:
+              - pciId:
+                  class: ["0300"]
+                  vendor: ["10de"]
           - name: "intel-gpu"
             matchOn:
               - pciId:
