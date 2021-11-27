@@ -21,10 +21,10 @@ traccar:
       loadBalancerIP: 192.168.100.66
       ports:
         ios-test:
-          port: 5001
+          port: 5055
           enabled: true
           protocol: TCP
-          targetPort: 5001
+          targetPort: 5055
       externalTrafficPolicy: Local
     external:
       enabled: true
