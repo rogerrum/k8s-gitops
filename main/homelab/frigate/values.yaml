@@ -29,9 +29,9 @@ frigate:
       cpu1:
       type: cpu
       num_threads: 2
-#      coral:
-#        type: edgetpu
-#        device: usb
+      #coral:
+        #type: edgetpu
+        #device: usb
     ffmpeg:
       hwaccel_args:
         - -hwaccel
