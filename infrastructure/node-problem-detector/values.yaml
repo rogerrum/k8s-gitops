@@ -4,8 +4,8 @@ node-problem-detector:
     serviceMonitor:
       enabled: true
 
-  tolerations:
-    - key: arm
-      operator: Exists
-    - key: arm64
-      operator: Exists
+#  tolerations:
+#    - key: arm
+#      operator: Exists
+#    - key: arm64
+#      operator: Exists
