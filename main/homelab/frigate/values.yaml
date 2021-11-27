@@ -1,0 +1,141 @@
+frigate:
+  image:
+    repository: blakeblackshear/frigate
+    tag: 0.9.4-amd64
+  coral:
+    enabled: true
+  env:
+    TZ: "America/Chicago"
+    FRIGATE_LOREX_HOST:
+      valueFrom:
+        secretKeyRef:
+          name: frigate-secret
+          key: FRIGATE_LOREX_HOST
+    FRIGATE_MQTT_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          name: frigate-secret
+          key: FRIGATE_MQTT_PASSWORD
+
+  config: |
+    mqtt:
+      host: emqx.default.svc
+      topic_prefix: frigate
+      user: mqtt
+      password: '{FRIGATE_MQTT_PASSWORD}'
+    database:
+      path: /data/frigate.db
+    detectors:
+      cpu1:
+      type: cpu
+      num_threads: 2
+#      coral:
+#        type: edgetpu
+#        device: usb
+    ffmpeg:
+      hwaccel_args:
+        - -hwaccel
+        - vaapi
+        - -hwaccel_device
+        - /dev/dri/renderD128
+        - -hwaccel_output_format
+        - yuv420p
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+        - bird
+      filters:
+        person:
+          min_area: 2500
+          max_area: 100000
+          threshold: 0.7
+        dog:
+          min_area: 1000
+          max_area: 10000
+          threshold: 0.7
+        cat:
+          min_area: 1000
+          max_area: 10000
+          threshold: 0.7
+    cameras:
+      basement_room:
+        ffmpeg:
+          inputs:
+            - path: {FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1
+              roles:
+                - detect
+            - path: {FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=0
+              roles:
+                - rtmp
+                - record
+        detect:
+          height: 480
+          width: 704
+          fps: 5
+        objects:
+          filters:
+            person:
+              min_area: 1500
+              max_area: 100000
+              threshold: 0.75
+              min_score: 0.60
+        snapshots:
+          enabled: True
+          timestamp: False
+          bounding_box: True
+          crop: False
+        record:
+          enabled: true
+          retain_days: 0
+          events:
+            retain:
+              default: 14
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: frigate.rsr.net
+      nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
+      nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
+    hosts: [ frigate.rsr.net ]
+    tls:
+      - hosts:
+          - frigate.rsr.net
+        secretName: frigate-cert
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - { key: "feature.node.kubernetes.io/custom-ati-radeon", operator: In, values: [ "true" ] }
+  resources:
+    requests:
+      memory: 1000Mi
+      cpu: 750m
+      gpu.intel.com/i915: 1
+    limits:
+      memory: 2000Mi
+      gpu.intel.com/i915: 1
+  probes:
+    startup:
+      enabled: true
+  persistence:
+    data:
+      enabled: true
+      storageClass: longhorn
+  shmSize: 2Gi
+  extraVolumes:
+    - name: media
+      persistentVolumeClaim:
+        claimName: nfs-nas-data-pvc
+    - name: cache
+      emptyDir:
+        medium: Memory
+  extraVolumeMounts:
+    - mountPath: /media
+      name: media
+      subPath: Videos
+    - mountPath: /tmp/cache
+      name: cache
