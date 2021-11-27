@@ -22,14 +22,14 @@ frigate:
       #coral:
         #type: edgetpu
         #device: usb
-    ffmpeg:
-      hwaccel_args:
-        - -hwaccel
-        - vaapi
-        - -hwaccel_device
-        - /dev/dri/renderD128
-        - -hwaccel_output_format
-        - yuv420p
+    #ffmpeg:
+    #  hwaccel_args:
+    #    - -hwaccel
+    #    - vaapi
+    #    - -hwaccel_device
+    #    - /dev/dri/renderD128
+    #    - -hwaccel_output_format
+    #    - yuv420p
     objects:
       track:
         - person
@@ -60,10 +60,10 @@ frigate:
               roles:
                 - rtmp
                 - record
-        detect:
+        #detect:
           #height: 480
           #width: 704
-          fps: 5
+          #fps: 5
         objects:
           filters:
             person:
