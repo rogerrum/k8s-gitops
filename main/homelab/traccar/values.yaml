@@ -12,7 +12,25 @@ traccar:
         secretKeyRef:
           name: traccar-secret
           key: DATABASE_PASSWORD
+    UDP_PORT: 5170
 
+  service:
+    external:
+      enabled: true
+      type: LoadBalancer
+      loadBalancerIP: 192.168.100.59
+      ports:
+        ios-test:
+          port: 5001
+          enabled: true
+          protocol: TCP
+          targetPort: 5001
+        freematics-udp:
+          port: 5170
+          enabled: true
+          protocol: UDP
+          targetPort: 5170
+      externalTrafficPolicy: Local
 
   ingress:
     main:
