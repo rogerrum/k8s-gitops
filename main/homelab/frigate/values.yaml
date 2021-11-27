@@ -77,7 +77,7 @@ frigate:
           bounding_box: True
           crop: False
         record:
-          enabled: true
+          enabled: false
           retain_days: 0
           events:
             retain:
