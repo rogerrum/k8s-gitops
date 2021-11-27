@@ -6,16 +6,10 @@ frigate:
     enabled: true
   env:
     TZ: "America/Chicago"
-    FRIGATE_LOREX_HOST:
-      valueFrom:
-        secretKeyRef:
-          name: frigate-secret
-          key: FRIGATE_LOREX_HOST
-    FRIGATE_MQTT_PASSWORD:
-      valueFrom:
-        secretKeyRef:
-          name: frigate-secret
-          key: FRIGATE_MQTT_PASSWORD
+
+  envFromSecrets:
+    - frigate-secret
+
 
   config: |
     mqtt:
