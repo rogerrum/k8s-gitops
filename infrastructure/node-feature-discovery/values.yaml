@@ -27,13 +27,13 @@ node-feature-discovery:
           - name: "zwave"
             matchOn:
               - usbId:
-                  class: ["02"]
+                  class: ["ff"]
                   vendor: ["10c4"]
                   device: ["8a2a"]
           - name: "zigbee"
             matchOn:
               - usbId:
-                  class: ["02"]
+                  class: ["ff"]
                   vendor: ["10c4"]
                   device: ["8a2a"]
           - name: "ati-radeon"
