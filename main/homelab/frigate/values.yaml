@@ -61,8 +61,8 @@ frigate:
                 - rtmp
                 - record
         detect:
-          height: 480
-          width: 704
+          #height: 480
+          #width: 704
           fps: 5
         objects:
           filters:
