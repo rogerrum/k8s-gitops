@@ -23,7 +23,7 @@ traccar:
         ios-test:
           port: 5001
           enabled: true
-          protocol: TCP
+          protocol: UDP
           targetPort: 5001
         freematics-udp:
           port: 5170
