@@ -47,6 +47,11 @@ node-feature-discovery:
                 - pciId:
                     class: ["0300"]
                     vendor: ["8086"]
+            - name: "ati-radeon"
+              matchOn:
+                - pciId:
+                    class: ["0300"]
+                    vendor: ["1002"]
   #          - name: "coral-tpu"
   #            matchOn:
   #              - usbId:
