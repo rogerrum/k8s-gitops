@@ -7,10 +7,6 @@ frigate:
   env:
     TZ: "America/Chicago"
 
-  envFromSecrets:
-    - frigate-secret
-
-
   config: |
     mqtt:
       host: emqx.default.svc

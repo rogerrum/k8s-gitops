@@ -18,6 +18,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
+        - /helm-values/frigate.yaml
   syncPolicy:
     automated:
       prune: true
