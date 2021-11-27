@@ -1,0 +1,5 @@
+node-problem-detector:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
