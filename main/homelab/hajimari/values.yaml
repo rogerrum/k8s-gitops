@@ -1,0 +1,96 @@
+hajimari:
+  image:
+    repository: ghcr.io/toboshii/hajimari
+    tag: v0.2.0
+  env:
+    TZ: "America/Chicago"
+  hajimari:
+    defaultEnable: false
+    namespaceSelector:
+      matchNames:
+        - default
+        - monitoring
+    name: "RSR"
+    #    customApps:
+    #      - name: Valetudo
+    #        url: "http://192.168.1.28"
+    #        icon: "robot-vacuum"
+    #      - name: PiAware
+    #        url: "http://192.168.150.25:8080"
+    #        icon: "airplane"
+    #      - name: HDHomeRun
+    #        url: "http://192.168.150.30"
+    #        icon: "antenna"
+    groups:
+      - name: Communicate
+        links:
+          - name: Discord
+            url: "https://discord.com"
+          - name: Gmail
+            url: "https://gmail.com"
+          - name: Slack
+            url: "https://slack.com/signin"
+      - name: Cloud
+        links:
+          - name: Cloudflare
+            url: "https://dash.cloudflare.com"
+          - name: Dropbox
+            url: "https://dropbox.com"
+          - name: Drive
+            url: "https://drive.google.com"
+      # - name: Dev
+      #   links:
+      #     - name: Codepen
+      #       url: "https://codepen.io/"
+      #     - name: Devdocs
+      #       url: "https://devdocs.io"
+      #     - name: Devhints
+      #       url: "https://devhints.io"
+      - name: Reading
+        links:
+          # - name: Instapaper
+          #   url: "https://www.instapaper.com/u"
+          # - name: Medium
+          #   url: "http://medium.com"
+          - name: Reddit
+            url: "http://reddit.com"
+      - name: Tech
+        links:
+          - name: Hacker News
+            url: "https://news.ycombinator.com/"
+          # - name: The Verge
+          #   url: "https://theverge.com/"
+          # - name: MIT Technology Review
+          #   url: "https://www.technologyreview.com/"
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/cluster-issuer: vault-issuer
+        cert-manager.io/common-name: hajimari.rsr.net
+        nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
+        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
+      hosts:
+        - host: hajimari.rsr.net
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - hajimari.rsr.net
+          secretName: hajimari-cert-tls
+
+  persistence:
+    data:
+      enabled: true
+      storageClass: "longhorn"
+
+  podAnnotations:
+    configmap.reloader.stakater.com/reload: "hajimari-settings"
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128M
+
