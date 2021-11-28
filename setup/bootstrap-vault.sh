@@ -291,7 +291,6 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
-argoHelmValueVault "main/homelab/frigate/frigate-helm-values.txt"
-
+secretVault "main/monitoring/grafana/grafana-secret.txt"
 
 kill $VAULT_FWD_PID
