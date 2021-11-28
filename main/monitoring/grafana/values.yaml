@@ -214,6 +214,27 @@ grafana:
     grafana_net:
       url: https://grafana.net
     auth.basic:
-      disable_login_form: false
+      disable_login_form: true
+
+    auth.generic_oauth:
+      enabled: true
+      allow_sign_up: true
+      team_ids:
+      allowed_organizations:
+      name: Auth0
+      client_id: $__file{/etc/secrets/auth_generic_oauth/client_id}
+      client_secret: $__file{/etc/secrets/auth_generic_oauth/client_secret}
+      scopes: openid profile email
+      auth_url: https://rogerrum.us.auth0.com/authorize
+      token_url: https://rogerrum.us.auth0.com/oauth/token
+      api_url: https://rogerrum.us.auth0.com/userinfo
+
   admin:
     existingSecret: grafana-secret
+
+  extraSecretMounts:
+    - name: auth-generic-oauth-secret-mount
+      secretName: grafana-secret
+      defaultMode: 0440
+      mountPath: /etc/secrets/auth_generic_oauth
+      readOnly: true
