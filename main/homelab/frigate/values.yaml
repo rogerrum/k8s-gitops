@@ -6,7 +6,6 @@ frigate:
     enabled: true
   env:
     TZ: "America/Chicago"
-    LIBVA_DRIVER_NAME: "radeonsi"
 
   config: |
     mqtt:
@@ -29,6 +28,8 @@ frigate:
         - vaapi
         - -hwaccel_device
         - /dev/dri/renderD128
+        - -hwaccel_output_format
+        - yuv420p
     objects:
       track:
         - person
