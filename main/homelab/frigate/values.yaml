@@ -6,6 +6,7 @@ frigate:
     enabled: true
   env:
     TZ: "America/Chicago"
+    LIBVA_DRIVER_NAME: "radeonsi"
 
   config: |
     mqtt:
@@ -22,14 +23,12 @@ frigate:
       #coral:
         #type: edgetpu
         #device: usb
-    #ffmpeg:
-    #  hwaccel_args:
-    #    - -hwaccel
-    #    - vaapi
-    #    - -hwaccel_device
-    #    - /dev/dri/renderD128
-    #    - -hwaccel_output_format
-    #    - yuv420p
+    ffmpeg:
+      hwaccel_args:
+        - -hwaccel
+        - vaapi
+        - -hwaccel_device
+        - /dev/dri/renderD128
     objects:
       track:
         - person
