@@ -85,6 +85,9 @@ hajimari:
     data:
       enabled: true
       storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      size: "1Gi"
+      skipuninstall: true
 
   podAnnotations:
     configmap.reloader.stakater.com/reload: "hajimari-settings"
