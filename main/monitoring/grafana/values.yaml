@@ -1,7 +1,7 @@
 grafana:
-  # image:
-  #   repository: grafana/grafana
-  #   tag: 7.0.4
+  image:
+    repository: grafana/grafana
+    tag: 7.5.11
   # tolerations:
   # - key: "arm"
   #   operator: "Exists"
@@ -21,6 +21,7 @@ grafana:
     GF_DISABLE_SANITIZE_HTML: true
     GF_PANELS_DISABLE_SANITIZE_HTML: true
     GF_LOG_FILTERS: rendering:debug
+    GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: "panodata-map-panel"
   ingress:
     enabled: true
     annotations:
@@ -61,46 +62,46 @@ grafana:
       argo-cd:
         url: https://raw.githubusercontent.com/argoproj/argo-cd/v1.8.6/examples/dashboard.json
         datasource: Prometheus
-#      blocky:
-#        url: https://raw.githubusercontent.com/0xERR0R/blocky/v0.12/docs/blocky-grafana.json
-#        datasource: Prometheus
-#      cable-modem-stats:
-#        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/cable_modem_stats.json
+        #      blocky:
+        #        url: https://raw.githubusercontent.com/0xERR0R/blocky/v0.12/docs/blocky-grafana.json
+        #        datasource: Prometheus
+        #      cable-modem-stats:
+        #        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/cable_modem_stats.json
         # datasource: cable_modem_stats
 
       # Ref: https://grafana.com/grafana/dashboards/2842
-#      ceph-cluster:
-#        gnetId: 2842
-#        revision: 14
-#        datasource: Prometheus
-#      # Ref: https://grafana.com/grafana/dashboards/5336
-#      ceph-osd:
-#        gnetId: 5336
-#        revision: 5
-#        datasource: Prometheus
-#      # Ref: https://grafana.com/grafana/dashboards/5342
-#      ceph-pools:
-#        gnetId: 5342
-#        revision: 5
-#        datasource: Prometheus
-#      comcast-sucks:
-#        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/comcast_sucks.json
-#        # datasource: influxdb
-#      flux-cluster:
-#        url: https://raw.githubusercontent.com/fluxcd/flux2/v0.7.6/manifests/monitoring/grafana/dashboards/cluster.json
-#        datasource: Prometheus
-#      flux-control-plane:
-#        url: https://raw.githubusercontent.com/fluxcd/flux2/v0.7.6/manifests/monitoring/grafana/dashboards/control-plane.json
-#        datasource: Prometheus
+      #      ceph-cluster:
+      #        gnetId: 2842
+      #        revision: 14
+      #        datasource: Prometheus
+      #      # Ref: https://grafana.com/grafana/dashboards/5336
+      #      ceph-osd:
+      #        gnetId: 5336
+      #        revision: 5
+      #        datasource: Prometheus
+      #      # Ref: https://grafana.com/grafana/dashboards/5342
+      #      ceph-pools:
+      #        gnetId: 5342
+      #        revision: 5
+      #        datasource: Prometheus
+      #      comcast-sucks:
+      #        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/comcast_sucks.json
+      #        # datasource: influxdb
+      #      flux-cluster:
+      #        url: https://raw.githubusercontent.com/fluxcd/flux2/v0.7.6/manifests/monitoring/grafana/dashboards/cluster.json
+      #        datasource: Prometheus
+      #      flux-control-plane:
+      #        url: https://raw.githubusercontent.com/fluxcd/flux2/v0.7.6/manifests/monitoring/grafana/dashboards/control-plane.json
+      #        datasource: Prometheus
       # frigate:
       #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/frigate.json
       #   datasource: influxdb
       home-assistant:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/home_assistant.json
         datasource: home_assistant
-#      internet-speed:
-#        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/internet_speed.json
-#        datasource: Prometheus
+      #      internet-speed:
+      #        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/internet_speed.json
+      #        datasource: Prometheus
       minio-overview:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/minio_overview.json
         datasource: Prometheus
@@ -113,29 +114,29 @@ grafana:
       prometheus-exporter-summary:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/prometheus_exporter_summary.json
         datasource: Prometheus
-#      TrueNAS:
-#        url: https://grafana.com/api/dashboards/12921/revisions/1/download
-#        datasource: TrueNAS
+      #      TrueNAS:
+      #        url: https://grafana.com/api/dashboards/12921/revisions/1/download
+      #        datasource: TrueNAS
       # Ref: https://grafana.com/grafana/dashboards/11315
-#      unifi-client-insights:
-#        gnetId: 11315
-#        revision: 8
-#        datasource: Prometheus
-#      # Ref: https://grafana.com/grafana/dashboards/11311
-#      unifi-network-sites:
-#        gnetId: 11311
-#        revision: 4
-#        datasource: Prometheus
-#      # Ref: https://grafana.com/grafana/dashboards/11314
-#      unifi-uap-insights:
-#        gnetId: 11314
-#        revision: 9
-#        datasource: Prometheus
-#      # Ref: https://grafana.com/grafana/dashboards/11312
-#      unifi-usw-insights:
-#        gnetId: 11312
-#        revision: 8
-#        datasource: Prometheus
+      #      unifi-client-insights:
+      #        gnetId: 11315
+      #        revision: 8
+      #        datasource: Prometheus
+      #      # Ref: https://grafana.com/grafana/dashboards/11311
+      #      unifi-network-sites:
+      #        gnetId: 11311
+      #        revision: 4
+      #        datasource: Prometheus
+      #      # Ref: https://grafana.com/grafana/dashboards/11314
+      #      unifi-uap-insights:
+      #        gnetId: 11314
+      #        revision: 9
+      #        datasource: Prometheus
+      #      # Ref: https://grafana.com/grafana/dashboards/11312
+      #      unifi-usw-insights:
+      #        gnetId: 11312
+      #        revision: 8
+      #        datasource: Prometheus
       ups:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/ups.json
         datasource: Prometheus
@@ -176,44 +177,28 @@ grafana:
           type: loki
           access: proxy
           url: http://loki.logs.svc.cluster.local:3100
-#        - name: influxdb
-#          type: influxdb
-#          access: proxy
-#          url: http://influxdb:8086
-#          database: telegraf
-#        - name: cable_modem_stats
-#          type: influxdb
-#          access: proxy
-#          url: http://influxdb:8086
-#          database: cable_modem_stats
-#        - name: comcast
-#          type: influxdb
-#          access: proxy
-#          url: http://influxdb:8086
-#          database: comcast
+        - name: influxdb
+          type: influxdb
+          access: proxy
+          url: http://influxdb:8086
+          database: telegraf
         - name: home_assistant
           type: influxdb
           access: proxy
           url: http://influxdb:8086
           database: home_assistant
-#        - name: speedtests
-#          type: influxdb
-#          access: proxy
-#          url: http://influxdb:8086
-#          database: speedtests
-#        - name: uptimerobot
-#          type: influxdb
-#          access: proxy
-#          url: http://influxdb:8086
-#          database: uptimerobot
-#        - name: TrueNAS
-#          type: influxdb
-#          access: proxy
-#          url: http://influxdb:8086
-#          database: graphitedb
+        - name: speedtests
+          type: influxdb
+          access: proxy
+          url: http://influxdb:8086
+          database: speedtests
+  #        - name: TrueNAS
+  #          type: influxdb
+  #          access: proxy
+  #          url: http://influxdb:8086
+  #          database: graphitedb
   grafana.ini:
     server:
-#      root_url: "https://grafana.rsr.net"
       root_url: "https://grafana.rsr.net"
     # security:
     #   admin_user: roger@?.com
