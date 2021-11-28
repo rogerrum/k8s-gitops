@@ -5,7 +5,7 @@ hajimari:
   env:
     TZ: "America/Chicago"
   hajimari:
-    defaultEnable: false
+    defaultEnable: true
     namespaceSelector:
       matchNames:
         - default
