@@ -17,7 +17,7 @@ spec:
       template:
         metadata:
           labels:
-            {{- include "cloudflare-ddns.selectorLabels" . | nindent 8 }}
+            {{- include "cloudflare-ddns.selectorLabels" . | nindent 12 }}
         spec:
           restartPolicy: {{ .Values.restartPolicy }}
           containers:
