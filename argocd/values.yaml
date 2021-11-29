@@ -30,9 +30,6 @@ argo-cd:
           optional: true
 
     resources:
-      limits:
-        cpu: 5526m
-        memory: 4744M
       requests:
         cpu: 5526m
         memory: 4744M
@@ -105,9 +102,6 @@ argo-cd:
       targetCPUUtilizationPercentage: 85
       targetMemoryUtilizationPercentage: 85
     resources:
-      limits:
-        cpu: 100m
-        memory: 105Mi
       requests:
         cpu: 100m
         memory: 105Mi
