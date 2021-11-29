@@ -272,6 +272,7 @@ loadSecretsToVault() {
   secretVault "main/homelab/mealie/mealie-secret.txt"
   secretVault "main/homelab/traccar/traccar-secret.txt"
   secretVault "main/monitoring/unifi-poller/unifi-poller-secret.txt"
+  secretVault "main/homelab/cloudflare-ddns/cloudflare-ddns-secret.txt"
 
   vault kv put secrets/argocd/argocd-discord-webhook discord-webhook="$DISCORD_ARGO_WEBHOOK_URL"
 
@@ -291,6 +292,6 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
-secretVault "main/monitoring/grafana/grafana-secret.txt"
+secretVault "main/homelab/cloudflare-ddns/cloudflare-ddns-secret.txt"
 
 kill $VAULT_FWD_PID
