@@ -1,39 +1,38 @@
 thanos:
-  # image:
-  #   repository: quay.io/thanos/thanos
-  #   tag: v0.15.0
   query:
+    enabled: true
     replicaCount: 2
     replicaLabels:
       - replica
-    http:
-      ingress:
-        enabled: true
-        annotations:
-          kubernetes.io/ingress.class: "nginx"
-          cert-manager.io/cluster-issuer: vault-issuer
-          cert-manager.io/common-name: thanos.rsr.net
-          nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
-          nginx.ingress.kubernetes.io/auth-signin: "https://auth.rsr.net/oauth2/start"
-        hosts: [ "thanos.rsr.net" ]
-        tls:
-          - hosts: [ "thanos.rsr.net" ]
-            secretName: thanos-cert-tls
-  compact:
-    retentionResolution1h: 5y
-  objstore:
-    type: S3
-    config:
-      bucket: "thanos"
-      endpoint: "minio-temp.default.svc:9000"
-      region: ""
-      insecure: true
-      signature_version2: false
-      put_user_metadata: { }
-      http_config:
-        idle_conn_timeout: 0s
-        response_header_timeout: 0s
-        insecure_skip_verify: false
-      trace:
-        enable: false
-      part_size: 0
+    dnsDiscovery:
+      sidecarsService: kube-prometheus-stack-thanos-discovery
+      sidecarsNamespace: monitoring
+    ingress:
+      enabled: true
+      hostname: thanos.rsr.net
+      annotations:
+        kubernetes.io/ingress.class: "nginx"
+        cert-manager.io/cluster-issuer: vault-issuer
+        cert-manager.io/common-name: thanos.rsr.net
+        nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
+        nginx.ingress.kubernetes.io/auth-signin: "https://auth.rsr.net/oauth2/start"
+      tls: true
+  queryFrontend:
+    enabled: false
+  bucketweb:
+    enabled: true
+  compactor:
+    enabled: true
+    persistence:
+      enabled: false
+  storegateway:
+    enabled: true
+    persistence:
+      enabled: true
+      size: 20Gi
+  ruler:
+    enabled: false
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
