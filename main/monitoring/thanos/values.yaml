@@ -29,7 +29,7 @@ thanos:
     enabled: true
     persistence:
       enabled: true
-      size: 20Gi
+      size: 7Gi
   ruler:
     enabled: false
   metrics:
