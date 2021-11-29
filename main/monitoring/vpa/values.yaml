@@ -2,7 +2,7 @@ vpa:
   recommender:
     extraArgs:
       prometheus-address: |
-        http://thanos-query-http:10902/
+        http://thanos-query:9090/
       storage: prometheus
     updater:
       enabled: false
