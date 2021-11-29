@@ -19,6 +19,8 @@ kube-prometheus-stack:
     #   repository: jimmidyson/configmap-reload
     #   tag: v0.4.0
     configReloaderCpu: 200m
+    admissionWebhooks:
+      enabled: false
   alertmanager:
     alertmanagerSpec:
       storage:
@@ -38,8 +40,10 @@ kube-prometheus-stack:
           backup.velero.io/backup-volumes: alertmanager-kube-prometheus-stack-alertmanager-db
       useExistingSecret: true
       configSecret: kube-prometheus-stack-secret
+      podAntiAffinity: "hard"
     ingress:
       enabled: true
+      pathType: Prefix
       annotations:
         kubernetes.io/ingress.class: "nginx"
         cert-manager.io/cluster-issuer: vault-issuer
@@ -69,6 +73,7 @@ kube-prometheus-stack:
   #       targetLabel: instance
   grafana:
     enabled: false
+    forceDeployDashboards: true
   kubeEtcd:
     enabled: false
   kubeControllerManager:
@@ -94,6 +99,7 @@ kube-prometheus-stack:
   prometheus:
     ingress:
       enabled: true
+      pathType: Prefix
       annotations:
         kubernetes.io/ingress.class: "nginx"
         cert-manager.io/cluster-issuer: vault-issuer
@@ -138,7 +144,10 @@ kube-prometheus-stack:
           backup.velero.io/backup-volumes: prometheus-kube-prometheus-stack-prometheus-db
       thanos:
         image: quay.io/thanos/thanos:v0.23.1
-        version: v0.17.0
+        version: v0.21.1
         objectStorageConfig:
-          name: thanos
-          key: object-store.yaml
+          name: thanos-objstore-secret
+          key: objstore.yml
+      podAntiAffinity: "hard"
+    thanosService:
+      enabled: true
