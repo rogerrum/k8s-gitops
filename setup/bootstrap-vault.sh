@@ -292,6 +292,6 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
-secretVault "main/homelab/cloudflare-ddns/cloudflare-ddns-secret.txt"
+argoHelmValueVault "main/monitoring/thanos/thanos-helm-values.txt"
 
 kill $VAULT_FWD_PID
