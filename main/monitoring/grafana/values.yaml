@@ -65,10 +65,6 @@ grafana:
       blocky:
         url: https://raw.githubusercontent.com/0xERR0R/blocky/v0.16/docs/blocky-grafana.json
         datasource: Prometheus
-      cable-modem-stats:
-        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/cable_modem_stats.json
-      comcast-sucks:
-        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/comcast_sucks.json
       argo-cd:
         url: https://raw.githubusercontent.com/argoproj/argo-cd/v1.8.6/examples/dashboard.json
         datasource: Prometheus
@@ -98,11 +94,6 @@ grafana:
       TrueNAS:
         url: https://grafana.com/api/dashboards/12921/revisions/1/download
         datasource: TrueNAS
-      # Ref: https://grafana.com/grafana/dashboards/11310
-      unifi-client-dpi:
-        gnetId: 11310
-        revision: 4
-        datasource: Prometheus
       # Ref: https://grafana.com/grafana/dashboards/11315
       unifi-client-insights:
         gnetId: 11315
@@ -130,12 +121,6 @@ grafana:
         datasource: Prometheus
       ups:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/ups.json
-        datasource: Prometheus
-      uptimerobot:
-        url: https://raw.githubusercontent.com/lekpamartin/uptimerobot_exporter/master/dashboards/grafana.json
-        datasource: Prometheus
-      windows-node:
-        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/windows_node.json
         datasource: Prometheus
   sidecar:
     datasources:
