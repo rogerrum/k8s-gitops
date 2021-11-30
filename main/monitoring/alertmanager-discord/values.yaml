@@ -13,6 +13,7 @@ strategy:
 env:
   DISCORD_USERNAME: "Alertmanager"
   DISCORD_AVATAR_URL: "https://avatars3.githubusercontent.com/u/3380462"
+  VERBOSE: ON
 
 envValueFrom:
   DISCORD_WEBHOOK:
