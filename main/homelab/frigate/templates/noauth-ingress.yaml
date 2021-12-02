@@ -20,21 +20,21 @@ spec:
               service:
                 name: frigate
                 port:
-                  number: 80
+                  name: http
           - path: /api/events/.*/thumbnail\.jpg
             pathType: Prefix
             backend:
               service:
                 name: frigate
                 port:
-                  number: 80
+                  name: http
           - path: /api/events/.*/snapshot\.jpg
             pathType: Prefix
             backend:
               service:
                 name: frigate
                 port:
-                  number: 80
+                  name: http
   tls:
     - hosts:
         - 8003v.techbuzzworld.com
