@@ -11,7 +11,7 @@ metadata:
   namespace: default
 spec:
   rules:
-    - host: 8003f.techbuzzworld.com
+    - host: 8003v.techbuzzworld.com
       http:
         paths:
           - path: /api/events/.*/clip\.mp4
@@ -37,4 +37,4 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - 8003f.techbuzzworld.com
+        - 8003v.techbuzzworld.com
