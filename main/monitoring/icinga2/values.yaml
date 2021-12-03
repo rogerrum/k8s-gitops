@@ -22,6 +22,11 @@ icinga2:
         secretKeyRef:
           name: icinga2-secret
           key: ICINGAWEB2_ADMIN_PASS
+    MYSQL_ROOT_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          name: icinga2-secret
+          key: MYSQL_ROOT_PASSWORD
 
   ingress:
     main:
