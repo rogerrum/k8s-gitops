@@ -1,0 +1,32 @@
+kanboard:
+  image:
+    repository: kanboard/kanboard
+    tag: v1.2.20
+  env:
+    TZ: "America/Chicago"
+    DB_DRIVER: "postgres"
+    DB_NAME: kanboard
+    DB_USERNAME: kanboard
+    DB_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          name: kanboard-secret
+          key: DB_PASSWORD
+
+
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/cluster-issuer: vault-issuer
+        cert-manager.io/common-name: kanboard.rsr.net
+      hosts:
+        - host: kanboard.rsr.net
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - kanboard.rsr.net
+          secretName: kanboard-cert-tls
