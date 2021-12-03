@@ -1,7 +1,7 @@
 mariadb:
   image:
     repository: bitnami/mariadb
-    tag: 10.5.13-debian-10-r18
+    tag: 10.6.5-debian-10-r18
 
   auth:
     existingSecret: mariadb-secret
