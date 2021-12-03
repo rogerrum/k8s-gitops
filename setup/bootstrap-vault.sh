@@ -268,12 +268,12 @@ loadSecretsToVault() {
   secretVault "infrastructure/mysql/mysql-secret.txt"
   secretVault "main/homelab/clarkson/clarkson-secret.txt"
   secretVault "main/homelab/leantime/leantime-secret.txt"
-  secretVault "main/homelab/n8n/n8n-secret.txt"
   secretVault "main/homelab/mealie/mealie-secret.txt"
   secretVault "main/homelab/traccar/traccar-secret.txt"
   secretVault "main/monitoring/unifi-poller/unifi-poller-secret.txt"
   secretVault "main/homelab/cloudflare-ddns/cloudflare-ddns-secret.txt"
   secretVault "main/homelab/kanboard/kanboard-secret.txt"
+  secretVault "infrastructure/mysql/mysql-secret.txt"
 
   vault kv put secrets/argocd/argocd-discord-webhook discord-webhook="$DISCORD_ARGO_WEBHOOK_URL"
 
@@ -294,6 +294,6 @@ fi
 
 #loadSecretsToVault
 
-secretVault "main/homelab/kanboard/kanboard-secret.txt"
+secretVault "infrastructure/mariadb/mariadb-secret.txt"
 
 kill $VAULT_FWD_PID
