@@ -1,7 +1,0 @@
-name: vernemq
-apiVersion: v2
-version: 1.0.0
-dependencies:
-  - name: vernemq
-    version: 1.6.12
-    repository: https://vernemq.github.io/docker-vernemq

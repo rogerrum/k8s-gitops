@@ -24,3 +24,5 @@
 {{/*      selfHeal: true*/}}
 {{/*    syncOptions:*/}}
 {{/*      - CreateNamespace=true*/}}
+{{/*syncOptions:*/}}
+{{/*      - ApplyOutOfSyncOnly=true*/}}
