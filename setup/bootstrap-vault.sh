@@ -274,6 +274,8 @@ loadSecretsToVault() {
   secretVault "main/homelab/cloudflare-ddns/cloudflare-ddns-secret.txt"
   secretVault "main/homelab/kanboard/kanboard-secret.txt"
   secretVault "infrastructure/mysql/mysql-secret.txt"
+  secretVault "infrastructure/mariadb/mariadb-secret.txt"
+  secretVault "main/monitoring/icinga2/icinga2-secret.txt"
 
   vault kv put secrets/argocd/argocd-discord-webhook discord-webhook="$DISCORD_ARGO_WEBHOOK_URL"
 
@@ -293,7 +295,7 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
+secretVault "main/monitoring/icinga2/icinga2-secret.txt"
 
-secretVault "infrastructure/mariadb/mariadb-secret.txt"
 
 kill $VAULT_FWD_PID
