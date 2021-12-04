@@ -12,6 +12,10 @@ kube-prometheus-stack:
         memory: 2000Mi
   prometheusOperator:
     createCustomResource: true
+    prometheusConfigReloader:
+      resources:
+        limits:
+          cpu: 1
     # prometheusConfigReloaderImage:
     #   repository: quay.io/coreos/prometheus-config-reloader
     #   tag: v0.39.0
