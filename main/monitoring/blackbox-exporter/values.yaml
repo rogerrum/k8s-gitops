@@ -19,16 +19,28 @@ prometheus-blackbox-exporter:
       interval: 30s
       scrapeTimeout: 30s
     targets:
-      - name: router
+      - name: Router
         url: 192.168.1.1
         module: icmp
+      - name: Home LB
+        url: 192.168.1.232
+        module: icmp
+      - name: Home LB PiHole
+        url: 192.168.1.237
+        module: icmp
+      - name: VPN Pi3
+        url: 192.168.1.190
+        module: icmp
+#      - name: VPN Pi0
+#        url: 192.168.1.191
+#        module: icmp
 #      - name: garage
 #        url: 192.168.1.19
 #        module: icmp
 #      - name: vacuum
 #        url: 192.168.1.28
 #        module: icmp
-      - name: nas
+      - name: Home NAS
         url: 192.168.1.115
         module: icmp
   prometheusRule:
