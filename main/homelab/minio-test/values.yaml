@@ -1,0 +1,46 @@
+minio:
+  image:
+    repository: quay.io/minio/minio
+    tag: RELEASE.2021-11-24T23-19-33Z
+
+  mcImage:
+    repository: quay.io/minio/mc
+    tag: RELEASE.2021-11-16T20-37-36Z
+
+  persistence:
+    existingClaim: "nas-data-pvc"
+    subPath: "minio"
+  ingress:
+    enabled: true
+
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: minio-test.rsr.net
+    hosts: [ minio-test.rsr.net ]
+    tls:
+      - hosts:
+          - minio-test.rsr.net
+        secretName: minio-test-cert-tls
+  tolerations:
+    - key: "arm64"
+      operator: "Exists"
+  resources:
+    requests:
+      memory: 350Mi
+      cpu: 25m
+    limits:
+      memory: 1000Mi
+  securityContext:
+    enabled: false
+  metrics:
+    serviceMonitor:
+      enabled: true
+
+  gateway:
+    replicas: 3
+
+  rootUser: "user"
+  rootPassword: "password"
+
+#  existingSecret: minio-secret
