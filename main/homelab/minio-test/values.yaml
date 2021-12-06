@@ -12,7 +12,8 @@ minio:
   persistence:
     existingClaim: "nas-data-pvc"
     subPath: "minio"
-  ingress:
+
+  consoleIngress:
     enabled: true
 
     annotations:
