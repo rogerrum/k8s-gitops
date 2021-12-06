@@ -13,6 +13,19 @@ minio:
     existingClaim: "nas-data-pvc"
     subPath: "minio"
 
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: s3.rsr.net
+    hosts: [ s3.rsr.net ]
+    tls:
+      - hosts:
+          - s3.rsr.net
+        secretName: s3-cert-tls
+        
   consoleIngress:
     enabled: true
 
@@ -25,6 +38,8 @@ minio:
       - hosts:
           - minio-test.rsr.net
         secretName: minio-test-cert-tls
+
+
   affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
@@ -55,3 +70,6 @@ minio:
   rootPassword: "password"
 
 #  existingSecret: minio-secret
+
+  podAnnotations:
+    secret.reloader.stakater.com/reload: "minio"
