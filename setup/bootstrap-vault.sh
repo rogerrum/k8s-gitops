@@ -295,7 +295,7 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
-secretVault "main/monitoring/icinga2/icinga2-secret.txt"
+secretVault "main/homelab/traccar/traccar-secret.txt"
 
 
 kill $VAULT_FWD_PID
