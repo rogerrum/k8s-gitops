@@ -34,7 +34,7 @@ traccar:
         freematics-udp:
           port: 5170
           enabled: true
-          protocol: UDP
+          protocol: TCP
           targetPort: 5170
       externalTrafficPolicy: Local
 
