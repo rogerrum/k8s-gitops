@@ -7,8 +7,6 @@ traccar:
     DATABASE_DRIVER: "org.postgresql.Driver"
     DATABASE_URL: jdbc:postgresql://postgresql.kube-system.svc.cluster.local:5432/traccar
     DATABASE_USER: traccar
-    CONFIG_USE_ENVIRONMENT_VARIABLES: true
-    LOGGER_CONSOLE: true
     DATABASE_PASSWORD:
       valueFrom:
         secretKeyRef:
@@ -17,6 +15,17 @@ traccar:
     UDP_PORT: 5170
 
   service:
+    temp:
+      enabled: true
+      type: LoadBalancer
+      loadBalancerIP: 192.168.100.66
+      ports:
+        ios-test:
+          port: 5055
+          enabled: true
+          protocol: TCP
+          targetPort: 5055
+      externalTrafficPolicy: Local
     external:
       enabled: true
       type: LoadBalancer
