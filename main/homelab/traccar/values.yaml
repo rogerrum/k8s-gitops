@@ -12,7 +12,7 @@ traccar:
         secretKeyRef:
           name: traccar-secret
           key: DATABASE_PASSWORD
-    UDP_PORT: 5170
+    #UDP_PORT: 5170
 
   service:
     temp:
