@@ -13,6 +13,17 @@ traccar:
           name: traccar-secret
           key: DATABASE_PASSWORD
     UDP_PORT: 5170
+    GEOCODER_ENABLE: true
+    GEOCODER_TYPE: nominatim
+    GEOCODER_URL: https://us1.locationiq.com/v1/reverse.php
+    GEOCODER_ON_REQUEST: true
+    GEOCODER_IGNORE_POSITIONS: true
+    GEOCODER_REUSE_DISTANCE: 10
+    GEOCODER_KEY:
+      valueFrom:
+        secretKeyRef:
+          name: traccar-secret
+          key: LOCATION_ID_TOKEN
 
   service:
     temp:
