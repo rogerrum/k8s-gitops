@@ -3,7 +3,7 @@ thanos:
     type: s3
     config:
       bucket: thanos
-      endpoint: "minio-temp.default.svc:9000"
-      access_key: "${MINIO_ACCESS_KEY}"
-      secret_key: "${MINIO_SECRET_KEY}"
+      endpoint: "minio.default.svc:9000"
+      access_key: "${MINIO_THANOS_ACCESS_KEY}"
+      secret_key: "${MINIO_THANOS_SECRET_KEY}"
       insecure: true

@@ -3,8 +3,8 @@ loki:
     storage_config:
       aws:
         bucketnames: loki
-        endpoint: minio-temp.default.svc:9000
-        access_key_id: "${MINIO_ACCESS_KEY}"
-        secret_access_key: "${MINIO_SECRET_KEY}"
+        endpoint: minio.default.svc:9000
+        access_key_id: "${MINIO_LOKI_ACCESS_KEY}"
+        secret_access_key: "${MINIO_LOKI_SECRET_KEY}"
         s3forcepathstyle: true
         insecure: true
