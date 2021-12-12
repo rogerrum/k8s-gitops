@@ -296,6 +296,6 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
-argoHelmValueVault "main/homelab/minio/minio-helm-values.txt"
+secretVault "main/homelab/minio/minio-secret.txt"
 
 kill $VAULT_FWD_PID
