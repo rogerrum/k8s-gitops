@@ -296,6 +296,7 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
-secretVault "main/homelab/minio/minio-secret.txt"
+secretVault "infrastructure/longhorn/longhorn-backup-secret.txt"
+
 
 kill $VAULT_FWD_PID
