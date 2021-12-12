@@ -230,7 +230,7 @@ frigate:
   extraVolumes:
     - name: media
       persistentVolumeClaim:
-        claimName: nfs-nas-data-pvc
+        claimName: nas-data-pvc
     - name: cache
       emptyDir:
         medium: Memory
