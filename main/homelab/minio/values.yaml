@@ -1,18 +1,37 @@
 minio:
   image:
-    repository: jessestuart/minio
-    tag: RELEASE.2020-08-08T04-50-06Z
+    repository: quay.io/minio/minio
+    tag: RELEASE.2021-12-10T23-03-39Z
+
   mcImage:
-    repository: jessestuart/mc
-    tag: RELEASE.2020-08-08T02-33-58Z
-  helmKubectlJqImage:
-    repository: drnic/kubectl
-    tag: 1.16
+    repository: quay.io/minio/mc
+    tag: RELEASE.2021-11-16T20-37-36Z
+
+  mode: gateway
+
+  environment:
+  #    MINIO_PROMETHEUS_AUTH_TYPE: public
+
   persistence:
-    existingClaim: "nfs-data-pvc"
+    existingClaim: "nas-data-pvc"
     subPath: "minio"
+
+
   ingress:
     enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: s3.rsr.net
+    hosts: [ s3.rsr.net ]
+    tls:
+      - hosts:
+          - s3.rsr.net
+        secretName: s3-cert-tls
+
+  consoleIngress:
+    enabled: true
+
     annotations:
       kubernetes.io/ingress.class: nginx
       cert-manager.io/cluster-issuer: vault-issuer
@@ -22,11 +41,19 @@ minio:
       - hosts:
           - minio.rsr.net
         secretName: minio-cert-tls
-  tolerations:
-    - key: "arm"
-      operator: "Exists"
-    - key: "arm64"
-      operator: "Exists"
+
+
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: release
+                operator: In
+                values:
+                  - minio
+          topologyKey: "kubernetes.io/hostname"
+
   resources:
     requests:
       memory: 350Mi
@@ -38,9 +65,11 @@ minio:
   metrics:
     serviceMonitor:
       enabled: true
-  nasgateway:
-    enabled: true
-    # Number of parallel instances
+
+  gateway:
     replicas: 3
 
   existingSecret: minio-secret
+
+  podAnnotations:
+    secret.reloader.stakater.com/reload: "minio"
