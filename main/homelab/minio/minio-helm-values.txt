@@ -1,0 +1,11 @@
+minio:
+  users:
+    - accessKey: $MINIO_THANOS_ACCESS_KEY
+      secretKey: $MINIO_THANOS_SECRET_KEY
+      policy: readwrite
+    - accessKey: $MINIO_LONGHORN_ACCESS_KEY
+      secretKey: $MINIO_LONGHORN_SECRET_KEY
+      policy: readwrite
+    - accessKey: $MINIO_LOKI_ACCESS_KEY
+      secretKey: $MINIO_LOKI_SECRET_KEY
+      policy: readwrite

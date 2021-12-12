@@ -256,6 +256,7 @@ loadSecretsToVault() {
   argoHelmValueVault "main/monitoring/statping/statping-helm-values.txt"
   argoHelmValueVault "main/homelab/emqx/emqx-helm-values.txt"
   argoHelmValueVault "main/homelab/frigate/frigate-helm-values.txt"
+  argoHelmValueVault "main/homelab/minio/minio-helm-values.txt"
 
   prometheusVault
 
@@ -295,7 +296,6 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
-secretVault "main/homelab/traccar/traccar-secret.txt"
-
+argoHelmValueVault "main/homelab/minio/minio-helm-values.txt"
 
 kill $VAULT_FWD_PID
