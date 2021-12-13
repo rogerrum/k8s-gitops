@@ -153,5 +153,13 @@ kube-prometheus-stack:
           name: thanos-objstore-secret
           key: objstore.yml
       podAntiAffinity: "hard"
+
+      additionalScrapeConfigs:
+        - job_name: minio-job
+          metrics_path: /minio/v2/metrics/cluster
+          scheme: http
+          static_configs:
+            - targets: [ 'minio.default.svc:9000' ]
     thanosService:
       enabled: true
+
