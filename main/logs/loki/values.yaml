@@ -131,19 +131,3 @@ loki:
             category: logs
           annotations:
             summary: "Node-Red is unable to connect to Home Assistant"
-
-
-  ingress:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: nginx
-      cert-manager.io/cluster-issuer: vault-issuer
-      cert-manager.io/common-name: loki.rsr.net
-    hosts:
-      - host: loki.rsr.net
-        paths:
-          - /
-    tls:
-      - hosts:
-          - loki.rsr.net
-        secretName: loki-cert-tls
