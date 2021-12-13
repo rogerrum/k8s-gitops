@@ -44,6 +44,18 @@ loki:
       working_directory: /data/compactor
       shared_store: s3
       compaction_interval: 5m
+    ruler:
+      storage:
+        type: local
+        local:
+          directory: /rules
+      rule_path: /tmp/scratch
+      alertmanager_url: http://kube-prometheus-stack-alertmanager:9093
+      ring:
+        kvstore:
+          store: inmemory
+      enable_api: true
+
   serviceMonitor:
     enabled: true
   tolerations:
@@ -62,5 +74,76 @@ loki:
                   - loki
           topologyKey: "kubernetes.io/hostname"
 
+  alerting_groups:
+    #
+    # zwavejs2mqtt
+    #
+    - name: zwavejs2mqtt
+      rules:
+        - alert: ZwaveUnableToReachMQTT
+          expr: |
+            sum(count_over_time({app="zwavejs2mqtt"} |~ "(?i)error while connecting mqtt"[2m])) > 0
+          for: 10s
+          labels:
+            severity: critical
+            category: logs
+          annotations:
+            summary: "Zwavejs2mqtt is unable to reach MQTT"
+    #
+    # frigate
+    #
+    - name: frigate
+      rules:
+        - alert: FrigateUnableToReachMQTT
+          expr: |
+            sum(count_over_time({app="frigate"} |~ "(?i)unable to connect to mqtt server"[2m])) > 0
+          for: 10s
+          labels:
+            severity: critical
+            category: logs
+          annotations:
+            summary: "Frigate is unable to reach MQTT"
+    #
+    # home-assistant
+    #
+    - name: home-assistant
+      rules:
+        - alert: HomeAssistantUnableToReachPostgresql
+          expr: |
+            sum by (app) (count_over_time({app="home-assistant"} |~ "(?i)error in database connectivity"[2m])) > 0
+          for: 10s
+          labels:
+            severity: critical
+            category: logs
+          annotations:
+            summary: "Home Assistant is unable to connect to postgresql"
+    #
+    # node-red
+    #
+    - name: node-red
+      rules:
+        - alert: NodeRedUnableToReachHomeAssistant
+          expr: |
+            sum by (app) (count_over_time({app="node-red"} |~ "(?i)home assistant.*connecting to undefined"[2m])) > 0
+          for: 10s
+          labels:
+            severity: critical
+            category: logs
+          annotations:
+            summary: "Node-Red is unable to connect to Home Assistant"
 
 
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: loki.rsr.net
+    hosts:
+      - host: loki.rsr.net
+        paths:
+          - /
+    tls:
+      - hosts:
+          - loki.rsr.net
+        secretName: loki-cert-tls
