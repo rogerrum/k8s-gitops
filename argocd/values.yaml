@@ -4,7 +4,7 @@ argo-cd:
   global:
     image:
       repository: argoproj/argocd
-      tag: v2.1.8
+      tag: v2.2.0
   dex:
     enabled: false
 
