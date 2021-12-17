@@ -31,9 +31,9 @@ prometheus-blackbox-exporter:
       - name: home-vpn-0-pi3
         url: 192.168.1.190
         module: icmp
-#      - name: home-vpn-1-pi0
-#        url: 192.168.1.191
-#        module: icmp
+      - name: home-vpn-1-pi0
+        url: 192.168.1.191
+        module: icmp
 #      - name: garage
 #        url: 192.168.1.19
 #        module: icmp
