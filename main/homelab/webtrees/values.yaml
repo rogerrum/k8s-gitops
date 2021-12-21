@@ -1,0 +1,81 @@
+
+image:
+  repository: ghcr.io/nathanvaughn/webtrees
+  tag: "2.0.19"
+  pullPolicy: IfNotPresent
+
+strategy:
+  type: Recreate
+
+service:
+  main:
+    ports:
+      http:
+        port: 80
+
+
+#probes:
+#  startup:
+#    enabled: false
+#
+#  liveness:
+#    enabled: false
+#
+#  readiness:
+#    enabled: false
+
+env:
+  TZ: "America/Chicago"
+  PRETTY_URLS: "1"
+  HTTPS: "1"
+  HTTPS_REDIRECT: "1"
+  LANG: "en-US"
+  BASE_URL: "https://tree.rsr.net"
+  DB_TYPE: "mysql"
+  DB_HOST: "mariadb.kube-system.svc.cluster.local"
+  DB_PORT: "3306"
+  DB_USER: "webtrees"
+  DB_PASS:
+    valueFrom:
+      secretKeyRef:
+        name: webtrees-secret
+        key: WEBTREE_MARIADB_PASS
+  DB_NAME: "webtrees"
+  DB_PREFIX: "wt_"
+  WT_USER:
+    valueFrom:
+      secretKeyRef:
+        name: webtrees-secret
+        key: WEBTREE_ADMIN_USER
+  WT_NAME: "Roger Rumao"
+  WT_PASS:
+    valueFrom:
+      secretKeyRef:
+        name: webtrees-secret
+        key: WEBTREE_ADMIN_PASS
+  WT_EMAIL:
+    valueFrom:
+      secretKeyRef:
+        name: webtrees-secret
+        key: WEBTREE_ADMIN_EMAIL
+
+ingress:
+  main:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: tree.rsr.net
+    hosts:
+      - host: "tree.rsr.net"
+        paths:
+          - path: "/"
+            pathType: Prefix
+    tls:
+      - hosts:
+          - tree.rsr.net
+        secretName: tree-cert-tls
+
+persistence:
+  config:
+    enabled: false
