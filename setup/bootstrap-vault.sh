@@ -296,7 +296,6 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
-argoHelmValueVault "main/logs/loki/loki-helm-values.txt"
-argoHelmValueVault "main/monitoring/thanos/thanos-helm-values.txt"
+secretVault "main/homelab/webtrees/webtrees-secret.txt"
 
 kill $VAULT_FWD_PID
