@@ -13,7 +13,7 @@ _ managed by ArgoCD and serviced with RenovateBot :robot:
 [![k3s](https://img.shields.io/badge/k3s-v1.21.8-blue?style=for-the-badge&logo=kubernetes&logoColor=white)](https://k3s.io/)
 [![GitHub stars](https://img.shields.io/github/stars/rogerrum/k8s-gitops?color=green&style=for-the-badge)](https://github.com/rogerrum/k8s-gitops/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/rogerrum/k8s-gitops?style=for-the-badge)](https://github.com/rogerrum/k8s-gitops/issues)
-[![GitHub last commit](https://img.shields.io/github/last-commit/rogerrum/k8s-gitops?color=purple&style=for-the-badge)](https://github.com/rogerrum/k8s-gitops/commits/master)
+[![GitHub last commit](https://img.shields.io/github/last-commit/rogerrum/k8s-gitops?color=purple&style=for-the-badge)](https://github.com/rogerrum/k8s-gitops/commits/main)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled?logo=pre-commit&logoColor=white&style=for-the-badge&color=brightgreen)](https://github.com/pre-commit/pre-commit)
 [![renovate](https://img.shields.io/badge/renovate-enabled?style=for-the-badge&logo=renovatebot&logoColor=white&color=brightgreen)](https://github.com/renovatebot/renovate)
 
