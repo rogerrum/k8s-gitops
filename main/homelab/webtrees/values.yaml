@@ -27,8 +27,8 @@ service:
 env:
   TZ: "America/Chicago"
   PRETTY_URLS: "1"
-  HTTPS: "1"
-  HTTPS_REDIRECT: "1"
+  HTTPS: "0"
+  HTTPS_REDIRECT: "0"
   LANG: "en-US"
   BASE_URL: "https://tree.rsr.net"
   DB_TYPE: "mysql"
