@@ -1,0 +1,86 @@
+---
+# Project information
+site_name: rogerrum | Home GitOps
+site_description: A mono repository for my home infrastructure and Kubernetes cluster which tries to adhere to Infrastructure as Code (IaC) and GitOps practices
+site_author: Roger Rumao
+site_url: https://rogerrum.github.io/k8s-gitops/
+
+# Repository
+repo_name: rogerrum/k8s-gitops
+repo_url: https://github.com/rogerrum/k8s-gitops
+edit_uri: "edit/main/docs/"
+
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/github-alt
+  language: en
+  features:
+    - navigation.sections
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+  palette:
+    - scheme: default
+      primary: blue
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+docs_dir: ./docs
+
+# Customization
+extra_css:
+  - _static/custom.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/rogerrum
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/k8s-at-home
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/devinbuhl
+
+# Plugins
+plugins:
+  - search:
+      lang: en
+  - minify:
+      minify_html: true
+#  - macros:
+#      include_dir: docs/_snippets
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - attr_list
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.tabbed
+
+
+# Navigation structure
+nav:
+  - Introduction: index.md
+  - Installation:
+      - Preparing Nodes: installation/preparing-nodes.md
+      - Installing Kubernetes: installation/installing-kubernetes.md
+      - Bootstrap Applications: installation/bootstrap-applications.md
+  - Networking:
+      - General: networking/general.md
+      - DNS: networking/dns.md
+  - Storage:
+      - Longhorn Backup/Restore: storage/longhorn-pvc-backup-restore.md
