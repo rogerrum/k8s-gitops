@@ -51,7 +51,7 @@ extra:
     - icon: fontawesome/brands/discord
       link: https://discord.gg/k8s-at-home
     - icon: fontawesome/brands/twitter
-      link: https://twitter.com/devinbuhl
+      link: https://twitter.com/rogerrum
 
 # Plugins
 plugins:
