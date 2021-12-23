@@ -74,7 +74,7 @@ sudo resize2fs /dev/ubuntu-vg/ubuntu-lv
 !!! info "Prepare/mount the additional disks for Longhorn"
 
 ```sh
-wget https://raw.githubusercontent.com/rogerrum/homelab-infrastructure/main/k3s/ha/setup-disks.sh \\
+wget https://raw.githubusercontent.com/rogerrum/homelab-infrastructure/main/k3s/ha/setup-disks.sh \
  -O setup-disks.sh  && chmod +x setup-disks.sh
 ```
 
