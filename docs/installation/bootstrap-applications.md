@@ -1,6 +1,6 @@
 # Bootstrapping
 
-## installation (one-time actions)
+## Installation (one-time actions)
 
 Once a cluster is in-place, checkout the code on the master node and then run `bootstrap-cluster.sh
 `
@@ -31,7 +31,7 @@ There are references to the `.env` file in the below scripts. This file is autom
 
 A sample [.env.sample](setup/.env.sample) file is provided as reference. To use this, `cp .env.sample .env` and make the necessary modifications for the secrets for your particular configuration.
 
-### objects
+### Objects
 
 To apply necessary changes to kubernetes native objects, run [bootstrap-objects.sh](setup/bootstrap-objects.sh):
 
@@ -39,7 +39,7 @@ To apply necessary changes to kubernetes native objects, run [bootstrap-objects.
 cd setup && ./bootstrap-objects.sh
 ```
 
-### vault updates
+### Vault updates
 
 To apply new additions or updates to vault, run [bootstrap-vault.sh](setup/bootstrap-vault.sh):
 
