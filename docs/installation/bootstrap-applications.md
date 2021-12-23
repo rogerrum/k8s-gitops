@@ -6,7 +6,7 @@ Once a cluster is in-place, checkout the code on the master node and then run `b
 `
 ```sh
 cd setup && ./bootstrap-cluster.sh
-````
+```
 
 This [script](setup/bootstrap-cluster.sh) does several things:
 
