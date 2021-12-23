@@ -59,8 +59,6 @@ plugins:
       lang: en
   - minify:
       minify_html: true
-  - macros:
-      include_dir: docs/_snippets
 
 # Extensions
 markdown_extensions:
