@@ -5,6 +5,10 @@ home-assistant:
   env:
     TZ: "America/Chicago"
 
+#  envFrom:
+#    - secretRef:
+#        name: home-assistant-secret
+
   hostNetwork: true
   dnsPolicy: ClusterFirstWithHostNet
 
@@ -121,11 +125,3 @@ home-assistant:
 #    requests:
 #      cpu: 100m
 #      memory: 1000Mi
-  postgresql:
-    enabled: false
-    existingSecret: home-assistant-postgresql-secret
-    postgresqlUsername: home-assistant
-    postgresqlDatabase: home-assistant
-    persistence:
-      enabled: true
-      storageClass: "longhorn"
