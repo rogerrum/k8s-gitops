@@ -1,0 +1,6 @@
+home-assistant:
+  addons:
+    codeserver:
+      env:
+        HASS_SERVER: http://localhost:8123
+        HASS_TOKEN: $HASS_TOKEN
