@@ -43,7 +43,7 @@ argoHelmValueVault() {
 
 argoHelmValueVaultNew() {
   name="secrets/argocd/argo-helm-values"
-  keyName="$(basename -s -helm-values "$@")"
+  keyName="$(basename -s -helm-values.yaml "$@").yaml"
   if output=$(envsubst <"$REPO_ROOT/$*"); then
     if vault kv get "$name"; then
       echo "Updating $name to vault - Adding key $keyName"
