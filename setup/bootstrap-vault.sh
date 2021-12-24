@@ -41,6 +41,20 @@ argoHelmValueVault() {
   fi
 }
 
+argoHelmValueVaultNew() {
+  name="secrets/argocd/argo-helm-values"
+  keyName="$(basename -s -helm-values "$@")"
+  if output=$(envsubst <"$REPO_ROOT/$*"); then
+    if vault kv get "$name"; then
+      echo "Updating $name to vault - Adding key $keyName"
+      printf '%s' "$output" | vault kv patch -method rw "$name" "$keyName"=-
+    else
+      echo "Creating $name to vault - Adding key $keyName"
+      printf '%s' "$output" | vault kv put "$name" "$keyName"=-
+    fi
+  fi
+}
+
 helmVault() {
   name="secrets/$(dirname "$@")/$(basename -s .txt "$@")"
   echo "Writing $name to vault"
@@ -257,6 +271,7 @@ loadSecretsToVault() {
   argoHelmValueVault "main/homelab/emqx/emqx-helm-values.txt"
   argoHelmValueVault "main/homelab/frigate/frigate-helm-values.txt"
   argoHelmValueVault "main/homelab/minio/minio-helm-values.txt"
+  argoHelmValueVaultNew "main/homelab/home-assistant/home-assistant-helm-values.yaml"
 
   prometheusVault
 
@@ -277,6 +292,7 @@ loadSecretsToVault() {
   secretVault "infrastructure/mysql/mysql-secret.txt"
   secretVault "infrastructure/mariadb/mariadb-secret.txt"
   secretVault "main/monitoring/icinga2/icinga2-secret.txt"
+  secretVault "main/homelab/webtrees/webtrees-secret.txt"
 
   vault kv put secrets/argocd/argocd-discord-webhook discord-webhook="$DISCORD_ARGO_WEBHOOK_URL"
 
@@ -296,6 +312,7 @@ if [ $FIRST_RUN == 0 ]; then
 fi
 
 #loadSecretsToVault
-secretVault "main/homelab/webtrees/webtrees-secret.txt"
+
+argoHelmValueVaultNew "main/homelab/home-assistant/home-assistant-helm-values.yaml"
 
 kill $VAULT_FWD_PID
