@@ -9,8 +9,8 @@ keywords:
 #home: https://github.com/...
 #icon: https://github.com/..
 sources:
-- https://github.com/benjojo/alertmanager-discord
-- https://hub.docker.com/r/benjojo/alertmanager-discord
+- https://github.com/rogerrum/alertmanager-discord
+- https://hub.docker.com/r/rogerrum/alertmanager-discord
 maintainers:
   - name: rogerrum
     email: rogerrum@gmail.com
