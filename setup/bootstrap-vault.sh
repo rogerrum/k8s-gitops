@@ -269,7 +269,7 @@ loadSecretsToVault() {
   argoHelmValueVault "infrastructure/kured/kured-helm-values.txt"
   argoHelmValueVault "main/monitoring/statping/statping-helm-values.txt"
   argoHelmValueVault "main/homelab/emqx/emqx-helm-values.txt"
-  argoHelmValueVault "main/homelab/frigate/frigate-helm-values.txt"
+  argoHelmValueVaultNew "main/homelab/frigate/frigate-helm-values.yaml"
   argoHelmValueVault "main/homelab/minio/minio-helm-values.txt"
   argoHelmValueVaultNew "main/homelab/home-assistant/home-assistant-helm-values.yaml"
 
@@ -313,6 +313,7 @@ fi
 
 #loadSecretsToVault
 
-argoHelmValueVaultNew "main/homelab/home-assistant/home-assistant-helm-values.yaml"
+#argoHelmValueVaultNew "main/homelab/home-assistant/home-assistant-helm-values.yaml"
+argoHelmValueVaultNew "main/homelab/frigate/frigate-helm-values.yaml"
 
 kill $VAULT_FWD_PID
