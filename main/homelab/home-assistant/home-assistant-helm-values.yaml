@@ -1,4 +1,15 @@
 home-assistant:
+
+  ingress:
+    main:
+      hosts:
+        - host: $HASS_EXTERNAL_URL
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - "$HASS_EXTERNAL_URL"
   addons:
     codeserver:
       env:
