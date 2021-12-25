@@ -11,7 +11,7 @@ metadata:
   namespace: default
 spec:
   rules:
-    - host: 8003v.techbuzzworld.com
+    - host: {{ .Values.externalHostName }}
       http:
         paths:
           - path: /api/events/.*/clip\.mp4
@@ -37,4 +37,4 @@ spec:
                   name: http
   tls:
     - hosts:
-        - 8003v.techbuzzworld.com
+        - {{ .Values.externalHostName }}
