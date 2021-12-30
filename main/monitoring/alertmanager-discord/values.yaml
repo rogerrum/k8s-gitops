@@ -1,34 +1,14 @@
-# Default values for clarkson.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+alertmanager-discord:
+  image:
+    repository: rogerrum/alertmanager-discord
+    tag: "1.0.3"
+    pullPolicy: IfNotPresent
 
-image:
-  repository: rogerrum/alertmanager-discord
-  tag: "1.0.3"
-  pullPolicy: IfNotPresent
-
-strategy:
-  type: Recreate
-
-env:
-  DISCORD_USERNAME: "Alertmanager"
-  DISCORD_AVATAR_URL: "https://avatars3.githubusercontent.com/u/3380462"
-  VERBOSE: "ON"
-
-envValueFrom:
-  DISCORD_WEBHOOK:
-    secretKeyRef:
-      name: alertmanager-discord-secret
-      key: DISCORD_WEBHOOK
-
-service:
-  port:
-    port: 9094
-
-ingress:
-  enabled: false
-
-persistence:
-  config:
-    enabled: false
-    emptyDir: false
+  env:
+    DISCORD_AVATAR_URL: "https://avatars3.githubusercontent.com/u/3380462"
+    VERBOSE: "ON"
+    DISCORD_WEBHOOK:
+      valueFrom:
+        secretKeyRef:
+          name: alertmanager-discord-secret
+          key: DISCORD_WEBHOOK

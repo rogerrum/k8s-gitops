@@ -1,20 +1,7 @@
-apiVersion: v2
-appVersion: v1.0.0
-description: alertmanager-discord
 name: alertmanager-discord
-version: 0.0.1
-keywords:
-  - alertmanager
-  - discord
-#home: https://github.com/...
-#icon: https://github.com/..
-sources:
-- https://github.com/rogerrum/alertmanager-discord
-- https://hub.docker.com/r/rogerrum/alertmanager-discord
-maintainers:
-  - name: rogerrum
-    email: rogerrum@gmail.com
+apiVersion: v2
+version: 1.0.0
 dependencies:
-  - name: common
-    version: 3.1.0
+  - name: alertmanager-discord
+    version: 1.0.0
     repository: https://k8s-at-home.com/charts/
