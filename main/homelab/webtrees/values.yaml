@@ -76,4 +76,5 @@ ingress:
 
 persistence:
   config:
-    enabled: false
+    enabled: true
+    mountPath: /var/www/webtrees/data/
