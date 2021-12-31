@@ -1,6 +1,6 @@
 argo-cd:
   installCRDs: false
-
+ 
   global:
     image:
       repository: argoproj/argocd
@@ -134,10 +134,10 @@ argo-cd:
   redis:
     image:
       repository: redis
-      tag: 5.0.14-alpine
+      tag: 6.2.6-alpine
 
   redis-ha:
     enabled: true
     image:
       repository: redis
-      tag: 5.0.14-alpine
+      tag: 6.2.6-alpine
