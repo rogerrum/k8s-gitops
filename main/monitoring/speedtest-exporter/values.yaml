@@ -1,7 +1,7 @@
 speedtest-exporter:
   image:
     repository: ghcr.io/miguelndecarvalho/speedtest-exporter
-    tag: v3.3.4
+    tag: v3.4.0
   tolerations:
     - key: "arm"
       operator: "Exists"
