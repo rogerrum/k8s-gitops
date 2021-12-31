@@ -27,5 +27,16 @@ oauth2-proxy:
     cookie-domain: ".rsr.net"
     whitelist-domain: ".rsr.net"
 
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - oauth2-proxy
+          topologyKey: "kubernetes.io/hostname"
+
   config:
     existingSecret: oauth2-proxy-secret
