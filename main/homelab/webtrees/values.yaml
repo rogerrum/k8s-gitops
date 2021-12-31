@@ -78,3 +78,7 @@ persistence:
   config:
     enabled: true
     mountPath: /var/www/webtrees/data/
+    storageClass: "longhorn"
+    accessMode: ReadWriteMany
+    skipuninstall: true
+    size: "1Gi"
