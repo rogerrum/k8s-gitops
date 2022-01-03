@@ -1,18 +1,7 @@
-apiVersion: v2
-appVersion: 1.0.0
-description: open-source online collaborative genealogy application
 name: webtrees
+apiVersion: v2
 version: 1.0.0
-keywords:
-  - webtrees
-  - genealogy
-icon: https://raw.githubusercontent.com/fisharebest/webtrees/main/resources/img/webtrees-icon.png
-sources:
-  - https://github.com/fisharebest/webtrees
-maintainers:
-  - name: rogerrum
-    email: rogerrum@gmail.com
 dependencies:
-  - name: common
-    version: 4.2.0
-    repository: https://library-charts.k8s-at-home.com
+  - name: webtrees
+    version: 1.0.0
+    repository: https://k8s-at-home.com/charts/
