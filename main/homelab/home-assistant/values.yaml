@@ -72,7 +72,7 @@ home-assistant:
       enabled: true
       image:
         repository: codercom/code-server
-        tag: 3.12.0
+        tag: 4.0.1
       workingDir: "/config"
       args:
         - --user-data-dir
