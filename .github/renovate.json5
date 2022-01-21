@@ -132,7 +132,8 @@
       "updateTypes": ["minor", "patch"],
       "packageNames": [
         "homeassistant/home-assistant",
-        "nodered/node-red"
+        "nodered/node-red",
+        "zwavejs/zwavejs2mqtt"
       ]
     },
     {
