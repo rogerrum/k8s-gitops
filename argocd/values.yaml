@@ -59,6 +59,7 @@ argo-cd:
     ingress:
       enabled: true
       annotations:
+        kubernetes.io/ingress.class: nginx
         cert-manager.io/cluster-issuer: vault-issuer
         cert-manager.io/common-name: argo.rsr.net
       hosts:
