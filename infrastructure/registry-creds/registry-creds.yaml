@@ -1,18 +1,11 @@
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.2.5
+    controller-gen.kubebuilder.io/version: v0.2.6
   creationTimestamp: null
   name: clusterpullsecrets.ops.alexellis.io
 spec:
-  additionalPrinterColumns:
-  - JSONPath: .spec.secretRef.name
-    name: SecretName
-    type: string
-  - JSONPath: .spec.secretRef.namespace
-    name: SecretNamespace
-    type: string
   group: ops.alexellis.io
   names:
     kind: ClusterPullSecret
@@ -20,8 +13,19 @@ spec:
     plural: clusterpullsecrets
     singular: clusterpullsecret
   scope: Cluster
+  versions:
+  - name: v1
+    served: true
+    storage: true
   subresources: {}
-  validation:
+    additionalPrinterColumns:
+    - jsonPath: .spec.secretRef.name
+      name: SecretName
+      type: string
+    - jsonPath: .spec.secretRef.namespace
+      name: SecretNamespace
+      type: string
+    schema:
     openAPIV3Schema:
       description: ClusterPullSecret is the Schema for the clusterpullsecrets API
       properties:
@@ -37,17 +41,17 @@ spec:
           description: ClusterPullSecretSpec defines the desired state of ClusterPullSecret
           properties:
             secretRef:
+                properties:
+                  name:
+                    type: string
+                  namespace:
+                    type: string
               type: object
           type: object
         status:
           description: ClusterPullSecretStatus defines the observed state of ClusterPullSecret
           type: object
       type: object
-  version: v1
-  versions:
-  - name: v1
-    served: true
-    storage: true
 status:
   acceptedNames:
     kind: ""
@@ -65,28 +69,15 @@ rules:
   - ""
   resources:
   - configmaps
+  resourceNames:
+  - 8bdecb1a.alexellis.io
   verbs:
   - get
-  - list
-  - watch
   - create
   - update
   - patch
-  - delete
-- apiGroups:
-  - ""
-  resources:
-  - configmaps/status
-  verbs:
-  - get
-  - update
-  - patch
-- apiGroups:
-  - ""
-  resources:
-  - events
-  verbs:
-  - create
+---
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -99,41 +90,18 @@ rules:
   resources:
   - namespaces
   verbs:
-  - create
-  - delete
   - get
   - list
-  - patch
-  - update
   - watch
-- apiGroups:
-  - ""
-  resources:
-  - namespaces/status
-  verbs:
-  - get
-  - patch
-  - update
 - apiGroups:
   - ""
   resources:
   - secrets
   verbs:
   - create
-  - delete
   - get
   - list
-  - patch
-  - update
   - watch
-- apiGroups:
-  - ""
-  resources:
-  - secrets/status
-  verbs:
-  - get
-  - patch
-  - update
 - apiGroups:
   - ""
   resources:
@@ -145,33 +113,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - ""
-  resources:
-  - serviceaccounts/status
-  verbs:
-  - get
-  - patch
-  - update
-- apiGroups:
   - ops.alexellis.io
   resources:
   - clusterpullsecrets
   verbs:
-  - create
-  - delete
   - get
   - list
-  - patch
-  - update
   - watch
-- apiGroups:
-  - ops.alexellis.io
-  resources:
-  - clusterpullsecrets/status
-  verbs:
-  - get
-  - patch
-  - update
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
