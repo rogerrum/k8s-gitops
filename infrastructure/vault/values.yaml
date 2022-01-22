@@ -10,10 +10,8 @@ vault:
         name: kms-vault
         path: /vault/userconfig
     tolerations: |
-      - key: "arm"
+      - key: "arm64"
         operator: "Exists"
-    annotations:
-      backup.velero.io/backup-volumes: data
     resources:
       requests:
         memory: 256Mi
