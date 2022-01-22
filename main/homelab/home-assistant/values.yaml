@@ -29,6 +29,7 @@ home-assistant:
       nameSuffix: "internal"
       annotations:
         nginx.org/websocket-services: home-assistant
+        kubernetes.io/ingress.class: nginx
         cert-manager.io/cluster-issuer: vault-issuer
         cert-manager.io/common-name: ha.rsr.net
       hosts:

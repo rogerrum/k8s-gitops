@@ -196,6 +196,7 @@ frigate:
   ingress:
     enabled: true
     annotations:
+      kubernetes.io/ingress.class: nginx
       cert-manager.io/cluster-issuer: vault-issuer
       cert-manager.io/common-name: frigate.rsr.net
       nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
