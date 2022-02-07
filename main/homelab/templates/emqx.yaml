@@ -18,7 +18,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-        - ../../helm-values/emqx.yaml
+        - /../../helm-values/emqx.yaml
   syncPolicy:
     automated:
       prune: true
