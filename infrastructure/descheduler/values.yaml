@@ -1,0 +1,20 @@
+descheduler:
+  kind: Deployment
+  tolerations:
+    - key: "arm64"
+      operator: "Exists"
+    - key: "arm"
+      operator: "Exists"
+  deschedulerPolicy:
+    strategies:
+      RemoveDuplicates:
+        enabled: false
+      RemovePodsViolatingNodeAffinity:
+        enabled: true
+        params:
+          nodeAffinityType:
+            - requiredDuringSchedulingIgnoredDuringExecution
+      RemovePodsViolatingInterPodAntiAffinity:
+        enabled: true
+      LowNodeUtilization:
+        enabled: false
