@@ -29,6 +29,7 @@ thanos:
     enabled: true
     persistence:
       enabled: true
+      storageClass: "longhorn"
       size: 7Gi
   ruler:
     enabled: false
