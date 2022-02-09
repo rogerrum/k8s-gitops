@@ -58,8 +58,8 @@ node-feature-discovery:
     annotations:
       configmap.reloader.stakater.com/reload: "nfd-worker-conf"
     tolerations:
-      - key: arm
-        operator: Exists
+#      - key: arm
+#        operator: Exists
       - key: arm64
         operator: Exists
       - key: "node-role.kubernetes.io/master"
@@ -71,8 +71,8 @@ node-feature-discovery:
   master:
     replicaCount: 1
     tolerations:
-      - key: arm
-        operator: Exists
+#      - key: arm
+#        operator: Exists
       - key: arm64
         operator: Exists
 
