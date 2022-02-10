@@ -35,8 +35,6 @@ kube-prometheus-stack:
               requests:
                 storage: 10Gi
       tolerations:
-        - key: "arm"
-          operator: "Exists"
         - key: "arm64"
           operator: "Exists"
       podMetadata:
