@@ -266,7 +266,7 @@ loadSecretsToVault() {
   argoHelmValueVault "main/monitoring/botkube/botkube-helm-values.txt"
   argoHelmValueVault "main/monitoring/thanos/thanos-helm-values.txt"
   argoHelmValueVault "main/logs/loki/loki-helm-values.txt"
-  argoHelmValueVault "infrastructure/kured/kured-helm-values.txt"
+  argoHelmValueVaultNew "infrastructure/kured/kured-helm-values.yaml"
   argoHelmValueVault "main/monitoring/statping/statping-helm-values.txt"
   argoHelmValueVault "main/homelab/emqx/emqx-helm-values.txt"
   argoHelmValueVaultNew "main/homelab/frigate/frigate-helm-values.yaml"
@@ -313,7 +313,7 @@ fi
 
 #loadSecretsToVault
 
-#argoHelmValueVaultNew "main/homelab/home-assistant/home-assistant-helm-values.yaml"
-argoHelmValueVaultNew "main/homelab/frigate/frigate-helm-values.yaml"
+argoHelmValueVaultNew "infrastructure/kured/kured-helm-values.yaml"
+prometheusVault
 
 kill $VAULT_FWD_PID
