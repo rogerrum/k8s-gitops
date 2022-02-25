@@ -6,3 +6,7 @@ mariadb:
   auth:
     existingSecret: mariadb-secret
 
+  architecture: replication
+
+  diagnosticMode:
+    enabled: true
