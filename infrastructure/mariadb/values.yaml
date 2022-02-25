@@ -17,4 +17,4 @@ mariadb:
       storageClass: "longhorn"
 
   diagnosticMode:
-    enabled: true
+    enabled: false
