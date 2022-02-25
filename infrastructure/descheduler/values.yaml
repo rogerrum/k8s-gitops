@@ -8,7 +8,9 @@ descheduler:
   deschedulerPolicy:
     strategies:
       RemoveDuplicates:
-        enabled: false
+        enabled: true
+      RemovePodsViolatingNodeTaints:
+        enabled: true
       RemovePodsViolatingNodeAffinity:
         enabled: true
         params:
@@ -16,5 +18,5 @@ descheduler:
             - requiredDuringSchedulingIgnoredDuringExecution
       RemovePodsViolatingInterPodAntiAffinity:
         enabled: true
-      LowNodeUtilization:
-        enabled: false
+#      LowNodeUtilization:
+#        enabled: false
