@@ -1,7 +1,7 @@
 frigate:
   image:
     repository: blakeblackshear/frigate
-    tag: 0.10.0-amd64
+    tag: 0.10.1-amd64
   coral:
     enabled: true
   env:
