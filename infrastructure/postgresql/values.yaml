@@ -1,7 +1,7 @@
 postgresql:
   image:
     repository: bitnami/postgresql
-    tag: 13.5.0-debian-10-r31
+    tag: 13.6.0-debian-10-r31
 
   existingSecret: postgresql-secret
   persistence:
