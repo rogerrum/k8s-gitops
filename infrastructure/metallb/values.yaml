@@ -19,24 +19,22 @@ metallb:
     prometheusRule:
       enabled: true
   controller:
-    image:
-      repository: quay.io/metallb/controller
-      tag: v0.11.0
+#    image:
+#      repository: quay.io/metallb/controller
+#      tag: v0.11.0
     tolerations:
       - key: "arm"
         operator: "Exists"
       - key: "arm64"
         operator: "Exists"
   speaker:
-    image:
-      repository: quay.io/metallb/speaker
-      tag: v0.11.0
+#    image:
+#      repository: quay.io/metallb/speaker
+#      tag: v0.11.0
     tolerations:
       - key: "arm"
         operator: "Exists"
       - key: "arm64"
-        operator: "Exists"
-      - key: "armhf"
         operator: "Exists"
       - key: "node-role.kubernetes.io/master"
         operator: "Exists"
