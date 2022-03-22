@@ -1,7 +1,7 @@
 minio:
   image:
     repository: quay.io/minio/minio
-    tag: RELEASE.2022-03-14T18-25-24Z
+    tag: RELEASE.2022-03-22T02-05-10Z
 
   mcImage:
     repository: quay.io/minio/mc
