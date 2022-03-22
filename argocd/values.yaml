@@ -23,7 +23,7 @@ argo-cd:
       - name: secret-loader
         image: httpd:2.4
         ports:
-          - name: repo-secret-loader
+          - name: secret-loader
             containerPort: 9200
             protocol: TCP
         volumeMounts:
