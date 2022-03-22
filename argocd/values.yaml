@@ -24,7 +24,7 @@ argo-cd:
         image: httpd:2.4
         ports:
           - name: secret-loader
-            containerPort: 9200
+            containerPort: 80
             protocol: TCP
         volumeMounts:
           - mountPath: /usr/local/apache2/htdocs/
