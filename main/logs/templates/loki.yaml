@@ -18,7 +18,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-        - /helm-values/loki.yaml
+        - http://localhost/loki.yaml
   syncPolicy:
     automated:
       prune: true

@@ -18,7 +18,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-        - /helm-values/statping.yaml
+        - http://localhost/statping.yaml
   syncPolicy:
     automated:
       prune: true

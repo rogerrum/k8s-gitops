@@ -18,7 +18,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-        - /helm-values/home-assistant.yaml
+        - http://localhost/home-assistant.yaml
   syncPolicy:
     automated:
       prune: true

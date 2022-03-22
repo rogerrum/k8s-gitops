@@ -18,7 +18,7 @@
 {{/*    helm:*/}}
 {{/*      valueFiles:*/}}
 {{/*        - values.yaml*/}}
-{{/*        - /helm-values/frigate.yaml*/}}
+{{/*        - http://localhost/frigate.yaml*/}}
 {{/*  syncPolicy:*/}}
 {{/*    automated:*/}}
 {{/*      prune: true*/}}
