@@ -4,9 +4,9 @@ emqx:
   service:
     type: LoadBalancer
     loadBalancerIP: 192.168.100.57
-  tolerations:
-    - key: "arm64"
-      operator: "Exists"
+#  tolerations:
+#    - key: "arm64"
+#      operator: "Exists"
   affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
