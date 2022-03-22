@@ -19,6 +19,17 @@ argo-cd:
       serviceMonitor:
         enabled: true
 
+    extraContainers:
+      - name: secret-loader
+        image: httpd:2.4
+        ports:
+          - name: repo-secret-loader
+            containerPort: 9200
+            protocol: TCP
+        volumeMounts:
+          - mountPath: /usr/local/apache2/htdocs/
+            name: helm-values
+
     volumeMounts:
       - name: helm-values
         mountPath: /helm-values
@@ -145,3 +156,5 @@ argo-cd:
 
   notifications:
     enabled: false
+
+
