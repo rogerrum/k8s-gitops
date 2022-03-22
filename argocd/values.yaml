@@ -70,6 +70,7 @@ argo-cd:
     extraArgs:
       - --insecure
     config:
+      helm.valuesFileSchemes: http, https, file
       repositories: |
         - type: helm
           name: stable
