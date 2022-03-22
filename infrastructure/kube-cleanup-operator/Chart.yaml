@@ -3,5 +3,5 @@ apiVersion: v2
 version: 1.0.0
 dependencies:
   - name: kube-cleanup-operator
-    version: 1.0.1
+    version: 1.0.3
     repository: https://charts.lwolf.org
