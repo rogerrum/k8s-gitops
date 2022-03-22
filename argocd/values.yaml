@@ -20,6 +20,7 @@ argo-cd:
         enabled: true
 
     extraContainers:
+      # Custom hack to expose secret helm values over localhost http
       - name: secret-loader
         image: httpd:2.4
         ports:
@@ -30,9 +31,6 @@ argo-cd:
           - mountPath: /usr/local/apache2/htdocs/
             name: helm-values
 
-    volumeMounts:
-      - name: helm-values
-        mountPath: /helm-values
     volumes:
       - name: helm-values
         secret:
@@ -81,7 +79,6 @@ argo-cd:
     extraArgs:
       - --insecure
     config:
-      helm.valuesFileSchemes: http, https, file
       repositories: |
         - type: helm
           name: stable
