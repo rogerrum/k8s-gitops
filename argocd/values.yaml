@@ -154,4 +154,9 @@ argo-cd:
   notifications:
     enabled: false
 
+    bots:
+      slack: 
+        serviceAccount:
+          create: false
+
 
