@@ -17,5 +17,5 @@ longhorn:
       kubernetes.io/ingress.class: nginx
       cert-manager.io/cluster-issuer: vault-issuer
       cert-manager.io/common-name: longhorn.rsr.net
-      nginx.ingress.kubernetes.io/auth-url: "https://auth.rsr.net/oauth2/auth"
+      nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
       nginx.ingress.kubernetes.io/auth-signin: "https://auth.rsr.net/oauth2/start"
