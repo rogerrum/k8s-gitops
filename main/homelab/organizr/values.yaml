@@ -8,23 +8,21 @@ organizr:
       annotations:
         kubernetes.io/ingress.class: nginx
         cert-manager.io/cluster-issuer: vault-issuer
-        cert-manager.io/common-name: org.rsr.net
-#        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
-#        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
+        cert-manager.io/common-name: home.rsr.net
       hosts:
-        - host: org.rsr.net
+        - host: home.rsr.net
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - org.rsr.net
-          secretName: org-cert-tls
+            - home.rsr.net
+          secretName: home-cert-tls
 
   persistence:
     data:
-      enabled: false
-#      storageClass: "longhorn"
-#      accessMode: ReadWriteOnce
-#      size: "1Gi"
-#      skipuninstall: true
+      enabled: true
+      storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      size: "1Gi"
+      skipuninstall: true
