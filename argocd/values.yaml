@@ -43,6 +43,13 @@ argo-cd:
         memory: 4744M
 
     affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          labelSelector:
+            - matchExpressions:
+              - key: storage
+                operator: DoesNotExist
+          topologyKey: "kubernetes.io/hostname"
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
@@ -60,6 +67,8 @@ argo-cd:
                   values:
                     - repo-server
             topologyKey: "kubernetes.io/hostname"
+
+
 
 
 
