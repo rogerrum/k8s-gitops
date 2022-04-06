@@ -38,10 +38,10 @@ argo-cd:
           secretName: argo-helm-values
           optional: true
 
-#    resources:
-#      requests:
-#        cpu: 2026m
-#        memory: 4744M
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2048Mi
 
     affinity:
       nodeAffinity:
