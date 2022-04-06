@@ -11,6 +11,7 @@ argo-cd:
     autoscaling:
       enabled: true
       minReplicas: 2
+      maxReplicas: 3
       targetCPUUtilizationPercentage: 85
       targetMemoryUtilizationPercentage: 85
 
