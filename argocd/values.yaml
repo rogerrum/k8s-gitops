@@ -45,11 +45,10 @@ argo-cd:
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
+          nodeSelectorTerms:
+            - matchExpressions:
                 - key: storage
                   operator: DoesNotExist
-            topologyKey: "kubernetes.io/hostname"
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
