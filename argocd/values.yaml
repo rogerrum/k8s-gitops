@@ -16,9 +16,9 @@ argo-cd:
       targetMemoryUtilizationPercentage: 85
 
     metrics:
-      enabled: true
+      enabled: false
       serviceMonitor:
-        enabled: true
+        enabled: false
 
     extraContainers:
       # Custom hack to expose secret helm values over localhost http
@@ -156,9 +156,17 @@ argo-cd:
 
   redis-ha:
     enabled: true
+
+    # Temp disable
+    exporter:
+      enabled: false
 #    image:
 #      repository: redis
 #      tag: 6.2.6-alpine
+
+    haproxy:
+      metrics:
+        enabled: false
 
   notifications:
     enabled: false
