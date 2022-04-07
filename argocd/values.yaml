@@ -9,8 +9,8 @@ argo-cd:
 
   repoServer:
     autoscaling:
-      enabled: true
-      minReplicas: 2
+      enabled: false
+#      minReplicas: 2
       maxReplicas: 3
       targetCPUUtilizationPercentage: 85
       targetMemoryUtilizationPercentage: 85
