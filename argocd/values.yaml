@@ -15,6 +15,9 @@ argo-cd:
       targetCPUUtilizationPercentage: 85
       targetMemoryUtilizationPercentage: 85
 
+    extraArgs:
+      - --parallelismlimit 10
+
     metrics:
       enabled: false
       serviceMonitor:
