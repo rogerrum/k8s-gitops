@@ -45,14 +45,17 @@ argo-cd:
       requests:
         cpu: 1000m
         memory: 2048Mi
+      limits:
+        cpu: 5000m
+        memory: 4744M
 
     affinity:
-#      nodeAffinity:
-#        requiredDuringSchedulingIgnoredDuringExecution:
-#          nodeSelectorTerms:
-#            - matchExpressions:
-#                - key: storage
-#                  operator: DoesNotExist
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: storage
+                  operator: DoesNotExist
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
