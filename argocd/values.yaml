@@ -47,7 +47,7 @@ argo-cd:
         memory: 2048Mi
       limits:
         cpu: 5000m
-        memory: 4744M
+        memory: 4744Mi
 
     affinity:
       nodeAffinity:
