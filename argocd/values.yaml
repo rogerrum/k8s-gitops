@@ -9,7 +9,7 @@ argo-cd:
 
   repoServer:
     autoscaling:
-      enabled: true
+      enabled: false
       minReplicas: 2
       maxReplicas: 2
       targetCPUUtilizationPercentage: 85
@@ -121,7 +121,7 @@ argo-cd:
       serviceMonitor:
         enabled: true
     autoscaling:
-      enabled: true
+      enabled: false
       minReplicas: 2
       targetCPUUtilizationPercentage: 85
       targetMemoryUtilizationPercentage: 85
@@ -149,7 +149,7 @@ argo-cd:
             topologyKey: "kubernetes.io/hostname"
 
   controller:
-    enableStatefulSet: true
+    enableStatefulSet: false
     metrics:
       enabled: true
       serviceMonitor:
@@ -161,7 +161,7 @@ argo-cd:
 #      tag: 6.2.6-alpine
 
   redis-ha:
-    enabled: true
+    enabled: false
 
     # Temp disable
     exporter:
