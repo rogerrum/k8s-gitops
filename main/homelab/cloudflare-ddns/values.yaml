@@ -9,5 +9,5 @@ restartPolicy: Never
 
 image:
   repository: ghcr.io/k8s-at-home/kubectl
-  tag: v1.23.5
+  tag: v1.24.0
   pullPolicy: IfNotPresent
