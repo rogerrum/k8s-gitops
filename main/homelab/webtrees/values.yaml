@@ -3,7 +3,7 @@ webtrees:
 
   image:
     repository: ghcr.io/nathanvaughn/webtrees
-    tag: "2.0.23"
+    tag: "2.1.2"
 
 
   env:
