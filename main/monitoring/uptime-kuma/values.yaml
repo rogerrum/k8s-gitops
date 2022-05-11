@@ -7,7 +7,7 @@ uptime-kuma:
   # https://github.com/statping/statping/wiki/Config-with-.env-File
   env:
     TZ: "America/Chicago"
-    NODE_EXTRA_CA_CERTS: /rootCert/ca.crt
+    NODE_EXTRA_CA_CERTS: /rootcert/ca.crt
 
   ingress:
     main:
@@ -33,7 +33,7 @@ uptime-kuma:
       skipuninstall: true
       size: "2Gi"
       enabled: true
-    rootCert:
+    rootcert:
       enabled: true
       type: secret
       name: up-cert-tls
