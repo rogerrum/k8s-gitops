@@ -30,6 +30,7 @@ uptime-kuma:
       storageClass: "longhorn"
       accessMode: ReadWriteMany
       skipuninstall: true
+      size: "2Gi"
       enabled: true
 
 #  # cert is needed for accessing the sites
