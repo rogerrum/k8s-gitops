@@ -18,6 +18,10 @@ argo-cd:
 #    extraArgs:
 #      - --parallelismlimit 10
 
+    env:
+      - name: ARGOCD_EXEC_TIMEOUT
+        value: 300s
+
     metrics:
       enabled: false
       serviceMonitor:
