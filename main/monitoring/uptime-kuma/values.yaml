@@ -26,9 +26,10 @@ uptime-kuma:
           secretName: up-cert-tls
 
   persistence:
-    storageClass: "longhorn"
-    accessMode: ReadWriteMany
     data:
+      storageClass: "longhorn"
+      accessMode: ReadWriteMany
+      skipuninstall: true
       enabled: true
 
 #  # cert is needed for accessing the sites
