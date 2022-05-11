@@ -1,0 +1,43 @@
+uptime-kuma:
+  image:
+    repository: louislam/uptime-kuma
+    tag: 1.15.1
+
+  # See more environment variables in the statping documentation
+  # https://github.com/statping/statping/wiki/Config-with-.env-File
+  env:
+    TZ: "America/Chicago"
+
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/cluster-issuer: vault-issuer
+        cert-manager.io/common-name: up.rsr.net
+      hosts:
+        - host: up.rsr.net
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - up.rsr.net
+          secretName: up-cert-tls
+
+  persistence:
+    storageClass: "longhorn"
+    data:
+      enabled: true
+
+#  # cert is needed for accessing the sites
+#  additionalVolumeMounts:
+#    - name: tls-cert
+#      mountPath: "/etc/ssl/certs/ca.crt"
+#      subPath: "ca.crt"
+#      readOnly: true
+#
+#  additionalVolumes:
+#    - name: tls-cert
+#      secret:
+#        secretName: stats-cert-tls
