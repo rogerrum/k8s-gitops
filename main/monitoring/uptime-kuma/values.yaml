@@ -27,6 +27,7 @@ uptime-kuma:
 
   persistence:
     storageClass: "longhorn"
+    accessMode: ReadWriteMany
     data:
       enabled: true
 
