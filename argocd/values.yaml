@@ -9,9 +9,9 @@ argo-cd:
 
   repoServer:
     autoscaling:
-      enabled: false
+      enabled: true
       minReplicas: 2
-      maxReplicas: 2
+      maxReplicas: 5
       targetCPUUtilizationPercentage: 85
       targetMemoryUtilizationPercentage: 85
 
@@ -50,8 +50,11 @@ argo-cd:
         cpu: 1000m
         memory: 2048Mi
       limits:
-        cpu: 5000m
-        memory: 4744Mi
+        cpu: 2000m
+        memory: 2048Mi
+#      limits:
+#        cpu: 5000m
+#        memory: 4744Mi
 
     affinity:
       nodeAffinity:
@@ -153,7 +156,7 @@ argo-cd:
             topologyKey: "kubernetes.io/hostname"
 
   controller:
-    enableStatefulSet: false
+    enableStatefulSet: true
     metrics:
       enabled: true
       serviceMonitor:
@@ -165,7 +168,7 @@ argo-cd:
 #      tag: 6.2.6-alpine
 
   redis-ha:
-    enabled: false
+    enabled: true
 
     # Temp disable
     exporter:
