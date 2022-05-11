@@ -162,6 +162,9 @@ argo-cd:
       serviceMonitor:
         enabled: true
 
+    args:
+      repoServerTimeoutSeconds: 300
+
 #  redis:
 #    image:
 #      repository: redis
