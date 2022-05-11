@@ -7,7 +7,7 @@ uptime-kuma:
   # https://github.com/statping/statping/wiki/Config-with-.env-File
   env:
     TZ: "America/Chicago"
-    NODE_EXTRA_CA_CERTS: /etc/ssl/certs/ca.crt
+    NODE_EXTRA_CA_CERTS: /rootCert/ca.crt
 
   ingress:
     main:
@@ -33,15 +33,8 @@ uptime-kuma:
       skipuninstall: true
       size: "2Gi"
       enabled: true
+    rootCert:
+      enabled: true
+      type: secret
+      name: up-cert-tls
 
-#  # cert is needed for accessing the sites
-  additionalVolumeMounts:
-    - name: tls-cert
-      mountPath: "/etc/ssl/certs/ca.crt"
-      subPath: "ca.crt"
-      readOnly: true
-#
-  additionalVolumes:
-    - name: tls-cert
-      secret:
-        secretName: up-cert-tls
