@@ -1,7 +1,7 @@
 zwavejs2mqtt:
   image:
     repository: zwavejs/zwavejs2mqtt
-    tag: 6.9.1
+    tag: 6.10.0
   env:
     TZ: "America/Chicago"
   securityContext:
