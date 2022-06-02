@@ -1,7 +1,7 @@
 uptime-kuma:
   image:
     repository: louislam/uptime-kuma
-    tag: 1.16.0
+    tag: 1.16.1
 
   # See more environment variables in the statping documentation
   # https://github.com/statping/statping/wiki/Config-with-.env-File
