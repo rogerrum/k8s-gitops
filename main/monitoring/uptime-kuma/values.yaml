@@ -38,3 +38,12 @@ uptime-kuma:
       type: secret
       name: up-cert-tls
 
+  probes:
+    startup:
+      enabled: false
+
+    liveness:
+      enabled: false
+
+    readiness:
+      enabled: false
