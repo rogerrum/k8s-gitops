@@ -3,5 +3,5 @@ apiVersion: v2
 version: 1.0.0
 dependencies:
   - name: portainer
-    version: "1.0.30"
+    version: "1.0.31"
     repository: https://portainer.github.io/k8s
