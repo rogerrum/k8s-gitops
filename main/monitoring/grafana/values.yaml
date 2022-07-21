@@ -1,7 +1,7 @@
 grafana:
   image:
     repository: grafana/grafana
-    tag: 9.0.2
+    tag: 9.0.4
   # tolerations:
   # - key: "arm"
   #   operator: "Exists"
