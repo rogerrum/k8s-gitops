@@ -2,7 +2,7 @@ prometheus-blackbox-exporter:
   fullnameOverride: blackbox-exporter
   image:
     repository: quay.io/prometheus/blackbox-exporter
-    tag: v0.21.1
+    tag: v0.22.0
   allowIcmp: true
   config:
     modules:
