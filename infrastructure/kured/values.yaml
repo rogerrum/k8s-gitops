@@ -1,6 +1,6 @@
 kured:
   image:
-    repository: raspbernetes/kured
+    repository: ghcr.io/kubereboot/kured
     tag: 1.10.2
   updateStrategy: RollingUpdate
   configuration:
