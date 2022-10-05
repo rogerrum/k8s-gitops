@@ -11,6 +11,10 @@ spec:
     namespace: monitoring
     server: https://kubernetes.default.svc
   project: default
+  ignoreDifferences:
+    - kind: ServiceMonitor
+      jsonPointers:
+        - /spec/endpoints/0/metricRelabelings
   source:
     path: main/monitoring/blackbox-exporter
     repoURL: {{ .Values.repo.url }}
