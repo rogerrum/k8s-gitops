@@ -1,7 +1,7 @@
 traccar:
   image:
     repository: traccar/traccar
-    tag: "5.3"
+    tag: "5.4"
   env:
     TZ: "America/Chicago"
     DATABASE_DRIVER: "org.postgresql.Driver"
