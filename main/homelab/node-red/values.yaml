@@ -1,7 +1,7 @@
 node-red:
   image:
     repository: nodered/node-red
-    tag: 2.2.3-12-minimal
+    tag: 3.0.2-18-minimal
   env:
     TZ: "America/Chicago"
     FLOWS: "flows.json"
