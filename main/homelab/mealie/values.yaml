@@ -1,20 +1,10 @@
 mealie:
   image:
     repository: hkotel/mealie
-    tag: v0.5.6
+    tag: frontend-v1.0.0beta-2
+
   env:
     TZ: "America/Chicago"
-    DB_TYPE: postgres
-    DB_ENGINE: postgres # Optional: 'sqlite', 'postgres'
-    POSTGRES_USER: mealie
-    POSTGRES_SERVER: postgresql.kube-system.svc.cluster.local
-    POSTGRES_PORT: 5432
-    POSTGRES_DB: mealie
-    POSTGRES_PASSWORD:
-      valueFrom:
-        secretKeyRef:
-          name: mealie-secret
-          key: POSTGRES_PASSWORD
 
   ingress:
     main:
@@ -32,8 +22,28 @@ mealie:
         - hosts:
             - food.rsr.net
           secretName: mealie-cert-tls
+
+  api:
+    image:
+      repository: hkotel/mealie
+      tag: api-v1.0.0beta-2
+
+    env:
+      TZ: "America/Chicago"
+      DB_TYPE: postgres
+      DB_ENGINE: postgres # Optional: 'sqlite', 'postgres'
+      POSTGRES_USER: mealie
+      POSTGRES_SERVER: postgresql.kube-system.svc.cluster.local
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: mealie
+      POSTGRES_PASSWORD:
+        valueFrom:
+          secretKeyRef:
+            name: mealie-secret
+            key: POSTGRES_PASSWORD
+
   persistence:
-    config:
+    api-data:
       enabled: true
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
