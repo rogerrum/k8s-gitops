@@ -2,8 +2,8 @@ prometheus-blackbox-exporter:
   fullnameOverride: blackbox-exporter
   image:
     repository: quay.io/prometheus/blackbox-exporter
-    tag: v0.22.0
-  allowIcmp: true
+#    tag: v0.22.0
+
   config:
     modules:
       icmp:
@@ -11,12 +11,38 @@ prometheus-blackbox-exporter:
         timeout: 30s
         icmp:
           preferred_ip_protocol: "ip4"
+
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: blackbox.rsr.net
+    hosts:
+      - host: blackbox.rsr.net
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - blackbox.rsr.net
+        secretName: blackbox-cert-tls
+
+  pspEnabled: false
+
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      add: [ "NET_RAW" ]
+
   serviceMonitor:
     enabled: true
     defaults:
       labels:
         release: prometheus
-      interval: 30s
+      interval: 2m
       scrapeTimeout: 30s
     targets:
       - name: router
@@ -43,6 +69,7 @@ prometheus-blackbox-exporter:
       - name: home-nas
         url: 192.168.1.115
         module: icmp
+
   prometheusRule:
     enabled: true
     additionalLabels:
@@ -56,6 +83,7 @@ prometheus-blackbox-exporter:
           severity: critical
         annotations:
           message: The host {{"{{ $labels.target }}"}} is currently unreachable
+
       - alert: SlowResponseTime
         annotations:
           message: The response time for {{"{{ $labels.target }}"}} has been greater than 30 seconds for 5 minutes.
