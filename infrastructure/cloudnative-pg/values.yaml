@@ -1,3 +1,11 @@
 cloudnative-pg:
 
   replicaCount: 1
+
+replicas : 3
+
+storage:
+  size: 20Gi
+  storageClass: "longhorn"
+
+superuserSecret: postgres-superuser-secret
