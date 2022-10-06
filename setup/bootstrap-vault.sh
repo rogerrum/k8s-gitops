@@ -313,7 +313,7 @@ fi
 
 #loadSecretsToVault
 
-argoHelmValueVaultNew "infrastructure/kured/kured-helm-values.yaml"
-#prometheusVault
+#argoHelmValueVaultNew "infrastructure/kured/kured-helm-values.yaml"
+prometheusVault
 
 kill $VAULT_FWD_PID
