@@ -9,3 +9,6 @@ minio:
     - accessKey: $MINIO_LOKI_ACCESS_KEY
       secretKey: $MINIO_LOKI_SECRET_KEY
       policy: readwrite
+    - accessKey: $MINIO_POSTGRES_ACCESS_KEY
+      secretKey: $MINIO_POSTGRES_SECRET_KEY
+      policy: readwrite

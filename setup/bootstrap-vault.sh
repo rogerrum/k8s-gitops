@@ -270,7 +270,7 @@ loadSecretsToVault() {
   argoHelmValueVault "main/monitoring/statping/statping-helm-values.txt"
   argoHelmValueVault "main/homelab/emqx/emqx-helm-values.txt"
   argoHelmValueVaultNew "main/homelab/frigate/frigate-helm-values.yaml"
-  argoHelmValueVault "main/homelab/minio/minio-helm-values.txt"
+  argoHelmValueVaultNew "main/homelab/minio/minio-helm-values.yaml"
   argoHelmValueVaultNew "main/homelab/home-assistant/home-assistant-helm-values.yaml"
 
   prometheusVault
@@ -294,6 +294,9 @@ loadSecretsToVault() {
   secretVault "main/monitoring/icinga2/icinga2-secret.txt"
   secretVault "main/homelab/webtrees/webtrees-secret.txt"
 
+  secretVault "infrastructure/cloudnative-pg/postgres-minio-secret.txt"
+  secretVault "infrastructure/cloudnative-pg/postgres-superuser-secret.txt"
+
   vault kv put secrets/argocd/argocd-discord-webhook discord-webhook="$DISCORD_ARGO_WEBHOOK_URL"
 
   secretVault "main/monitoring/alertmanager-discord/alertmanager-discord-secret.txt"
@@ -313,7 +316,9 @@ fi
 
 #loadSecretsToVault
 
-#argoHelmValueVaultNew "infrastructure/kured/kured-helm-values.yaml"
-prometheusVault
+#prometheusVault
+argoHelmValueVaultNew "main/homelab/minio/minio-helm-values.yaml"
+secretVault "infrastructure/cloudnative-pg/postgres-minio-secret.txt"
+secretVault "infrastructure/cloudnative-pg/postgres-superuser-secret.txt"
 
 kill $VAULT_FWD_PID
