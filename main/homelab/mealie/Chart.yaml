@@ -2,6 +2,6 @@ name: mealie
 apiVersion: v2
 version: 1.0.0
 dependencies:
-  - name: mealie
-    version: 5.1.2
-    repository: https://k8s-at-home.com/charts/
+  - name: app-template
+    version: 0.2.2
+    repository: https://bjw-s.github.io/helm-charts/
