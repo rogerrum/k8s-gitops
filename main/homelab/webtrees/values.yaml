@@ -60,6 +60,6 @@ webtrees:
     config:
       enabled: true
       storageClass: "longhorn"
-      accessMode: ReadWriteMany
+      accessMode: ReadWriteOnce
       skipuninstall: true
       size: "1Gi"
