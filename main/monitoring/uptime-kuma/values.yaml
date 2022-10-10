@@ -29,7 +29,7 @@ uptime-kuma:
   persistence:
     data:
       storageClass: "longhorn"
-      accessMode: ReadWriteMany
+      accessMode: ReadWriteOnce
       skipuninstall: true
       size: "2Gi"
       enabled: true
