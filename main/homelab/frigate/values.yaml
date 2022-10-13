@@ -63,10 +63,10 @@ frigate:
     requests:
       memory: 1000Mi
       cpu: 750m
-      gpu.intel.com/i915: 2
+      gpu.intel.com/i915: 1
     limits:
       memory: 2000Mi
-      gpu.intel.com/i915: 2
+      gpu.intel.com/i915: 1
 
   env:
     TZ: "America/Chicago"
