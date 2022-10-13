@@ -18,5 +18,5 @@ descheduler:
             - requiredDuringSchedulingIgnoredDuringExecution
       RemovePodsViolatingInterPodAntiAffinity:
         enabled: true
-#      LowNodeUtilization:
-#        enabled: false
+      LowNodeUtilization:
+        enabled: false
