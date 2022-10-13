@@ -317,8 +317,8 @@ fi
 #loadSecretsToVault
 
 #prometheusVault
-argoHelmValueVaultNew "main/homelab/minio/minio-helm-values.yaml"
-secretVault "infrastructure/cloudnative-pg/postgres-minio-secret.txt"
+#argoHelmValueVaultNew "main/homelab/minio/minio-helm-values.yaml"
+#secretVault "infrastructure/cloudnative-pg/postgres-minio-secret.txt"
 secretVault "infrastructure/cloudnative-pg/postgres-superuser-secret.txt"
 
 kill $VAULT_FWD_PID
