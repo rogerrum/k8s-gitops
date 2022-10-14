@@ -1,0 +1,53 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup
+spec:
+  schedule: "0 4 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          automountServiceAccountToken: false
+          enableServiceLinks: false
+{{/*          securityContext:*/}}
+{{/*            runAsUser: 1031*/}}
+{{/*            runAsGroup: 1031*/}}
+{{/*            fsGroup: 1031*/}}
+{{/*            supplementalGroups:*/}}
+{{/*              - 65541*/}}
+
+          containers:
+            - name: postgres-backup
+              image: docker.io/prodrigestivill/postgres-backup-local:14@sha256:b600ffa93eae3315c876ee5fc3f854e58468df16101c458f3d4d3dd16c6272c3
+              imagePullPolicy: IfNotPresent
+              command:
+                - "/backup.sh"
+              env:
+                - name: POSTGRES_HOST
+                  value: postgres-rw.kube-system.svc.cluster.local
+                - name: POSTGRES_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.superuserSecret }}
+                      key: username
+                - name: POSTGRES_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.superuserSecret }}
+                      key: password
+                - name: POSTGRES_DB
+                  value: "mealie"
+              volumeMounts:
+                - name: backup
+                  mountPath: /backups
+                  subPath: postgres
+
+          restartPolicy: OnFailure
+
+          volumes:
+            - name: backup
+              persistentVolumeClaim:
+                claimName: nas-backup-pvc
