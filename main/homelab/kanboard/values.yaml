@@ -12,7 +12,7 @@ kanboard:
         secretKeyRef:
           name: kanboard-secret
           key: DB_PASSWORD
-    DB_HOSTNAME: "postgresql.kube-system.svc.cluster.local"
+    DB_HOSTNAME: "postgres-rw.kube-system.svc.cluster.local"
 
   ingress:
     main:
