@@ -48,7 +48,7 @@ spec:
   accessModes:
     - ReadWriteMany
   claimRef:
-    name: nas-backup-pv
+    name: nas-backup-pvc
     namespace: default
   persistentVolumeReclaimPolicy: Retain
   nfs:
