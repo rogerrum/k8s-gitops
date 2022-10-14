@@ -1,0 +1,21 @@
+{
+  packageRules: [
+    {
+      "matchDatasources": ["github-tags", "docker"],
+      "matchPackagePatterns": ["rancher/system-upgrade-controller"],
+      "groupName": "system-upgrade-controller-suite",
+      "additionalBranchPrefix": "",
+      "separateMinorPatch": true
+    },
+    {
+      description: "Thanos image and chart - versions do not match",
+      groupName: "Thanos",
+      matchDatasources: ["docker", "github-releases", "helm"],
+      matchPackagePatterns: ["quay.io/thanos/thanos", "thanos"],
+      matchUpdateTypes: ["minor", "patch"],
+      group: { commitMessageTopic: "{{{groupName}}} group" },
+      separateMinorPatch: false,
+      stabilityDays: 2,
+    },
+  ],
+}
