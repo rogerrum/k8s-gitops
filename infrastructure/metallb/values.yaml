@@ -1,36 +1,31 @@
 metallb:
-  configInline:
-    peers:
-      - peer-address: 192.168.1.1
-        peer-asn: 64501
-        my-asn: 64500
-    address-pools:
-      - name: bgp
-        protocol: bgp
-        addresses:
-          - 192.168.100.2-192.168.100.254
-        avoid-buggy-ips: true
-  prometheusRule:
+#  configInline:
+#    peers:
+#      - peer-address: 192.168.1.1
+#        peer-asn: 64501
+#        my-asn: 64500
+#    address-pools:
+#      - name: bgp
+#        protocol: bgp
+#        addresses:
+#          - 192.168.100.2-192.168.100.254
+#        avoid-buggy-ips: true
+  crds:
     enabled: true
   prometheus:
-    enabled: true
-    serviceMonitor:
+    namespace: monitoring
+    serviceAccount: kube-prometheus-stack-prometheus
+    podMonitor:
       enabled: true
     prometheusRule:
       enabled: true
   controller:
-#    image:
-#      repository: quay.io/metallb/controller
-#      tag: v0.11.0
     tolerations:
       - key: "arm"
         operator: "Exists"
       - key: "arm64"
         operator: "Exists"
   speaker:
-#    image:
-#      repository: quay.io/metallb/speaker
-#      tag: v0.11.0
     tolerations:
       - key: "arm"
         operator: "Exists"

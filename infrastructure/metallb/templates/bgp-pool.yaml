@@ -1,0 +1,31 @@
+---
+apiVersion: metallb.io/v1beta1
+kind: BGPAdvertisement
+metadata:
+  name: bgp-lb
+  namespace: kube-system
+spec:
+  ipAddressPools:
+    - bgp-pool
+  peers:
+    - gateway
+---
+apiVersion: metallb.io/v1beta2
+kind: BGPPeer
+metadata:
+  name: gateway
+  namespace: kube-system
+spec:
+  peerAddress: 192.168.1.1
+  peerASN: 64501
+  myASN: 64500
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: bgp-pool
+  namespace: kube-system
+spec:
+  addresses:
+    - 192.168.100.2-192.168.100.254
+  avoidBuggyIPs: true
