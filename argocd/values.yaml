@@ -185,8 +185,307 @@ argo-cd:
         enabled: false
 
   notifications:
-    enabled: false
+    enabled: true
 
+    argocdUrl: https://argo.rsr.net
+    secret:
+      create: false
+
+    subscriptions:
+      # For more information: https://argocd-notifications.readthedocs.io/en/stable/subscriptions/
+      # # subscription for on-sync-status-unknown trigger notifications
+      - recipients:
+          - discord
+        triggers:
+          - on-deployed
+          - on-sync-failed
+#          - on-sync-running
+          - on-sync-status-unknown
+          - on-health-degraded
+    #        - on-sync-succeeded
+
+    templates:
+      # For more information: https://argocd-notifications.readthedocs.io/en/stable/templates/
+      template.app-deployed: |
+        webhook:
+          discord:
+            method: POST
+            body: |
+              {
+                "username": "ArgoCd",
+                "avatar_url": "https://avatars.githubusercontent.com/u/30269780",
+                "content": ":white_check_mark: Application {{.app.metadata.name}} is now running new version of deployments manifests.",
+                "embeds": [
+                  {
+                    "title": "{{ .app.metadata.name}}",
+                    "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+                    "color": 1621586,
+                    "fields": [
+                    {
+                      "name": "Sync Status",
+                      "value": "{{.app.status.sync.status}}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Repository",
+                      "value": "{{.app.spec.source.repoURL}}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Revision",
+                      "value": "{{.app.status.sync.revision}}",
+                      "inline": true
+                    }
+                    {{range $index, $c := .app.status.conditions}}
+                    {{if not $index}},{{end}}
+                    {{if $index}},{{end}}
+                    {
+                      "name": "{{$c.type}}",
+                      "value": "{{$c.message}}",
+                      "inline": true
+                    }
+                    {{end}}
+                    ]
+                  }
+                ]
+              }
+      template.app-health-degraded: |
+        webhook:
+          discord:
+            method: POST
+            body: |
+              {
+                "username": "ArgoCd",
+                "avatar_url": "https://avatars.githubusercontent.com/u/30269780",
+                "content": ":exclamation: Application {{.app.metadata.name}} has degraded.",
+                "embeds": [
+                  {
+                    "title": "{{ .app.metadata.name}}",
+                    "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+                    "color": 16039984,
+                    "fields": [
+                    {
+                      "name": "Sync Status",
+                      "value": "{{.app.status.sync.status}}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Repository",
+                      "value": "{{.app.spec.source.repoURL}}",
+                      "inline": true
+                    }
+                    {{range $index, $c := .app.status.conditions}}
+                    {{if not $index}},{{end}}
+                    {{if $index}},{{end}}
+                    {
+                      "name": "{{$c.type}}",
+                      "value": "{{$c.message}}",
+                      "inline": true
+                    }
+                    {{end}}
+                    ]
+                  }
+                ]
+              }
+      template.app-sync-failed: |
+        webhook:
+          discord:
+            method: POST
+            body: |
+              {
+                "username": "ArgoCd",
+                "avatar_url": "https://avatars.githubusercontent.com/u/30269780",
+                "content": ":exclamation: The sync operation of application {{.app.metadata.name}} has failed at {{.app.status.operationState.finishedAt}} with the following error: {{.app.status.operationState.message}}",
+                "embeds": [
+                  {
+                    "title": "{{ .app.metadata.name}}",
+                    "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+                    "color": "#E96D76",
+                    "fields": [
+                    {
+                      "name": "Sync Status",
+                      "value": "{{.app.status.sync.status}}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Repository",
+                      "value": "{{.app.spec.source.repoURL}}",
+                      "inline": true
+                    }
+                    {{range $index, $c := .app.status.conditions}}
+                    {{if not $index}},{{end}}
+                    {{if $index}},{{end}}
+                    {
+                      "name": "{{$c.type}}",
+                      "value": "{{$c.message}}",
+                      "inline": true
+                    }
+                    {{end}}
+                    ]
+                  }
+                ]
+              }
+      template.app-sync-running: |
+        webhook:
+          discord:
+            method: POST
+            body: |
+              {
+                "username": "ArgoCd",
+                "avatar_url": "https://avatars.githubusercontent.com/u/30269780",
+                "content": "The sync operation of application {{.app.metadata.name}} has started at {{.app.status.operationState.startedAt}}.",
+                "embeds": [
+                  {
+                    "title": "{{ .app.metadata.name}}",
+                    "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+                    "color": 896490,
+                    "fields": [
+                    {
+                      "name": "Sync Status",
+                      "value": "{{.app.status.sync.status}}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Repository",
+                      "value": "{{.app.spec.source.repoURL}}",
+                      "inline": true
+                    }
+                    {{range $index, $c := .app.status.conditions}}
+                    {{if not $index}},{{end}}
+                    {{if $index}},{{end}}
+                    {
+                      "name": "{{$c.type}}",
+                      "value": "{{$c.message}}",
+                      "inline": true
+                    }
+                    {{end}}
+                    ]
+                  }
+                ]
+              }
+      template.app-sync-status-unknown: |
+        webhook:
+          discord:
+            method: POST
+            body: |
+              {
+                "username": "ArgoCd",
+                "avatar_url": "https://avatars.githubusercontent.com/u/30269780",
+                "content": ":exclamation: Application {{.app.metadata.name}} sync is 'Unknown'.",
+                "embeds": [
+                  {
+                    "title": "{{ .app.metadata.name}}",
+                    "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+                    "color": 15297910,
+                    "fields": [
+                    {
+                      "name": "Sync Status",
+                      "value": "{{.app.status.sync.status}}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Repository",
+                      "value": "{{.app.spec.source.repoURL}}",
+                      "inline": true
+                    }
+                    {{range $index, $c := .app.status.conditions}}
+                    {{if not $index}},{{end}}
+                    {{if $index}},{{end}}
+                    {
+                      "name": "{{$c.type}}",
+                      "value": "{{$c.message}}",
+                      "inline": true
+                    }
+                    {{end}}
+                    ]
+                  }
+                ]
+              }
+      template.app-sync-succeeded: |
+        webhook:
+          discord:
+            method: POST
+            body: |
+              {
+                "username": "ArgoCd",
+                "avatar_url": "https://avatars.githubusercontent.com/u/30269780",
+                "content": ":white_check_mark: Application {{.app.metadata.name}} has been successfully synced at {{.app.status.operationState.finishedAt}}.",
+                "embeds": [
+                  {
+                    "title": "{{ .app.metadata.name}}",
+                    "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+                    "color": 1621586,
+                    "fields": [
+                    {
+                      "name": "Sync Status",
+                      "value": "{{.app.status.sync.status}}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Repository",
+                      "value": "{{.app.spec.source.repoURL}}",
+                      "inline": true
+                    }
+                    {{range $index, $c := .app.status.conditions}}
+                    {{if not $index}},{{end}}
+                    {{if $index}},{{end}}
+                    {
+                      "name": "{{$c.type}}",
+                      "value": "{{$c.message}}",
+                      "inline": true
+                    }
+                    {{end}}
+                    ]
+                  }
+                ]
+              }
+
+
+
+    triggers:
+      # For more information: https://argocd-notifications.readthedocs.io/en/stable/triggers/
+      trigger.on-deployed: |
+        - description: Application is synced and healthy. Triggered once per commit.
+          oncePer: app.status.sync.revision
+          send:
+          - app-deployed
+          when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
+      trigger.on-health-degraded: |
+        - description: Application has degraded
+          send:
+          - app-health-degraded
+          when: app.status.health.status == 'Degraded'
+      trigger.on-sync-failed: |
+        - description: Application syncing has failed
+          send:
+          - app-sync-failed
+          when: app.status.operationState.phase in ['Error', 'Failed']
+      trigger.on-sync-running: |
+        - description: Application is being synced
+          send:
+          - app-sync-running
+          when: app.status.operationState.phase in ['Running']
+      trigger.on-sync-status-unknown: |
+        - description: Application status is 'Unknown'
+          send:
+          - app-sync-status-unknown
+          when: app.status.sync.status == 'Unknown'
+      trigger.on-sync-succeeded: |
+        - description: Application syncing has succeeded
+          send:
+          - app-sync-succeeded
+          when: app.status.operationState.phase in ['Succeeded']
+
+
+
+    notifiers:
+      # For more information: https://argocd-notifications.readthedocs.io/en/stable/services/overview/
+      service.webhook.discord: |
+        url: $discord-webhook
+        headers:
+        - name: Content-Type
+          value: application/json
+#    logLevel: debug
     bots:
       slack: 
         serviceAccount:
