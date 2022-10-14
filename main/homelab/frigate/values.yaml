@@ -35,7 +35,7 @@ frigate:
       mountPath: /data
     media:
       enabled: true
-      existingClaim: nas-data-pvc
+      existingClaim: nas-media-pvc
       mountPath: /media
       subPath: Videos
     usb:
