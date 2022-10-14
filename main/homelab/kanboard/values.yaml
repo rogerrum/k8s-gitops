@@ -30,3 +30,24 @@ kanboard:
         - hosts:
             - kanboard.rsr.net
           secretName: kanboard-cert-tls
+
+  initContainers:
+    init-db:
+      image: ghcr.io/onedr0p/postgres-initdb:14.5
+      env:
+        - name: POSTGRES_HOST
+          value: postgres-rw.kube-system.svc.cluster.local
+        - name: POSTGRES_DB
+          value: kanboard
+        - name: POSTGRES_SUPER_PASS
+          valueFrom:
+            secretKeyRef:
+              name: postgres-superuser-secret
+              key: password
+        - name: POSTGRES_USER
+          value: kanboard
+        - name: POSTGRES_PASS
+          valueFrom:
+            secretKeyRef:
+              name: kanboard-secret
+              key: DB_PASSWORD
