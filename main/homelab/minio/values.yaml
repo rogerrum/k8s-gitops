@@ -7,7 +7,7 @@ minio:
 #    repository: quay.io/minio/mc
 #    tag: RELEASE.2021-11-16T20-37-36Z
 
-  mode: gateway
+  mode: standalone
 
   environment:
     MINIO_PROMETHEUS_URL: "http://kube-prometheus-stack-prometheus.monitoring.svc:9090"
