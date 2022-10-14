@@ -56,7 +56,7 @@ app-template:
         - name: POSTGRES_PORT
           value: "5432"
         - name: POSTGRES_SERVER
-          value: postgresql.kube-system.svc.cluster.local
+          value: postgres-rw.kube-system.svc.cluster.local
         - name: POSTGRES_USER
           value: mealie
         - name: TZ
