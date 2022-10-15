@@ -14,7 +14,7 @@ spec:
   ignoreDifferences:
     - kind: ServiceMonitor
       jsonPointers:
-        - /spec/endpoints/0/metricRelabelings
+        - /spec/endpoints/metricRelabelings/action
   source:
     path: main/monitoring/blackbox-exporter
     repoURL: {{ .Values.repo.url }}
