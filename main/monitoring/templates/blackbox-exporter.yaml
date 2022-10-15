@@ -13,8 +13,8 @@ spec:
   project: default
   ignoreDifferences:
     - kind: ServiceMonitor
-      jsonPointers:
-        - /spec/endpoints/metricRelabelings/action
+      jqPathExpressions:
+        - .spec.endpoints[].metricRelabelings[].action
   source:
     path: main/monitoring/blackbox-exporter
     repoURL: {{ .Values.repo.url }}
