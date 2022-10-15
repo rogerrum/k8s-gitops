@@ -12,7 +12,8 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   ignoreDifferences:
-    - kind: ServiceMonitor
+    - group: "*"
+      kind: "ServiceMonitor"
       jqPathExpressions:
         - .spec.endpoints[].metricRelabelings
   source:
