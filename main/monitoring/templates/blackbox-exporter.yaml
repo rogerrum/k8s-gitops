@@ -14,7 +14,7 @@ spec:
   ignoreDifferences:
     - kind: ServiceMonitor
       jqPathExpressions:
-        - .spec.endpoints[].metricRelabelings[]
+        - .spec.endpoints[].metricRelabelings
   source:
     path: main/monitoring/blackbox-exporter
     repoURL: {{ .Values.repo.url }}
