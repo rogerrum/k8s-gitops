@@ -278,6 +278,8 @@ loadSecretsToVault() {
   secretVault "infrastructure/longhorn/longhorn-backup-secret.txt"
   secretVault "main/homelab/home-assistant/home-assistant-postgresql-secret.txt"
 
+  secretVault "infrastructure/cloudnative-pg/postgres-minio-secret.txt"
+  secretVault "infrastructure/cloudnative-pg/postgres-superuser-secret.txt"
   secretVault "infrastructure/oauth2-proxy/oauth2-proxy-secret.txt"
   secretVault "infrastructure/postgresql/postgresql-secret.txt"
   secretVault "main/monitoring/statping/statping-secret.txt"
@@ -294,8 +296,6 @@ loadSecretsToVault() {
   secretVault "main/monitoring/icinga2/icinga2-secret.txt"
   secretVault "main/homelab/webtrees/webtrees-secret.txt"
 
-  secretVault "infrastructure/cloudnative-pg/postgres-minio-secret.txt"
-  secretVault "infrastructure/cloudnative-pg/postgres-superuser-secret.txt"
 
   vault kv put secrets/argocd/argocd-discord-webhook discord-webhook="$DISCORD_ARGO_WEBHOOK_URL"
 
@@ -319,6 +319,8 @@ fi
 #prometheusVault
 #argoHelmValueVaultNew "main/homelab/minio/minio-helm-values.yaml"
 #secretVault "infrastructure/cloudnative-pg/postgres-minio-secret.txt"
-secretVault "infrastructure/cloudnative-pg/postgres-superuser-secret.txt"
+
+
+secretVault "main/homelab/home-assistant/home-assistant-secret.txt"
 
 kill $VAULT_FWD_PID
