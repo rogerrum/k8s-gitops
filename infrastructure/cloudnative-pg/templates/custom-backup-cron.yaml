@@ -39,7 +39,7 @@ spec:
                       name: {{ .Values.superuserSecret }}
                       key: password
                 - name: POSTGRES_DB
-                  value: "mealie"
+                  value: "mealie,kanboard,home-assistant"
               volumeMounts:
                 - name: backup
                   mountPath: /backups
