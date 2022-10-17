@@ -118,3 +118,28 @@ home-assistant:
 #    requests:
 #      cpu: 100m
 #      memory: 1000Mi
+
+  initContainers:
+    init-db:
+      image: ghcr.io/onedr0p/postgres-initdb:14.5
+      env:
+        - name: POSTGRES_HOST
+          value: postgres-rw.kube-system.svc.cluster.local
+        - name: POSTGRES_DB
+          value: home-assistant
+        - name: POSTGRES_SUPER_PASS
+          valueFrom:
+            secretKeyRef:
+              name: postgres-superuser-secret
+              key: password
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: home-assistant-secret
+              key: POSTGRES_USERNAME
+        - name: POSTGRES_PASS
+          valueFrom:
+            secretKeyRef:
+              name: home-assistant-secret
+              key: POSTGRES_PASSWORD
+
