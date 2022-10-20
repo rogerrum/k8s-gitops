@@ -87,7 +87,7 @@ _resources() {
 
     local resources=
 
-#    helm dep update "$chart_location" > /dev/null 2>&1
+    helm dep update "$chart_location" > /dev/null 2>&1
 
     resources=$(helm template "${chart_location}")
     if [[ "${remove_common_labels}" == "true" ]]; then
