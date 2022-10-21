@@ -56,7 +56,7 @@ home-assistant:
       enabled: true
 #      existingClaim: home-assistant-pvc
       storageClass: "longhorn"
-      accessMode: ReadWriteMany
+      accessMode: ReadWriteOnce
       skipuninstall: true
       size: "10Gi"
 
