@@ -93,3 +93,4 @@ prometheus-blackbox-exporter:
         for: 5m
         labels:
           severity: warning
+
