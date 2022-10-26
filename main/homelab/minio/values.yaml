@@ -1,11 +1,4 @@
 minio:
-#  image:
-#    repository: quay.io/minio/minio
-#    tag: RELEASE.2022-03-14T18-25-24Z
-
-#  mcImage:
-#    repository: quay.io/minio/mc
-#    tag: RELEASE.2021-11-16T20-37-36Z
 
   mode: standalone
 
