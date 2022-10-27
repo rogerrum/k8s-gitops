@@ -119,7 +119,7 @@ home-assistant:
 #      cpu: 100m
 #      memory: 1000Mi
 
-  initContainers:
+  initContainers1:
     init-db:
       image: ghcr.io/onedr0p/postgres-initdb:14.5
       env:
