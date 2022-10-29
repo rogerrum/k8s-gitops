@@ -1,31 +1,31 @@
----
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
-metadata:
-  name: postgres
-spec:
-  instances: {{ .Values.replicas }}
-  primaryUpdateStrategy: unsupervised
-  storage:
-    size: {{ .Values.storage.size }}
-    storageClass: {{ .Values.storage.storageClass }}
-  superuserSecret:
-    name: {{ .Values.superuserSecret }}
-  monitoring:
-    enablePodMonitor: true
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore:
-      wal:
-        compression: bzip2
-        maxParallel: 8
-      destinationPath: s3://postgresql/
-      endpointURL: http://minio.default.svc.cluster.local:9000
-      serverName: postgres-v1
-      s3Credentials:
-        accessKeyId:
-          name: postgres-minio-secret
-          key: MINIO_ACCESS_KEY
-        secretAccessKey:
-          name: postgres-minio-secret
-          key: MINIO_SECRET_KEY
+{{/*---*/}}
+{{/*apiVersion: postgresql.cnpg.io/v1*/}}
+{{/*kind: Cluster*/}}
+{{/*metadata:*/}}
+{{/*  name: postgres*/}}
+{{/*spec:*/}}
+{{/*  instances: {{ .Values.replicas }}*/}}
+{{/*  primaryUpdateStrategy: unsupervised*/}}
+{{/*  storage:*/}}
+{{/*    size: {{ .Values.storage.size }}*/}}
+{{/*    storageClass: {{ .Values.storage.storageClass }}*/}}
+{{/*  superuserSecret:*/}}
+{{/*    name: {{ .Values.superuserSecret }}*/}}
+{{/*  monitoring:*/}}
+{{/*    enablePodMonitor: true*/}}
+{{/*  backup:*/}}
+{{/*    retentionPolicy: 30d*/}}
+{{/*    barmanObjectStore:*/}}
+{{/*      wal:*/}}
+{{/*        compression: bzip2*/}}
+{{/*        maxParallel: 8*/}}
+{{/*      destinationPath: s3://postgresql/*/}}
+{{/*      endpointURL: http://minio.default.svc.cluster.local:9000*/}}
+{{/*      serverName: postgres-v1*/}}
+{{/*      s3Credentials:*/}}
+{{/*        accessKeyId:*/}}
+{{/*          name: postgres-minio-secret*/}}
+{{/*          key: MINIO_ACCESS_KEY*/}}
+{{/*        secretAccessKey:*/}}
+{{/*          name: postgres-minio-secret*/}}
+{{/*          key: MINIO_SECRET_KEY*/}}
