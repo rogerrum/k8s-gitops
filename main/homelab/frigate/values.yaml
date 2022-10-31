@@ -126,13 +126,13 @@ frigate:
                 default: 14
                 mode: active_objects
           
-            snapshots:
-              enabled: true
-              timestamp: false
-              bounding_box: true
-              crop: false
-              retain:
-                default: 7
+          snapshots:
+            enabled: true
+            timestamp: false
+            bounding_box: true
+            crop: false
+            retain:
+              default: 7
           
           cameras:
             basement_room:
