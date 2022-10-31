@@ -15,13 +15,13 @@ influxdb:
     limits:
       memory: 4000Mi
   livenessProbe:
-    timeoutSeconds: 10
+    timeoutSeconds: 30
   readinessProbe:
-    timeoutSeconds: 10
+    timeoutSeconds: 30
   startupProbe:
     enabled: true
-    failureThreshold: 10
-    periodSeconds: 10
+    failureThreshold: 30
+    periodSeconds: 30
   config:
     opentsdb:
       enabled: true

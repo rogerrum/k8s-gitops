@@ -1,27 +1,27 @@
-{{/*apiVersion: argoproj.io/v1alpha1*/}}
-{{/*kind: Application*/}}
-{{/*metadata:*/}}
-{{/*  name: kured*/}}
-{{/*  annotations:*/}}
-{{/*    argocd.argoproj.io/sync-wave: "0"*/}}
-{{/*  finalizers:*/}}
-{{/*    - resources-finalizer.argocd.argoproj.io*/}}
-{{/*spec:*/}}
-{{/*  destination:*/}}
-{{/*    namespace: kube-system*/}}
-{{/*    server: https://kubernetes.default.svc*/}}
-{{/*  project: default*/}}
-{{/*  source:*/}}
-{{/*    path: infrastructure/kured*/}}
-{{/*    repoURL: {{ .Values.repo.url }}*/}}
-{{/*    targetRevision: {{ .Values.repo.revision }}*/}}
-{{/*    helm:*/}}
-{{/*      valueFiles:*/}}
-{{/*        - values.yaml*/}}
-{{/*        - http://localhost/kured.yaml*/}}
-{{/*  syncPolicy:*/}}
-{{/*    automated:*/}}
-{{/*      prune: true*/}}
-{{/*      selfHeal: true*/}}
-{{/*    syncOptions:*/}}
-{{/*      - ApplyOutOfSyncOnly=true*/}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kured
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kube-system
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: infrastructure/kured
+    repoURL: {{ .Values.repo.url }}
+    targetRevision: {{ .Values.repo.revision }}
+    helm:
+      valueFiles:
+        - values.yaml
+        - http://localhost/kured.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
