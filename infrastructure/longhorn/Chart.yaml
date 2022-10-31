@@ -3,5 +3,5 @@ apiVersion: v2
 version: 1.0.0
 dependencies:
   - name: longhorn
-    version: "1.3.1"
-    repository: https://charts.longhorn.io
+    version: "1.4.0-dev"
+    repository: https://rogerrum.github.io/helm-chart/
