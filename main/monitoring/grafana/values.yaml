@@ -1,14 +1,10 @@
 grafana:
-  image:
-    repository: grafana/grafana
-    tag: 9.2.1
   # tolerations:
   # - key: "arm"
   #   operator: "Exists"
   deploymentStrategy:
     type: Recreate
   podAnnotations:
-    backup.velero.io/backup-volumes: storage
     configmap.reloader.stakater.com/reload: "grafana"
   persistence:
     enabled: true
@@ -37,6 +33,7 @@ grafana:
   plugins:
     - natel-discrete-panel
     - pr0ps-trackmap-panel
+    - natel-plotly-panel
     - grafana-piechart-panel
     - grafana-clock-panel
     - vonage-status-panel
