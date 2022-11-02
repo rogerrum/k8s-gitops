@@ -1,27 +1,27 @@
-{{/*apiVersion: argoproj.io/v1alpha1*/}}
-{{/*kind: Application*/}}
-{{/*metadata:*/}}
-{{/*  name: portainer*/}}
-{{/*  annotations:*/}}
-{{/*    argocd.argoproj.io/sync-wave: "-1"*/}}
-{{/*  finalizers:*/}}
-{{/*    - resources-finalizer.argocd.argoproj.io*/}}
-{{/*spec:*/}}
-{{/*  destination:*/}}
-{{/*    namespace: monitoring*/}}
-{{/*    server: https://kubernetes.default.svc*/}}
-{{/*  project: default*/}}
-{{/*  source:*/}}
-{{/*    path: main/monitoring/portainer*/}}
-{{/*    repoURL: {{ .Values.repo.url }}*/}}
-{{/*    targetRevision: {{ .Values.repo.revision }}*/}}
-{{/*    helm:*/}}
-{{/*      valueFiles:*/}}
-{{/*        - values.yaml*/}}
-{{/*  syncPolicy:*/}}
-{{/*    automated:*/}}
-{{/*      prune: true*/}}
-{{/*      selfHeal: true*/}}
-{{/*    syncOptions:*/}}
-{{/*      - CreateNamespace=true*/}}
-{{/*      - ApplyOutOfSyncOnly=true*/}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: portainer
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: main/monitoring/portainer
+    repoURL: {{ .Values.repo.url }}
+    targetRevision: {{ .Values.repo.revision }}
+    helm:
+      valueFiles:
+        - values.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
