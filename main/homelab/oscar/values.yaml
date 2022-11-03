@@ -1,6 +1,6 @@
 app-template:
   image:
-    repository: rogerrum/oscar-docker
+    repository: rogerrum/docker-oscar
     tag: 0.0.1
     pullPolicy: IfNotPresent
 
