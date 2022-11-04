@@ -4,6 +4,7 @@ metadata:
   name: emqx
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/manifest-generate-paths: /main/homelab/emqx
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

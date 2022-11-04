@@ -4,6 +4,7 @@ metadata:
   name: mealie
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/manifest-generate-paths: /main/homelab/mealie
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

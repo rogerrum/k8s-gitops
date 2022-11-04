@@ -4,6 +4,7 @@ metadata:
   name: airprint
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/manifest-generate-paths: /main/homelab/airprint
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

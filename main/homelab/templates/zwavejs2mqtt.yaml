@@ -4,6 +4,7 @@ metadata:
   name: zwavejs2mqtt
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/manifest-generate-paths: /main/homelab/zwavejs2mqtt
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

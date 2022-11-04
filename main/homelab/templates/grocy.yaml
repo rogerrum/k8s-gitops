@@ -4,6 +4,7 @@ metadata:
   name: grocy
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/manifest-generate-paths: /main/homelab/grocy
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

@@ -4,6 +4,7 @@ metadata:
   name: minio
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/manifest-generate-paths: /main/homelab/minio
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
