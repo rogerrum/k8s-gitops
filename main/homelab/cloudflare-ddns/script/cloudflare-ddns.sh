@@ -47,3 +47,4 @@ set -o errexit
 findCurrentIP
 checkAndUpdateIP "$CLOUDFLARE_RECORD_NAME_1"
 checkAndUpdateIP "$CLOUDFLARE_RECORD_NAME_2"
+checkAndUpdateIP "$CLOUDFLARE_RECORD_NAME_3"
