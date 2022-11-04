@@ -4,6 +4,7 @@ metadata:
   name: oauth2-proxy
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
+    argocd.argoproj.io/manifest-generate-paths: /infrastructure/oauth2-proxy
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

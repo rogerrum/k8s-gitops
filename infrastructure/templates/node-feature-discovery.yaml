@@ -4,6 +4,7 @@ metadata:
   name: node-feature-discovery
   annotations:
     argocd.argoproj.io/sync-wave: "-4"
+    argocd.argoproj.io/manifest-generate-paths: /infrastructure/node-feature-discovery
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

@@ -4,6 +4,7 @@ metadata:
   name: node-problem-detector
   annotations:
     argocd.argoproj.io/sync-wave: "-4"
+    argocd.argoproj.io/manifest-generate-paths: /infrastructure/node-problem-detector
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

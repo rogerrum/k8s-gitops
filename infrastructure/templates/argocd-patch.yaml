@@ -4,6 +4,7 @@ metadata:
   name: argocd-patch
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/manifest-generate-paths: /infrastructure/argocd-patch
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

@@ -4,6 +4,7 @@ metadata:
   name: intel-gpu-plugin
   annotations:
     argocd.argoproj.io/sync-wave: "-3"
+    argocd.argoproj.io/manifest-generate-paths: /infrastructure/intel-gpu-plugin
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

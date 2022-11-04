@@ -4,6 +4,7 @@ metadata:
   name: cloudnative-pg
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/manifest-generate-paths: /infrastructure/cloudnative-pg
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

@@ -4,6 +4,7 @@ metadata:
   name: mariadb
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/manifest-generate-paths: /infrastructure/mariadb
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

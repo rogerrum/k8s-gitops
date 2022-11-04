@@ -11,6 +11,7 @@ metadata:
   name: longhorn
   annotations:
     argocd.argoproj.io/sync-wave: "-3"
+    argocd.argoproj.io/manifest-generate-paths: /infrastructure/longhorn
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

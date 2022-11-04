@@ -4,6 +4,7 @@ metadata:
   name: vault
   annotations:
     argocd.argoproj.io/sync-wave: "-3"
+    argocd.argoproj.io/manifest-generate-paths: /infrastructure/vault
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

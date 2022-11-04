@@ -4,6 +4,7 @@ metadata:
   name: ingress-nginx
   annotations:
     argocd.argoproj.io/sync-wave: "-4"
+    argocd.argoproj.io/manifest-generate-paths: /infrastructure/ingress-nginx
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
