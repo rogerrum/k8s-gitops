@@ -4,6 +4,7 @@ metadata:
   name: promtail
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/manifest-generate-paths: /main/logs/promtail
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
