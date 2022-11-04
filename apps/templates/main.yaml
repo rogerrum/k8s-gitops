@@ -4,7 +4,7 @@ metadata:
   name: main
   annotations:
     argocd.argoproj.io/sync-wave: "-3"
-    argocd.argoproj.io/manifest-generate-paths: /main
+    argocd.argoproj.io/manifest-generate-paths: /main/templates;/main/Chart.yaml;/main/values.yaml
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
