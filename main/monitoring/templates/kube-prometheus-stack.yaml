@@ -4,6 +4,7 @@ metadata:
   name: kube-prometheus-stack
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/manifest-generate-paths: /main/monitoring/kube-prometheus-stack
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

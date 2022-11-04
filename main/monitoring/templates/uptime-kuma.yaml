@@ -4,6 +4,7 @@ metadata:
   name: uptime-kuma
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/manifest-generate-paths: /main/monitoring/uptime-kuma
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
