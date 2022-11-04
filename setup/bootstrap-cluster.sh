@@ -20,6 +20,24 @@ message() {
   echo "######################################################################"
 }
 
+validateInput() {
+  if [ -z "$GITHUB_TOKEN" ]; then
+    echo "GITHUB_TOKEN is not set!"
+    exit 1
+  fi
+
+  if [ -z "$GITHUB_USER" ]; then
+    echo "GITHUB_USER is not set!"
+    exit 1
+  fi
+
+  if [ -z "$GITHUB_WEBHOOK_TOKEN" ]; then
+    echo "GITHUB_WEBHOOK_TOKEN is not set!"
+    exit 1
+  fi
+
+}
+
 installArgoCd() {
   message "installing argoCD Helm Chart"
 
@@ -74,6 +92,15 @@ initArgo() {
 
 }
 
+# ArgoCD chart does not allow webhook.github.secret directly from custom secret or chart
+# need to patch argocd-secret to set value
+initGitWebHookSecret() {
+    message "Setting up argoCD webhook.github.secret"
+    kubectl -n argocd patch secret argocd-secret -p '{ "stringData": { "webhook.github.secret": "'$GITHUB_WEBHOOK_TOKEN'" }}'
+}
+
+
+
 kubeConfig() {
   sudo cp /etc/rancher/k3s/k3s.yaml kubeconfig
   sudo chown $(id -u):$(id -g) kubeconfig
@@ -83,8 +110,10 @@ kubeConfig() {
 }
 
 kubeConfig
+validateInput
 installArgoCd
 initArgo
+initGitWebHookSecret
 
 #"$REPO_ROOT"/setup/bootstrap-objects.sh
 #"$REPO_ROOT"/setup/bootstrap-vault.sh

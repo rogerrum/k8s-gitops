@@ -273,6 +273,8 @@ loadSecretsToVault() {
   argoHelmValueVaultNew "main/homelab/minio/minio-helm-values.yaml"
   argoHelmValueVaultNew "main/homelab/home-assistant/home-assistant-helm-values.yaml"
 
+  argoHelmValueVaultNew "infrastructure/argocd-patch/argocd-patch-helm-values.yaml"
+
   prometheusVault
 
   secretVault "infrastructure/longhorn/longhorn-backup-secret.txt"
@@ -319,8 +321,7 @@ fi
 #prometheusVault
 #argoHelmValueVaultNew "main/homelab/minio/minio-helm-values.yaml"
 #secretVault "infrastructure/cloudnative-pg/postgres-minio-secret.txt"
-
-
-secretVault "main/homelab/home-assistant/home-assistant-secret.txt"
+secretVault "main/homelab/cloudflare-ddns/cloudflare-ddns-secret.txt"
+argoHelmValueVaultNew "infrastructure/argocd-patch/argocd-patch-helm-values.yaml"
 
 kill $VAULT_FWD_PID
