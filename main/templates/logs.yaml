@@ -13,6 +13,7 @@ metadata:
   name: logs
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
+    argocd.argoproj.io/manifest-generate-paths: /main/logs/templates;/main/logs/Chart.yaml;/main/logs/values.yaml
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

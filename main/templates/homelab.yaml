@@ -4,6 +4,7 @@ metadata:
   name: homelab
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/manifest-generate-paths: /main/homelab/templates;/main/homelab/Chart.yaml;/main/homelab/values.yaml
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

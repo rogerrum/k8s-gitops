@@ -11,6 +11,7 @@ metadata:
   name: monitoring
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
+    argocd.argoproj.io/manifest-generate-paths: /main/monitoring/templates;/main/monitoring/Chart.yaml;/main/monitoring/values.yaml
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
