@@ -85,6 +85,7 @@ argo-cd:
 
 
   server:
+    logLevel: debug
     ingress:
       enabled: true
       annotations:
