@@ -157,6 +157,11 @@ argo-cd:
 
   controller:
     enableStatefulSet: true
+    
+    image:
+      repository: "ghcr.io/rogerrum/argocd"
+      tag: "latest"
+      
     metrics:
       enabled: true
       serviceMonitor:
