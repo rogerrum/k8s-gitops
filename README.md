@@ -8,6 +8,7 @@ _ managed by ArgoCD and serviced with RenovateBot :robot:
 <br/>
 <br/>
 
+
 <div align="center">
 
 [![k3s](https://img.shields.io/badge/k3s-v1.25.3-blue?style=for-the-badge&logo=kubernetes&logoColor=white)](https://k3s.io/)
