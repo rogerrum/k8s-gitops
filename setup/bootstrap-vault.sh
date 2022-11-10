@@ -263,7 +263,7 @@ loadSecretsToVault() {
 
 
 
-  argoHelmValueVault "main/monitoring/botkube/botkube-helm-values.txt"
+  argoHelmValueVaultNew "main/monitoring/botkube/botkube-helm-values.yaml"
   argoHelmValueVault "main/monitoring/thanos/thanos-helm-values.txt"
   argoHelmValueVault "main/logs/loki/loki-helm-values.txt"
   argoHelmValueVaultNew "infrastructure/kured/kured-helm-values.yaml"
@@ -297,6 +297,7 @@ loadSecretsToVault() {
   secretVault "infrastructure/mariadb/mariadb-secret.txt"
   secretVault "main/monitoring/icinga2/icinga2-secret.txt"
   secretVault "main/homelab/webtrees/webtrees-secret.txt"
+  secretVault "argocd/argocd-oidc-secret.txt"
 
 
   vault kv put secrets/argocd/argocd-discord-webhook discord-webhook="$DISCORD_ARGO_WEBHOOK_URL"
@@ -321,6 +322,8 @@ fi
 #prometheusVault
 #argoHelmValueVaultNew "main/homelab/minio/minio-helm-values.yaml"
 #secretVault "infrastructure/cloudnative-pg/postgres-minio-secret.txt"
-secretVault "argocd/argocd-oidc-secret.txt"
+#secretVault "argocd/argocd-oidc-secret.txt"
+
+argoHelmValueVaultNew "main/monitoring/botkube/botkube-helm-values.yaml"
 
 kill $VAULT_FWD_PID

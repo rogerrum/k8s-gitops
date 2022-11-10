@@ -11,3 +11,7 @@ botkube:
       botid: '805334803678756875'
       channel: '805338328525307944'
       notiftype: short
+
+    'default-group':
+      discord:
+        token: '$BOTKUBE_DISCORD_TOKEN'
