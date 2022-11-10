@@ -1,16 +1,6 @@
 botkube:
   communications:
-    slack:
-      enabled: false
-      channel: 'kube-notifications'
-      token: '$BOTKUBE_SLACK_TOKEN'
-      notiftype: short
-    discord:
-      enabled: true
-      token: '$BOTKUBE_DISCORD_TOKEN'
-      botid: '805334803678756875'
-      channel: '805338328525307944'
-      notiftype: short
+
 
     'default-group':
       discord:
