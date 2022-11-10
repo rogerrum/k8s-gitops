@@ -89,7 +89,7 @@ argo-cd:
 
   configs:
     cm:
-      url: "argo.rsr.net"
+      url: "https://argo.rsr.net"
       oidc.config: |
         name: Auth0
         issuer: https://rogerrum.us.auth0.com/
