@@ -37,6 +37,13 @@ argo-cd:
         volumeMounts:
           - mountPath: /usr/local/apache2/htdocs/
             name: helm-values
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            cpu: 50m
+            memory: 128Mi
 
     volumes:
       - name: helm-values
@@ -80,9 +87,23 @@ argo-cd:
                     - repo-server
             topologyKey: "kubernetes.io/hostname"
 
+  configs:
+    cm:
+      url: "argo.rsr.net"
+      oidc.config: |
+        name: Auth0
+        issuer: https://rogerrum.us.auth0.com/
+        clientID: $argocd-oidc-secret:client-id
+        clientSecret: $argocd-oidc-secret:client-secret
+        requestedScopes:
+        - openid
+        - profile
+        - email
+        # not strictly necessary - but good practice:
+        #- 'http://your.domain/groups'
 
-
-
+    rbac:
+      policy.default: "role:admin"
 
   server:
     logLevel: debug
@@ -128,10 +149,10 @@ argo-cd:
       serviceMonitor:
         enabled: true
     autoscaling:
-      enabled: false
+      enabled: true
       minReplicas: 2
-      targetCPUUtilizationPercentage: 85
-      targetMemoryUtilizationPercentage: 85
+      targetCPUUtilizationPercentage: 65
+      targetMemoryUtilizationPercentage: 65
     resources:
       requests:
         cpu: 100m
@@ -156,8 +177,8 @@ argo-cd:
             topologyKey: "kubernetes.io/hostname"
 
   controller:
-    enableStatefulSet: true
-    
+    replicas: 1
+
     image:
       repository: "ghcr.io/rogerrum/argocd"
       tag: "latest"
