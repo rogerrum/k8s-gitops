@@ -18,6 +18,7 @@ spec:
         metadata:
           labels:
             {{- include "cloudflare-ddns.selectorLabels" . | nindent 12 }}
+            botkube.io/disable: "true"
         spec:
           restartPolicy: {{ .Values.restartPolicy }}
           containers:

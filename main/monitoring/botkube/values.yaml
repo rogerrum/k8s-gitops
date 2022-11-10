@@ -1,175 +1,23 @@
 botkube:
-  image:
-    repository: infracloudio/botkube
-    tag: v0.12.1
-    pullPolicy: Always
   serviceMonitor:
     enabled: true
-  config:
-    settings:
-      clustername: k8s
-    resources:
-      - name: v1/pods
-        namespaces:
-          include:
-            - all
-          ignore:
-            - rook-ceph
-            - kube-system
-        events:
-          - create
-          - delete
-      - name: v1/services
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - delete
-          - error
-      - name: apps/v1/deployments
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - update
-          - delete
-          - error
-        updateSetting:
-          includeDiff: true
-          fields:
-            - spec.template.spec.containers[*].image
-      - name: apps/v1/statefulsets
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - update
-          - delete
-          - error
-        updateSetting:
-          includeDiff: true
-          fields:
-            - spec.template.spec.containers[*].image
-      - name: networking.k8s.io/v1beta1/ingresses
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - delete
-          - error
-      - name: v1/nodes
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - delete
-          - error
-      - name: v1/namespaces
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - delete
-          - error
-      - name: v1/persistentvolumes
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - delete
-          - error
-      - name: v1/persistentvolumeclaims
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - delete
-          - error
-      - name: v1/secrets
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - delete
-          - error
-      # - name: v1/configmaps
-      #   namespaces:
-      #     include:
-      #       - all
-      #     ignore:
-      #       - rook-ceph
-      #   events:
-      #     - delete
-      #     - error
-      - name: apps/v1/daemonsets
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - delete
-          - error
-          - update
-        updateSetting:
-          includeDiff: true
-          fields:
-            - spec.template.spec.containers[*].image
-      # - name: batch/v1/jobs
-      #   namespaces:
-      #     include:
-      #       - all
-      #     ignore:
-      #       - rook-ceph
-      #       - kube-system
-      #   events:
-      #     - create
-      #     - update
-      #     - delete
-      #     - error
-      #   updateSetting:
-      #     includeDiff: true
-      #     fields:
-      #       - spec.template.spec.containers[*].image
-      #       - status.conditions[*].type
-      - name: rbac.authorization.k8s.io/v1/roles
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - delete
-          - error
-      - name: rbac.authorization.k8s.io/v1/rolebindings
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - delete
-          - error
-      - name: rbac.authorization.k8s.io/v1/clusterroles
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - delete
-          - error
-      - name: rbac.authorization.k8s.io/v1/clusterrolebindings
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - delete
-          - error
 
+  settings:
+    clusterName: k8s
+
+  analytics:
+    disable: true
+
+  communications:
+    'default-group':
+      discord:
+        enabled: true
+        botID: '805334803678756875'
+        channels:
+          'default':
+            id: '805338328525307944'
+            bindings:
+              sources:
+                - k8s-err-events
+                - k8s-all-events
+                - k8s-recommendation-events
