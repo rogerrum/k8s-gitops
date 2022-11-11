@@ -24,7 +24,7 @@ heimdall:
           secretName: home-cert-tls
 
   persistence:
-    data:
+    config:
       enabled: true
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
