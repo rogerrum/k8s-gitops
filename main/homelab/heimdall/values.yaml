@@ -2,6 +2,10 @@ heimdall:
   env:
     TZ: "America/Chicago"
 
+  image:
+    repository: linuxserver/heimdall
+    tag: version-2.2.2
+
   ingress:
     main:
       enabled: true
