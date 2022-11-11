@@ -1,4 +1,4 @@
-organizr:
+heimdall:
   env:
     TZ: "America/Chicago"
 
