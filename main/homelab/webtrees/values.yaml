@@ -11,9 +11,9 @@ webtrees:
     PRETTY_URLS: "TRUE"
     LANG: "en-US"
     BASE_URL: "https://tree.rsr.net"
-    DB_TYPE: "mysql"
-    DB_HOST: "mariadb.kube-system.svc.cluster.local"
-    DB_PORT: "3306"
+    DB_TYPE: "pgsql"
+    DB_HOST: "postgres-rw.kube-system.svc.cluster.local"
+    DB_PORT: "5432"
     DB_USER: "webtrees"
     DB_PASS:
       valueFrom:
@@ -63,3 +63,24 @@ webtrees:
       accessMode: ReadWriteOnce
       skipuninstall: true
       size: "1Gi"
+
+  initContainers:
+    init-db:
+      image: ghcr.io/onedr0p/postgres-initdb:14.5
+      env:
+        - name: POSTGRES_HOST
+          value: postgres-rw.kube-system.svc.cluster.local
+        - name: POSTGRES_DB
+          value: webtrees
+        - name: POSTGRES_SUPER_PASS
+          valueFrom:
+            secretKeyRef:
+              name: postgres-superuser-secret
+              key: password
+        - name: POSTGRES_USER
+          value: webtrees
+        - name: POSTGRES_PASS
+          valueFrom:
+            secretKeyRef:
+              name: webtrees-secret
+              key: WEBTREE_MARIADB_PASS
