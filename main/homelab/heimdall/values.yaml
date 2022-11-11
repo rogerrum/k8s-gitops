@@ -4,7 +4,7 @@ heimdall:
 
   image:
     repository: linuxserver/heimdall
-    tag: 2.4.15
+    tag: 2021.11.28
 
   ingress:
     main:
