@@ -112,9 +112,14 @@ frigate:
               - bird
             filters:
               person:
-                min_area: 3000
+                min_area: 2500
                 max_area: 100000
-                threshold: 0.75
+                threshold: 0.7
+          
+          detect:
+            height: 480
+            width: 704
+            fps: 5
           
           record:
             enabled: true
@@ -145,48 +150,29 @@ frigate:
                     roles:
                       - rtmp
                       - record
-              detect:
-                height: 480
-                width: 704
-                fps: 5
-              objects:
-                filters:
-                  person:
-                    min_area: 1500
-                    max_area: 100000
-                    threshold: 0.75
-                    min_score: 0.60
-          
+              
             basement_main:
               ffmpeg:
                 inputs:
-                  - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=1'
+                  - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=2'
                     roles:
                       - detect
                   - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=0'
                     roles:
                       - rtmp
                       - record
-              detect:
-                height: 480
-                width: 704
-                fps: 5
               
             deck:
               ffmpeg:
                 inputs:
-                  - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=1'
+                  - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=2'
                     roles:
                       - detect
                   - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=0'
                     roles:
                       - rtmp
                       - record
-              detect:
-                height: 480
-                width: 704
-                fps: 5
-              
+          
             porch:
               ffmpeg:
                 inputs:
@@ -197,39 +183,26 @@ frigate:
                     roles:
                       - rtmp
                       - record
-              detect:
-                height: 480
-                width: 704
-                fps: 5
-              
+          
             driveway:
               ffmpeg:
                 inputs:
-                  - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=5&subtype=1'
+                  - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=5&subtype=2'
                     roles:
                       - detect
                   - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=5&subtype=0'
                     roles:
                       - rtmp
                       - record
-              detect:
-                height: 480
-                width: 704
-                fps: 5
-              
+          
             server:
               ffmpeg:
                 inputs:
-                  - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=6&subtype=1'
+                  - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=6&subtype=2'
                     roles:
                       - detect
                   - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=6&subtype=0'
                     roles:
                       - rtmp
                       - record
-              detect:
-                height: 480
-                width: 704
-                fps: 5
               
-        
