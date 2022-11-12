@@ -155,10 +155,10 @@ argo-cd:
       targetMemoryUtilizationPercentage: 65
     resources:
       requests:
-        cpu: 100m
+        cpu: 500m
         memory: 180Mi
       limits:
-        cpu: 100m
+        cpu: 500m
         memory: 200Mi
     affinity:
       podAntiAffinity:
