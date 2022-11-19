@@ -4,6 +4,7 @@ metadata:
   name: heimdall
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/manifest-generate-paths: /main/homelab/heimdall
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
