@@ -278,7 +278,7 @@ argo-cd:
                     "footer": {
                         "text": "ArgoCd"
                     },
-                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
+                    "timestamp": "{{ call(.time.Now).Local.Format '2021-11-19T19:20:00.000Z' }}"
                   }
                 ]
               }
@@ -320,7 +320,7 @@ argo-cd:
                     "footer": {
                         "text": "ArgoCd"
                     },
-                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
+                    "timestamp": "{{ call(.time.Now).Local.Format '2021-11-19T19:20:00.000Z' }}"
                   }
                 ]
               }
@@ -362,7 +362,7 @@ argo-cd:
                     "footer": {
                         "text": "ArgoCd"
                     },
-                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
+                    "timestamp": "{{ call(.time.Now).Local.Format '2021-11-19T19:20:00.000Z' }}"
                   }
                 ]
               }
@@ -404,7 +404,7 @@ argo-cd:
                     "footer": {
                         "text": "ArgoCd"
                     },
-                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
+                    "timestamp": "{{ call(.time.Now).Local.Format '2021-11-19T19:20:00.000Z' }}"
                   }
                 ]
               }
@@ -446,7 +446,7 @@ argo-cd:
                     "footer": {
                         "text": "ArgoCd"
                     },
-                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
+                    "timestamp": "{{ call(.time.Now).Local.Format '2021-11-19T19:20:00.000Z' }}"
                   }
                 ]
               }
@@ -488,7 +488,7 @@ argo-cd:
                     "footer": {
                         "text": "ArgoCd"
                     },
-                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
+                    "timestamp": "{{ call(.time.Now).Local.Format '2021-11-19T19:20:00.000Z' }}"
                   }
                 ]
               }
