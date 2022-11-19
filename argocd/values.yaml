@@ -235,7 +235,7 @@ argo-cd:
 
     templates:
       # For more information: https://argocd-notifications.readthedocs.io/en/stable/templates/
-      template.app-created:
+      template.app-deployed: |
         webhook:
           discord:
             method: POST
@@ -243,7 +243,7 @@ argo-cd:
               {
                 "username": "ArgoCd",
                 "avatar_url": "https://avatars.githubusercontent.com/u/30269780",
-                "content": "Application {{.app.metadata.name}} has been created.",
+                "content": ":white_check_mark: Application {{.app.metadata.name}} is now running new version of deployments manifests.",
                 "embeds": [
                   {
                     "title": "{{ .app.metadata.name}}",
@@ -274,10 +274,11 @@ argo-cd:
                       "inline": true
                     }
                     {{end}}
-                    ]
+                    ],
                     "footer": {
                         "text": "ArgoCd"
-                    }
+                    },
+                    "timestamp": "{{ call(.time.Now).Local.Format '2021-11-19T19:20:00.000Z' }}"
                   }
                 ]
               }
@@ -316,9 +317,6 @@ argo-cd:
                     }
                     {{end}}
                     ]
-                    "footer": {
-                        "text": "ArgoCd"
-                    }
                   }
                 ]
               }
@@ -357,9 +355,6 @@ argo-cd:
                     }
                     {{end}}
                     ]
-                    "footer": {
-                        "text": "ArgoCd"
-                    }
                   }
                 ]
               }
@@ -398,9 +393,6 @@ argo-cd:
                     }
                     {{end}}
                     ]
-                    "footer": {
-                        "text": "ArgoCd"
-                    }
                   }
                 ]
               }
@@ -439,9 +431,6 @@ argo-cd:
                     }
                     {{end}}
                     ]
-                    "footer": {
-                        "text": "ArgoCd"
-                    }
                   }
                 ]
               }
@@ -480,9 +469,6 @@ argo-cd:
                     }
                     {{end}}
                     ]
-                    "footer": {
-                        "text": "ArgoCd"
-                    }
                   }
                 ]
               }
