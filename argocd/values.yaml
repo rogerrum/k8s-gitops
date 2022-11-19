@@ -235,6 +235,53 @@ argo-cd:
 
     templates:
       # For more information: https://argocd-notifications.readthedocs.io/en/stable/templates/
+      template.app-created:
+        webhook:
+          discord:
+            method: POST
+            body: |
+              {
+                "username": "ArgoCd",
+                "avatar_url": "https://avatars.githubusercontent.com/u/30269780",
+                "content": "Application {{.app.metadata.name}} has been created.",
+                "embeds": [
+                  {
+                    "title": "{{ .app.metadata.name}}",
+                    "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+                    "color": 1621586,
+                    "fields": [
+                    {
+                      "name": "Sync Status",
+                      "value": "{{.app.status.sync.status}}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Repository",
+                      "value": "{{.app.spec.source.repoURL}}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Revision",
+                      "value": "{{.app.status.sync.revision}}",
+                      "inline": true
+                    }
+                    {{range $index, $c := .app.status.conditions}}
+                    {{if not $index}},{{end}}
+                    {{if $index}},{{end}}
+                    {
+                      "name": "{{$c.type}}",
+                      "value": "{{$c.message}}",
+                      "inline": true
+                    }
+                    {{end}}
+                    ]
+                    "footer": {
+                        "text": "ArgoCd"
+                    },
+                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
+                  }
+                ]
+              }
       template.app-deployed: |
         webhook:
           discord:
@@ -275,6 +322,10 @@ argo-cd:
                     }
                     {{end}}
                     ]
+                    "footer": {
+                        "text": "ArgoCd"
+                    },
+                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
                   }
                 ]
               }
@@ -313,6 +364,10 @@ argo-cd:
                     }
                     {{end}}
                     ]
+                    "footer": {
+                        "text": "ArgoCd"
+                    },
+                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
                   }
                 ]
               }
@@ -351,6 +406,10 @@ argo-cd:
                     }
                     {{end}}
                     ]
+                    "footer": {
+                        "text": "ArgoCd"
+                    },
+                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
                   }
                 ]
               }
@@ -389,6 +448,10 @@ argo-cd:
                     }
                     {{end}}
                     ]
+                    "footer": {
+                        "text": "ArgoCd"
+                    },
+                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
                   }
                 ]
               }
@@ -427,6 +490,10 @@ argo-cd:
                     }
                     {{end}}
                     ]
+                    "footer": {
+                        "text": "ArgoCd"
+                    },
+                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
                   }
                 ]
               }
@@ -465,6 +532,10 @@ argo-cd:
                     }
                     {{end}}
                     ]
+                    "footer": {
+                        "text": "ArgoCd"
+                    },
+                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
                   }
                 ]
               }
