@@ -6,7 +6,7 @@ cloudnative-pg:
     repository: ghcr.io/cloudnative-pg/cloudnative-pg-testing
     tag: main
 
-replicas : 4
+replicas : 3
 
 storage:
   size: 20Gi
