@@ -282,53 +282,6 @@ argo-cd:
                   }
                 ]
               }
-      template.app-deployed: |
-        webhook:
-          discord:
-            method: POST
-            body: |
-              {
-                "username": "ArgoCd",
-                "avatar_url": "https://avatars.githubusercontent.com/u/30269780",
-                "content": ":white_check_mark: Application {{.app.metadata.name}} is now running new version of deployments manifests.",
-                "embeds": [
-                  {
-                    "title": "{{ .app.metadata.name}}",
-                    "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
-                    "color": 1621586,
-                    "fields": [
-                    {
-                      "name": "Sync Status",
-                      "value": "{{.app.status.sync.status}}",
-                      "inline": true
-                    },
-                    {
-                      "name": "Repository",
-                      "value": "{{.app.spec.source.repoURL}}",
-                      "inline": true
-                    },
-                    {
-                      "name": "Revision",
-                      "value": "{{.app.status.sync.revision}}",
-                      "inline": true
-                    }
-                    {{range $index, $c := .app.status.conditions}}
-                    {{if not $index}},{{end}}
-                    {{if $index}},{{end}}
-                    {
-                      "name": "{{$c.type}}",
-                      "value": "{{$c.message}}",
-                      "inline": true
-                    }
-                    {{end}}
-                    ]
-                    "footer": {
-                        "text": "ArgoCd"
-                    },
-                    "timestamp": "{{ .time.Now.Local.Format '2021-11-19T19:20:00.000Z' }}"
-                  }
-                ]
-              }
       template.app-health-degraded: |
         webhook:
           discord:
