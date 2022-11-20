@@ -276,7 +276,7 @@ argo-cd:
                     {{end}}
                     ],
                     "footer": {
-                        "text": "ArgoCd {{ (call .time.Now).Format "2006-01-02T15:04:05Z07:00" }}"
+                        "text": "ArgoCd {{ (call .time.Now).Format "2006-01-02T15:04:05.999Z" }}"
                     }
                   }
                 ]
