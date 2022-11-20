@@ -337,7 +337,7 @@ argo-cd:
                   {
                     "title": "{{ .app.metadata.name}}",
                     "url":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
-                    "color": "#E96D76",
+                    "color": 15297910,
                     "fields": [
                     {
                       "name": "Sync Status",
