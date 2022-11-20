@@ -276,7 +276,7 @@ argo-cd:
                     {{end}}
                     ],
                     "footer": {
-                        "text": "ArgoCd {{ .time.Now }}"
+                        "text": "ArgoCd {{ (call .time.Now).Format "2021-11-19T19:20:00.000Z" }}"
                     }
                   }
                 ]
