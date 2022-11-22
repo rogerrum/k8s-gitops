@@ -267,7 +267,6 @@ loadSecretsToVault() {
   argoHelmValueVault "main/monitoring/thanos/thanos-helm-values.txt"
   argoHelmValueVault "main/logs/loki/loki-helm-values.txt"
   argoHelmValueVaultNew "infrastructure/kured/kured-helm-values.yaml"
-  argoHelmValueVault "main/monitoring/statping/statping-helm-values.txt"
   argoHelmValueVault "main/homelab/emqx/emqx-helm-values.txt"
   argoHelmValueVaultNew "main/homelab/frigate/frigate-helm-values.yaml"
   argoHelmValueVaultNew "main/homelab/minio/minio-helm-values.yaml"
@@ -284,18 +283,12 @@ loadSecretsToVault() {
   secretVault "infrastructure/cloudnative-pg/postgres-superuser-secret.txt"
   secretVault "infrastructure/oauth2-proxy/oauth2-proxy-secret.txt"
   secretVault "infrastructure/postgresql/postgresql-secret.txt"
-  secretVault "main/monitoring/statping/statping-secret.txt"
-  secretVault "infrastructure/mysql/mysql-secret.txt"
-  secretVault "main/homelab/clarkson/clarkson-secret.txt"
-  secretVault "main/homelab/leantime/leantime-secret.txt"
   secretVault "main/homelab/mealie/mealie-secret.txt"
   secretVault "main/homelab/traccar/traccar-secret.txt"
   secretVault "main/monitoring/unifi-poller/unifi-poller-secret.txt"
   secretVault "main/homelab/cloudflare-ddns/cloudflare-ddns-secret.txt"
   secretVault "main/homelab/kanboard/kanboard-secret.txt"
-  secretVault "infrastructure/mysql/mysql-secret.txt"
   secretVault "infrastructure/mariadb/mariadb-secret.txt"
-  secretVault "main/monitoring/icinga2/icinga2-secret.txt"
   secretVault "main/homelab/webtrees/webtrees-secret.txt"
   secretVault "argocd/argocd-oidc-secret.txt"
 
@@ -323,7 +316,9 @@ fi
 #argoHelmValueVaultNew "main/homelab/minio/minio-helm-values.yaml"
 #secretVault "infrastructure/cloudnative-pg/postgres-minio-secret.txt"
 #secretVault "argocd/argocd-oidc-secret.txt"
+#argoHelmValueVaultNew "main/monitoring/botkube/botkube-helm-values.yaml"
 
-argoHelmValueVaultNew "main/monitoring/botkube/botkube-helm-values.yaml"
+argoHelmValueVaultNew "main/homelab/frigate/frigate-helm-values.yaml"
+
 
 kill $VAULT_FWD_PID
