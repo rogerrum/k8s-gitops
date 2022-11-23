@@ -1,7 +1,7 @@
 frigate:
   image:
     repository: docker.io/blakeblackshear/frigate
-    tag: 0.11.1
+    tag: dev-c4d4424
 
 
   ingress:
@@ -136,10 +136,8 @@ frigate:
           
           cameras:
             basement_room:
-              rtmp:
-                enabled: false
               ffmpeg:
-                hwaccel_args: -hwaccel vaapi -hwaccel_device /dev/dri/renderD128 -hwaccel_output_format yuvj420p
+                hwaccel_args: -hwaccel vaapi -hwaccel_device /dev/dri/renderD128 -hwaccel_output_format yuv420p
                 inputs:
                   - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1'
                     roles:
