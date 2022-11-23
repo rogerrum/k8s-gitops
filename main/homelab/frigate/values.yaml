@@ -1,7 +1,7 @@
 frigate:
   image:
-    repository: ghcr.io/blakeblackshear/frigate
-    tag: dev-c4d4424
+    repository: docker.io/blakeblackshear/frigate
+    tag: 0.11.1
 
 
   ingress:
@@ -98,10 +98,7 @@ frigate:
               - warning
             
           rtmp:
-            enabled: False
-          
-          restream:
-            enabled: False
+            enabled: false
           
           objects:
             track:
@@ -139,8 +136,6 @@ frigate:
           
           cameras:
             basement_room:
-              rtmp:
-                enabled: False
               ffmpeg:
                 hwaccel_args: -hwaccel vaapi -hwaccel_device /dev/dri/renderD128 -hwaccel_output_format yuv420p
                 inputs:
