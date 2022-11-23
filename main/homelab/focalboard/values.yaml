@@ -2,23 +2,27 @@ app-template:
   image:
     repository: mattermost/focalboard
     tag: 7.5.2
-  config: |
-    {
-      "serverRoot": "http://localhost:8000",
-      "port": 8000,
-      "dbtype": "postgres",
-      "dbconfig": "/data/focalboard.db",
-      "postgres_dbconfig": "dbname=focalboard sslmode=disable",
-      "useSSL": false,
-      "webpath": "./pack",
-      "filespath": "/data/files",
-      "telemetry": true,
-      "session_expire_time": 2592000,
-      "session_refresh_time": 18000,
-      "localOnly": false,
-      "enableLocalMode": true,
-      "localModeSocketLocation": "/var/tmp/focalboard_local.socket"
-    }
+    
+  configMaps:
+    config:
+      enabled: true
+      data: |
+        {
+          "serverRoot": "http://localhost:8000",
+          "port": 8000,
+          "dbtype": "postgres",
+          "dbconfig": "/data/focalboard.db",
+          "postgres_dbconfig": "dbname=focalboard sslmode=disable",
+          "useSSL": false,
+          "webpath": "./pack",
+          "filespath": "/data/files",
+          "telemetry": true,
+          "session_expire_time": 2592000,
+          "session_refresh_time": 18000,
+          "localOnly": false,
+          "enableLocalMode": true,
+          "localModeSocketLocation": "/var/tmp/focalboard_local.socket"
+        }
 
   env:
     FOCALBOARD_PORT: 8000
