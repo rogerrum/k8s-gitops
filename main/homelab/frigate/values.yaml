@@ -98,7 +98,7 @@ frigate:
               - warning
             
           rtmp:
-            enabled: false
+            enabled: False
           
           objects:
             track:
