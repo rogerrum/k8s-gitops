@@ -143,6 +143,11 @@ frigate:
                     roles:
                       - rtmp
                       - record
+          
+                global_args:
+                  - -hide_banner
+                  - -loglevel
+                  - debug
               
             basement_main:
               ffmpeg:
