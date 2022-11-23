@@ -101,6 +101,7 @@ frigate:
           objects:
             track:
               - person
+              - car
               - bird
             filters:
               person:
@@ -208,3 +209,7 @@ frigate:
                     roles:
                       - rtmp
                       - record
+              objects:
+                # Optional: list of objects to track from labelmap.txt (default: shown below)
+                track:
+                  - car
