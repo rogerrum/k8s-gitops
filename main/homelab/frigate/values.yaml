@@ -139,7 +139,7 @@ frigate:
               rtmp:
                 enabled: false
               ffmpeg:
-                hwaccel_args: -hwaccel vaapi -hwaccel_device /dev/dri/renderD128 -hwaccel_output_format yuv420p
+                hwaccel_args: -hwaccel vaapi -hwaccel_device /dev/dri/renderD128 -hwaccel_output_format yuvj420p
                 inputs:
                   - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1'
                     roles:
