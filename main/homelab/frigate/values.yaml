@@ -207,3 +207,13 @@ frigate:
                       - rtmp
                       - record
               
+            living_room:
+              ffmpeg:
+                inputs:
+                  - path: 'rtsp://{FRIGATE_WYZE_AUTH}@192.168.1.233/live'
+                    roles:
+                      - detect
+                  - path: 'rtsp://{FRIGATE_WYZE_AUTH}@192.168.1.233/live'
+                    roles:
+                      - rtmp
+                      - record
