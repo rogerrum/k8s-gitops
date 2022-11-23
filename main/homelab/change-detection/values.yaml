@@ -36,3 +36,5 @@ app-template:
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
       skipuninstall: true
+      size: 1Gi
+
