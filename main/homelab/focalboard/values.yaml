@@ -1,33 +1,26 @@
-focalboard:
-  image:
-    repository: mattermost/focalboard
-#    tag: 7.5.2
+mattermost-team-edition:
 
   env:
     TZ: "America/Chicago"
 
   ingress:
-    main:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: nginx
-        cert-manager.io/cluster-issuer: vault-issuer
-        cert-manager.io/common-name: board.rsr.net
-      hosts:
-        - host: board.rsr.net
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - board.rsr.net
-          secretName: board-cert-tls
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: vault-issuer
+      cert-manager.io/common-name: board.rsr.net
+    hosts:
+      - board.rsr.net
+    tls:
+      - hosts:
+          - board.rsr.net
+        secretName: board-cert-tls
 
   persistence:
     data:
       enabled: true
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
-      skipuninstall: true
-      size: 1Gi
 
+  mysql:
+    enabled: false
