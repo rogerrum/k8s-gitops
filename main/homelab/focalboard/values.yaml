@@ -1,28 +1,40 @@
-focalboard:
+app-template:
+  image:
+    repository: mattermost/focalboard
+    tag: 7.5.2
 
   env:
+    FOCALBOARD_PORT: 8000
     TZ: "America/Chicago"
 
-  ingress:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: nginx
-      cert-manager.io/cluster-issuer: vault-issuer
-      cert-manager.io/common-name: board.rsr.net
-    hosts:
-      - host: board.rsr.net
-        paths:
-          - path: /
-            backend:
-              serviceName: focalboard
-              servicePort: 80
-    tls:
-      - hosts:
-          - board.rsr.net
-        secretName: board-cert-tls
+  service:
+    main:
+      ports:
+        http:
+          port: 8000
 
-#  persistence:
-#    data:
-#      enabled: true
-#      storageClass: "longhorn"
-#      accessMode: ReadWriteOnce
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/cluster-issuer: vault-issuer
+        cert-manager.io/common-name: board.rsr.net
+      hosts:
+        - host: board.rsr.net
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - board.rsr.net
+          secretName: board-cert-tls
+
+  persistence:
+    data:
+      enabled: false
+      storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      skipuninstall: true
+      size: 1Gi
+
