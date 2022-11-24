@@ -13,6 +13,12 @@ app-template:
         http:
           port: 8000
 
+  configMaps:
+    config:
+      enabled: true
+      data:
+       foo: bar
+
   ingress:
     main:
       enabled: true
