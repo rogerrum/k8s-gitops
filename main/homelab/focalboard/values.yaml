@@ -22,5 +22,8 @@ mattermost-team-edition:
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
 
+    plugins:
+      storageClass: "longhorn"
+
   mysql:
     enabled: false
