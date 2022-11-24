@@ -32,7 +32,7 @@ app-template:
 
   persistence:
     data:
-      enabled: false
+      enabled: true
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
       skipuninstall: true
