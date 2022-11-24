@@ -61,3 +61,12 @@ app-template:
       skipuninstall: true
       size: 1Gi
 
+    focal-config:
+      enabled: true
+      mountPath: "/opt/focalboard/config.json"
+      subPath: json
+      type: "custom"
+      volumeSpec:
+        configMap:
+          name: focalboard-config
+
