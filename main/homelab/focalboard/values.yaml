@@ -63,7 +63,7 @@ app-template:
 
     focal-config:
       enabled: true
-      mountPath: "/opt/focalboard/config.json"
+      mountPath: "/opt/focalboard/data/config.json"
       subPath: json
       type: "custom"
       volumeSpec:
