@@ -25,5 +25,5 @@ mattermost-team-edition:
     plugins:
       storageClass: "longhorn"
 
-  mysql:
-    enabled: false
+#  mysql:
+#    enabled: false
