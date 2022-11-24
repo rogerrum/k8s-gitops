@@ -30,3 +30,6 @@ mattermost-team-edition:
   mysql:
     persistence:
       storageClass: "longhorn"
+    mysqlRootPassword: "mysqlRootPassword"
+    mysqlUser: "user"
+    mysqlPassword: "mysqlPassword"
