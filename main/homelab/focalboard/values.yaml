@@ -27,3 +27,6 @@ mattermost-team-edition:
 
 #  mysql:
 #    enabled: false
+  mysql:
+    persistence:
+      storageClass: "longhorn"
