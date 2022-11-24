@@ -1,4 +1,4 @@
-mattermost-team-edition:
+focalboard:
 
   env:
     TZ: "America/Chicago"
@@ -10,26 +10,19 @@ mattermost-team-edition:
       cert-manager.io/cluster-issuer: vault-issuer
       cert-manager.io/common-name: board.rsr.net
     hosts:
-      - board.rsr.net
+      - host: board.rsr.net
+        paths:
+          - path: /
+            backend:
+              serviceName: focalboard
+              servicePort: 80
     tls:
       - hosts:
           - board.rsr.net
         secretName: board-cert-tls
 
-  persistence:
-    data:
-      enabled: true
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-
-    plugins:
-      storageClass: "longhorn"
-
-#  mysql:
-#    enabled: false
-  mysql:
-    persistence:
-      storageClass: "longhorn"
-    mysqlRootPassword: "mysqlRootPassword"
-    mysqlUser: "user"
-    mysqlPassword: "mysqlPassword"
+#  persistence:
+#    data:
+#      enabled: true
+#      storageClass: "longhorn"
+#      accessMode: ReadWriteOnce
