@@ -64,10 +64,11 @@ app-template:
   initContainers:
     init:
       image: busybox:1.28
-      command: ["sh", "-c", "ls -al /data || mkdir /data/files"]
+      command: ["sh", "-c", "ls -al /data && mkdir /data/files && ls -al"]
       volumeMounts:
         - name: data
           mountPath: "/data"
+
   persistence:
     data:
       enabled: true
