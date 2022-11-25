@@ -70,7 +70,7 @@ app-template:
           mountPath: "/data"
 
   persistence:
-    data:
+    data1:
       enabled: true
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
