@@ -15,7 +15,7 @@ app-template:
 
   configMaps:
     config:
-      enabled: true
+      enabled: false
       data:
        json: |
         {
