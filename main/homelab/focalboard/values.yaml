@@ -71,9 +71,10 @@ app-template:
 
   persistence:
     data:
-      enabled: false
+      enabled: true
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
+      mountPath: "/opt/focalboard/data"
       skipuninstall: true
       size: 1Gi
 
