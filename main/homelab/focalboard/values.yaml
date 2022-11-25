@@ -61,6 +61,10 @@ app-template:
     startup:
       enabled: false
 
+  initContainers:
+    init:
+      image: busybox:1.28
+      command: ["sh", "-c", "ls -al /data || mkdir /data/files"]
 
   persistence:
     data:
