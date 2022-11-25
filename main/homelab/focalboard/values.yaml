@@ -53,6 +53,15 @@ app-template:
             - board.rsr.net
           secretName: board-cert-tls
 
+  probes:
+    liveness:
+      enabled: false
+    readiness:
+      enabled: false
+    startup:
+      enabled: false
+
+
   persistence:
     data:
       enabled: true
@@ -63,7 +72,7 @@ app-template:
 
     focal-config:
       enabled: true
-      mountPath: "/opt/focalboard/data/config.json"
+      mountPath: "/opt/focalboard/config.json"
       subPath: json
       type: "custom"
       volumeSpec:
