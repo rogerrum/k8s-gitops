@@ -95,7 +95,6 @@ loki:
       enabled: true
       ingressClassName: "nginx"
       annotations:
-        kubernetes.io/ingress.class: "nginx"
         cert-manager.io/cluster-issuer: vault-issuer
         cert-manager.io/common-name: loki.rsr.net
       hosts:
