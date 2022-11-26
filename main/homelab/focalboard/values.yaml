@@ -22,11 +22,11 @@ app-template:
           "serverRoot": "http://localhost:8000",
           "port": 8000,
           "dbtype": "sqlite3",
-          "dbconfig": "./data/focalboard.db",
+          "dbconfig": "/data/focalboard.db",
           "postgres_dbconfig": "dbname=focalboard sslmode=disable",
           "useSSL": false,
           "webpath": "./pack",
-          "filespath": "./data/files",
+          "filespath": "/data/files",
           "telemetry": true,
           "session_expire_time": 2592000,
           "session_refresh_time": 18000,
@@ -61,28 +61,23 @@ app-template:
     startup:
       enabled: false
 
-  initContainerss:
-    init:
-      image: busybox:1.28
-      command: ["sh", "-c", "ls -al /data && mkdir -p /data/files && ls -al /data"]
-      volumeMounts:
-        - name: data
-          mountPath: "/data"
+  securityContext:
+    fsGroup: 2000
 
   persistence:
-    data1:
+    data:
       enabled: true
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
       skipuninstall: true
       size: 1Gi
 
-#    focal-config:
-#      enabled: true
-#      mountPath: "/opt/focalboard/config.json"
-#      subPath: json
-#      type: "custom"
-#      volumeSpec:
-#        configMap:
-#          name: focalboard-config
+    focal-config:
+      enabled: true
+      mountPath: "/opt/focalboard/config.json"
+      subPath: json
+      type: "custom"
+      volumeSpec:
+        configMap:
+          name: focalboard-config
 
