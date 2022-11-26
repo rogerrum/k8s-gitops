@@ -265,7 +265,7 @@ loadSecretsToVault() {
 
   argoHelmValueVaultNew "main/monitoring/botkube/botkube-helm-values.yaml"
   argoHelmValueVault "main/monitoring/thanos/thanos-helm-values.txt"
-  argoHelmValueVault "main/logs/loki/loki-helm-values.txt"
+  argoHelmValueVaultNew "main/logs/loki/loki-helm-values.yaml"
   argoHelmValueVaultNew "infrastructure/kured/kured-helm-values.yaml"
   argoHelmValueVault "main/homelab/emqx/emqx-helm-values.txt"
   argoHelmValueVaultNew "main/homelab/frigate/frigate-helm-values.yaml"
@@ -318,7 +318,8 @@ fi
 #secretVault "argocd/argocd-oidc-secret.txt"
 #argoHelmValueVaultNew "main/monitoring/botkube/botkube-helm-values.yaml"
 
-argoHelmValueVaultNew "main/homelab/frigate/frigate-helm-values.yaml"
+#argoHelmValueVaultNew "main/homelab/frigate/frigate-helm-values.yaml"
+argoHelmValueVaultNew "main/logs/loki/loki-helm-values.yaml"
 
 
 kill $VAULT_FWD_PID
