@@ -12,6 +12,11 @@ spec:
     namespace: logs
     server: https://kubernetes.default.svc
   project: default
+  ignoreDifferences:
+    - group: "*"
+      kind: "StatefulSet"
+      jqPathExpressions:
+        - .spec.persistentVolumeClaimRetentionPolicy
   source:
     path: main/logs/loki
     repoURL: {{ .Values.repo.url }}
@@ -27,3 +32,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true
