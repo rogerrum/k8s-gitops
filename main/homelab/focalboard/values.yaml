@@ -61,7 +61,7 @@ app-template:
     startup:
       enabled: false
 
-  securityContext:
+  podSecurityContext:
     fsGroup: 2000
 
   persistence:
