@@ -121,7 +121,7 @@ home-assistant:
 
   initContainers:
     init-db:
-      image: ghcr.io/onedr0p/postgres-initdb:14.5
+      image: ghcr.io/onedr0p/postgres-initdb:14.6
       env:
         - name: POSTGRES_HOST
           value: postgres-rw.kube-system.svc.cluster.local
