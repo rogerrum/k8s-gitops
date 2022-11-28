@@ -42,7 +42,6 @@ loki:
         ring:
           kvstore:
             store: memberlist
-        reporting_enabled: false
 
       ruler:
         enable_api: true
