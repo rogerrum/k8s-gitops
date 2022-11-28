@@ -83,12 +83,12 @@ prometheus-blackbox-exporter:
           severity: critical
         annotations:
           description: |-
-            The host {{"{{ $labels.target }}"}} is currently unreachable
+            The host {{ $labels.target }} is currently unreachable
 
       - alert: SlowResponseTime
         annotations:
           description: |-
-            The response time for {{"{{ $labels.target }}"}} has been greater than 30 seconds for 5 minutes.
+            The response time for {{ $labels.target }} has been greater than 30 seconds for 5 minutes.
         expr: probe_duration_seconds > 30
         for: 5m
         labels:
