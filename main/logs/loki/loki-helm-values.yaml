@@ -1,13 +1,17 @@
 loki:
   loki:
-    storage:
-      bucketNames:
-        chunks: chunks
-        ruler: ruler
-        admin: admin
-      type: s3
-      s3:
-        endpoint: minio.default.svc:9000
-        secretAccessKey: "${MINIO_LOKI_ACCESS_KEY}"
-        accessKeyId: "${MINIO_LOKI_SECRET_KEY}"
-        insecure: true
+    structuredConfig:
+      common:
+        storage:
+          bucketNames:
+            chunks: chunks
+            ruler: ruler
+            admin: admin
+          type: s3
+          s3:
+            bucketnames: loki
+            endpoint: minio.default.svc:9000
+            secretAccessKey: "${MINIO_LOKI_ACCESS_KEY}"
+            accessKeyId: "${MINIO_LOKI_SECRET_KEY}"
+            s3ForcePathStyle: true
+            insecure: true
