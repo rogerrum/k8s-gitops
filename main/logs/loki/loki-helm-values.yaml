@@ -11,7 +11,6 @@ loki:
           s3:
             bucketnames: loki
             endpoint: minio.default.svc:9000
-            accessKeyId: "${MINIO_LOKI_ACCESS_KEY}"
             secretAccessKey: "${MINIO_LOKI_SECRET_KEY}"
-            s3ForcePathStyle: true
+            accessKeyId: "${MINIO_LOKI_ACCESS_KEY}"
             insecure: true
