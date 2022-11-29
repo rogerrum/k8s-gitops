@@ -9,7 +9,7 @@ loki:
         grpc_listen_port: 9095
 
       memberlist:
-        join_members: [ "loki-memberlist" ]
+        join_members: ["loki-memberlist"]
 
       limits_config:
         retention_period: 14d
