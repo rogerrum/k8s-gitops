@@ -19,7 +19,7 @@ vault:
       limits:
         memory: 256Mi
     standalone:
-      enabled: "false"
+      enabled: false
     ha:
       enabled: true
       replicas: 3
