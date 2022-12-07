@@ -119,7 +119,7 @@ frigate:
           record:
             enabled: true
             retain:
-              days: 0
+              days: 14
               mode: motion
             events:
               retain:
