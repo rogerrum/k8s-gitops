@@ -98,7 +98,7 @@ frigate:
               - warning
             
           rtmp:
-            enabled: false
+            enabled: true
           
           objects:
             track:
@@ -144,6 +144,7 @@ frigate:
                       - detect
                   - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=0'
                     roles:
+                      - rtmp
                       - record
           
                 global_args:
