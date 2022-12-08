@@ -96,6 +96,16 @@ frigate:
               - -hide_banner
               - -loglevel
               - warning
+            #hwaccel_args:
+            #  - -hwaccel
+            #  - vaapi
+            #  - -hwaccel_device
+            #  - /dev/dri/renderD128
+            #  - -hwaccel_output_format
+            #  - yuv420p
+            output_args:
+              record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v copy -c:a aac -ar 44100
+              rtmp: -c:v copy -f flv -ar 44100 -c:a aac
             
           objects:
             track:
