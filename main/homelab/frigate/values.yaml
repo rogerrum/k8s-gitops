@@ -70,7 +70,7 @@ frigate:
 
   env:
     TZ: "America/Chicago"
-    LIBVA_DRIVER_NAME: "i965"
+    LIBVA_DRIVER_NAME: "radeonsi"
 
   configmap:
     config:
