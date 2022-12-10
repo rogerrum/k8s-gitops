@@ -95,7 +95,7 @@ frigate:
             global_args:
               - -hide_banner
               - -loglevel
-              - trace
+              - warning
             hwaccel_args:
               - -hwaccel
               - vaapi
