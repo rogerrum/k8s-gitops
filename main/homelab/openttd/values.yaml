@@ -1,0 +1,36 @@
+app-template:
+  image:
+    repository: ghcr.io/rogerrum/docker-openttd
+    tag: 12.2
+    pullPolicy: IfNotPresent
+
+  service:
+    main:
+      ports:
+        http:
+          port: 3000
+
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/cluster-issuer: vault-issuer
+        cert-manager.io/common-name: ttd.rsr.net
+      hosts:
+        - host: ttd.rsr.net
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - ttd.rsr.net
+          secretName: ttd-cert-tls
+
+  persistence:
+    config:
+      enabled: true
+      storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      skipuninstall: true
+      size: 1Gi
