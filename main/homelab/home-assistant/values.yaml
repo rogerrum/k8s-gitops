@@ -1,7 +1,7 @@
 home-assistant:
   image:
     repository: homeassistant/home-assistant
-    tag: 2022.12.1
+    tag: 2022.12.7
   env:
     TZ: "America/Chicago"
 
@@ -73,7 +73,7 @@ home-assistant:
       enabled: true
       image:
         repository: codercom/code-server
-        tag: 4.9.0
+        tag: 4.9.1
       workingDir: "/config"
       args:
         - --user-data-dir
