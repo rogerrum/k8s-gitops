@@ -19,6 +19,8 @@ emqx:
           topologyKey: "kubernetes.io/hostname"
   emqxConfig:
     EMQX_ALLOW_ANONYMOUS: "false"
+    EMQX_LOADED_MODULES: "emqx_mod_presence,emqx_mod_acl_internal,emqx_mod_topic_metrics"
+    EMQX_LOADED_PLUGINS: "emqx_management,emqx_recon,emqx_retainer,emqx_dashboard,emqx_rule_engine,emqx_bridge_mqtt,emqx_auth_mnesia,emqx_prometheus"
     EMQX_BRIDGE__MQTT__POWER__START_TYPE: auto
     EMQX_BRIDGE__MQTT__POWER__ADDRESS: 192.168.1.241:2883
     EMQX_BRIDGE__MQTT__POWER__PROTO_VER: mqttv3
@@ -35,28 +37,12 @@ emqx:
     {allow, {ipaddr, "127.0.0.1"}, pubsub, ["$SYS/#", "#"]}.
     {allow, all, subscribe, ["$SYS/#", {eq, "#"}]}.
     {allow, all}.
-  emqxLoadedPlugins: >
-    {emqx_management, true}.
-    {emqx_recon, true}.
-    {emqx_retainer, true}.
-    {emqx_dashboard, true}.
-    {emqx_telemetry, false}.
-    {emqx_rule_engine, true}.
-    {emqx_bridge_mqtt, true}.
-    {emqx_auth_mnesia, true}.
-    {emqx_prometheus, true}.
-  emqxLoadedModules: >
-    {emqx_mod_presence, true}.
-    {emqx_mod_delayed, false}.
-    {emqx_mod_rewrite, false}.
-    {emqx_mod_subscription, false}.
-    {emqx_mod_topic_metrics, true}.
   resources:
     limits:
       memory: 256Mi
     requests:
       cpu: 100m
-      memory: 150Mi
+      memory: 200Mi
 
   ingress:
     dashboard:
