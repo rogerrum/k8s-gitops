@@ -4,7 +4,7 @@ heimdall:
 
   image:
     repository: linuxserver/heimdall
-    tag: 2.5.4
+    tag: 2.5.5
 
   ingress:
     main:
