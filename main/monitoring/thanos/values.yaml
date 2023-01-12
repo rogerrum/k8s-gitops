@@ -23,6 +23,9 @@ thanos:
     enabled: true
   compactor:
     enabled: true
+    retentionResolutionRaw: 7d
+    retentionResolution5m: 14d
+    retentionResolution1h: 30d
     persistence:
       enabled: false
   storegateway:
