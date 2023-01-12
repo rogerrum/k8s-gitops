@@ -23,7 +23,6 @@ thanos:
     enabled: true
     ingress:
       enabled: true
-      ingressClassName: nginx
       annotations:
         kubernetes.io/ingress.class: "nginx"
         cert-manager.io/cluster-issuer: vault-issuer
