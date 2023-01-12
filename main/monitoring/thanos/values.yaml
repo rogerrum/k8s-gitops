@@ -61,6 +61,7 @@ thanos:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
         nginx.ingress.kubernetes.io/auth-signin: "https://auth.rsr.net/oauth2/start"
       hostname: thanos-storegateway.rsr.net
+      tls: true
     persistence:
       enabled: true
       storageClass: "longhorn"
