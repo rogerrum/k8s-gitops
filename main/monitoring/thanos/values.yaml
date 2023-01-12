@@ -49,7 +49,7 @@ thanos:
     persistence:
       enabled: true
       storageClass: "longhorn"
-      size: 2Gi
+      size: 20Gi
   storegateway:
     enabled: true
     ingress:
