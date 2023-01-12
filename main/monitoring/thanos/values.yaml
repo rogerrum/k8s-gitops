@@ -27,7 +27,9 @@ thanos:
     retentionResolution5m: 14d
     retentionResolution1h: 30d
     persistence:
-      enabled: false
+      enabled: true
+      storageClass: "longhorn"
+      size: 2Gi
   storegateway:
     enabled: true
     persistence:
