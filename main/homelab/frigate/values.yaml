@@ -100,7 +100,7 @@ frigate:
               - warning
             hwaccel_args:
               - -hwaccel
-              - qsv
+              - vaapi
               - -hwaccel_device
               - /dev/dri/renderD128
               - -hwaccel_output_format
