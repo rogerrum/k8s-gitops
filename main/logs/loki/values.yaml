@@ -170,6 +170,7 @@ loki:
         grafana_dashboard: "true"
     rules:
       enabled: true
+      alerting: false
     serviceMonitor:
       enabled: true
     selfMonitoring:
