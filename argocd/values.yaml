@@ -182,9 +182,9 @@ argo-cd:
   controller:
     replicas: 1
 
-    image:
-      repository: "ghcr.io/rogerrum/argocd"
-      tag: "latest"
+    #image:
+    #  repository: "ghcr.io/rogerrum/argocd"
+    #  tag: "latest"
       
     metrics:
       enabled: true
