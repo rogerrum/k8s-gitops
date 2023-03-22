@@ -38,7 +38,7 @@ installManualObjects(){
   message "fetching secrets from 1Password vault"
 
   OP_ACCESS_TOKEN=$(op read "op://kubernetes/RSR Homelab Access Token/credential")
-  OP_CREDENTIALS_JSON=$(op document get "RSR Homelab Credentials File" | base64 | tr '/+' '_-' | tr -d '=' | tr -d '\n')
+  OP_CREDENTIALS_JSON=$(op document get "RSR Homelab Credentials File" | tr '/+' '_-' | tr -d '=' | tr -d '\n')
   #DOCKER_USERNAME=$(op read "op://kubernetes/docker/username")
   #DOCKER_TOKEN=$(op read "op://kubernetes/docker/add more/DOCKER_TOKEN")
   #DOCKER_EMAIL=$("op read op://kubernetes/docker/add more/email")
@@ -48,6 +48,9 @@ installManualObjects(){
   ##########
   # secrets
   ##########
+  kubectl -n kube-system delete secret op-credentials > /dev/null 2>&1
+  kubectl -n kube-system delete secret onepassword-token > /dev/null 2>&1
+
   #kubectl -n kube-system create secret docker-registry registry-creds-secret --namespace kube-system --docker-username=$DOCKER_USERNAME --docker-password=$DOCKER_TOKEN --docker-email=$DOCKER_EMAIL
   kubectl -n kube-system create secret generic op-credentials --from-literal=1password-credentials.json="$(echo $OP_CREDENTIALS_JSON)"
   kubectl -n kube-system create secret generic onepassword-token --from-literal=token="$(echo $OP_ACCESS_TOKEN)"
