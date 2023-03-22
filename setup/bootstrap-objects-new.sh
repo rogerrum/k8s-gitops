@@ -28,7 +28,7 @@ kapply() {
 installManualObjects(){
 #  . "$REPO_ROOT"/setup/.env
 
-op whoami > /dev/null 2>&1
+  op whoami > /dev/null 2>&1
   OP_SIGNEDIN=$?
   if [ $OP_SIGNEDIN != 0 ]; then
     echo -e "1password (op CLI) is not signed-in, aborting!"
