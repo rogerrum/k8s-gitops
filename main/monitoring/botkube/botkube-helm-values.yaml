@@ -1,7 +1,0 @@
-botkube:
-  communications:
-
-
-    'default-group':
-      discord:
-        token: '$BOTKUBE_DISCORD_TOKEN'
