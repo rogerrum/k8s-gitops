@@ -19,7 +19,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-        - http://localhost/botkube.yaml
+        - http://localhost/botkube.yml
   syncPolicy:
     automated:
       prune: true
