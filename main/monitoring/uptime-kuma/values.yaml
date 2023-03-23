@@ -31,7 +31,7 @@ uptime-kuma:
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
       skipuninstall: true
-      size: "2Gi"
+      size: "3Gi"
       enabled: true
     rootcert:
       enabled: true
