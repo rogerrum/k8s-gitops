@@ -47,15 +47,14 @@ argo-cd:
 
     volumes:
       - name: helm-values
-        secret:
-          projected:
-            sources:
-              - secret:
-                  name: argo-helm-values
-                  optional: true
-              - secret:
-                  name: botkube-helm-values
-                  optional: true
+        projected:
+          sources:
+            - secret:
+                name: argo-helm-values
+                optional: true
+            - secret:
+                name: botkube-helm-values
+                optional: true
     resources:
       requests:
         cpu: 1000m
