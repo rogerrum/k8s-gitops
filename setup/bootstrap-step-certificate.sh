@@ -58,7 +58,7 @@ extractFromStepConfigAndCreateOPEntries() {
   message "Extracting provisioners and fingerprint"
   provisioners=$(cat certs/temp.yaml | yq '.inject.config.files."ca.json".authority.provisioners[0]')
   fingerprint=$(cat certs/temp.yaml | yq '.inject.config.files."defaults.json".fingerprint')
-  echo "provisioners: $provisioner" >certs/provisioners.txt
+  echo "provisioners: $provisioners" >certs/provisioners.txt
   echo "fingerprint: $fingerprint" >certs/fingerprint.txt
 
   message "Deleting OP - RSR CA Config"
@@ -66,7 +66,7 @@ extractFromStepConfigAndCreateOPEntries() {
 
   message "Creating OP - RSR CA Config"
   op item create --category=Database --title='RSR CA Config' --vault='kubernetes' \
-    "provisioners=$provisioner" "fingerprint=$fingerprint"
+    "provisioners=$provisioners" "fingerprint=$fingerprint"
 
   message "Creating OP - Root CA"
   op document delete "RSR Root CA" --vault='kubernetes' --archive >/dev/null 2>&1
