@@ -57,10 +57,10 @@ extractFromStepConfigAndCreateOPEntries() {
 
 
   message "Extracting ca.json"
-  cat temp.yaml | yq '.inject.config.files."ca.json"' -j > certs/ca.json
+  cat certs/temp.yaml | yq '.inject.config.files."ca.json"' -j > certs/ca.json
 
   message "Extracting defaults.json"
-  cat temp.yaml | yq '.inject.config.files."defaults.json"' -j > certs/defaults.json
+  cat certs/temp.yaml | yq '.inject.config.files."defaults.json"' -j > certs/defaults.json
 
 #  message "Extracting provisioners and fingerprint"
 #  provisioners=$(cat certs/temp.yaml | yq '.inject.config.files."ca.json".authority.provisioners[0]')
