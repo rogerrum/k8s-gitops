@@ -41,7 +41,7 @@ generateStepCertConfig() {
   message "Generating Step Helm Config"
   step ca init --deployment-type=standalone \
     --name=RSR --dns=ca.rsr.net --address=:443 --provisioner=roger@rsr.net \
-    --password-file=password.txt --helm >certs/temp.yaml
+    --password-file=certs/password.txt --helm >certs/temp.yaml
 
 }
 
