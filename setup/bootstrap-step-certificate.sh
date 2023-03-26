@@ -32,8 +32,6 @@ checkOPLogin() {
 }
 
 generateStepCertConfig() {
-  message "Creating Certs Dir"
-  mkdir certs
 
   #step certificate create "RSR Root CA" rsr_root_ca.crt rsr_root_ca.key --password-file=password.txt --profile root-ca --kty RSA
   #
@@ -60,8 +58,8 @@ extractFromStepConfigAndCreateOPEntries() {
   message "Extracting provisioners and fingerprint"
   provisioners=$(cat certs/temp.yaml | yq '.inject.config.files."ca.json".authority.provisioners[0]')
   fingerprint=$(cat certs/temp.yaml | yq '.inject.config.files."defaults.json".fingerprint')
-  cat "provisioners: $provisioner" >certs/provisioners.txt
-  cat "fingerprint: $fingerprint" >certs/fingerprint.txt
+  echo "provisioners: $provisioner" >certs/provisioners.txt
+  echo "fingerprint: $fingerprint" >certs/fingerprint.txt
 
   message "Deleting OP - RSR CA Config"
   op item delete "RSR CA Config" --vault='kubernetes' --archive >/dev/null 2>&1
@@ -95,9 +93,14 @@ createKubeConfigMapForCerts() {
 }
 
 getCAPassword() {
+
+  message "Creating Certs Dir"
+  mkdir certs
+
   message "Retrieving CA Password"
   password=$(op read "op://kubernetes/RSR CA Password/password")
-  cat "$password" >certs/password.txt
+  echo "$password" > certs/password.txt
+
 }
 
 
