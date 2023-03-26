@@ -89,13 +89,13 @@ extractFromStepConfigAndCreateOPEntries() {
 createKubeConfigMapForCerts() {
   message "Creating Kube Config - step-certificates-certs"
   kubectl -n kube-system delete configmap step-certificates-certs >/dev/null 2>&1
-  kubectl -n kube-system create configmap step-certificates-certs --from-file=intermediate_ca.crt=certs/rsr_intermediate_ca.crt --from-file=root_ca.crt=cert/rsr_root_ca.crt
+  kubectl -n kube-system create configmap step-certificates-certs --from-file=intermediate_ca.crt=certs/rsr_intermediate_ca.crt --from-file=root_ca.crt=certs/rsr_root_ca.crt
 }
 
 getCAPassword() {
 
   message "Creating Certs Dir"
-  mkdir certs
+  mkdir -p certs
 
   message "Retrieving CA Password"
   password=$(op read "op://kubernetes/RSR CA Password/password")
