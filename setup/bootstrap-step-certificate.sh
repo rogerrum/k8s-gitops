@@ -55,12 +55,21 @@ extractFromStepConfigAndCreateOPEntries() {
   cat certs/temp.yaml | yq .inject.secrets.x509.intermediate_ca_key >certs/rsr_intermediate_ca.key
   cat certs/temp.yaml | yq .inject.secrets.x509.root_ca_key >certs/rsr_root_ca.key
 
+  message "Retrieving Base chart values"
+  curl https://raw.githubusercontent.com/smallstep/helm-charts/master/step-certificates/values.yaml -o certs/baseValues.yaml
 
   message "Extracting ca.json"
-  cat certs/temp.yaml | yq '.inject.config.files."ca.json"' -j > certs/ca.json
+#  cat certs/temp.yaml | yq '.inject.config.files."ca.json"' -o=json > certs/ca.json
+  yq '. *n load("certs/baseValues.yaml")' certs/temp.yaml | yq '.inject.config.files."ca.json"' -o=json > certs/ca.json
 
   message "Extracting defaults.json"
-  cat certs/temp.yaml | yq '.inject.config.files."defaults.json"' -j > certs/defaults.json
+  cat certs/temp.yaml | yq '.inject.config.files."defaults.json"' -o=json > certs/defaults.json
+
+  message "Extracting x509_leaf.tpl"
+  cat certs/baseValues.yaml | yq '.inject.config.templates."x509_leaf.tpl"' > certs/x509_leaf.tpl
+
+  message "Extracting ssh.tpl"
+  cat certs/baseValues.yaml | yq '.inject.config.templates."ssh.tpl"' > certs/ssh.tpl
 
 #  message "Extracting provisioners and fingerprint"
 #  provisioners=$(cat certs/temp.yaml | yq '.inject.config.files."ca.json".authority.provisioners[0]')
@@ -101,7 +110,12 @@ createKubeConfigMapForCerts() {
   message "Creating Kube Config - step-certificates-config"
 
   kubectl -n kube-system delete configmap step-certificates-config >/dev/null 2>&1
-  kubectl -n kube-system create configmap step-certificates-config --from-file=ca.json=certs/ca.json --from-file=defaults.json=certs/defaults.json
+  kubectl -n kube-system create configmap step-certificates-config \
+    --from-file=ca.json=certs/ca.json \
+    --from-file=defaults.json=certs/defaults.json \
+    --from-file=x509_leaf.tpl=certs/x509_leaf.tpl \
+    --from-file=ssh.tpl=certs/ssh.tpl
+
 
 }
 
