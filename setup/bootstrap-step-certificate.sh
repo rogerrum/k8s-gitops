@@ -55,33 +55,40 @@ extractFromStepConfigAndCreateOPEntries() {
   cat certs/temp.yaml | yq .inject.secrets.x509.intermediate_ca_key >certs/rsr_intermediate_ca.key
   cat certs/temp.yaml | yq .inject.secrets.x509.root_ca_key >certs/rsr_root_ca.key
 
-  message "Extracting provisioners and fingerprint"
-  provisioners=$(cat certs/temp.yaml | yq '.inject.config.files."ca.json".authority.provisioners[0]')
-  fingerprint=$(cat certs/temp.yaml | yq '.inject.config.files."defaults.json".fingerprint')
-  echo "provisioners: $provisioners" >certs/provisioners.txt
-  echo "fingerprint: $fingerprint" >certs/fingerprint.txt
 
-  message "Deleting OP - RSR CA Config"
-  op item delete "RSR CA Config" --vault='kubernetes' --archive >/dev/null 2>&1
+  message "Extracting ca.json"
+  cat temp.yaml | yq '.inject.config.files."ca.json"' -j > certs/ca.json
 
-  message "Creating OP - RSR CA Config"
-  op item create --category=Database --title='RSR CA Config' --vault='kubernetes' \
-    "provisioners=$provisioners" "fingerprint=$fingerprint"
+  message "Extracting defaults.json"
+  cat temp.yaml | yq '.inject.config.files."defaults.json"' -j > certs/defaults.json
+
+#  message "Extracting provisioners and fingerprint"
+#  provisioners=$(cat certs/temp.yaml | yq '.inject.config.files."ca.json".authority.provisioners[0]')
+#  fingerprint=$(cat certs/temp.yaml | yq '.inject.config.files."defaults.json".fingerprint')
+#  echo "provisioners: $provisioners" >certs/provisioners.txt
+#  echo "fingerprint: $fingerprint" >certs/fingerprint.txt
+
+#  message "Deleting OP - RSR CA Config"
+#  op item delete "RSR CA Config" --vault='kubernetes'  >/dev/null 2>&1
+#
+#  message "Creating OP - RSR CA Config"
+#  op item create --category=Database --title='RSR CA Config' --vault='kubernetes' \
+#    "provisioners=$provisioners" "fingerprint=$fingerprint"
 
   message "Creating OP - Root CA"
-  op document delete "RSR Root CA" --vault='kubernetes' --archive >/dev/null 2>&1
+  op document delete "RSR Root CA" --vault='kubernetes'  >/dev/null 2>&1
   op document create "certs/rsr_root_ca.crt" --title "RSR Root CA" --vault='kubernetes'
 
   message "Creating OP - Root CA Key"
-  op document delete "RSR Root CA Key" --vault='kubernetes' --archive >/dev/null 2>&1
+  op document delete "RSR Root CA Key" --vault='kubernetes'  >/dev/null 2>&1
   op document create "certs/rsr_root_ca.key" --title "RSR Root CA Key" --vault='kubernetes'
 
   message "Creating OP - Intermediate CA"
-  op document delete "RSR Intermediate CA" --vault='kubernetes' --archive >/dev/null 2>&1
+  op document delete "RSR Intermediate CA" --vault='kubernetes'  >/dev/null 2>&1
   op document create "certs/rsr_intermediate_ca.crt" --title "RSR Intermediate CA" --vault='kubernetes'
 
   message "Creating OP - Intermediate CA Key"
-  op document delete "RSR Intermediate CA Key" --vault='kubernetes' --archive >/dev/null 2>&1
+  op document delete "RSR Intermediate CA Key" --vault='kubernetes'  >/dev/null 2>&1
   op document create "certs/rsr_intermediate_ca.key" --title "RSR Intermediate CA Key" --vault='kubernetes'
 
 }
@@ -90,6 +97,12 @@ createKubeConfigMapForCerts() {
   message "Creating Kube Config - step-certificates-certs"
   kubectl -n kube-system delete configmap step-certificates-certs >/dev/null 2>&1
   kubectl -n kube-system create configmap step-certificates-certs --from-file=intermediate_ca.crt=certs/rsr_intermediate_ca.crt --from-file=root_ca.crt=certs/rsr_root_ca.crt
+
+  message "Creating Kube Config - step-certificates-config"
+
+  kubectl -n kube-system delete configmap step-certificates-config >/dev/null 2>&1
+  kubectl -n kube-system create configmap step-certificates-config --from-file=ca.json=certs/ca.json --from-file=defaults.json=certs/defaults.json
+
 }
 
 getCAPassword() {
