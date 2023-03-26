@@ -94,9 +94,18 @@ createKubeConfigMapForCerts() {
   kubectl -n kube-system create configmap step-certificates-certs --from-file=intermediate_ca.crt=certs/rsr_intermediate_ca.crt --from-file=certs/root_ca.crt=rsr_root_ca.crt
 }
 
+getCAPassword() {
+  message "Retrieving CA Password"
+  password=$(op read "op://kubernetes/RSR CA Password/password")
+  cat "$password" >certs/password.txt
+}
+
+
 export KUBECONFIG="$REPO_ROOT/setup/kubeconfig"
 
 checkOPLogin
+
+getCAPassword
 
 generateStepCertConfig
 extractFromStepConfigAndCreateOPEntries
