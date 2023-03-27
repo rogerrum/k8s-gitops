@@ -55,6 +55,9 @@ argo-cd:
             - secret:
                 name: botkube-helm-values
                 optional: true
+            - secret:
+                name: step-issuer-helm-values
+                optional: true
     resources:
       requests:
         cpu: 1000m
