@@ -40,7 +40,7 @@ generateStepCertConfig() {
 
   message "Generating Step Helm Config"
   step ca init --deployment-type=standalone \
-    --name=RSR --dns=ca.rsr.net --address=:443 --provisioner=roger@rsr.net \
+    --name=RSR --dns=ca.rsr.net --address=:9000 --provisioner=roger@rsr.net \
     --password-file=certs/password.txt --helm >certs/temp.yaml
 
 }
@@ -48,56 +48,56 @@ generateStepCertConfig() {
 extractFromStepConfigAndCreateOPEntries() {
 
   message "Extracting Certs"
-  cat certs/temp.yaml | yq .inject.certificates.intermediate_ca >certs/rsr_intermediate_ca.crt
-  cat certs/temp.yaml | yq .inject.certificates.root_ca >certs/rsr_root_ca.crt
+  cat certs/temp.yaml | yq '.inject.certificates.intermediate_ca | trim' >certs/rsr_intermediate_ca.crt
+  cat certs/temp.yaml | yq '.inject.certificates.root_ca | trim' >certs/rsr_root_ca.crt
 
   message "Extracting Cert Keys"
-  cat certs/temp.yaml | yq .inject.secrets.x509.intermediate_ca_key >certs/rsr_intermediate_ca.key
-  cat certs/temp.yaml | yq .inject.secrets.x509.root_ca_key >certs/rsr_root_ca.key
+  cat certs/temp.yaml | yq '.inject.secrets.x509.intermediate_ca_key | trim' >certs/rsr_intermediate_ca.key
+  cat certs/temp.yaml | yq '.inject.secrets.x509.root_ca_key | trim' >certs/rsr_root_ca.key
 
   message "Retrieving Base chart values"
   curl https://raw.githubusercontent.com/smallstep/helm-charts/master/step-certificates/values.yaml -o certs/baseValues.yaml
 
   message "Extracting ca.json"
-#  cat certs/temp.yaml | yq '.inject.config.files."ca.json"' -o=json > certs/ca.json
-  yq '. *n load("certs/baseValues.yaml")' certs/temp.yaml | yq '.inject.config.files."ca.json"' -o=json > certs/ca.json
+  #  cat certs/temp.yaml | yq '.inject.config.files."ca.json"' -o=json > certs/ca.json
+  yq '. *n load("certs/baseValues.yaml")' certs/temp.yaml | yq '.inject.config.files."ca.json"' -o=json >certs/ca.json
 
   message "Extracting defaults.json"
-  cat certs/temp.yaml | yq '.inject.config.files."defaults.json"' -o=json > certs/defaults.json
+  cat certs/temp.yaml | yq '.inject.config.files."defaults.json"' -o=json >certs/defaults.json
 
   message "Extracting x509_leaf.tpl"
-  cat certs/baseValues.yaml | yq '.inject.config.templates."x509_leaf.tpl"' > certs/x509_leaf.tpl
+  cat certs/baseValues.yaml | yq '.inject.config.templates."x509_leaf.tpl"' >certs/x509_leaf.tpl
 
   message "Extracting ssh.tpl"
-  cat certs/baseValues.yaml | yq '.inject.config.templates."ssh.tpl"' > certs/ssh.tpl
+  cat certs/baseValues.yaml | yq '.inject.config.templates."ssh.tpl"' >certs/ssh.tpl
 
-#  message "Extracting provisioners and fingerprint"
-#  provisioners=$(cat certs/temp.yaml | yq '.inject.config.files."ca.json".authority.provisioners[0]')
-#  fingerprint=$(cat certs/temp.yaml | yq '.inject.config.files."defaults.json".fingerprint')
-#  echo "provisioners: $provisioners" >certs/provisioners.txt
-#  echo "fingerprint: $fingerprint" >certs/fingerprint.txt
+  #  message "Extracting provisioners and fingerprint"
+  #  provisioners=$(cat certs/temp.yaml | yq '.inject.config.files."ca.json".authority.provisioners[0]')
+  #  fingerprint=$(cat certs/temp.yaml | yq '.inject.config.files."defaults.json".fingerprint')
+  #  echo "provisioners: $provisioners" >certs/provisioners.txt
+  #  echo "fingerprint: $fingerprint" >certs/fingerprint.txt
 
-#  message "Deleting OP - RSR CA Config"
-#  op item delete "RSR CA Config" --vault='kubernetes'  >/dev/null 2>&1
-#
-#  message "Creating OP - RSR CA Config"
-#  op item create --category=Database --title='RSR CA Config' --vault='kubernetes' \
-#    "provisioners=$provisioners" "fingerprint=$fingerprint"
+  #  message "Deleting OP - RSR CA Config"
+  #  op item delete "RSR CA Config" --vault='kubernetes'  >/dev/null 2>&1
+  #
+  #  message "Creating OP - RSR CA Config"
+  #  op item create --category=Database --title='RSR CA Config' --vault='kubernetes' \
+  #    "provisioners=$provisioners" "fingerprint=$fingerprint"
 
   message "Creating OP - Root CA"
-  op document delete "RSR Root CA" --vault='kubernetes'  >/dev/null 2>&1
+  op document delete "RSR Root CA" --vault='kubernetes' >/dev/null 2>&1
   op document create "certs/rsr_root_ca.crt" --title "RSR Root CA" --vault='kubernetes'
 
   message "Creating OP - Root CA Key"
-  op document delete "RSR Root CA Key" --vault='kubernetes'  >/dev/null 2>&1
+  op document delete "RSR Root CA Key" --vault='kubernetes' >/dev/null 2>&1
   op document create "certs/rsr_root_ca.key" --title "RSR Root CA Key" --vault='kubernetes'
 
   message "Creating OP - Intermediate CA"
-  op document delete "RSR Intermediate CA" --vault='kubernetes'  >/dev/null 2>&1
+  op document delete "RSR Intermediate CA" --vault='kubernetes' >/dev/null 2>&1
   op document create "certs/rsr_intermediate_ca.crt" --title "RSR Intermediate CA" --vault='kubernetes'
 
   message "Creating OP - Intermediate CA Key"
-  op document delete "RSR Intermediate CA Key" --vault='kubernetes'  >/dev/null 2>&1
+  op document delete "RSR Intermediate CA Key" --vault='kubernetes' >/dev/null 2>&1
   op document create "certs/rsr_intermediate_ca.key" --title "RSR Intermediate CA Key" --vault='kubernetes'
 
 }
@@ -116,7 +116,6 @@ createKubeConfigMapForCerts() {
     --from-file=x509_leaf.tpl=certs/x509_leaf.tpl \
     --from-file=ssh.tpl=certs/ssh.tpl
 
-
 }
 
 getCAPassword() {
@@ -126,10 +125,9 @@ getCAPassword() {
 
   message "Retrieving CA Password"
   password=$(op read "op://kubernetes/RSR CA Password/password")
-  echo "$password" > certs/password.txt
+  echo "$password" >certs/password.txt
 
 }
-
 
 export KUBECONFIG="$REPO_ROOT/setup/kubeconfig"
 
