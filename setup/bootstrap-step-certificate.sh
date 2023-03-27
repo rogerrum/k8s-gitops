@@ -78,7 +78,7 @@ extractFromStepConfigAndCreateOPEntries() {
   provisioner=$(cat certs/temp.yaml | yq '.inject.config.files."ca.json".authority.provisioners[0]' -o=json | jq -r .name)
 
   message "Extracting caBundle"
-  caBundle=$(cat certs/temp.yaml | yq '.inject.certificates.root_ca | trim' | base64)
+  caBundle=$(cat certs/temp.yaml | yq '.inject.certificates.root_ca | trim')
 
   #  fingerprint=$(cat certs/temp.yaml | yq '.inject.config.files."defaults.json".fingerprint')
   #  echo "provisioners: $provisioners" >certs/provisioners.txt
