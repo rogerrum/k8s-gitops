@@ -1,0 +1,23 @@
+step-certificates:
+  existingSecrets:
+    enabled: true
+    ca: true
+    issuer: false
+    configAsSecret: false
+    sshHostCa: false
+    sshUserCa: false
+
+  bootstrap:
+    secrets: false
+    enabled: false
+    configmaps: false
+
+  inject:
+    enabled: false
+
+  service:
+    targetPort: 9000
+
+  ca:
+    db:
+      storageClass: "longhorn"
