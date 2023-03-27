@@ -19,7 +19,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-        - http://localhost/step-issuer.yml
+{{/*        - http://localhost/step-issuer.yml*/}}
   syncPolicy:
     automated:
       prune: true
