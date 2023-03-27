@@ -71,18 +71,25 @@ extractFromStepConfigAndCreateOPEntries() {
   message "Extracting ssh.tpl"
   cat certs/baseValues.yaml | yq '.inject.config.templates."ssh.tpl"' >certs/ssh.tpl
 
-  #  message "Extracting provisioners and fingerprint"
-  #  provisioners=$(cat certs/temp.yaml | yq '.inject.config.files."ca.json".authority.provisioners[0]')
+  message "Extracting kid"
+  kid=$(cat certs/temp.yaml | yq '.inject.config.files."ca.json".authority.provisioners[0]' -o=json | jq -r .key.kid)
+
+  message "Extracting provisioner"
+  provisioner=$(cat certs/temp.yaml | yq '.inject.config.files."ca.json".authority.provisioners[0]' -o=json | jq -r .name)
+
+  message "Extracting caBundle"
+  caBundle=$(cat certs/temp.yaml | yq '.inject.certificates.root_ca | trim' | base64)
+
   #  fingerprint=$(cat certs/temp.yaml | yq '.inject.config.files."defaults.json".fingerprint')
   #  echo "provisioners: $provisioners" >certs/provisioners.txt
   #  echo "fingerprint: $fingerprint" >certs/fingerprint.txt
 
-  #  message "Deleting OP - RSR CA Config"
-  #  op item delete "RSR CA Config" --vault='kubernetes'  >/dev/null 2>&1
-  #
-  #  message "Creating OP - RSR CA Config"
-  #  op item create --category=Database --title='RSR CA Config' --vault='kubernetes' \
-  #    "provisioners=$provisioners" "fingerprint=$fingerprint"
+  message "Deleting OP - RSR CA Config"
+  op item delete "RSR CA Config" --vault='kubernetes'  >/dev/null 2>&1
+
+  message "Creating OP - RSR CA Config"
+  op item create --category=Database --title='RSR CA Config' --vault='kubernetes' \
+    "provisioner=$provisioner" "kid=$kid" "caBundle=$caBundle"
 
   message "Creating OP - Root CA"
   op document delete "RSR Root CA" --vault='kubernetes' >/dev/null 2>&1
