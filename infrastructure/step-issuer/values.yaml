@@ -1,0 +1,7 @@
+step-issuer:
+  stepIssuer:
+    caUrl: https://step-certificates.kube-system.svc.cluster.local
+    provisioner:
+      passwordRef:
+        name: step-certificates-provisioner-password
+        key: password
