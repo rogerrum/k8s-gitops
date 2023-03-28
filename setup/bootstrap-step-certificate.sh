@@ -40,7 +40,7 @@ generateStepCertConfig() {
 
   message "Generating Step Helm Config"
   step ca init --deployment-type=standalone \
-    --name=RSR --dns=ca.rsr.net --address=:9000 --provisioner=roger@rsr.net \
+    --name=RSR --dns=ca.rsr.net --dns=step-certificates.kube-system.svc.cluster.local --address=:9000 --provisioner=roger@rsr.net \
     --password-file=certs/password.txt --helm >certs/temp.yaml
 
 }
