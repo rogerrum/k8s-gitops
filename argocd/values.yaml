@@ -58,6 +58,11 @@ argo-cd:
             - secret:
                 name: step-issuer-helm-values
                 optional: true
+            - secret:
+                name: argocd-patch-helm-values
+                optional: true
+
+
     resources:
       requests:
         cpu: 1000m
