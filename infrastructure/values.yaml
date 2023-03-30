@@ -2,3 +2,169 @@
 repo:
   url: https://github.com/rogerrum/k8s-gitops.git
   revision: main
+
+
+applications:
+  - name: argocd-patch
+    namespace: argocd
+    path: infrastructure/argocd-patch
+    manifest-paths: /infrastructure/argocd-patch
+    sync-wave: "0"
+    helm:
+      enabled: true
+      additionalValues:
+        - http://localhost/argocd-patch.yaml
+
+  - name: cert-manager
+    namespace: cert-manager
+    path: infrastructure/cert-manager
+    manifest-paths: /infrastructure/cert-manager
+    sync-wave: "-4"
+    helm:
+      enabled: true
+    syncOptions:
+      - CreateNamespace=true
+
+  - name: cloudnative-pg
+    namespace: kube-system
+    path: infrastructure/cloudnative-pg
+    manifest-paths: /infrastructure/cloudnative-pg
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: descheduler
+    namespace: kube-system
+    path: infrastructure/descheduler
+    manifest-paths: /infrastructure/descheduler
+    sync-wave: "-3"
+    helm:
+      enabled: true
+
+  - name: external-secrets
+    namespace: kube-system
+    path: infrastructure/external-secrets
+    manifest-paths: /infrastructure/external-secrets
+    sync-wave: "-4"
+    helm:
+      enabled: true
+
+  - name: ingress-nginx
+    namespace: kube-system
+    path: infrastructure/ingress-nginx
+    manifest-paths: /infrastructure/ingress-nginx
+    sync-wave: "-4"
+    helm:
+      enabled: true
+    syncOptions:
+      - CreateNamespace=true
+
+  - name: intel-gpu-plugin
+    namespace: kube-system
+    path: infrastructure/intel-gpu-plugin
+    manifest-paths: /infrastructure/intel-gpu-plugin
+    sync-wave: "-3"
+    helm:
+      enabled: true
+
+  - name: kube-cleanup-operator
+    namespace: kube-system
+    path: infrastructure/kube-cleanup-operator
+    manifest-paths: /infrastructure/kube-cleanup-operator
+    sync-wave: "-4"
+    helm:
+      enabled: true
+
+  - name: kured
+    namespace: kube-system
+    path: infrastructure/kured
+    manifest-paths: /infrastructure/kured
+    sync-wave: "0"
+    helm:
+      enabled: true
+      additionalValues:
+        - http://localhost/kured.yaml
+
+  - name: longhorn
+    create-namespace: true
+    namespace-sync-wave: "-4"
+    namespace: longhorn-system
+    path: infrastructure/longhorn
+    manifest-paths: /infrastructure/longhorn
+    sync-wave: "-3"
+    helm:
+      enabled: true
+    syncOptions:
+      - CreateNamespace=true
+
+  - name: metallb
+    namespace: kube-system
+    path: infrastructure/metallb
+    manifest-paths: /infrastructure/metallb
+    sync-wave: "-4"
+    helm:
+      enabled: true
+
+  - name: node-feature-discovery
+    namespace: kube-system
+    path: infrastructure/node-feature-discovery
+    manifest-paths: /infrastructure/node-feature-discovery
+    sync-wave: "-4"
+    helm:
+      enabled: true
+
+  - name: node-problem-detector
+    namespace: kube-system
+    path: infrastructure/node-problem-detector
+    manifest-paths: /infrastructure/node-problem-detector
+    sync-wave: "-4"
+    helm:
+      enabled: true
+
+  - name: oauth2-proxy
+    namespace: kube-system
+    path: infrastructure/oauth2-proxy
+    manifest-paths: /infrastructure/oauth2-proxy
+    sync-wave: "-2"
+    helm:
+      enabled: true
+
+  - name: onepassword
+    namespace: kube-system
+    path: infrastructure/onepassword
+    manifest-paths: /infrastructure/onepassword
+    sync-wave: "-3"
+    helm:
+      enabled: true
+
+  - name: registry-creds
+    namespace: kube-system
+    path: infrastructure/registry-creds
+    manifest-paths: /infrastructure/registry-creds
+    sync-wave: "-3"
+
+  - name: reloader
+    namespace: kube-system
+    path: infrastructure/reloader
+    manifest-paths: /infrastructure/reloader
+    sync-wave: "-4"
+    helm:
+      enabled: true
+
+  - name: step-certificates
+    namespace: kube-system
+    path: infrastructure/step-certificates
+    manifest-paths: /infrastructure/step-certificates
+    sync-wave: "-2"
+    helm:
+      enabled: true
+
+  - name: step-issuer
+    namespace: kube-system
+    path: infrastructure/step-issuer
+    manifest-paths: /infrastructure/step-issuer
+    sync-wave: "-2"
+    helm:
+      enabled: true
+      additionalValues:
+        - http://localhost/step-issuer.yml
