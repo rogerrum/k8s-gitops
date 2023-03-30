@@ -24,7 +24,7 @@ spec:
     template:
       engineVersion: v2
       data:
-        api-key: '{{ printf "{{ .cloudflare-api-key }}" }}'
+        api-key: '{{ printf "{{ .cloudflare_api_key }}" }}'
   dataFrom:
     - extract:
         key: cloudflare-config
