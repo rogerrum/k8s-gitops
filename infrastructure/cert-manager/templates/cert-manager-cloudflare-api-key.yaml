@@ -8,3 +8,23 @@ spec:
     - api-key
   path: secrets/cert-manager/cloudflare-api-key
   type: Opaque
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: cloudflare-api-key
+  namespace: cert-manager
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: cloudflare-api-key1
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        api-key: '{{ printf "{{ .cloudflare-api-key }}" }}'
+  dataFrom:
+    - extract:
+        key: cloudflare-config
