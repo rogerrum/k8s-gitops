@@ -12,6 +12,10 @@ applications:
     sync-wave: "0"
     helm:
       enabled: true
+      secrets:
+        enabled: true
+        keys:
+          - argocd-config
       additionalValues:
         - http://localhost/argocd-patch.yaml
 
