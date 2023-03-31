@@ -1,48 +1,49 @@
 kube-prometheus-stack:
-  # defaultRules:
-  #   rules:
-  #     kubeApiserverAvailability: true
-  #     kubeApiserver: true
-  server:
-    resources:
-      requests:
-        memory: 1500Mi
-        cpu: 25m
-      limits:
-        memory: 2000Mi
-  prometheusOperator:
-    createCustomResource: true
-    prometheusConfigReloader:
-      resources:
-        limits:
-          cpu: 1
-    # prometheusConfigReloaderImage:
-    #   repository: quay.io/coreos/prometheus-config-reloader
-    #   tag: v0.39.0
-    # configmapReloadImage:
-    #   repository: jimmidyson/configmap-reload
-    #   tag: v0.4.0
-    configReloaderCpu: 200m
-    admissionWebhooks:
-      enabled: false
+
+  cleanPrometheusOperatorObjectNames: true
+
   alertmanager:
-    alertmanagerSpec:
-      storage:
-        volumeClaimTemplate:
-          spec:
-            storageClassName: longhorn
-            resources:
-              requests:
-                storage: 10Gi
-      tolerations:
-        - key: "arm64"
-          operator: "Exists"
-      podMetadata:
-        annotations:
-          backup.velero.io/backup-volumes: alertmanager-kube-prometheus-stack-alertmanager-db
-      useExistingSecret: true
-      configSecret: kube-prometheus-stack-secret
-      podAntiAffinity: "hard"
+    config:
+      global:
+        resolve_timeout: 5m
+      receivers:
+        - name: 'null'
+        - name: 'discord-notifications'
+          webhook_configs:
+            - url: 'http://alertmanager-discord:9094'
+
+      route:
+        # group_by: ['alertname', 'job']
+        group_wait: 45s
+        group_interval: 10m
+        repeat_interval: 12h
+        receiver: 'discord-notifications'
+        routes:
+          - receiver: "null" # quote
+            matchers:
+              - alertname =~ "Watchdog"
+          - receiver: "null" # quote
+            matchers:
+              - alertname =~ "InfoInhibitor"
+          - receiver: 'pagerduty'
+            match:
+              severity: critical
+            continue: true
+          - receiver: 'discord-notifications'
+      inhibit_rules:
+        - source_matchers:
+            - severity = "critical"
+          target_matchers:
+            - severity = "warning"
+          equal: ["alertname", "namespace"]
+
+      templates:
+      - '/etc/alertmanager/config/*.tmpl'
+
+    templateFiles:
+      pagerduty-custom.tmpl: |-
+        {{- define "pagerduty.custom.description" -}}[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }} {{ else if ne .CommonAnnotations.message ""}}{{ .CommonAnnotations.message }} {{ else if ne .CommonAnnotations.description ""}}{{ .CommonAnnotations.description }} {{ else }}{{ .CommonLabels.alertname }}{{ end }}{{- end -}}
+
     ingress:
       enabled: true
       pathType: Prefix
@@ -57,47 +58,105 @@ kube-prometheus-stack:
         - hosts:
             - prom-alert.rsr.net
           secretName: prom-alert-cert-tls
-    templateFiles:
-      pagerduty-custom.tmpl: |-
-        {{- define "pagerduty.custom.description" -}}[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }} {{ else if ne .CommonAnnotations.message ""}}{{ .CommonAnnotations.message }} {{ else if ne .CommonAnnotations.description ""}}{{ .CommonAnnotations.description }} {{ else }}{{ .CommonLabels.alertname }}{{ end }}{{- end -}}
-  nodeExporter:
-    serviceMonitor:
-      relabelings:
-        - sourceLabels: [ __meta_kubernetes_pod_node_name ]
-          targetLabel: instance
-          action: replace
-  # kubelet:
-  #   serviceMonitor:
-  #     metricRelabelings:
-  #     - action: replace
-  #       sourceLabels:
-  #       - node
-  #       targetLabel: instance
+
+    alertmanagerSpec:
+      replicas: 1
+      podAntiAffinity: hard
+
+      storage:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: longhorn
+            resources:
+              requests:
+                storage: 10Gi
+      tolerations:
+        - key: "arm64"
+          operator: "Exists"
+
   grafana:
     enabled: false
     forceDeployDashboards: true
-  kubeEtcd:
-    enabled: false
+
+  kubelet:
+   enabled: true
+   serviceMonitor:
+     metricRelabelings:
+       - action: replace
+         sourceLabels: ["node"]
+         targetLabel: instance
+
+  kube-state-metrics:
+    metricLabelsAllowlist: ["persistentvolumeclaims=[*]"]
+    prometheus:
+      monitor:
+        enabled: true
+        relabelings:
+          - action: replace
+            regex: (.*)
+            replacement: $1
+            sourceLabels: ["__meta_kubernetes_pod_node_name"]
+            targetLabel: kubernetes_node
+
+  kubeApiServer:
+    enabled: true
+
   kubeControllerManager:
     enabled: false
-    # endpoints:
-    # - 10.2.0.30
+#    endpoints:
+#      - 10.2.0.30
+    service:
+      enabled: true
+      port: 10257
+      targetPort: 10257
+    serviceMonitor:
+      enabled: true
+      https: true
+      insecureSkipVerify: true
+
   kubeScheduler:
     enabled: false
-    # endpoints:
-    # - 10.2.0.30
+#    endpoints:
+#      - 10.2.0.30
+    service:
+      enabled: true
+      port: 10259
+      targetPort: 10259
+    serviceMonitor:
+      enabled: true
+      https: true
+      insecureSkipVerify: true
+
   kubeProxy:
     enabled: false
-  prometheus-node-exporter:
-    tolerations:
-      - key: "arm64"
-        operator: "Exists"
-      - key: "arm1"
-        operator: "Exists"
-      - key: "armhf"
-        operator: "Exists"
-      - key: "node-role.kubernetes.io/master"
-        operator: "Exists"
+#    endpoints:
+#      - 10.2.0.30
+
+  kubeEtcd:
+    enabled: false
+#    endpoints:
+#      - 10.2.0.30
+    service:
+      enabled: true
+      port: 2381
+      targetPort: 2381
+
+
+  prometheusOperator:
+    createCustomResource: true
+    # prometheusConfigReloaderImage:
+    #   repository: quay.io/coreos/prometheus-config-reloader
+    #   tag: v0.39.0
+    # configmapReloadImage:
+    #   repository: jimmidyson/configmap-reload
+    #   tag: v0.4.0
+    prometheusConfigReloader:
+      resources:
+        limits:
+          cpu: 200m
+    admissionWebhooks:
+      enabled: false
+
   prometheus:
     ingress:
       enabled: true
@@ -113,22 +172,28 @@ kube-prometheus-stack:
         - hosts:
             - prom-server.rsr.net
           secretName: prom-server-cert-tls
+
+    thanosService:
+      enabled: true
+    thanosServiceMonitor:
+      enabled: true
+
     prometheusSpec:
-      # image:
-      #   repository: quay.io/prometheus/prometheus
-      #   tag: v2.20.0
       replicas: 2
       replicaExternalLabelName: "replica"
-      ruleSelector: { }
-      ruleNamespaceSelector: { }
+      thanos:
+        image: quay.io/thanos/thanos:v0.31.0
+        version: v0.30.1
+        objectStorageConfig:
+          name: thanos-objstore-secret
+          key: objstore.yml
+      podAntiAffinity: hard
       ruleSelectorNilUsesHelmValues: false
-      serviceMonitorSelector: { }
-      serviceMonitorNamespaceSelector: { }
       serviceMonitorSelectorNilUsesHelmValues: false
-      podMonitorSelector: { }
-      podMonitorNamespaceSelector: { }
       podMonitorSelectorNilUsesHelmValues: false
+      probeSelectorNilUsesHelmValues: false
       retention: 6h
+      retentionSize: 6GB
       enableAdminAPI: true
       walCompression: true
       storageSpec:
@@ -138,19 +203,13 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 10Gi
-      # tolerations:
-      # - key: "arm"
-      #   operator: "Exists"
-      podMetadata:
-        annotations:
-          backup.velero.io/backup-volumes: prometheus-kube-prometheus-stack-prometheus-db
-      thanos:
-        image: quay.io/thanos/thanos:v0.31.0
-        version: v0.21.1
-        objectStorageConfig:
-          name: thanos-objstore-secret
-          key: objstore.yml
-      podAntiAffinity: "hard"
+
+#      resources:
+#        requests:
+#          memory: 2000Mi
+#          cpu: 250m
+#        limits:
+#          memory: 5000Mi
 
       additionalScrapeConfigs:
         - job_name: minio
@@ -158,6 +217,23 @@ kube-prometheus-stack:
           scheme: http
           static_configs:
             - targets: [ 'minio.default.svc:9000' ]
-    thanosService:
-      enabled: true
+      # tolerations:
+      # - key: "arm"
+      #   operator: "Exists"
 
+  nodeExporter:
+    enabled: true
+
+  prometheus-node-exporter:
+    prometheus:
+      monitor:
+        enabled: true
+    tolerations:
+      - key: "arm64"
+        operator: "Exists"
+      - key: "arm1"
+        operator: "Exists"
+      - key: "armhf"
+        operator: "Exists"
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"

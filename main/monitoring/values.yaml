@@ -1,6 +1,120 @@
-
-
-
 repo:
   url: https://github.com/rogerrum/k8s-gitops.git
   revision: main
+
+
+applications:
+  - name: alertmanager-discord
+    namespace: monitoring
+    path: main/monitoring/alertmanager-discord
+    manifest-paths: /main/monitoring/alertmanager-discord
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: blackbox-exporter
+    namespace: monitoring
+    path: main/monitoring/blackbox-exporter
+    manifest-paths: /main/monitoring/blackbox-exporter
+    sync-wave: "-1"
+    ignoreDifferences:
+      - group: "*"
+        kind: "ServiceMonitor"
+        jqPathExpressions:
+          - .spec.endpoints[].metricRelabelings
+    helm:
+      enabled: true
+    syncOptions:
+      - RespectIgnoreDifferences=true
+
+  - name: botkube
+    namespace: monitoring
+    path: main/monitoring/botkube
+    manifest-paths: /main/monitoring/botkube
+    sync-wave: "-1"
+    helm:
+      enabled: true
+      secrets:
+        enabled: true
+        keys:
+          - discord-config
+      additionalValues:
+        - http://localhost/botkube.yml
+
+  - name: grafana
+    namespace: monitoring
+    path: main/monitoring/grafana
+    manifest-paths: /main/monitoring/grafana
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: influxdb
+    namespace: monitoring
+    path: main/monitoring/influxdb
+    manifest-paths: /main/monitoring/influxdb
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: kube-prometheus-stack
+    namespace: monitoring
+    path: main/monitoring/kube-prometheus-stack
+    manifest-paths: /main/monitoring/kube-prometheus-stack
+    sync-wave: "-1"
+    ignoreDifferences:
+      - kind: MutatingWebhookConfiguration
+        jsonPointers:
+          - /webhooks/0/failurePolicy
+      - kind: ValidatingWebhookConfiguration
+        jsonPointers:
+          - /webhooks/0/failurePolicy
+      - kind: ServiceAccount
+        jsonPointers:
+          - /imagePullSecrets
+    helm:
+      enabled: true
+      secrets:
+        enabled: true
+        keys:
+          - prom-config
+      additionalValues:
+        - http://localhost/kube-prometheus-stack.yml
+
+  - name: speedtest-exporter
+    namespace: monitoring
+    path: main/monitoring/speedtest-exporter
+    manifest-paths: /main/monitoring/speedtest-exporter
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: thanos
+    namespace: monitoring
+    path: main/monitoring/thanos
+    manifest-paths: /main/monitoring/thanos
+    sync-wave: "-1"
+    helm:
+      enabled: true
+      secrets:
+        enabled: true
+        keys:
+          - minio-config
+      additionalValues:
+        - http://localhost/thanos.yaml
+
+  - name: unifi-poller
+    namespace: monitoring
+    path: main/monitoring/unifi-poller
+    manifest-paths: /main/monitoring/unifi-poller
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: uptime-kuma
+    namespace: monitoring
+    path: main/monitoring/uptime-kuma
+    manifest-paths: /main/monitoring/uptime-kuma
+    sync-wave: "-1"
+    helm:
+      enabled: true
