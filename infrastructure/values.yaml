@@ -174,5 +174,9 @@ applications:
     sync-wave: "-2"
     helm:
       enabled: true
+      secrets:
+        enabled: true
+        keys:
+          - RSR CA Config
       additionalValues:
         - http://localhost/step-issuer.yml
