@@ -35,8 +35,6 @@ influxdb:
       templates:
         - "*.app env.service.resource.measurement"
         - "servers.* .host.resource.measurement.field*"
-  podAnnotations:
-    backup.velero.io/backup-volumes: influxdb-data
   tolerations:
     - key: "arm"
       operator: "Exists"
