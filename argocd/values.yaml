@@ -61,7 +61,9 @@ argo-cd:
             - secret:
                 name: argocd-patch-helm-values
                 optional: true
-
+            - secret:
+                name: kube-prometheus-stack-helm-values
+                optional: true
 
     resources:
       requests:
