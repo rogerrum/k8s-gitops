@@ -1,5 +1,16 @@
 {{- $repo := .Values.repo }}
 {{- range $index, $app := .Values.applications }}
+{{- if index $app "create-namespace" }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ $app.namespace }}
+  annotations:
+  {{- if index $app "namespace-sync-wave" }}
+    argocd.argoproj.io/sync-wave: {{ index $app "namespace-sync-wave" | quote}}
+  {{- end }}
+{{- end}}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
