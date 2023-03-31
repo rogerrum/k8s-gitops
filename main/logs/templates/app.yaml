@@ -5,9 +5,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ $app.name }}
-  {{- if index $app "app-namespace" }}
-  namespace: {{ index $app "app-namespace" }}
-  {{- end }}
+  namespace: argocd
   annotations:
   {{- if index $app "sync-wave" }}
     argocd.argoproj.io/sync-wave: {{ index $app "sync-wave" | quote}}
