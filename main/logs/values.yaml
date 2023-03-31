@@ -19,6 +19,10 @@ applications:
           - .spec.persistentVolumeClaimRetentionPolicy
     helm:
       enabled: true
+      secrets:
+        enabled: true
+        keys:
+          - minio-config
       additionalValues:
         - http://localhost/loki.yaml
     syncOptions:
