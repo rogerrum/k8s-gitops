@@ -5,31 +5,31 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
 ---
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: logs
-  annotations:
-    argocd.argoproj.io/sync-wave: "-1"
-    argocd.argoproj.io/manifest-generate-paths: /main/logs/templates;/main/logs/Chart.yaml;/main/logs/values.yaml
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  destination:
-    namespace: argocd
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    path: main/logs
-    repoURL: {{ .Values.repo.url }}
-    targetRevision: {{ .Values.repo.revision }}
-    helm:
-      valueFiles:
-        - values.yaml
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
+{{/*apiVersion: argoproj.io/v1alpha1*/}}
+{{/*kind: Application*/}}
+{{/*metadata:*/}}
+{{/*  name: logs*/}}
+{{/*  annotations:*/}}
+{{/*    argocd.argoproj.io/sync-wave: "-1"*/}}
+{{/*    argocd.argoproj.io/manifest-generate-paths: /main/logs/templates;/main/logs/Chart.yaml;/main/logs/values.yaml*/}}
+{{/*  finalizers:*/}}
+{{/*    - resources-finalizer.argocd.argoproj.io*/}}
+{{/*spec:*/}}
+{{/*  destination:*/}}
+{{/*    namespace: argocd*/}}
+{{/*    server: https://kubernetes.default.svc*/}}
+{{/*  project: default*/}}
+{{/*  source:*/}}
+{{/*    path: main/logs*/}}
+{{/*    repoURL: {{ .Values.repo.url }}*/}}
+{{/*    targetRevision: {{ .Values.repo.revision }}*/}}
+{{/*    helm:*/}}
+{{/*      valueFiles:*/}}
+{{/*        - values.yaml*/}}
+{{/*  syncPolicy:*/}}
+{{/*    automated:*/}}
+{{/*      prune: true*/}}
+{{/*      selfHeal: true*/}}
+{{/*    syncOptions:*/}}
+{{/*      - CreateNamespace=true*/}}
+{{/*      - ApplyOutOfSyncOnly=true*/}}
