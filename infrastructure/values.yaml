@@ -86,6 +86,10 @@ applications:
     sync-wave: "0"
     helm:
       enabled: true
+      secrets:
+        enabled: true
+        keys:
+          - discord-config
       additionalValues:
         - http://localhost/kured.yaml
 
