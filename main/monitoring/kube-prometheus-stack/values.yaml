@@ -6,11 +6,6 @@ kube-prometheus-stack:
     config:
       global:
         resolve_timeout: 5m
-      receivers:
-        - name: 'null'
-        - name: 'discord-notifications'
-          webhook_configs:
-            - url: 'http://alertmanager-discord:9094'
 
       route:
         # group_by: ['alertname', 'job']
