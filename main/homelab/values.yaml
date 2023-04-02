@@ -63,7 +63,7 @@ applications:
           - camera-config
           - emqx-config
       additionalValues:
-        - http://localhost/frigate.yml
+        - http://localhost/frigate.yaml
 
   - name: grocy
     namespace: default
@@ -93,7 +93,7 @@ applications:
         keys:
           - hass-config
       additionalValues:
-        - http://localhost/home-assistant.yml
+        - http://localhost/home-assistant.yaml
 
   - name: kanboard
     namespace: default
@@ -123,7 +123,7 @@ applications:
         keys:
           - minio-config
       additionalValues:
-        - http://localhost/minio.yml
+        - http://localhost/minio.yaml
 
   - name: node-red
     namespace: default
