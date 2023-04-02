@@ -40,7 +40,7 @@ applications:
         keys:
           - emqx-config
       additionalValues:
-        - http://localhost/emqx.yml
+        - http://localhost/emqx.yaml
 
   - name: focalboard
     namespace: default
