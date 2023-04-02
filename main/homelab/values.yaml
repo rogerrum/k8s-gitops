@@ -1,6 +1,168 @@
-
-
-
 repo:
   url: https://github.com/rogerrum/k8s-gitops.git
   revision: main
+
+
+applications:
+  - name: airprint
+    namespace: default
+    path: main/homelab/airprint
+    manifest-paths: /main/homelab/airprint
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: change-detection
+    namespace: default
+    path: main/homelab/change-detection
+    manifest-paths: /main/homelab/change-detection
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: cloudflare-ddns
+    namespace: default
+    path: main/homelab/cloudflare-ddns
+    manifest-paths: /main/homelab/cloudflare-ddns
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: emqx
+    namespace: default
+    path: main/homelab/emqx
+    manifest-paths: /main/homelab/emqx
+    sync-wave: "-1"
+    helm:
+      enabled: true
+      secrets:
+        enabled: true
+        keys:
+          - emqx-config
+      additionalValues:
+        - http://localhost/emqx.yml
+
+  - name: focalboard
+    namespace: default
+    path: main/homelab/focalboard
+    manifest-paths: /main/homelab/focalboard
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: frigate
+    namespace: default
+    path: main/homelab/frigate
+    manifest-paths: /main/homelab/frigate
+    sync-wave: "-1"
+    helm:
+      enabled: true
+      secrets:
+        enabled: true
+        keys:
+          - camera-config
+          - emqx-config
+      additionalValues:
+        - http://localhost/frigate.yml
+
+  - name: grocy
+    namespace: default
+    path: main/homelab/grocy
+    manifest-paths: /main/homelab/grocy
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: heimdall
+    namespace: default
+    path: main/homelab/heimdall
+    manifest-paths: /main/homelab/heimdall
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: home-assistant
+    namespace: default
+    path: main/homelab/home-assistant
+    manifest-paths: /main/homelab/home-assistant
+    sync-wave: "-1"
+    helm:
+      enabled: true
+      secrets:
+        enabled: true
+        keys:
+          - hass-config
+      additionalValues:
+        - http://localhost/home-assistant.yml
+
+  - name: kanboard
+    namespace: default
+    path: main/homelab/kanboard
+    manifest-paths: /main/homelab/kanboard
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: mealie
+    namespace: default
+    path: main/homelab/mealie
+    manifest-paths: /main/homelab/mealie
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: minio
+    namespace: default
+    path: main/homelab/minio
+    manifest-paths: /main/homelab/minio
+    sync-wave: "0"
+    helm:
+      enabled: true
+      secrets:
+        enabled: true
+        keys:
+          - minio-config
+      additionalValues:
+        - http://localhost/minio.yml
+
+  - name: node-red
+    namespace: default
+    path: main/homelab/node-red
+    manifest-paths: /main/homelab/node-red
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: openttd
+    namespace: default
+    path: main/homelab/openttd
+    manifest-paths: /main/homelab/openttd
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: oscar
+    namespace: default
+    path: main/homelab/oscar
+    manifest-paths: /main/homelab/oscar
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: webtrees
+    namespace: default
+    path: main/homelab/webtrees
+    manifest-paths: /main/homelab/webtrees
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: zwavejs2mqtt
+    namespace: default
+    path: main/homelab/zwavejs2mqtt
+    manifest-paths: /main/homelab/zwavejs2mqtt
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+

@@ -41,9 +41,9 @@ home-assistant:
         - hosts:
             - "ha.rsr.net"
           secretName: ha-cert-int-tls
-  prometheus:
-    serviceMonitor:
-      enabled: false
+  metrics:
+    enabled: true
+
   probes:
     liveness:
       enabled: false
