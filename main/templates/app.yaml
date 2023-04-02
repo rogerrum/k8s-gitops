@@ -1,0 +1,61 @@
+{{- $repo := .Values.repo }}
+{{- range $index, $app := .Values.applications }}
+{{- if index $app "create-namespace" }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ $app.namespace }}
+  annotations:
+  {{- if index $app "namespace-sync-wave" }}
+    argocd.argoproj.io/sync-wave: {{ index $app "namespace-sync-wave" | quote}}
+  {{- end }}
+{{- end}}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ $app.name }}
+  namespace: argocd
+  annotations:
+  {{- if index $app "sync-wave" }}
+    argocd.argoproj.io/sync-wave: {{ index $app "sync-wave" | quote}}
+  {{- end }}
+    argocd.argoproj.io/manifest-generate-paths: {{ index $app "manifest-paths" }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ $app.namespace }}
+  project: default
+  {{- if $app.ignoreDifferences }}
+  ignoreDifferences:
+{{ $app.ignoreDifferences | toYaml | indent 4 }}
+  {{- end }}
+  source:
+    path: {{ $app.path }}
+    repoURL: {{ $repo.url }}
+    targetRevision: {{ $repo.revision }}
+  {{- if $app.helm }}
+    helm:
+      valueFiles:
+        - values.yaml
+      {{- if $app.helm.additionalValues }}
+        {{- range $adIndx, $adVal := $app.helm.additionalValues }}
+        - {{$adVal}}
+        {{- end }}
+        {{- end}}
+    {{- end }}
+  syncPolicy:
+    automated:
+      prune: {{ default true $app.prune }}
+      selfHeal: {{ default true $app.selfHeal }}
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
+    {{- if $app.syncOptions }}
+    {{- range $indx, $opt := $app.syncOptions }}
+      - {{$opt}}
+    {{- end }}
+    {{- end}}
+{{- end }}

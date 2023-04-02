@@ -3,3 +3,34 @@
 repo:
   url: https://github.com/rogerrum/k8s-gitops.git
   revision: main
+
+
+
+applications:
+  - name: homelab
+    namespace: argocd
+    path: main/homelab
+    manifest-paths: /main/homelab/templates;/main/homelab/Chart.yaml;/main/homelab/values.yaml
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: logs
+    namespace: logs
+    create-namespace: true
+    namespace-sync-wave: "-2"
+    path: main/logs
+    manifest-paths: /main/logs/templates;/main/logs/Chart.yaml;/main/logs/values.yaml
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: monitoring
+    namespace: monitoring
+    create-namespace: true
+    namespace-sync-wave: "-3"
+    path: main/monitoring
+    manifest-paths: /main/monitoring/templates;/main/monitoring/Chart.yaml;/main/monitoring/values.yaml
+    sync-wave: "-2"
+    helm:
+      enabled: true
