@@ -44,8 +44,12 @@ kube-prometheus-stack:
       pathType: Prefix
       annotations:
         kubernetes.io/ingress.class: "nginx"
-        cert-manager.io/cluster-issuer: vault-issuer
-        cert-manager.io/common-name: prom-alert.rsr.net
+        cert-manager.io/issuer: step-issuer
+        cert-manager.io/issuer-kind: StepClusterIssuer
+        cert-manager.io/issuer-group: certmanager.step.sm
+        cert-manager.io/revision-history-limit: "3"
+        cert-manager.io/duration: "2160h"
+        cert-manager.io/renew-before: "720h"
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
         nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
       hosts: [ prom-alert.rsr.net ]
@@ -158,8 +162,12 @@ kube-prometheus-stack:
       pathType: Prefix
       annotations:
         kubernetes.io/ingress.class: "nginx"
-        cert-manager.io/cluster-issuer: vault-issuer
-        cert-manager.io/common-name: prom-server.rsr.net
+        cert-manager.io/issuer: step-issuer
+        cert-manager.io/issuer-kind: StepClusterIssuer
+        cert-manager.io/issuer-group: certmanager.step.sm
+        cert-manager.io/revision-history-limit: "3"
+        cert-manager.io/duration: "2160h"
+        cert-manager.io/renew-before: "720h"
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
         nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
       hosts: [ prom-server.rsr.net ]
