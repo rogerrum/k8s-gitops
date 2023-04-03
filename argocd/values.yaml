@@ -65,6 +65,29 @@ argo-cd:
                 name: kube-prometheus-stack-helm-values
                 optional: true
 
+            - secret:
+                name: minio-helm-values
+                optional: true
+            - secret:
+                name: home-assistant-helm-values
+                optional: true
+            - secret:
+                name: frigate-helm-values
+                optional: true
+            - secret:
+                name: emqx-helm-values
+                optional: true
+            - secret:
+                name: kured-helm-values
+                optional: true
+            - secret:
+                name: loki-helm-values
+                optional: true
+            - secret:
+                name: thanos-helm-values
+                optional: true
+
+
     resources:
       requests:
         cpu: 1000m
