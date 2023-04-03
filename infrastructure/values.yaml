@@ -17,7 +17,7 @@ applications:
         keys:
           - argocd-config
       additionalValues:
-        - http://localhost/argocd-patch.yaml
+        - http://localhost/argocd-patch.yml
 
   - name: cert-manager
     namespace: cert-manager
@@ -91,7 +91,7 @@ applications:
         keys:
           - discord-config
       additionalValues:
-        - http://localhost/kured.yaml
+        - http://localhost/kured.yml
 
   - name: longhorn
     create-namespace: true
