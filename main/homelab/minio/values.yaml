@@ -18,8 +18,12 @@ minio:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: nginx
-      cert-manager.io/cluster-issuer: vault-issuer
-      cert-manager.io/common-name: s3.rsr.net
+      cert-manager.io/issuer: step-issuer
+      cert-manager.io/issuer-kind: StepClusterIssuer
+      cert-manager.io/issuer-group: certmanager.step.sm
+      cert-manager.io/revision-history-limit: "3"
+      cert-manager.io/duration: "2160h"
+      cert-manager.io/renew-before: "720h"
     hosts: [ s3.rsr.net ]
     tls:
       - hosts:
@@ -31,8 +35,12 @@ minio:
 
     annotations:
       kubernetes.io/ingress.class: nginx
-      cert-manager.io/cluster-issuer: vault-issuer
-      cert-manager.io/common-name: minio.rsr.net
+      cert-manager.io/issuer: step-issuer
+      cert-manager.io/issuer-kind: StepClusterIssuer
+      cert-manager.io/issuer-group: certmanager.step.sm
+      cert-manager.io/revision-history-limit: "3"
+      cert-manager.io/duration: "2160h"
+      cert-manager.io/renew-before: "720h"
     hosts: [ minio.rsr.net ]
     tls:
       - hosts:
