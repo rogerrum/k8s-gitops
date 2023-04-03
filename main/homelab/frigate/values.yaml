@@ -9,8 +9,12 @@ frigate:
       enabled: true
       ingressClassName: "nginx"
       annotations:
-        cert-manager.io/cluster-issuer: vault-issuer
-        cert-manager.io/common-name: frigate.rsr.net
+        cert-manager.io/issuer: step-issuer
+        cert-manager.io/issuer-kind: StepClusterIssuer
+        cert-manager.io/issuer-group: certmanager.step.sm
+        cert-manager.io/revision-history-limit: "3"
+        cert-manager.io/duration: "2160h"
+        cert-manager.io/renew-before: "720h"
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
         nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
       hosts:
