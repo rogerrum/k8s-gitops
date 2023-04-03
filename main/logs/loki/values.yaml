@@ -20,6 +20,8 @@ loki:
         split_queries_by_interval: 15m
         ingestion_rate_mb: 8
         ingestion_burst_size_mb: 16
+        shard_streams:
+          enabled: true
 
       schema_config:
         configs:
@@ -164,6 +166,28 @@ loki:
         operator: "Exists"
       - key: "arm64"
         operator: "Exists"
+
+  backend:
+    replicas: 3
+    persistence:
+      storageClass: "longhorn"
+    tolerations:
+      - key: "arm"
+        operator: "Exists"
+      - key: "arm64"
+        operator: "Exists"
+    extraVolumeMounts:
+      - name: rules
+        mountPath: /rules/fake
+      - name: scratch
+        mountPath: /tmp/scratch
+    extraVolumes:
+      - name: rules
+        # emptyDir: {}
+        configMap:
+          name: loki-alerting-rules
+      - name: scratch
+        emptyDir: {}
 
   monitoring:
     dashboards:
