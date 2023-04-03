@@ -24,7 +24,7 @@ applications:
         keys:
           - minio-config
       additionalValues:
-        - http://localhost/loki.yaml
+        - http://localhost/loki.yml
     syncOptions:
       - CreateNamespace=true
       - RespectIgnoreDifferences=true
