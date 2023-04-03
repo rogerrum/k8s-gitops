@@ -30,8 +30,12 @@ home-assistant:
       annotations:
         nginx.org/websocket-services: home-assistant
         kubernetes.io/ingress.class: nginx
-        cert-manager.io/cluster-issuer: vault-issuer
-        cert-manager.io/common-name: ha.rsr.net
+        cert-manager.io/issuer: step-issuer
+        cert-manager.io/issuer-kind: StepClusterIssuer
+        cert-manager.io/issuer-group: certmanager.step.sm
+        cert-manager.io/revision-history-limit: "3"
+        cert-manager.io/duration: "2160h"
+        cert-manager.io/renew-before: "720h"
       hosts:
         - host: ha.rsr.net
           paths:
@@ -84,8 +88,12 @@ home-assistant:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
-          cert-manager.io/cluster-issuer: vault-issuer
-          cert-manager.io/common-name: ha-config.rsr.net
+          cert-manager.io/issuer: step-issuer
+          cert-manager.io/issuer-kind: StepClusterIssuer
+          cert-manager.io/issuer-group: certmanager.step.sm
+          cert-manager.io/revision-history-limit: "3"
+          cert-manager.io/duration: "2160h"
+          cert-manager.io/renew-before: "720h"
           nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
           nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
         hosts:
