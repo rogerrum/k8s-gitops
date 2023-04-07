@@ -1,15 +1,4 @@
 metallb:
-#  configInline:
-#    peers:
-#      - peer-address: 192.168.1.1
-#        peer-asn: 64501
-#        my-asn: 64500
-#    address-pools:
-#      - name: bgp
-#        protocol: bgp
-#        addresses:
-#          - 192.168.100.2-192.168.100.254
-#        avoid-buggy-ips: true
   crds:
     enabled: true
   prometheus:
