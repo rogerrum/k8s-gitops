@@ -59,7 +59,7 @@ frigate:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
           - matchExpressions:
-              - key: feature.node.kubernetes.io/custom-coral-tpu
+              - key: google.feature.node.kubernetes.io/coral
                 operator: In
                 values:
                   - "true"
