@@ -41,13 +41,13 @@ applications:
       additionalValues:
         - http://localhost/botkube.yml
 
-#  - name: grafana
-#    namespace: monitoring
-#    path: main/monitoring/grafana
-#    manifest-paths: /main/monitoring/grafana
-#    sync-wave: "-1"
-#    helm:
-#      enabled: true
+  - name: grafana
+    namespace: monitoring
+    path: main/monitoring/grafana
+    manifest-paths: /main/monitoring/grafana
+    sync-wave: "-1"
+    helm:
+      enabled: true
 
   - name: influxdb
     namespace: monitoring
