@@ -1,11 +1,15 @@
 descheduler:
   kind: Deployment
+  deschedulingInterval: 1m
+  cmdOptions:
+    v: 3
   tolerations:
     - key: "arm64"
       operator: "Exists"
     - key: "arm"
       operator: "Exists"
   deschedulerPolicy:
+    evictLocalStoragePods: true
     strategies:
       RemoveDuplicates:
         enabled: true
@@ -16,7 +20,26 @@ descheduler:
         params:
           nodeAffinityType:
             - requiredDuringSchedulingIgnoredDuringExecution
+      RemovePodsViolatingTopologySpreadConstraint:
+        enabled: true
+        params:
+          includeSoftConstraints: true
       RemovePodsViolatingInterPodAntiAffinity:
         enabled: true
+        params:
+          nodeFit: true
       LowNodeUtilization:
         enabled: false
+      RemoveFailedPods:
+        enabled: true
+        params:
+          failedPods:
+            includingInitContainers: true
+            excludeOwnerKinds: [ "Job" ]
+            minPodLifetimeSeconds: 3600
+      RemovePodsHavingTooManyRestarts:
+        enabled: true
+        params:
+          podsHavingTooManyRestarts:
+            podRestartThreshold: 100
+            includingInitContainers: true
