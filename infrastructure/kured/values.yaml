@@ -1,8 +1,4 @@
 kured:
-  image:
-    repository: ghcr.io/kubereboot/kured
-    tag: 1.21.1
-  updateStrategy: RollingUpdate
   configuration:
     startTime: "0:00"
     endTime: "4:00"
@@ -16,10 +12,5 @@ kured:
       operator: "Exists"
   metrics:
     create: true
-
-#  extraEnvVars:
-#    - name: slackHookUrl
-#      valueFrom:
-#        secretKeyRef:
-#          name: kured-discord-secret
-#          key: discord-token
+  service:
+    create: true
