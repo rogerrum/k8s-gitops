@@ -1,4 +1,15 @@
 grafana:
+  extraInitContainers:
+    - name: init-db
+      image: ghcr.io/onedr0p/postgres-initdb:14.7
+      imagePullPolicy: IfNotPresent
+      envFrom:
+        - secretRef:
+            name: grafana-secret
+
+  rbac:
+    pspEnabled: false
+
   # tolerations:
   # - key: "arm"
   #   operator: "Exists"
@@ -6,19 +17,21 @@ grafana:
     type: Recreate
   podAnnotations:
     configmap.reloader.stakater.com/reload: "grafana"
-  persistence:
-    enabled: true
-    storageClassName: "longhorn"
-    size: 10Gi
-    accessModes:
-      - ReadWriteOnce
   env:
+    GF_ANALYTICS_CHECK_FOR_UPDATES: false
+    GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
     GF_EXPLORE_ENABLED: true
-#    GF_DISABLE_SANITIZE_HTML: true
-#    GF_PANELS_DISABLE_SANITIZE_HTML: true
-    GF_SECURITY_ALLOW_EMBEDDING: true
+    GF_GRAFANA_NET_URL: https://grafana.net
     GF_LOG_FILTERS: rendering:debug
-    GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: "panodata-map-panel"
+    GF_LOG_MODE: console
+    GF_PANELS_DISABLE_SANITIZE_HTML: true
+    GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
+    GF_SECURITY_ALLOW_EMBEDDING: true
+    # GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
+    GF_SERVER_ROOT_URL: https://grafana.rsr.net
+  envFromSecrets:
+    - name: grafana-secret
+
   ingress:
     enabled: true
     annotations:
@@ -29,20 +42,22 @@ grafana:
       cert-manager.io/revision-history-limit: "3"
       cert-manager.io/duration: "2160h"
       cert-manager.io/renew-before: "720h"
+
+
     hosts: [ grafana.rsr.net ]
     tls:
       - hosts:
           - grafana.rsr.net
         secretName: grafana-cert-tls
   plugins:
-    - natel-discrete-panel
     - pr0ps-trackmap-panel
     - natel-plotly-panel
-    - grafana-piechart-panel
-    - grafana-clock-panel
     - vonage-status-panel
+    - grafana-piechart-panel
+    - https://github.com/panodata/panodata-map-panel/releases/download/0.16.0/panodata-map-panel-0.16.0.zip;grafana-worldmap-panel-ng
+    - grafana-clock-panel
     - grafana-worldmap-panel
-    - https://github.com/panodata/panodata-map-panel/releases/download/0.16.0/panodata-map-panel-0.16.0.zip;grafana-map-panel
+    - natel-discrete-panel
   serviceMonitor:
     enabled: true
   serviceAccount:
@@ -67,8 +82,15 @@ grafana:
       blocky:
         url: https://raw.githubusercontent.com/0xERR0R/blocky/v0.16/docs/blocky-grafana.json
         datasource: Prometheus
+      cert-manager:
+        url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
+        datasource: Prometheus
+      cloudnative-pg:
+        url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-dashboard.json
+        datasource: Prometheus
+
       argo-cd:
-        url: https://raw.githubusercontent.com/argoproj/argo-cd/v1.8.6/examples/dashboard.json
+        url: https://raw.githubusercontent.com/argoproj/argo-cd/v2.6.7/examples/dashboard.json
         datasource: Prometheus
       frigate:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/frigate.json
@@ -76,26 +98,27 @@ grafana:
       home-assistant:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/home_assistant.json
         datasource: home_assistant
+      loki:
+        gnetId: 13407
+        revision: 1
+        datasource: Prometheus
       internet-speed:
         gnetId: 13665
         revision: 1
-        datasource: Prometheus
-      minio-overview:
-        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/minio_overview.json
         datasource: Prometheus
       nginx-dashboard:
         url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
         datasource: Prometheus
       node-exporter-full:
         gnetId: 1860
-        revision: 23
+        revision: 29
         datasource: Prometheus
       prometheus-exporter-summary:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/prometheus_exporter_summary.json
         datasource: Prometheus
-      TrueNAS:
-        url: https://grafana.com/api/dashboards/12921/revisions/1/download
-        datasource: TrueNAS
+      speedtest-exporter:
+        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/speedtest-exporter.json
+        datasource: Prometheus
       # Ref: https://grafana.com/grafana/dashboards/11315
       unifi-client-insights:
         gnetId: 11315
@@ -124,9 +147,7 @@ grafana:
       ups:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/ups.json
         datasource: Prometheus
-      cloudnative-pg:
-        url: https://raw.githubusercontent.com/cloudnative-pg/charts/main/charts/cnpg-sandbox/dashboard.json
-        datasource: Prometheus
+
   sidecar:
     datasources:
       enabled: true
@@ -167,49 +188,24 @@ grafana:
           access: proxy
           url: http://influxdb:8086
           database: speedtests
-  #        - name: TrueNAS
-  #          type: influxdb
-  #          access: proxy
-  #          url: http://influxdb:8086
-  #          database: graphitedb
   grafana.ini:
-    server:
-      root_url: "https://grafana.rsr.net"
-    # security:
-    #   admin_user: roger@?.com
-    paths:
-      data: /var/lib/grafana/data
-      logs: /var/log/grafana
-      plugins: /var/lib/grafana/plugins
-      provisioning: /etc/grafana/provisioning
-    analytics:
-      check_for_updates: false
-    log:
-      mode: console
-    grafana_net:
-      url: https://grafana.net
+    auth:
+      oauth_skip_org_role_update_sync: false
     auth.basic:
       disable_login_form: true
-
     auth.generic_oauth:
       enabled: true
       allow_sign_up: true
       team_ids:
       allowed_organizations:
       name: Auth0
-      client_id: $__file{/etc/secrets/auth_generic_oauth/client_id}
-      client_secret: $__file{/etc/secrets/auth_generic_oauth/client_secret}
+      client_id: # Set by env vars
+      client_secret: # Set by env vars
       scopes: openid profile email
       auth_url: https://rogerrum.us.auth0.com/authorize
       token_url: https://rogerrum.us.auth0.com/oauth/token
       api_url: https://rogerrum.us.auth0.com/userinfo
-
-  admin:
-    existingSecret: grafana-secret
-
-  extraSecretMounts:
-    - name: auth-generic-oauth-secret-mount
-      secretName: grafana-secret
-      defaultMode: 0440
-      mountPath: /etc/secrets/auth_generic_oauth
-      readOnly: true
+    # ref: https://blog.dahanne.net/2020/04/15/integrating-auth0-oidc-oauth-2-with-authorization-groups-and-roles/
+    auth.generic_oauth.group_mapping:
+      role_attribute_path: |
+        contains("https://rsr.net/groups"[*], 'Admin') && 'Admin' || contains("https://rsr.net/groups"[*], 'Editor') && 'Editor' || 'Viewer'
