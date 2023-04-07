@@ -56,7 +56,7 @@ zwavejs2mqtt:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
           - matchExpressions:
-              - { key: "feature.node.kubernetes.io/custom-zwave", operator: In, values: [ "true" ] }
+              - { key: "nortek.feature.node.kubernetes.io/zwave", operator: In, values: [ "true" ] }
   tolerations:
     - key: "arm64"
       operator: "Exists"
