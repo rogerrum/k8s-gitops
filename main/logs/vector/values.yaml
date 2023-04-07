@@ -112,14 +112,14 @@ vector-agent:
         compression: true
         inputs:
           - journal_logs
-        address: vector-aggregator:6000
+        address: vector-vector-aggregator:6000
         version: "2"
       loki_kubernetes:
         type: vector
         compression: true
         inputs:
           - kubernetes_logs
-        address: vector-aggregator:6010
+        address: vector-vector-aggregator:6010
         version: "2"
       prom_exporter:
         type: prometheus_exporter
