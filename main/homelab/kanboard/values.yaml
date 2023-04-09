@@ -1,7 +1,7 @@
 kanboard:
   image:
     repository: kanboard/kanboard
-    tag: v1.2.27
+    tag: v1.2.28
   env:
     TZ: "America/Chicago"
     DB_DRIVER: "postgres"
