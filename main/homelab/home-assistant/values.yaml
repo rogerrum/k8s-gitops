@@ -45,8 +45,8 @@ home-assistant:
         - hosts:
             - "ha.rsr.net"
           secretName: ha-cert-int-tls
-  metrics:
-    enabled: true
+#  metrics:
+#    enabled: true
 
   probes:
     liveness:
