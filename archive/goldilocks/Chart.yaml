@@ -3,5 +3,5 @@ apiVersion: v2
 version: 1.0.0
 dependencies:
   - name: goldilocks
-    version: 6.5.2
+    version: 6.5.4
     repository:  https://charts.fairwinds.com/stable
