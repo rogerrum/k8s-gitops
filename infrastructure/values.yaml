@@ -180,3 +180,15 @@ applications:
           - RSR CA Config
       additionalValues:
         - http://localhost/step-issuer.yml
+
+  - name: tailscale-gateway
+    create-namespace: true
+    namespace-sync-wave: "-4"
+    namespace: vpn
+    path: infrastructure/tailscale-gateway
+    manifest-paths: /infrastructure/tailscale-gateway
+    sync-wave: "-3"
+    helm:
+      enabled: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,32 @@
+app-template:
+  serviceAccount:
+    create: true
+    name: tailscale
+
+  image:
+    repository: ghcr.io/tailscale/tailscale
+    tag: v1.38.2
+  env:
+    TZ: "America/Chicago"
+    TS_KUBE_SECRET: "tailscale-auth"
+    SA_NAME: tailscale
+    TS_USERSPACE: "true"
+    TS_ROUTES: "192.168.1.0/24"
+    TS_EXTRA_ARGS: "--advertise-exit-node"
+  envFrom:
+    - secretRef:
+        name: tailscale-auth
+
+  service:
+    main:
+      ports:
+        http:
+          port: 45387
+
+  podSecurityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+
+  ingress:
+    main:
+      enabled: false
