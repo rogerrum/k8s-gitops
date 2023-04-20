@@ -19,6 +19,7 @@ app-template:
 
   service:
     main:
+      enabled: false
       ports:
         http:
           port: 45387
@@ -29,4 +30,12 @@ app-template:
 
   ingress:
     main:
+      enabled: false
+
+  probes:
+    liveness:
+      enabled: false
+    readiness:
+      enabled: false
+    startup:
       enabled: false
