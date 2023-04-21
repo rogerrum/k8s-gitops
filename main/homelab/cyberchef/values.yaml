@@ -2,9 +2,9 @@ app-template:
   controller:
     replicas: 1
     strategy: RollingUpdate
-    image:
-      repository: docker.io/mpepping/cyberchef
-      tag: v10.4.0
+  image:
+    repository: docker.io/mpepping/cyberchef
+    tag: v10.4.0
   env:
     TZ: America/Chicago
   service:
