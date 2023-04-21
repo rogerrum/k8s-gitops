@@ -165,4 +165,10 @@ applications:
     helm:
       enabled: true
 
-
+  - name: cyberchef
+    namespace: default
+    path: main/homelab/cyberchef
+    manifest-paths: /main/homelab/cyberchef
+    sync-wave: "-1"
+    helm:
+      enabled: true
