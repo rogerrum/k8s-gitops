@@ -1,7 +1,7 @@
 traccar:
   image:
     repository: traccar/traccar
-    tag: "5.7"
+    tag: "5.8"
 
 
   mysql:
