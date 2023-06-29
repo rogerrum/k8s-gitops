@@ -1,20 +1,26 @@
-speedtest-exporter:
+app-template:
   image:
     repository: ghcr.io/miguelndecarvalho/speedtest-exporter
-    tag: v3.5.3
+    tag: v3.5.4
+  service:
+    main:
+      ports:
+        http:
+          enabled: false
+        metrics:
+          enabled: true
+          protocol: TCP
+          port: 9798
+  serviceMonitor:
+    main:
+      enabled: true
+      endpoints:
+        - port: metrics
+          path: /metrics
+          interval: 60m
+          scrapeTimeout: 1m
   tolerations:
     - key: "arm"
       operator: "Exists"
     - key: "arm64"
       operator: "Exists"
-  metrics:
-    enabled: true
-    serviceMonitor:
-      interval: 60m
-      scrapeTimeout: 1m
-    prometheusRule:
-      enabled: false
-      downloadLimit: 200
-      uploadLimit: 25
-      pingLimit: 30
-      jitterLimit: 35
