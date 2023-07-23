@@ -1,7 +1,7 @@
-frigate:
+app-template:
   image:
-    repository: docker.io/blakeblackshear/frigate
-    tag: 0.11.1
+    repository: ghcr.io/blakeblackshear/frigate
+    tag: 0.12.1
 
 
   ingress:
@@ -37,6 +37,12 @@ frigate:
       accessMode: ReadWriteOnce
       size: 10Gi
       mountPath: /data
+    config-file:
+      enabled: true
+      type: configMap
+      name: frigate-config
+      mountPath: /config
+      readOnly: true
     media:
       enabled: true
       existingClaim: nas-media-pvc
@@ -76,7 +82,18 @@ frigate:
     TZ: "America/Chicago"
     LIBVA_DRIVER_NAME: "radeonsi"
 #    LIBVA_DRIVER_NAME: "i965"
+#  envFrom:
+#    - secretRef:
+#        name: frigate-secret
 
+  service:
+    main:
+      ports:
+        http:
+          port: &port 5000
+        rtsp:
+          enabled: true
+          port: 8554
 
   configmap:
     config:
