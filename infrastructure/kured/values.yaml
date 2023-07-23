@@ -1,7 +1,7 @@
 kured:
   configuration:
-    startTime: "0:00"
-    endTime: "4:00"
+    startTime: "2:30"
+    endTime: "6:30"
     timeZone: "America/Chicago"
   tolerations:
     - key: "arm"
