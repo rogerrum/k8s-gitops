@@ -172,3 +172,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: echo-server
+    namespace: default
+    path: main/homelab/echo-server
+    manifest-paths: /main/homelab/echo-server
+    sync-wave: "-1"
+    helm:
+      enabled: true
