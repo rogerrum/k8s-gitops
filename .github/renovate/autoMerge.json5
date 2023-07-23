@@ -6,30 +6,35 @@
       "automerge": true,
       automergeType: "branch",
       "requiredStatusChecks": null,
-      "schedule": "after 1am and before 5am",
+      "schedule": "after 3am and before 6am",
       "updateTypes": ["minor", "patch"],
       "packageNames": [
         "homeassistant/home-assistant",
+        "ghcr.io/home-assistant/home-assistant",
         "nodered/node-red",
-        "zwavejs/zwavejs2mqtt"
+        "ghcr.io/zwave-js/zwave-js-ui"
       ]
     },
     {
       "datasources": ["helm"],
       "automerge": true,
       "requiredStatusChecks": null,
-      "schedule": "after 1am and before 5am",
+      "schedule": "after 3am and before 7am",
       "updateTypes": ["minor", "patch"],
       "packageNames": [
         "grafana",
-        "thanos"
+        "thanos",
+        "reloader",
+        "kube-prometheus-stack"
       ]
     },
     {
+      "description": "Auto merge GitHub Actions",
       "matchManagers": ["github-actions"],
+      "matchDatasources": ["github-tags"],
       "automerge": true,
+      "ignoreTests": true,
       "automergeType": "branch",
-      "requiredStatusChecks": null,
       "matchUpdateTypes": ["minor", "patch"]
     },
     {
