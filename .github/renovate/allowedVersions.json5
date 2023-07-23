@@ -1,14 +1,14 @@
 {
   packageRules: [
     // pin package versions
-    {
-      "matchDatasources": ["docker"],
-      "allowedVersions": "<13",
-      "matchPackageNames": [
-        "postgres",
-        "docker.io/library/postgres"
-      ]
-    },
+//    {
+//      "matchDatasources": ["docker"],
+//      "allowedVersions": "<13",
+//      "matchPackageNames": [
+//        "postgres",
+//        "docker.io/library/postgres"
+//      ]
+//    },
     {
       "matchDatasources": ["docker"],
       "allowedVersions": "<2",
@@ -16,10 +16,10 @@
         "influxdb"
       ]
     },
-    {
-      "matchDatasources": ["helm"],
-      "allowedVersions": "<2",
-      "matchPackageNames": ["metallb"]
-    },
+//    {
+//      "matchDatasources": ["helm"],
+//      "allowedVersions": "<2",
+//      "matchPackageNames": ["metallb"]
+//    },
   ],
 }
