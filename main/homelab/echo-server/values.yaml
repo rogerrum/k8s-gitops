@@ -1,4 +1,4 @@
-echo-server:
+app-template:
   controller:
     replicas: 2
     strategy: RollingUpdate
