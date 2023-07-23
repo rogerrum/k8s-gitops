@@ -1,6 +1,24 @@
 {
   packageRules: [
     {
+      "description": "1Password Group",
+      "groupName": "1Password",
+      "matchPackagePatterns": ["1password"],
+      "matchDatasources": ["docker"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      },
+      "separateMinorPatch": true
+    },
+    {
+      "matchDatasources": ["github-releases"],
+      "matchPackagePatterns": ["k3s-io/k3s"],
+      "groupName": "k3s-upgrade-plan",
+      "additionalBranchPrefix": "",
+      "separateMinorPatch": true,
+      "separateMultipleMajor": true
+    },
+    {
       "matchDatasources": ["github-tags", "docker"],
       "matchPackagePatterns": ["rancher/system-upgrade-controller"],
       "groupName": "system-upgrade-controller-suite",
@@ -15,7 +33,16 @@
       matchUpdateTypes: ["minor", "patch"],
       group: { commitMessageTopic: "{{{groupName}}} group" },
       separateMinorPatch: false,
-      stabilityDays: 2,
     },
+    {
+      description: "Vector image and chart - versions do not match",
+      groupName: "Vector",
+      matchDatasources: ["docker", "github-releases", "helm"],
+      matchPackagePatterns: ["vector"],
+      matchUpdateTypes: ["minor", "patch"],
+      group: { commitMessageTopic: "{{{groupName}}} group" },
+      separateMinorPatch: false,
+      stabilityDays: 2,
+    }
   ],
 }
