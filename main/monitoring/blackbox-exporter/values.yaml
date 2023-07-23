@@ -1,6 +1,6 @@
 prometheus-blackbox-exporter:
   fullnameOverride: blackbox-exporter
-  image:
+#  image:
  #   repository: quay.io/prometheus/blackbox-exporter
 #    tag: v0.22.0
 
