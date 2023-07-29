@@ -2,6 +2,10 @@ kube-prometheus-stack:
 
   cleanPrometheusOperatorObjectNames: true
 
+  defaultRules:
+    disabled:
+      HostHighCpuLoad: true
+
   alertmanager:
     config:
       global:
