@@ -37,12 +37,16 @@
   "commitMessageExtra": "to {{newVersion}}",
   "commitMessageSuffix": "",
   "helm-values": {
-    "fileMatch": ["./.+\\.yaml$"]
+    "fileMatch": ["./.+\\.yaml$"],
+    "ignorePaths": [
+      "archive"
+    ]
   },
   "kubernetes": {
     "fileMatch": ["\\.yaml$"],
     "ignorePaths": [
-      ".github"
+      ".github",
+      "archive"
     ],
   },
   "regexManagers": [
