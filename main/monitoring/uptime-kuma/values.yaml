@@ -1,13 +1,23 @@
-uptime-kuma:
+app-template:
   image:
     repository: louislam/uptime-kuma
     tag: 1.22.1
+
+
+  service:
+    main:
+      enabled: true
+      ports:
+        http:
+          port: &port 3001
 
   # See more environment variables in the statping documentation
   # https://github.com/statping/statping/wiki/Config-with-.env-File
   env:
     TZ: "America/Chicago"
     NODE_EXTRA_CA_CERTS: /rootcert/ca.crt
+    UPTIME_KUMA_DISABLE_FRAME_SAMEORIGIN: "0"
+    UPTIME_KUMA_PORT: *port
 
   ingress:
     main:
@@ -21,14 +31,14 @@ uptime-kuma:
         cert-manager.io/duration: "2160h"
         cert-manager.io/renew-before: "720h"
       hosts:
-        - host: up.rsr.net
+        - host: &host up.rsr.net
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - up.rsr.net
-          secretName: up-cert-tls
+            - *host
+          secretName: &tls-cert up-cert-tls
 
   persistence:
     data:
@@ -36,11 +46,12 @@ uptime-kuma:
       accessMode: ReadWriteOnce
       skipuninstall: true
       size: "3Gi"
+      mountPath: /app/data
       enabled: true
     rootcert:
       enabled: true
       type: secret
-      name: up-cert-tls
+      name: *tls-cert
 
   probes:
     startup:
