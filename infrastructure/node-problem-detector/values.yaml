@@ -3,6 +3,8 @@ node-problem-detector:
     enabled: true
     serviceMonitor:
       enabled: true
+    prometheusRule:
+      enabled: true
 
 #  tolerations:
 #    - key: arm
