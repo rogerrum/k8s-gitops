@@ -43,3 +43,8 @@ descheduler:
           podsHavingTooManyRestarts:
             podRestartThreshold: 100
             includingInitContainers: true
+
+  service:
+    enabled: true
+  serviceMonitor:
+    enabled: true
