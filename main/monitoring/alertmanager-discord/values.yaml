@@ -1,14 +1,30 @@
-alertmanager-discord:
+app-template:
   image:
     repository: rogerrum/alertmanager-discord
     tag: "1.0.4"
     pullPolicy: IfNotPresent
 
+  service:
+    main:
+      enabled: true
+      ports:
+        http:
+          port: &port 9094
+
   env:
     DISCORD_AVATAR_URL: "https://avatars3.githubusercontent.com/u/3380462"
     VERBOSE: "ON"
+    DISCORD_USERNAME: Alertmanager
     DISCORD_WEBHOOK:
       valueFrom:
         secretKeyRef:
           name: alertmanager-discord-secret
           key: DISCORD_WEBHOOK
+
+  probes:
+    liveness:
+      enabled: false
+    readiness:
+      enabled: false
+    startup:
+      enabled: false
