@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: unifi-poller
+spec:
+  groups:
+    - name: unifi-poller
+      rules:
+        - alert: UnifiPollerAbsent
+          annotations:
+            description: Unifi Poller has disappeared from Prometheus service discovery.
+            summary: Unifi Poller is down.
+          expr: |
+            absent(up{job=~".*unifi-poller.*"} == 1)
+          for: 5m
+          labels:
+            severity: critical
