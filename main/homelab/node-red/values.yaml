@@ -1,12 +1,21 @@
-node-red:
+app-template:
   image:
     repository: nodered/node-red
     tag: 3.0.2-18-minimal
+
+  service:
+    main:
+      enabled: true
+      ports:
+        http:
+          port: &port 1880
   env:
     TZ: "America/Chicago"
     FLOWS: "flows.json"
     NODE_RED_ENABLE_PROJECTS: "true"
     NODE_RED_ENABLE_SAFE_MODE: "false"
+    NODE_OPTIONS: null
+
   ingress:
     main:
       enabled: true
