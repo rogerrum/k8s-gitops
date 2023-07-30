@@ -1,71 +1,74 @@
+app-template:
+  image:
+    repository: rogerrum/cups-airprint
+    tag: "1.0.0"
+    pullPolicy: IfNotPresent
 
-image:
-  repository: rogerrum/cups-airprint
-  tag: "1.0.0"
-  pullPolicy: IfNotPresent
+  strategy:
+    type: Recreate
 
-strategy:
-  type: Recreate
+  hostNetwork: true
+  dnsPolicy: ClusterFirstWithHostNet
 
-hostNetwork: true
-dnsPolicy: ClusterFirstWithHostNet
+  securityContext:
+    privileged: true
 
-securityContext:
-  privileged: true
+  probes:
+    startup:
+      enabled: false
 
-probes:
-  startup:
-    enabled: false
+    liveness:
+      enabled: false
 
-  liveness:
-    enabled: false
+    readiness:
+      enabled: false
 
-  readiness:
-    enabled: false
+  env:
+    TZ: "America/Chicago"
+    CUPS_ADMIN_USER: "admin"
+    CUPS_ADMIN_PASSWORD: "admin"
+    CUPS_REMOTE_ADMIN: "yes"
+    CUPS_WEBINTERFACE: "yes"
+    CUPS_SHARE_PRINTERS: "yes"
+    CUPS_ACCESS_LOGLEVEL: access
+    CUPS_LOGLEVEL: info
+    CUPS_LPADMIN_PRINTER1: "lpadmin -p Air-Brother-HL-2270DW -D 'Airprinter Brother-HL-2270DW' -m 'HL2270DW.ppd' -o PageSize=A4 -v lpd://192.168.1.58/BINARY_P1"
+    CUPS_LPADMIN_PRINTER1_ENABLE: cupsenable Air-Brother-HL-2270DW
+    CUPS_LPADMIN_PRINTER1_ACCEPT: cupsaccept Air-Brother-HL-2270DW
+    CUPS_HOSTNAME: "airprint.rsr.net"
+    CUPS_ENV_DEBUG: "yes"
 
-env:
-  TZ: "America/Chicago"
-  CUPS_ADMIN_USER: "admin"
-  CUPS_ADMIN_PASSWORD: "admin"
-  CUPS_REMOTE_ADMIN: "yes"
-  CUPS_WEBINTERFACE: "yes"
-  CUPS_SHARE_PRINTERS: "yes"
-  CUPS_ACCESS_LOGLEVEL: access
-  CUPS_LOGLEVEL: info
-  CUPS_LPADMIN_PRINTER1: "lpadmin -p Air-Brother-HL-2270DW -D 'Airprinter Brother-HL-2270DW' -m 'HL2270DW.ppd' -o PageSize=A4 -v lpd://192.168.1.58/BINARY_P1"
-  CUPS_LPADMIN_PRINTER1_ENABLE: cupsenable Air-Brother-HL-2270DW
-  CUPS_LPADMIN_PRINTER1_ACCEPT: cupsaccept Air-Brother-HL-2270DW
-  CUPS_HOSTNAME: "airprint.rsr.net"
-  CUPS_ENV_DEBUG: "yes"
+  service:
+    main:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.100.52
+      ports:
+        http:
+          port: 631
 
-service:
-  type: LoadBalancer
-  loadBalancerIP: 192.168.100.52
-  port:
-    port: 631
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/issuer: step-issuer
+        cert-manager.io/issuer-kind: StepClusterIssuer
+        cert-manager.io/issuer-group: certmanager.step.sm
+        cert-manager.io/revision-history-limit: "3"
+        cert-manager.io/duration: "2160h"
+        cert-manager.io/renew-before: "720h"
+      hosts:
+        - host: "airprint.rsr.net"
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - airprint.rsr.net
+          secretName: airprint-cert-tls
 
-ingress:
-  enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    cert-manager.io/issuer: step-issuer
-    cert-manager.io/issuer-kind: StepClusterIssuer
-    cert-manager.io/issuer-group: certmanager.step.sm
-    cert-manager.io/revision-history-limit: "3"
-    cert-manager.io/duration: "2160h"
-    cert-manager.io/renew-before: "720h"
-  hosts:
-    - host: "airprint.rsr.net"
-      paths:
-        - path: "/"
-          pathType: Prefix
-  tls:
-    - hosts:
-        - airprint.rsr.net
-      secretName: airprint-cert-tls
-
-persistence:
-  config:
-    enabled: false
+  persistence:
+    config:
+      enabled: false
 
 
