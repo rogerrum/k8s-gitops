@@ -1,6 +1,6 @@
-home-assistant:
+app-template:
   image:
-    repository: homeassistant/home-assistant
+    repository: ghcr.io/home-assistant/home-assistant
     tag: 2023.7.3
   env:
     TZ: "America/Chicago"
@@ -19,6 +19,10 @@ home-assistant:
     main:
       type: LoadBalancer
       loadBalancerIP: 192.168.100.55
+      ports:
+        http:
+          port: 8123
+
   ingress:
     main:
       enabled: true
@@ -77,13 +81,16 @@ home-assistant:
       enabled: true
       image:
         repository: codercom/code-server
-        tag: 4.15.0
+        tag: 4.16.0
       workingDir: "/config"
       args:
         - --user-data-dir
         - "/config/.vscode"
         - --auth
         - "none"
+      env:
+        TZ: America/Chicago
+        HASS_SERVER: http://localhost:8123
       ingress:
         enabled: true
         annotations:
