@@ -1,9 +1,18 @@
-grocy:
+app-template:
   image:
     repository: linuxserver/grocy
     tag: 3.3.2
   env:
     TZ: "America/Chicago"
+    PGID: "1000"
+    PUID: "1000"
+
+  service:
+    main:
+      enabled: true
+      ports:
+        http:
+          port: &port 80
 
   ingress:
     main:
@@ -32,3 +41,7 @@ grocy:
       accessMode: ReadWriteOnce
       size: "1Gi"
       skipuninstall: true
+    viewcache:
+      enabled: true
+      type: emptyDir
+      mountPath: /config/data/viewcache
