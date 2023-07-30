@@ -1,10 +1,16 @@
 
-webtrees:
+app-template:
 
   image:
     repository: ghcr.io/nathanvaughn/webtrees
     tag: "2.1.17"
 
+  service:
+    main:
+      enabled: true
+      ports:
+        http:
+          port: &port 80
 
   env:
     TZ: "America/Chicago"
@@ -63,6 +69,7 @@ webtrees:
   persistence:
     config:
       enabled: true
+      mountPath: /var/www/webtrees/data/
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
       skipuninstall: true
