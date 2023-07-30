@@ -31,3 +31,12 @@ kubernetes-dashboard:
     enabled: true
   serviceMonitor:
     enabled: false
+
+  nginx:
+    enabled: false
+
+  cert-manager:
+    enabled: false
+
+  metrics-server:
+    enabled: false
