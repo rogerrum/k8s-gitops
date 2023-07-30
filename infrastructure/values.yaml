@@ -63,10 +63,10 @@ applications:
     syncOptions:
       - CreateNamespace=true
 
-  - name: intel-gpu-plugin
+  - name: intel-gpu-plugins
     namespace: kube-system
-    path: infrastructure/intel-gpu-plugin
-    manifest-paths: /infrastructure/intel-gpu-plugin
+    path: infrastructure/intel-gpu-plugins
+    manifest-paths: /infrastructure/intel-gpu-plugins
     sync-wave: "-3"
     helm:
       enabled: true

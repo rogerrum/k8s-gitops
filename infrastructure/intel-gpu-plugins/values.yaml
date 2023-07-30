@@ -36,7 +36,7 @@ intel-gpu-exporter:
       memory: 500Mi
 
 intel-device-plugins-gpu:
-  name: intel-gpu-plugin
+  name: intel-gpu-plugins
   sharedDevNum: 3
   nodeFeatureRule: true
 
