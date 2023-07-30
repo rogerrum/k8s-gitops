@@ -1,7 +1,15 @@
-kanboard:
+app-template:
   image:
     repository: kanboard/kanboard
     tag: v1.2.30
+
+  service:
+    main:
+      enabled: true
+      ports:
+        http:
+          port: &port 80
+
   env:
     TZ: "America/Chicago"
     DB_DRIVER: "postgres"
@@ -12,7 +20,10 @@ kanboard:
         secretKeyRef:
           name: kanboard-secret
           key: DB_PASSWORD
+    DB_PORT: null
     DB_HOSTNAME: "postgres-rw.kube-system.svc.cluster.local"
+    LOG_DRIVER: stdout
+    MAIL_CONFIGURATION: "false"
 
   ingress:
     main:
