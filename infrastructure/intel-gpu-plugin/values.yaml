@@ -1,17 +1,43 @@
-intel-gpu-plugin:
+
+intel-gpu-exporter:
+  controller:
+    type: daemonset
   image:
-    repository: intel/intel-gpu-plugin
-    tag: 0.26.1
-    pullPolicy: IfNotPresent
-  args:
-    - -shared-dev-num
-    - "2"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: intel.feature.node.kubernetes.io/gpu
-                operator: In
-                values:
-                  - "true"
+    repository: ghcr.io/onedr0p/intel-gpu-exporter
+    tag: rolling@sha256:f5aea8755460eb2e6a61ad8cef85f88859d019a2a0213a99978205ef1d5148d7
+  service:
+    main:
+      ports:
+        http:
+          port: 8080
+  serviceMonitor:
+    main:
+      enabled: true
+      endpoints:
+        - port: http
+          scheme: http
+          path: /metrics
+          interval: 1m
+          scrapeTimeout: 10s
+          relabelings:
+            - sourceLabels: [__meta_kubernetes_pod_node_name]
+              targetLabel: node
+  securityContext:
+    privileged: true
+  nodeSelector:
+    intel.feature.node.kubernetes.io/gpu: "true"
+  resources:
+    requests:
+      gpu.intel.com/i915: 1
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      gpu.intel.com/i915: 1
+      memory: 500Mi
+
+intel-device-plugins-gpu:
+  name: intel-gpu-plugin
+  sharedDevNum: 3
+  nodeFeatureRule: true
+
+#intel-device-plugins-operator:
