@@ -68,6 +68,15 @@ app-template:
       skipuninstall: true
       size: "10Gi"
 
+    tts-fix:
+      enabled: true
+      type: emptyDir
+      sizeLimit: 2Mb
+      mountPath: /usr/src/homeassistant/homeassistant/components/tts/__init__.py
+      subPath: tts.py
+
+
+
   additionalVolumeMounts:
     - name: zigbee-usb
       mountPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if01-port0
@@ -158,3 +167,9 @@ app-template:
               name: home-assistant-secret
               key: POSTGRES_PASSWORD
 
+    fix-tts:
+      image: ghcr.io/home-assistant/home-assistant:2023.7.3
+      command: [ 'sh', '-c', 'sed  "s/base = get_url(self.tts.hass)/base = get_url(self.tts.hass,prefer_external=True)/g" /usr/src/homeassistant/homeassistant/components/tts/__init__.py > /ttsFix/tts.py' ]
+      volumeMounts:
+        - mountPath: /ttsFix
+          name: tts-fix
