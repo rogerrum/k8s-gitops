@@ -71,7 +71,7 @@ app-template:
     tts-fix:
       enabled: true
       type: emptyDir
-      sizeLimit: 2Mb
+      sizeLimit: 2Mi
       mountPath: /usr/src/homeassistant/homeassistant/components/tts/__init__.py
       subPath: tts.py
 
