@@ -72,7 +72,7 @@ app-template:
       enabled: true
       type: emptyDir
       sizeLimit: 2Mi
-      mountPath: /usr/src/homeassistant/homeassistant/components/tts/__init__.py
+      mountPath: /usr/src/homeassistant/homeassistant/components/media_player/browse_media.py
       subPath: tts.py
 
 
@@ -169,7 +169,7 @@ app-template:
 
     fix-tts:
       image: ghcr.io/home-assistant/home-assistant:2023.7.3
-      command: [ 'sh', '-c', 'sed  "s/base = get_url(self.tts.hass)/base = get_url(self.tts.hass,prefer_external=True)/g" /usr/src/homeassistant/homeassistant/components/tts/__init__.py > /ttsFix/tts.py' ]
+      command: [ 'sh', '-c', 'sed  "s/base_url = get_url(hass)/base_url = get_url(hass,prefer_external=True)/g" /usr/src/homeassistant/homeassistant/components/media_player/browse_media.py > /ttsFix/tts.py' ]
       volumeMounts:
         - mountPath: /ttsFix
           name: tts-fix
