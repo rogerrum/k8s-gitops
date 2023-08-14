@@ -20,7 +20,7 @@ botkube:
 #                - bins-management
 #                - ai
               sources:
-                - crds
+#                - crds
                 - k8s-err-events
                 - k8s-create-events
                 - k8s-recommendation-events
