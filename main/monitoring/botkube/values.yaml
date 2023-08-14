@@ -16,13 +16,16 @@ botkube:
               disabled: false
             bindings:
               executors:
-                - kubectl-read-only
+                - k8s-default-tools
+#                - bins-management
+#                - ai
               sources:
-#                - crds
+                - crds
+                - k8s-err-events
+                - k8s-create-events
                 - k8s-recommendation-events
-#                - k8s-err-events
-                - k8s-all-events
-#                - k8s-recommendation-events
+                - k8s-err-with-logs-events
+#                - k8s-all-events
 
   serviceMonitor:
     enabled: true
@@ -30,7 +33,7 @@ botkube:
 
 
   executors:
-    kubectl-read-only:
+    k8s-default-tools:
       botkube/kubectl:
         enabled: true
 
