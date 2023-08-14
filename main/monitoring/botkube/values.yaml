@@ -20,7 +20,7 @@ botkube:
 #                - bins-management
 #                - ai
               sources:
-#                - crds
+                - crds
                 - k8s-err-events
                 - k8s-create-events
                 - k8s-recommendation-events
@@ -45,6 +45,29 @@ botkube:
       enabled: true
 
   sources:
+    crds:
+      displayName: CRDS
+      botkube/kubernetes:
+        context: &default-plugin-context
+          rbac:
+            group:
+              type: Static
+              prefix: ""
+              static:
+                values: botkube-plugins-default
+        enabled: true
+        config:
+          namespaces:
+            include:
+              - ".*"
+          events:
+            - create
+            - delete
+            - error
+          resources:
+            - name: monitoring.coreos.com/v1/podmonitors
+            - name: monitoring.coreos.com/v1/servicemonitors
+
     k8s-recommendation-events:
       botkube/kubernetes:
         enabled: true
@@ -92,13 +115,7 @@ botkube:
     k8s-delete-events:
       displayName: "Kubernetes Resource Delete Events"
       botkube/kubernetes:
-        context:
-          rbac:
-            group:
-              type: Static
-              prefix: ""
-              static:
-                values: botkube-plugins-default
+        context: *default-plugin-context
         enabled: true
         config:
           filters:
