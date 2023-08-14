@@ -25,6 +25,7 @@ botkube:
                 - k8s-create-events
                 - k8s-recommendation-events
                 - k8s-err-with-logs-events
+                - k8s-delete-events
 #                - k8s-all-events
 
   serviceMonitor:
@@ -44,21 +45,6 @@ botkube:
       enabled: true
 
   sources:
-    crds:
-      displayName: CRDS
-      botkube/kubernetes:
-        enabled: true
-        config:
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-          resources:
-            - name: monitoring.coreos.com/v1/podmonitors
-            - name: monitoring.coreos.com/v1/servicemonitors
     k8s-recommendation-events:
       botkube/kubernetes:
         enabled: true
@@ -90,6 +76,8 @@ botkube:
       botkube/kubernetes:
         enabled: true
         config:
+          filters:
+            objectAnnotationChecker: true
           resources:
             - type: v1/pods
             - type: v1/services
@@ -100,6 +88,33 @@ botkube:
             - type: apps/v1/deployments
             - type: apps/v1/statefulsets
             - type: apps/v1/daemonsets
+            - type: batch/v1/jobs
+    k8s-delete-events:
+      displayName: "Kubernetes Resource Delete Events"
+      botkube/kubernetes:
+        enabled: true
+        config:
+          filters:
+            objectAnnotationChecker: true
+          namespaces:
+            include:
+              - all
+          event:
+            # -- Lists all event types to be watched.
+            types:
+              - delete
+          resources:
+            - type: v1/pods
+            - type: v1/services
+            - type: networking.k8s.io/v1/ingresses
+            - type: v1/nodes
+            - type: v1/namespaces
+            - type: v1/configmaps
+            - type: apps/v1/deployments
+            - type: apps/v1/statefulsets
+            - type: apps/v1/daemonsets
+            - type: batch/v1/jobs
+
     k8s-err-events:
       botkube/kubernetes:
         enabled: true
