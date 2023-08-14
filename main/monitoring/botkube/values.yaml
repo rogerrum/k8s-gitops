@@ -21,11 +21,11 @@ botkube:
 #                - ai
               sources:
                 - crds
-                - k8s-err-events
+#                - k8s-err-events
                 - k8s-create-events
                 - k8s-recommendation-events
-#                - k8s-err-with-logs-events
-                - k8s-delete-events
+                - k8s-err-with-logs-events
+#                - k8s-delete-events
 #                - k8s-all-events
 
   serviceMonitor:
@@ -111,7 +111,7 @@ botkube:
             - type: apps/v1/deployments
             - type: apps/v1/statefulsets
             - type: apps/v1/daemonsets
-            - type: batch/v1/jobs
+#            - type: batch/v1/jobs
     k8s-delete-events:
       displayName: "Kubernetes Resource Delete Events"
       botkube/kubernetes:
