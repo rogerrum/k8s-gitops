@@ -43,31 +43,19 @@ botkube:
   sources:
     crds:
       displayName: CRDS
-      kubernetes:
+      botkube/kubernetes:
         enabled: true
-        namespaces:
-          include:
-            - all
-        events:
-          - create
-          - delete
-          - error
-        resources:
-          - name: monitoring.coreos.com/v1/podmonitors
-          - name: monitoring.coreos.com/v1/servicemonitors
-#      botkube/kubernetes:
-#        enabled: true
-#        config:
-#          namespaces:
-#            include:
-#              - all
-#          events:
-#            - create
-#            - delete
-#            - error
-#          resources:
-#            - name: monitoring.coreos.com/v1/podmonitors
-#            - name: monitoring.coreos.com/v1/servicemonitors
+        config:
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - delete
+            - error
+          resources:
+            - name: monitoring.coreos.com/v1/podmonitors
+            - name: monitoring.coreos.com/v1/servicemonitors
     k8s-recommendation-events:
       botkube/kubernetes:
         enabled: true
