@@ -21,7 +21,7 @@ botkube:
 #                - crds
                 - k8s-recommendation-events
 #                - k8s-err-events
-#                - k8s-all-events
+                - k8s-all-events
 #                - k8s-recommendation-events
 
   serviceMonitor:
