@@ -1,7 +1,4 @@
 botkube:
-  serviceMonitor:
-    enabled: true
-
   settings:
     clusterName: k8s
     configWatcher: true
@@ -10,11 +7,11 @@ botkube:
     disable: true
 
   communications:
-    'default-group':
+    default-group:
       discord:
         enabled: true
         channels:
-          'default':
+          default:
             notification:
               disabled: false
             bindings:
@@ -27,6 +24,9 @@ botkube:
 #                - k8s-all-events
 #                - k8s-recommendation-events
 
+  serviceMonitor:
+    enabled: true
+
 
 
   executors:
@@ -35,27 +35,39 @@ botkube:
         enabled: true
 
   actions:
-    'describe-created-resource':
+    describe-created-resource:
       enabled: false
-    'show-logs-on-error':
+    show-logs-on-error:
       enabled: true
 
   sources:
     crds:
       displayName: CRDS
-      botkube/kubernetes:
+      kubernetes:
         enabled: true
-        config:
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-          resources:
-            - name: monitoring.coreos.com/v1/podmonitors
-            - name: monitoring.coreos.com/v1/servicemonitors
+        namespaces:
+          include:
+            - all
+        events:
+          - create
+          - delete
+          - error
+        resources:
+          - name: monitoring.coreos.com/v1/podmonitors
+          - name: monitoring.coreos.com/v1/servicemonitors
+#      botkube/kubernetes:
+#        enabled: true
+#        config:
+#          namespaces:
+#            include:
+#              - all
+#          events:
+#            - create
+#            - delete
+#            - error
+#          resources:
+#            - name: monitoring.coreos.com/v1/podmonitors
+#            - name: monitoring.coreos.com/v1/servicemonitors
     k8s-recommendation-events:
       botkube/kubernetes:
         enabled: true
