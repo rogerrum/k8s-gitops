@@ -98,7 +98,7 @@ botkube:
             objectAnnotationChecker: true
           namespaces:
             include:
-              - all
+              - ".*"
           event:
             # -- Lists all event types to be watched.
             types:
