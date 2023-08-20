@@ -49,12 +49,12 @@ descheduler:
         params:
           podLifeTime:
             maxPodLifeTimeSeconds: 86400
-            labelSelector:
-              matchExpressions:
-                - key: app.kubernetes.io/name
-                  operator: In
-                  values:
-                    - frigate
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - frigate
 
 
   service:
