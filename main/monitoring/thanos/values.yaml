@@ -40,7 +40,7 @@ thanos:
       hostname: thanos-bucketweb.rsr.net
       tls: true
   compactor:
-    enabled: true
+    enabled: false
     extraFlags: ["--compact.concurrency", "4"]
     retentionResolutionRaw: 7d
     retentionResolution5m: 14d
