@@ -44,6 +44,19 @@ descheduler:
             podRestartThreshold: 100
             includingInitContainers: true
 
+      PodLifeTime:
+        enabled: true
+        params:
+          podLifeTime:
+            maxPodLifeTimeSeconds: 86400
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                    - frigate
+
+
   service:
     enabled: true
   serviceMonitor:
