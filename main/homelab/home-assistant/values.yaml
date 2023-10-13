@@ -1,7 +1,7 @@
 app-template:
   image:
     repository: ghcr.io/home-assistant/home-assistant
-    tag: 2023.10.1
+    tag: 2023.10.2
   env:
     TZ: "America/Chicago"
 
@@ -168,7 +168,7 @@ app-template:
               key: POSTGRES_PASSWORD
 
     fix-tts:
-      image: ghcr.io/home-assistant/home-assistant:2023.10.1
+      image: ghcr.io/home-assistant/home-assistant:2023.10.2
       command: [ 'sh', '-c', 'sed  "s/base_url = get_url(hass)/base_url = get_url(hass,prefer_external=True)/g" /usr/src/homeassistant/homeassistant/components/media_player/browse_media.py > /ttsFix/tts.py' ]
       volumeMounts:
         - mountPath: /ttsFix
