@@ -11,7 +11,7 @@ minio:
 
   persistence:
     existingClaim: "nas-data-pvc"
-    subPath: "minio"
+    subPath: "minio-2023"
 
 
   ingress:
@@ -70,9 +70,6 @@ minio:
   metrics:
     serviceMonitor:
       enabled: true
-
-  gateway:
-    replicas: 3
 
   existingSecret: minio-secret
 
