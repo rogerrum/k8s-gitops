@@ -119,10 +119,10 @@ applications:
     helm:
       enabled: true
 
-  - name: kubernetes-dashboard
-    namespace: monitoring
-    path: main/monitoring/kubernetes-dashboard
-    manifest-paths: /main/monitoring/kubernetes-dashboard
-    sync-wave: "-1"
-    helm:
-      enabled: true
+#  - name: kubernetes-dashboard
+#    namespace: monitoring
+#    path: main/monitoring/kubernetes-dashboard
+#    manifest-paths: /main/monitoring/kubernetes-dashboard
+#    sync-wave: "-1"
+#    helm:
+#      enabled: true
