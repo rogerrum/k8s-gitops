@@ -180,3 +180,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: zigbee2mqtt
+    namespace: default
+    path: main/homelab/zigbee2mqtt
+    manifest-paths: /main/homelab/zigbee2mqtt
+    sync-wave: "-1"
+    helm:
+      enabled: true
