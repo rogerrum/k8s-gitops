@@ -1,7 +1,6 @@
 app-template:
   controllers:
     main:
-      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
       containers:
@@ -64,17 +63,16 @@ app-template:
 #          fsGroup: 568
 #          fsGroupChangePolicy: OnRootMismatch
 
-      statefulset:
-        volumeClaimTemplates:
-          - name: config
-            accessMode: ReadWriteOnce
-            size: 1Gi
-            storageClass: "longhorn"
-            skipuninstall: true
-            globalMounts:
-              - path: /config
 
   persistence:
+    config:
+      enabled: true
+      mountPath: /config
+      storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      size: "1Gi"
+      skipuninstall: true
+
     zigbee-usb:
       enabled: true
       type: hostPath
