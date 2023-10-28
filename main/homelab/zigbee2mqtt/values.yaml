@@ -48,6 +48,9 @@ app-template:
             limits:
               memory: 512Mi
       pod:
+        securityContext:
+          privileged: true
+
         affinity:
           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
