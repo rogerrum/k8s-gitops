@@ -3,6 +3,8 @@ kured:
     startTime: "2:30"
     endTime: "6:30"
     timeZone: "America/Chicago"
+    lockTtl: 30m
+    drainTimeout: 90m
   tolerations:
     - key: "arm"
       operator: "Exists"
@@ -14,3 +16,4 @@ kured:
     create: true
   service:
     create: true
+
