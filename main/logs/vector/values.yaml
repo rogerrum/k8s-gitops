@@ -2,7 +2,7 @@
 vector-aggregator:
   image:
     repository: timberio/vector
-    tag: 0.33.0-debian
+    tag: 0.33.1-debian
   role: Stateless-Aggregator
   tolerations:
     - key: "arm"
@@ -86,7 +86,7 @@ vector-aggregator:
 vector-agent:
   image:
     repository: timberio/vector
-    tag: 0.33.0-debian
+    tag: 0.33.1-debian
   role: Agent
   customConfig:
     data_dir: /vector-data-dir
