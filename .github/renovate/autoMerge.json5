@@ -12,8 +12,8 @@
         "homeassistant/home-assistant",
         "ghcr.io/home-assistant/home-assistant",
         "nodered/node-red",
-        "ghcr.io/zwave-js/zwave-js-ui"
-       // "codercom/code-server"
+        "ghcr.io/zwave-js/zwave-js-ui",
+        "codercom/code-server"
       ]
     },
     {
@@ -23,7 +23,7 @@
       "schedule": "after 3am and before 7am",
       "updateTypes": ["minor", "patch"],
       "packageNames": [
-        "grafana",
+       // "grafana",
         "thanos",
         "reloader",
         "kube-prometheus-stack"
