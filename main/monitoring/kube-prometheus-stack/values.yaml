@@ -189,7 +189,7 @@ kube-prometheus-stack:
       replicas: 2
       replicaExternalLabelName: "replica"
       thanos:
-        image: quay.io/thanos/thanos:v0.32.5
+        image: quay.io/thanos/thanos:v0.33.0
         version: v0.30.1
         objectStorageConfig:
           name: thanos-objstore-secret
