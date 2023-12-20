@@ -64,8 +64,8 @@ jobs:
         run: |
           brew install helm kustomize yq
 
-      - name: Helm Release Differ New
-        id: diff-n
+      - name: Helm Release Differ
+        id: diff
         run: |
           diff=$(npx zx ./.github/scripts/helmReleaseDiff.mjs \
             --source-chart "live/${{ matrix.file }}" \
@@ -76,8 +76,8 @@ jobs:
           echo "EOF" >> "${GITHUB_OUTPUT}"
 
 
-      - name: Helm Release Differ
-        id: diff
+      - name: Helm Release Differ Old
+        id: diff-o
         run: |
           diff=$(.github/scripts/helm-release-differ.sh \
            --source-chart "live/${{ matrix.file }}" \
