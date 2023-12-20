@@ -57,11 +57,18 @@ jobs:
           ref: "${{ env.conf_live_branch }}"
           path: live
 
-      - name: Install Helm
-        uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3
-        with:
-          version: 'v3.10.1'
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Tools
+        run: |
+          brew install helm kustomize yq
+
+#      - name: Install Helm
+#        uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3
+#        with:
+#          version: 'v3.10.1'
+#          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Helm Release Differ
         id: diff
@@ -72,6 +79,7 @@ jobs:
           diff="${diff//$'\n'/'%0A'}"
           diff="${diff//$'\r'/'%0D'}"
           echo "::set-output name=diff::$(echo ${diff})"
+
       - name: Find Comment
         uses: peter-evans/find-comment@a54c31d7fa095754bfef525c0c8e5e5674c4b4b1 # v2
         id: find-comment
