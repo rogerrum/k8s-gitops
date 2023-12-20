@@ -64,16 +64,26 @@ jobs:
         run: |
           brew install helm kustomize yq
 
-#      - name: Install Helm
-#        uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3
-#        with:
-#          version: 'v3.10.1'
-#          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Helm Release Differ New
+        id: diff-n
+        run: |
+          diff=$(npx zx ./.github/scripts/helmReleaseDiff.mjs \
+            --source-chart "live/${{ matrix.file }}" \
+            --target-chart "${{ matrix.file }}" \
+            --diff-tool "diff")
+          echo "diff<<EOF" >> "${GITHUB_OUTPUT}"
+          echo "${diff}" >> "${GITHUB_OUTPUT}"
+          echo "EOF" >> "${GITHUB_OUTPUT}"
+
 
       - name: Helm Release Differ
         id: diff
         run: |
-          diff=$(.github/scripts/helm-release-differ.sh --source-chart "live/${{ matrix.file }}" --target-chart "${{ matrix.file }}" --remove-common-labels)
+          diff=$(.github/scripts/helm-release-differ.sh \
+           --source-chart "live/${{ matrix.file }}" \
+           --target-chart "${{ matrix.file }}" \
+           --remove-common-labels)
+          
           echo "${diff}"
           diff="${diff//'%'/'%25'}"
           diff="${diff//$'\n'/'%0A'}"
