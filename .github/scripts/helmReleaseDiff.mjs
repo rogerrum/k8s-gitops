@@ -77,18 +77,18 @@ if (sourceChart) {
 
     let comments = ''
 
-    comments += `Path: ${TargetChart}\n`
+    comments += `Path: ``${TargetChart}``\n`
 
     if (sourceChartName !== targetChartName) {
-        comments += `Chart: ${sourceChartName} -> ${targetChartName}\n`
+        comments += `Chart: ``${sourceChartName} -> ${targetChartName}``\n`
     }
 
     if (sourceChartVersion !== targetChartVersion) {
-        comments += `Version: ${sourceChartVersion} -> ${targetChartVersion}\n`
+        comments += `Version: ``${sourceChartVersion} -> ${targetChartVersion}``\n`
     }
 
     if (sourceChartRepositoryUrl !== targetChartRepositoryUrl) {
-        comments += `Registry URL: ${sourceChartRepositoryUrl} -> ${targetChartRepositoryUrl}\n`
+        comments += `Registry URL: ``${sourceChartRepositoryUrl} -> ${targetChartRepositoryUrl}``\n`
     }
 
     comments += `\n\n`
