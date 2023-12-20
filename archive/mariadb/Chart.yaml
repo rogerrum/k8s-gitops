@@ -5,3 +5,4 @@ dependencies:
   - name: mariadb
     version: 15.0.1
     repository:  https://charts.bitnami.com/bitnami
+
