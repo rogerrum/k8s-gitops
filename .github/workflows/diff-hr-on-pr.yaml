@@ -34,7 +34,10 @@ jobs:
           filtered=$( echo '${{ steps.filter.outputs.changed_files }}' \
             |  jq -r '.=[.[] | split("/") | del(.[-1]) |  join("/")  ] | unique')
           echo ${filtered}
-          echo "files=${filtered}" >> $GITHUB_OUTPUT
+          echo "files<<EOF" >> "${GITHUB_OUTPUT}"
+          echo "${filtered}" >> "${GITHUB_OUTPUT}"
+          echo "EOF" >> "${GITHUB_OUTPUT}"
+
     outputs:
       yaml_files: ${{ steps.extract.outputs.files }}
 
