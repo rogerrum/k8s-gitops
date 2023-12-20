@@ -34,7 +34,7 @@ jobs:
           filtered=$( echo '${{ steps.filter.outputs.changed_files }}' \
             |  jq -r '.=[.[] | split("/") | del(.[-1]) |  join("/")  ] | unique')
           echo ${filtered}
-          echo ::set-output name=files::${filtered}
+          echo "files=${filtered}" >> $GITHUB_OUTPUT
     outputs:
       yaml_files: ${{ steps.extract.outputs.files }}
 
@@ -74,21 +74,6 @@ jobs:
           echo "diff<<EOF" >> "${GITHUB_OUTPUT}"
           echo "${diff}" >> "${GITHUB_OUTPUT}"
           echo "EOF" >> "${GITHUB_OUTPUT}"
-
-
-      - name: Helm Release Differ Old
-        id: diff-o
-        run: |
-          diff=$(.github/scripts/helm-release-differ.sh \
-           --source-chart "live/${{ matrix.file }}" \
-           --target-chart "${{ matrix.file }}" \
-           --remove-common-labels)
-          
-          echo "${diff}"
-          diff="${diff//'%'/'%25'}"
-          diff="${diff//$'\n'/'%0A'}"
-          diff="${diff//$'\r'/'%0D'}"
-          echo "::set-output name=diff::$(echo ${diff})"
 
       - name: Find Comment
         uses: peter-evans/find-comment@a54c31d7fa095754bfef525c0c8e5e5674c4b4b1 # v2
