@@ -50,7 +50,7 @@ const sourceChart = await helmChart(SourceChart)
 if (sourceChart) {
 
     const sourceChartName = sourceChart.name
-    const sourceChartVersion = sourceChart.version
+    const sourceChartVersion = sourceChart.dependencies[0].version
     const sourceChartRepositoryUrl = sourceChart.dependencies[0].repository
 
     const currentManifests = await helmTemplate(SourceChart)
@@ -58,7 +58,7 @@ if (sourceChart) {
     // Generate target template from Helm values
     const targetChart = await helmChart(TargetChart)
     const targetChartName = targetChart.name
-    const targetChartVersion = targetChart.version
+    const targetChartVersion = targetChart.dependencies[0].version
     const targetChartRepositoryUrl = targetChart.dependencies[0].repository
 
     const incomingManifests = await helmTemplate(TargetChart)
