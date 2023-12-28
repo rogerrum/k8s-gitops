@@ -184,6 +184,12 @@ app-template:
               objects:
                 track:
                   - person
+                filters:
+                  person:
+                    min_area: 1500
+                    max_area: 100000
+                    threshold: 0.76
+                    min_score: 0.60
           
             basement_main:
               ffmpeg:
