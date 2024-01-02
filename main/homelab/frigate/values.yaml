@@ -188,7 +188,7 @@ app-template:
                   person:
                     min_area: 1500
                     max_area: 100000
-                    threshold: 0.76
+                    threshold: 0.78
                     min_score: 0.60
           
             basement_main:
