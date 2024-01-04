@@ -188,3 +188,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: actual
+    namespace: default
+    path: main/homelab/actual
+    manifest-paths: /main/homelab/actual
+    sync-wave: "-1"
+    helm:
+      enabled: true
