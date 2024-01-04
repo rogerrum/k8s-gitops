@@ -39,7 +39,7 @@ app-template:
       hosts:
         - host: &host "actual.rsr.net"
           paths:
-            - path: /l
+            - path: /
               service:
                 name: main
                 port: http
