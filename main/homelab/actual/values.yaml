@@ -19,44 +19,45 @@ app-template:
             limits:
               memory: 512M
 
-    service:
-      main:
-        ports:
-          http:
-            port: 5006
+  service:
+    main:
+      ports:
+        http:
+          port: 5006
 
-    ingress:
-      main:
-        enabled: true
-        className: "nginx"
-        annotations:
-          cert-manager.io/issuer: step-issuer
-          cert-manager.io/issuer-kind: StepClusterIssuer
-          cert-manager.io/issuer-group: certmanager.step.sm
-          cert-manager.io/revision-history-limit: "3"
-          cert-manager.io/duration: "2160h"
-          cert-manager.io/renew-before: "720h"
-        hosts:
-          - host: &host "actual.rsr.net"
-            paths:
-              - path: /
-                service:
-                  name: main
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: actual-tls
+  ingress:
+    main:
+      enabled: true
+      className: "nginx"
+      annotations:
+        cert-manager.io/issuer: step-issuer
+        cert-manager.io/issuer-kind: StepClusterIssuer
+        cert-manager.io/issuer-group: certmanager.step.sm
+        cert-manager.io/revision-history-limit: "3"
+        cert-manager.io/duration: "2160h"
+        cert-manager.io/renew-before: "720h"
+      hosts:
+        - host: &host "actual.rsr.net"
+          paths:
+            - path: /l
+              service:
+                name: main
+                port: http
+      tls:
+        - hosts:
+            - *host
+          secretName: actual-tls
 
-    persistence:
-      data:
-        enabled: true
-        storageClass: "longhorn"
-        accessMode: ReadWriteOnce
-        advancedMounts:
+  persistence:
+    data:
+      enabled: true
+      storageClass: "longhorn"
+      size: 5Gi
+      accessMode: ReadWriteOnce
+      advancedMounts:
+        main:
           main:
-            main:
-              - path: /data
+            - path: /data
 
 
 
