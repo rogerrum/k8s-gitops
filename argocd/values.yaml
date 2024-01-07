@@ -1,6 +1,6 @@
 argo-cd:
 
-  global:
+#  global:
 #    image:
 #      repository: argoproj/argocd
   dex:
