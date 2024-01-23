@@ -196,3 +196,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: wyze-bridge
+    namespace: default
+    path: main/homelab/wyze-bridge
+    manifest-paths: /main/homelab/wyze-bridge
+    sync-wave: "-1"
+    helm:
+      enabled: true
