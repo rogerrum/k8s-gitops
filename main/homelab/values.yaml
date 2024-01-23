@@ -197,13 +197,13 @@ applications:
     helm:
       enabled: true
 
-  - name: scrypted
-    namespace: default
-    path: main/homelab/scrypted
-    manifest-paths: /main/homelab/scrypted
-    sync-wave: "-1"
-    helm:
-      enabled: true
+#  - name: scrypted
+#    namespace: default
+#    path: main/homelab/scrypted
+#    manifest-paths: /main/homelab/scrypted
+#    sync-wave: "-1"
+#    helm:
+#      enabled: true
 
 #  - name: wyze-bridge
 #    namespace: default
