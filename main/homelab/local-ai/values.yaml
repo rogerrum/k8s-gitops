@@ -66,6 +66,7 @@ local-ai:
 
   ingress:
     enabled: true
+    className: nginx
     annotations:
       cert-manager.io/issuer: step-issuer
       cert-manager.io/issuer-kind: StepClusterIssuer
