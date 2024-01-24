@@ -83,3 +83,10 @@ local-ai:
         hosts:
           - *host
 
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: special
+                operator: Exist
