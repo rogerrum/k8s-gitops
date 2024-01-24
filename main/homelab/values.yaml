@@ -197,6 +197,14 @@ applications:
     helm:
       enabled: true
 
+  - name: local-ai
+    namespace: default
+    path: main/homelab/local-ai
+    manifest-paths: /main/homelab/local-ai
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
 #  - name: scrypted
 #    namespace: default
 #    path: main/homelab/scrypted
