@@ -7,6 +7,7 @@ local-ai:
     env:
       threads: 4
       context_size: 512
+      GALLERIES: '[{"name":"model-gallery", "url":"github:go-skynet/model-gallery/index.yaml"}, {"url": "github:go-skynet/model-gallery/huggingface.yaml","name": "huggingface" } ]'
     modelsPath: "/models"
 
   resources:
