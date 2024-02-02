@@ -112,13 +112,3 @@ app-template:
       existingClaim: nas-media-pvc
       mountPath: /media
       subPath: Videos
-
-
-
-
-
-
-  configMaps:
-    config:
-      enabled: true
-      data:
