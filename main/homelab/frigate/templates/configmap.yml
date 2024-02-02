@@ -3,9 +3,6 @@ kind: ConfigMap
 metadata:
   name: frigate-configmap
   namespace: default
-  labels:
-    app.kubernetes.io/instance: frigate
-    app.kubernetes.io/name: frigate
 data:
   config.yml: |
     mqtt:
