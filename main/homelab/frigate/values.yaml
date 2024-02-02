@@ -18,7 +18,7 @@ app-template:
           probes:
             liveness: &probes
               enabled: true
-              custom: true
+              custom: false
               spec:
                 httpGet:
                   path: /api/version
