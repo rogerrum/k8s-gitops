@@ -40,7 +40,10 @@ data:
           max_area: 100000
           threshold: 0.7
 
-
+    detect:
+      height: 480
+      width: 704
+      fps: 5
 
     record:
       enabled: true
