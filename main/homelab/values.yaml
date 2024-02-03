@@ -12,13 +12,13 @@ applications:
     helm:
       enabled: true
 
-  - name: change-detection
-    namespace: default
-    path: main/homelab/change-detection
-    manifest-paths: /main/homelab/change-detection
-    sync-wave: "-1"
-    helm:
-      enabled: true
+#  - name: change-detection
+#    namespace: default
+#    path: main/homelab/change-detection
+#    manifest-paths: /main/homelab/change-detection
+#    sync-wave: "-1"
+#    helm:
+#      enabled: true
 
   - name: cloudflare-ddns
     namespace: default
@@ -65,13 +65,13 @@ applications:
       additionalValues:
         - http://localhost/frigate.yml
 
-  - name: grocy
-    namespace: default
-    path: main/homelab/grocy
-    manifest-paths: /main/homelab/grocy
-    sync-wave: "-1"
-    helm:
-      enabled: true
+#  - name: grocy
+#    namespace: default
+#    path: main/homelab/grocy
+#    manifest-paths: /main/homelab/grocy
+#    sync-wave: "-1"
+#    helm:
+#      enabled: true
 
   - name: heimdall
     namespace: default
