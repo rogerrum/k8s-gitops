@@ -197,6 +197,14 @@ applications:
     helm:
       enabled: true
 
+  - name: dashy
+    namespace: default
+    path: main/homelab/dashy
+    manifest-paths: /main/homelab/dashy
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
 #  - name: local-ai
 #    namespace: default
 #    path: main/homelab/local-ai

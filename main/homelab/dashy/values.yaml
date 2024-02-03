@@ -1,0 +1,94 @@
+app-template:
+  controllers:
+    main:
+      annotations:
+        reloader.stakater.com/auto: "true"
+      containers:
+        main:
+          image:
+            repository: ghcr.io/lissy93/dashy
+            tag: 2.1.1
+          env:
+            TZ: "America/Chicago"
+        code-server:
+          image:
+            repository: codercom/code-server
+            tag: 4.20.1
+          securityContext:
+            runAsUser: 0
+          args:
+            - --auth
+            - none
+            - --user-data-dir
+            - "/config/.vscode"
+            - --extensions-dir
+            - "/config/.vscode"
+            - --port
+            - "8080"
+            - "/config"
+  service:
+    main:
+      ports:
+        http:
+          port: 80
+        code-server:
+          port: 8080
+
+  ingress:
+    main:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/issuer: step-issuer
+        cert-manager.io/issuer-kind: StepClusterIssuer
+        cert-manager.io/issuer-group: certmanager.step.sm
+        cert-manager.io/revision-history-limit: "3"
+        cert-manager.io/duration: "2160h"
+        cert-manager.io/renew-before: "720h"
+      hosts:
+        - host: &host "dash.rsr.net"
+          paths:
+            - path: /
+              service:
+                name: main
+                port: http
+      tls:
+        - hosts:
+            - *host
+          secretName: dash-tls
+
+    code-server:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/issuer: step-issuer
+        cert-manager.io/issuer-kind: StepClusterIssuer
+        cert-manager.io/issuer-group: certmanager.step.sm
+        cert-manager.io/revision-history-limit: "3"
+        cert-manager.io/duration: "2160h"
+        cert-manager.io/renew-before: "720h"
+      hosts:
+        - host: &config-host "dash-config.rsr.net"
+          paths:
+            - path: /
+              service:
+                name: main
+                port: code-server
+      tls:
+        - hosts:
+            - *config-host
+          secretName: dash-config-tls
+
+  persistence:
+    config:
+      enabled: true
+      storageClass: "longhorn"
+      size: 1Gi
+      accessMode: ReadWriteOnce
+      advancedMounts:
+        main:
+          main:
+            - path: /app/public
+          code-server:
+            - path: /config
+
