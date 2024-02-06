@@ -13,7 +13,7 @@ app-template:
         code-server:
           image:
             repository: codercom/code-server
-            tag: 4.20.1
+            tag: 4.21.0
           securityContext:
             runAsUser: 0
           args:
