@@ -151,6 +151,7 @@ argo-cd:
         cert-manager.io/revision-history-limit: "3"
         cert-manager.io/duration: "2160h"
         cert-manager.io/renew-before: "720h"
+      hostname: argo.rsr.net
       hosts:
         - argo.rsr.net
       tls:
