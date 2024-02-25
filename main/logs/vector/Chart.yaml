@@ -3,10 +3,10 @@ apiVersion: v2
 version: 1.0.0
 dependencies:
   - name: vector
-    version: 0.30.2
+    version: 0.31.0
     repository: https://helm.vector.dev
     alias: vector-aggregator
   - name: vector
-    version: 0.30.2
+    version: 0.31.0
     repository: https://helm.vector.dev
     alias: vector-agent
