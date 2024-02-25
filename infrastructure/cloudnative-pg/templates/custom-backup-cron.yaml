@@ -22,7 +22,7 @@ spec:
           containers:
             - name: postgres-backup
               image: docker.io/prodrigestivill/postgres-backup-local:15
-              imagePullPolicy: Always
+              imagePullPolicy: IfNotPresent
               command:
                 - "/backup.sh"
               env:
@@ -40,15 +40,15 @@ spec:
                       key: password
                 - name: POSTGRES_DB
                   value: "mealie,kanboard,home-assistant,webtrees"
-{{/*              volumeMounts:*/}}
-{{/*                - name: backup*/}}
-{{/*                  mountPath: /backups*/}}
-{{/*                  subPath: postgres*/}}
+              volumeMounts:
+                - name: backup
+                  mountPath: /backups
+                  subPath: postgres
 
           restartPolicy: OnFailure
 
-{{/*          volumes:*/}}
-{{/*            - name: backup*/}}
-{{/*              nfs:*/}}
-{{/*                server: 192.168.1.115*/}}
-{{/*                path: "/kube-backup"*/}}
+          volumes:
+            - name: backup
+              nfs:
+                server: 192.168.1.115
+                path: "/kube-backup"
