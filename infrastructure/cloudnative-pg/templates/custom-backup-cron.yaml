@@ -49,6 +49,5 @@ spec:
 
           volumes:
             - name: backup
-              nfs:
-                server: 192.168.1.115
-                path: "/kube-backup"
+              persistentVolumeClaim:
+                claimName: nas-backup-pvc
