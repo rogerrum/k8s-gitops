@@ -1,7 +1,7 @@
 app-template:
   image:
     repository: rogerrum/docker-oscar
-    tag: 0.0.2
+    tag: main
     pullPolicy: IfNotPresent
 
   service:
@@ -35,5 +35,5 @@ app-template:
     data:
       enabled: true
       existingClaim: "nas-data-pvc"
-      subPath: "oscar"
-      mountPath: /data/
+      subPath: "oscar-new"
+      mountPath: /config/
