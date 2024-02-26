@@ -15,7 +15,7 @@ spec:
             - name: oscar-cron
               image: rogerrum/docker-oscar-cron:main
               command:
-                - "/bin/sh"
+                - "/bin/bash"
                 - "/app/ezShareDownloader.sh"
               imagePullPolicy: IfNotPresent
               securityContext:
