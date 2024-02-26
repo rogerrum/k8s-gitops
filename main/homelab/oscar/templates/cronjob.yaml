@@ -14,10 +14,7 @@ spec:
           containers:
             - name: oscar-cron
               image: rogerrum/docker-oscar-cron:main
-              command:
-                - "/bin/bash"
-                - "/app/ezShareDownloader.sh"
-              imagePullPolicy: IfNotPresent
+              imagePullPolicy: Always
               securityContext:
                 privileged: true
               volumeMounts:
