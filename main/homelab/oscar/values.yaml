@@ -37,3 +37,9 @@ app-template:
       existingClaim: "nas-data-pvc"
       subPath: "oscar-new"
       mountPath: /config/
+
+cron:
+  schedule: "0 11 * * *"
+  concurrencyPolicy: "Forbid"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5

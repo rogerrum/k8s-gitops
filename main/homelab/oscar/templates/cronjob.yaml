@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: oscar-downloader
+spec:
+  schedule: "{{ .Values.cron.schedule }}"
+  concurrencyPolicy: {{ .Values.cron.concurrencyPolicy }}
+  successfulJobsHistoryLimit: {{ .Values.cron.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ .Values.cron.failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: oscar-cron
+              image: alpine:latest
+              command: [ "/bin/sh", "-c" ]
+              args:
+                - apk --update --no-cache add curl && \
+                  curl -fsSL https://raw.githubusercontent.com/rogerrum/docker-oscar/main/root/etc/s6-overlay/s6-rc.d/ez-share-cron/ezShareDownloader.sh | sh
+              securityContext:
+                privileged: true
+              volumeMounts:
+                - name: backup
+                  mountPath: /config
+                  subPath: oscar-new
+          volumes:
+            - name: backup
+              persistentVolumeClaim:
+                claimName: nas-data-pvc
+
+          restartPolicy: OnFailure
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: kubernetes.io/arch
+                        operator: In
+                        values:
+                          - "arm"
+
