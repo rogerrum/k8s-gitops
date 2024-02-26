@@ -21,7 +21,7 @@ spec:
               volumeMounts:
                 - name: backup
                   mountPath: /config
-                  subPath: oscar-new
+                  subPath: oscar
           volumes:
             - name: backup
               persistentVolumeClaim:

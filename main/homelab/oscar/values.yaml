@@ -35,7 +35,7 @@ app-template:
     data:
       enabled: true
       existingClaim: "nas-data-pvc"
-      subPath: "oscar-new"
+      subPath: "oscar"
       mountPath: /config/
 
 cron:
