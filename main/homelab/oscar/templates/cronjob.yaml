@@ -14,7 +14,7 @@ spec:
           containers:
             - name: oscar-cron
               image: rogerrum/docker-oscar-cron:main
-              imagePullPolicy: Always
+              imagePullPolicy: IfNotPresent
               securityContext:
                 privileged: true
               volumeMounts:
