@@ -39,7 +39,11 @@ app-template:
       mountPath: /config/
 
 cron:
-  schedule: "0 11 * * *"
+  image:
+    repository: rogerrum/docker-oscar-cron
+    tag: main
+
+  schedule: "44 13 * * *"
   concurrencyPolicy: "Forbid"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 5

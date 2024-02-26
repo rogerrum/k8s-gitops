@@ -14,7 +14,7 @@ spec:
         spec:
           containers:
             - name: oscar-cron
-              image: rogerrum/docker-oscar-cron:main
+              image: "{{ .Values.cron.image.repository }}:{{ .Values.cron.image.tag }}"
               imagePullPolicy: IfNotPresent
               securityContext:
                 privileged: true
