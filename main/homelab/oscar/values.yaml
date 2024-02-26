@@ -43,7 +43,7 @@ cron:
     repository: rogerrum/docker-oscar-cron
     tag: main
 
-  schedule: "44 13 * * *"
+  schedule: "0 13 * * *"
   concurrencyPolicy: "Forbid"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 5
