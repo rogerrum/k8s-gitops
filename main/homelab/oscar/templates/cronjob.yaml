@@ -7,6 +7,7 @@ spec:
   concurrencyPolicy: {{ .Values.cron.concurrencyPolicy }}
   successfulJobsHistoryLimit: {{ .Values.cron.successfulJobsHistoryLimit }}
   failedJobsHistoryLimit: {{ .Values.cron.failedJobsHistoryLimit }}
+  timeZone: America/Chicago
   jobTemplate:
     spec:
       template:
