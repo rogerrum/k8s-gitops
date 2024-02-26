@@ -30,6 +30,9 @@ spec:
                 claimName: nas-data-pvc
 
           restartPolicy: OnFailure
+          tolerations:
+            - key: "arm"
+              operator: "Exists"
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
