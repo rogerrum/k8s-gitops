@@ -141,8 +141,6 @@ loki:
       size: 10Gi
       storageClass: "longhorn"
     tolerations:
-      - key: "arm"
-        operator: "Exists"
       - key: "arm64"
         operator: "Exists"
   read:
@@ -175,8 +173,6 @@ loki:
       size: 10Gi
       storageClass: "longhorn"
     tolerations:
-      - key: "arm"
-        operator: "Exists"
       - key: "arm64"
         operator: "Exists"
 
@@ -185,8 +181,6 @@ loki:
     persistence:
       storageClass: "longhorn"
     tolerations:
-      - key: "arm"
-        operator: "Exists"
       - key: "arm64"
         operator: "Exists"
     extraVolumeMounts:
