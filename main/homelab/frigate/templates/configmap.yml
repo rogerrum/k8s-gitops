@@ -24,8 +24,8 @@ data:
       # restream: true
       mode: continuous
 
-    #ffmpeg:
-      #hwaccel_args: preset-vaapi
+    ffmpeg:
+      hwaccel_args: preset-intel-qsv-h264
       #output_args:
       #  record: preset-record-generic-audio-aac
 
@@ -38,7 +38,7 @@ data:
         person:
           min_area: 3000
           max_area: 100000
-          threshold: 0.7
+          threshold: 0.75
 
     detect:
       height: 480
@@ -116,7 +116,7 @@ data:
             person:
               min_area: 1500
               max_area: 100000
-              threshold: 0.78
+              threshold: 0.80
               min_score: 0.60
         live:
           stream_name: basement_room_record
