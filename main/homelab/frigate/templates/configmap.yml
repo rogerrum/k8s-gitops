@@ -24,8 +24,8 @@ data:
       # restream: true
       mode: continuous
 
-    ffmpeg:
-      hwaccel_args: preset-vaapi
+    #ffmpeg:
+      #hwaccel_args: preset-vaapi
       #output_args:
       #  record: preset-record-generic-audio-aac
 
