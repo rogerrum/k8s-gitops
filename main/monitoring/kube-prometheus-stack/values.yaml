@@ -5,6 +5,12 @@ kube-prometheus-stack:
   defaultRules:
     disabled:
       HostHighCpuLoad: true
+      NodeSystemSaturation: true
+
+  customRules:
+    KubePersistentVolumeFillingUp:
+#      for: 1h
+      severity: "warning"
 
   alertmanager:
     config:
