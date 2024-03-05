@@ -11,7 +11,7 @@ app-template:
           env:
             TZ: "America/Chicago"
             #LIBVA_DRIVER_NAME: "radeonsi"
-        #    LIBVA_DRIVER_NAME: "i965"
+            LIBVA_DRIVER_NAME: "i965"
         #  envFrom:
         #    - secretRef:
         #        name: frigate-secret
