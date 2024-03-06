@@ -3,5 +3,5 @@ apiVersion: v2
 version: 1.0.0
 dependencies:
   - name: emqx
-    version: 5.5.0
+    version: 5.5.1
     repository: https://repos.emqx.io/charts
