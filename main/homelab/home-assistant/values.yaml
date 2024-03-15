@@ -90,7 +90,7 @@ app-template:
       enabled: true
       image:
         repository: codercom/code-server
-        tag: 4.22.0
+        tag: 4.22.1
       workingDir: "/config"
       args:
         - --user-data-dir
