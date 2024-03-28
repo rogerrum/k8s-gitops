@@ -150,9 +150,6 @@ grafana:
       prometheus-exporter-summary:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/prometheus_exporter_summary.json
         datasource: Prometheus
-      smartctl:
-        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/smartctl-exporter.json
-        datasource: Prometheus
       speedtest-exporter:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/speedtest-exporter.json
         datasource: Prometheus
@@ -190,16 +187,6 @@ grafana:
         datasource: Prometheus
       ups:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/ups.json
-        datasource: Prometheus
-      # Ref: https://grafana.com/grafana/dashboards/3170-zfs/
-      zfs:
-        gnetId: 3170
-        revision: 3
-        datasource: Prometheus
-      zfs-new:
-        # renovate: dashboardName="ZFS"
-        gnetId: 7845
-        revision: 4
         datasource: Prometheus
 
     kubernetes:

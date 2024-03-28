@@ -86,6 +86,10 @@ kube-prometheus-stack:
   grafana:
     enabled: false
     forceDeployDashboards: true
+    sidecar:
+      dashboards:
+        annotations:
+          grafana_folder: Kubernetes
 
   kubelet:
    enabled: true
@@ -192,7 +196,7 @@ kube-prometheus-stack:
       enabled: true
 
     prometheusSpec:
-      replicas: 2
+      replicas: 1
       replicaExternalLabelName: "replica"
       thanos:
         image: quay.io/thanos/thanos:v0.34.1
@@ -215,7 +219,7 @@ kube-prometheus-stack:
             storageClassName: longhorn
             resources:
               requests:
-                storage: 10Gi
+                storage: 20Gi
 
 #      resources:
 #        requests:
