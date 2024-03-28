@@ -13,8 +13,6 @@ spec:
     name: {{ .Values.superuserSecret }}
   monitoring:
     enablePodMonitor: true
-  nodeMaintenanceWindow:
-    reusePVC: false
   backup:
     retentionPolicy: 15d
     barmanObjectStore:
