@@ -291,7 +291,7 @@ grafana:
         - name: Alertmanager
           type: alertmanager
           access: proxy
-          url: http://alertmanager.monitoring.svc.cluster.local:9093
+          url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
           jsonData:
             implementation: prometheus
         - name: influxdb
