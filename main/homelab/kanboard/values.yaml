@@ -50,18 +50,18 @@ app-template:
     init-db:
       image: ghcr.io/onedr0p/postgres-init:14.8
       env:
-        - name: POSTGRES_HOST
+        - name: INIT_POSTGRES_HOST
           value: postgres-rw.kube-system.svc.cluster.local
-        - name: POSTGRES_DB
+        - name: INIT_POSTGRES_DBNAME
           value: kanboard
-        - name: POSTGRES_SUPER_PASS
+        - name: INIT_POSTGRES_SUPER_PASS
           valueFrom:
             secretKeyRef:
               name: postgres-superuser-secret
               key: password
-        - name: POSTGRES_USER
+        - name: INIT_POSTGRES_USER
           value: kanboard
-        - name: POSTGRES_PASS
+        - name: INIT_POSTGRES_PASS
           valueFrom:
             secretKeyRef:
               name: kanboard-secret
