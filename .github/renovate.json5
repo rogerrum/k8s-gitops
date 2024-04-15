@@ -1,139 +1,53 @@
 {
   "extends": [
-    "config:base",
+    "config:recommended",
     "docker:enableMajor",
     ":disableRateLimiting",
     ":dependencyDashboard",
-    ":semanticCommits",
     ":enablePreCommit",
+    ":semanticCommits",
     ":automergeDigest",
     ":automergeBranchPush",
-   // "docker:pinDigests",
+    "github>rogerrum/k8s-gitops//.github/renovate/automerge-github-actions.json",
+    "github>rogerrum/k8s-gitops//.github/renovate/commit-message.json",
+    "github>rogerrum/k8s-gitops//.github/renovate/pr-labels.json",
+    "github>rogerrum/k8s-gitops//.github/renovate/semantic-commits.json",
+    "github>rogerrum/k8s-gitops//.github/renovate/custom-managers.json5",
     "github>rogerrum/k8s-gitops//.github/renovate/allowedVersions.json5",
-    "github>rogerrum/k8s-gitops//.github/renovate/autoMerge.json5",
-    "github>rogerrum/k8s-gitops//.github/renovate/disabledDatasources.json5",
+    "github>rogerrum/k8s-gitops//.github/renovate/versioning.json5",
     "github>rogerrum/k8s-gitops//.github/renovate/groups.json5",
-    "github>rogerrum/k8s-gitops//.github/renovate/semantic-commits.json5",
-    "helpers:pinGitHubActionDigests"
+    "github>rogerrum/k8s-gitops//.github/renovate/grafanaDashboards.json5",
+    "github>rogerrum/k8s-gitops//.github/renovate/autoMerge.json5",
+    "github>rogerrum/k8s-gitops//.github/renovate/disabledDatasources.json5"
   ],
   "enabled": true,
   "timezone": "America/Chicago",
-  "semanticCommits": "enabled",
-  // "username": "rogerrum",
-  "gitAuthor": "Roger Rumao <rogerrum@users.noreply.github.com>",
-  "commitBodyTable": true,
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard",
-  "commitBody": "Signed-off-by: Roger Rumao <rogerrum@users.noreply.github.com>",
   // Do not notify on closed unmerged PRs
   "suppressNotifications": ["prIgnoreNotification"],
   // Do not rebase PRs
   "rebaseWhen": "conflicted",
-  "commitMessageTopic": "{{depName}}",
-  "commitMessageExtra": "to {{newVersion}}",
-  "commitMessageSuffix": "",
+  "commitBodyTable": true,
+  "platformCommit": true,
+  "gitAuthor": "Roger Rumao <rogerrum@users.noreply.github.com>",
+  "commitBody": "Signed-off-by: Roger Rumao <rogerrum@users.noreply.github.com>",
+  ignorePaths: [
+    "setup/**",
+    ".taskfiles/**",
+    "archive/**"
+  ],
   "helm-values": {
     "fileMatch": ["./.+\\.yaml$"],
     "ignorePaths": [
-      "archive"
+      "archive/**"
     ]
   },
   "kubernetes": {
     "fileMatch": ["\\.yaml$"],
     "ignorePaths": [
       ".github",
-      "archive"
+      "archive/**"
     ],
-  },
-  "regexManagers": [
-    {
-      "description": "Process custom dependencies",
-      "fileMatch": ["\\.yaml$"],
-      "matchStrings": [
-        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\n.*?\"(?<currentValue>.*)\"\n"
-      ],
-      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
-    }
-  ],
-  "packageRules": [
-    // Setup datasources
-    {
-      "datasources": ["helm"],
-      "commitMessageTopic": "Helm chart {{depName}}",
-      "semanticCommitScope": "charts",
-      "separateMinorPatch": true,
-      "ignoreDeprecated": true
-    },
-    {
-      "datasources": ["docker"],
-      "commitMessageTopic": "Docker image {{depName}}",
-      "commitMessageExtra": "to {{#if isSingleVersion}}{{{toVersion}}}{{else}}{{{newValue}}}{{/if}}",
-      "updateTypes": ["major", "minor", "patch"],
-      "enabled": true
-    },
-    {
-      "matchDatasources": ["docker"],
-      "semanticCommitScope": "images",
-      "separateMinorPatch": true
-    },
-    // add labels according to package and update types
-    {
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(images)!: ",
-      "labels": ["renovate/image-release", "dependency/major"]
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
-      "labels": ["renovate/image-release", "dependency/minor"]
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
-      "labels": ["renovate/image-release", "dependency/patch"]
-    },
-    {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(charts)!: ",
-      "labels": ["renovate/helm-release", "dependency/major"]
-    },
-    {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
-      "labels": ["renovate/helm-release", "dependency/minor"]
-    },
-    {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
-      "labels": ["renovate/helm-release", "dependency/patch"]
-    },
-    // Custom versions
-    {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["blakeblackshear/frigate"],
-      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>.*)$"
-    },
-    {
-      "matchDatasources": ["docker"],
-      "versioning": "regex:^RELEASE\\.(?<major>\\d+)-(?<minor>\\d+)-(?<patch>\\d+)T.*Z(-(?<compatibility>.*))?$",
-      "matchPackageNames": ["quay.io/minio/minio"]
-    },
-    {
-      "matchDatasources": ["docker"],
-      "versioning": "regex:^RELEASE\\.(?<major>\\d{4})-(?<minor>\\d{2})-(?<patch>\\d{2})",
-      "matchPackageNames": ["minio/minio"]
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["docker.io/timberio/vector"],
-      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>.*)$"
-    },
-  ],
+  }
 }
