@@ -206,9 +206,9 @@ applications:
       enabled: true
 
   - name: server-tracker
-    namespace: monitoring
-    path: main/monitoring/server-tracker
-    manifest-paths: /main/monitoring/server-tracker
+    namespace: default
+    path: main/homelab/server-tracker
+    manifest-paths: /main/homelab/server-tracker
     sync-wave: "-1"
     helm:
       enabled: true
