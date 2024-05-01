@@ -119,14 +119,6 @@ applications:
     helm:
       enabled: true
 
-  - name: server-tracker
-    namespace: monitoring
-    path: main/monitoring/server-tracker
-    manifest-paths: /main/monitoring/server-tracker
-    sync-wave: "-1"
-    helm:
-      enabled: true
-
 #  - name: kubernetes-dashboard
 #    namespace: monitoring
 #    path: main/monitoring/kubernetes-dashboard
