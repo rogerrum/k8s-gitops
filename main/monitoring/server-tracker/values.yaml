@@ -1,24 +1,48 @@
 app-template:
-  image:
-    repository: rogerrum/server-tracker
-    tag: main
+  controllers:
+    main:
+      containers:
+        image:
+          repository: rogerrum/server-tracker
+          tag: main
+        env:
+          TZ: "America/Chicago"
+          SPRING_DATASOURCE_USERNAME: server_tracker
+          SPRING_DATASOURCE_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: server-tracker-secret
+                key: DB_PASSWORD
+          SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-rw.kube-system.svc.cluster.local:5432/server_tracker"
+
+      initContainers:
+        init-db:
+          image: ghcr.io/onedr0p/postgres-init:14.10
+          env:
+            - name: INIT_POSTGRES_HOST
+              value: postgres-rw.kube-system.svc.cluster.local
+            - name: INIT_POSTGRES_DBNAME
+              value: server_tracker
+            - name: INIT_POSTGRES_SUPER_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-superuser-secret
+                  key: password
+            - name: INIT_POSTGRES_USER
+              value: server_tracker
+            - name: INIT_POSTGRES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: server-tracker-secret
+                  key: DB_PASSWORD
+
 
   service:
     main:
-      enabled: true
       ports:
         http:
           port: &port 8080
 
-  env:
-    TZ: "America/Chicago"
-    SPRING_DATASOURCE_USERNAME: server_tracker
-    SPRING_DATASOURCE_PASSWORD:
-      valueFrom:
-        secretKeyRef:
-          name: server-tracker-secret
-          key: DB_PASSWORD
-    SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-rw.kube-system.svc.cluster.local:5432/server_tracker"
 
   ingress:
     main:
@@ -41,23 +65,3 @@ app-template:
             - server-tracker.rsr.net
           secretName: server-tracker-cert-tls
 
-  initContainers:
-    init-db:
-      image: ghcr.io/onedr0p/postgres-init:14.10
-      env:
-        - name: INIT_POSTGRES_HOST
-          value: postgres-rw.kube-system.svc.cluster.local
-        - name: INIT_POSTGRES_DBNAME
-          value: server_tracker
-        - name: INIT_POSTGRES_SUPER_PASS
-          valueFrom:
-            secretKeyRef:
-              name: postgres-superuser-secret
-              key: password
-        - name: INIT_POSTGRES_USER
-          value: server_tracker
-        - name: INIT_POSTGRES_PASS
-          valueFrom:
-            secretKeyRef:
-              name: server-tracker-secret
-              key: DB_PASSWORD
