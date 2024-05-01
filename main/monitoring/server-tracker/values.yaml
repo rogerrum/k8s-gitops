@@ -16,8 +16,10 @@ app-template:
           SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-rw.kube-system.svc.cluster.local:5432/server_tracker"
 
       initContainers:
-        init-db:
-          image: ghcr.io/onedr0p/postgres-init:14.10
+        main:
+          image:
+            repository: ghcr.io/onedr0p/postgres-init
+            tag: 14.10
           env:
             - name: INIT_POSTGRES_HOST
               value: postgres-rw.kube-system.svc.cluster.local
