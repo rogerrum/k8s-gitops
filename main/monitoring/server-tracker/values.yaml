@@ -2,21 +2,22 @@ app-template:
   controllers:
     main:
       containers:
-        image:
-          repository: rogerrum/server-tracker
-          tag: main
-        env:
-          TZ: "America/Chicago"
-          SPRING_DATASOURCE_USERNAME: server_tracker
-          SPRING_DATASOURCE_PASSWORD:
-            valueFrom:
-              secretKeyRef:
-                name: server-tracker-secret
-                key: DB_PASSWORD
-          SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-rw.kube-system.svc.cluster.local:5432/server_tracker"
+        main:
+          image:
+            repository: rogerrum/server-tracker
+            tag: main
+          env:
+            TZ: "America/Chicago"
+            SPRING_DATASOURCE_USERNAME: server_tracker
+            SPRING_DATASOURCE_PASSWORD:
+              valueFrom:
+                secretKeyRef:
+                  name: server-tracker-secret
+                  key: DB_PASSWORD
+            SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-rw.kube-system.svc.cluster.local:5432/server_tracker"
 
       initContainers:
-        main:
+        init-db:
           image:
             repository: ghcr.io/onedr0p/postgres-init
             tag: 14.10
@@ -61,7 +62,9 @@ app-template:
         - host: server-tracker.rsr.net
           paths:
             - path: /
-              pathType: Prefix
+              service:
+                name: main
+                port: http
       tls:
         - hosts:
             - server-tracker.rsr.net
