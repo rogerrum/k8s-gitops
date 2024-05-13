@@ -35,19 +35,19 @@
   ignorePaths: [
     "setup/**",
     ".taskfiles/**",
-    "archive/**"
+    "**/archive/**"
   ],
   "helm-values": {
     "fileMatch": ["./.+\\.yaml$"],
     "ignorePaths": [
-      "archive/**"
+      "**/archive/**"
     ]
   },
   "kubernetes": {
     "fileMatch": ["\\.yaml$"],
     "ignorePaths": [
       ".github",
-      "archive/**"
+      "**/archive/**"
     ],
   }
 }
