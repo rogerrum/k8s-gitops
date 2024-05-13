@@ -18,7 +18,7 @@
     },
     {
       "matchDatasources": ["docker"],
-      "allowedVersions": "<2021",
+      "allowedVersions": "!/2021.11.28$/",
       "matchPackageNames": [
         "heimdall"
       ]
