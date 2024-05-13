@@ -17,6 +17,13 @@
       ]
     },
     {
+      "matchDatasources": ["docker"],
+      "allowedVersions": "<2021",
+      "matchPackageNames": [
+        "heimdall"
+      ]
+    },
+    {
       "matchDatasources": ["helm"],
       "allowedVersions": "<2",
       "matchPackageNames": ["app-template"]
