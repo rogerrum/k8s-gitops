@@ -7,7 +7,7 @@ app-template:
         main:
           image:
             repository: ghcr.io/lissy93/dashy
-            tag: 3.0.1
+            tag: 3.1.0
           env:
             TZ: "America/Chicago"
         code-server:
