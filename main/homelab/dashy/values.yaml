@@ -24,15 +24,15 @@ app-template:
             - --extensions-dir
             - "/config/.vscode"
             - --port
-            - "8080"
+            - "8081"
             - "/config"
   service:
     main:
       ports:
         http:
-          port: 80
-        code-server:
           port: 8080
+        code-server:
+          port: 8081
 
   ingress:
     main:
