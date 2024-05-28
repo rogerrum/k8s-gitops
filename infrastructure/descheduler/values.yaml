@@ -10,52 +10,66 @@ descheduler:
       operator: "Exists"
   deschedulerPolicy:
     evictLocalStoragePods: true
-    strategies:
-      RemoveDuplicates:
-        enabled: true
-      RemovePodsViolatingNodeTaints:
-        enabled: true
-      RemovePodsViolatingNodeAffinity:
-        enabled: true
-        args:
-          nodeAffinityType:
-            - requiredDuringSchedulingIgnoredDuringExecution
-      RemovePodsViolatingTopologySpreadConstraint:
-        enabled: true
-        args:
-          includeSoftConstraints: true
-      RemovePodsViolatingInterPodAntiAffinity:
-        enabled: true
-        args:
-          nodeFit: true
-      LowNodeUtilization:
-        enabled: false
-      RemoveFailedPods:
-        enabled: true
-        args:
-          failedPods:
-            includingInitContainers: true
-            excludeOwnerKinds: [ "Job" ]
-            minPodLifetimeSeconds: 3600
-      RemovePodsHavingTooManyRestarts:
-        enabled: true
-        args:
-          podsHavingTooManyRestarts:
-            podRestartThreshold: 100
-            includingInitContainers: true
+    profiles:
+      - name: default
+        pluginConfig:
+          - name: DefaultEvictor
+            args:
+              ignorePvcPods: true
+              evictLocalStoragePods: true
+          - name: RemoveDuplicates
+          - name: RemovePodsHavingTooManyRestarts
+            args:
+              podRestartThreshold: 100
+              includingInitContainers: true
+          - name: RemovePodsViolatingNodeTaints
+          - name: RemovePodsViolatingNodeAffinity
+            args:
+              nodeAffinityType:
+                - requiredDuringSchedulingIgnoredDuringExecution
+          - name: RemovePodsViolatingInterPodAntiAffinity
+          - name: RemovePodsViolatingTopologySpreadConstraint
+            args:
+              includeSoftConstraints: true
+          - name: LowNodeUtilization
+            args:
+              thresholds:
+                cpu: 20
+                memory: 20
+                pods: 20
+              targetThresholds:
+                cpu: 50
+                memory: 50
+                pods: 50
+          - name: RemoveFailedPods
+            args:
+              includingInitContainers: true
+              excludeOwnerKinds: [ "Job" ]
+              minPodLifetimeSeconds: 3600
+          - name: PodLifeTime
+            args:
+              maxPodLifeTimeSeconds: 86400
+              labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - frigate
 
-      PodLifeTime:
-        enabled: true
-        args:
-          podLifeTime:
-            maxPodLifeTimeSeconds: 86400
-          labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - frigate
-
+        plugins:
+          balance:
+            enabled:
+              - RemoveDuplicates
+              - RemovePodsViolatingTopologySpreadConstraint
+#              - LowNodeUtilization
+          deschedule:
+            enabled:
+              - RemovePodsHavingTooManyRestarts
+              - RemovePodsViolatingNodeTaints
+              - RemovePodsViolatingNodeAffinity
+              - RemovePodsViolatingInterPodAntiAffinity
+              - RemoveFailedPods
+              - PodLifeTime
 
   service:
     enabled: true
