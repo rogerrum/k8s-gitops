@@ -29,8 +29,8 @@ descheduler:
                 - requiredDuringSchedulingIgnoredDuringExecution
           - name: RemovePodsViolatingInterPodAntiAffinity
           - name: RemovePodsViolatingTopologySpreadConstraint
-            args:
-              includeSoftConstraints: true
+#            args:
+#              includeSoftConstraints: true
           - name: LowNodeUtilization
             args:
               thresholds:
