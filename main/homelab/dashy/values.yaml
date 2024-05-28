@@ -88,7 +88,7 @@ app-template:
       advancedMounts:
         main:
           main:
-            - path: /app/public
+            - path: /app/user-data
           code-server:
             - path: /config
 
