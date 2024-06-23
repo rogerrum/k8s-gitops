@@ -1,7 +1,7 @@
 app-template:
   image:
     repository: ghcr.io/zwave-js/zwave-js-ui
-    tag: 9.14.1
+    tag: 9.14.2
   env:
     TZ: "America/Chicago"
     NETWORK_KEY: null
