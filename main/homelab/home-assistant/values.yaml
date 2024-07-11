@@ -144,28 +144,28 @@ app-template:
 #      memory: 1000Mi
 
   initContainers:
-    init-db:
-      image: ghcr.io/onedr0p/postgres-init:14.10
-      env:
-        - name: INIT_POSTGRES_HOST
-          value: postgres-rw.kube-system.svc.cluster.local
-        - name: INIT_POSTGRES_DBNAME
-          value: home-assistant
-        - name: INIT_POSTGRES_SUPER_PASS
-          valueFrom:
-            secretKeyRef:
-              name: postgres-superuser-secret
-              key: password
-        - name: INIT_POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: home-assistant-secret
-              key: POSTGRES_USERNAME
-        - name: INIT_POSTGRES_PASS
-          valueFrom:
-            secretKeyRef:
-              name: home-assistant-secret
-              key: POSTGRES_PASSWORD
+    # init-db:
+    #   image: ghcr.io/onedr0p/postgres-init:14.10
+    #   env:
+    #     - name: INIT_POSTGRES_HOST
+    #       value: postgres-rw.kube-system.svc.cluster.local
+    #     - name: INIT_POSTGRES_DBNAME
+    #       value: home-assistant
+    #     - name: INIT_POSTGRES_SUPER_PASS
+    #       valueFrom:
+    #         secretKeyRef:
+    #           name: postgres-superuser-secret
+    #           key: password
+    #     - name: INIT_POSTGRES_USER
+    #       valueFrom:
+    #         secretKeyRef:
+    #           name: home-assistant-secret
+    #           key: POSTGRES_USERNAME
+    #     - name: INIT_POSTGRES_PASS
+    #       valueFrom:
+    #         secretKeyRef:
+    #           name: home-assistant-secret
+    #           key: POSTGRES_PASSWORD
 
     fix-tts:
       image: ghcr.io/home-assistant/home-assistant:2024.7.1
