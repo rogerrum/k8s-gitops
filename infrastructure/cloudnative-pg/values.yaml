@@ -2,9 +2,6 @@ cloudnative-pg:
 
   replicaCount: 1
 
-  image:
-    repository: ghcr.io/cloudnative-pg/cloudnative-pg-testing
-    tag: main
 
 replicas : 3
 
