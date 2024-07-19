@@ -10,3 +10,5 @@ storage:
   storageClass: "longhorn"
 
 superuserSecret: postgres-superuser-secret
+
+liveCluster: postgres-v15

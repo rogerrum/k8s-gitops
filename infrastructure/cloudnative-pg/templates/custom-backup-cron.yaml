@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: postgres-backup
+  name: {{ .Values.liveCluster }}-backup
 spec:
   schedule: "0 4 * * *"
   concurrencyPolicy: Forbid
@@ -27,7 +27,7 @@ spec:
                 - "/backup.sh"
               env:
                 - name: POSTGRES_HOST
-                  value: postgres-rw.kube-system.svc.cluster.local
+                  value: {{ .Values.liveCluster }}-rw.kube-system.svc.cluster.local
                 - name: POSTGRES_USER
                   valueFrom:
                     secretKeyRef:
@@ -43,7 +43,7 @@ spec:
               volumeMounts:
                 - name: backup
                   mountPath: /backups
-                  subPath: postgres
+                  subPath: {{ .Values.liveCluster }}
 
           restartPolicy: OnFailure
 
