@@ -14,7 +14,7 @@ app-template:
                 secretKeyRef:
                   name: server-tracker-secret
                   key: DB_PASSWORD
-            SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-rw.kube-system.svc.cluster.local:5432/server_tracker"
+            SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-v15-rw.kube-system.svc.cluster.local:5432/server_tracker"
 
       initContainers:
         init-db:
@@ -23,7 +23,7 @@ app-template:
             tag: "14.10"
           env:
             - name: INIT_POSTGRES_HOST
-              value: postgres-rw.kube-system.svc.cluster.local
+              value: postgres-v15-rw.kube-system.svc.cluster.local
             - name: INIT_POSTGRES_DBNAME
               value: server_tracker
             - name: INIT_POSTGRES_SUPER_PASS
