@@ -21,7 +21,7 @@ app-template:
           name: kanboard-secret
           key: DB_PASSWORD
     DB_PORT: null
-    DB_HOSTNAME: "postgres-rw.kube-system.svc.cluster.local"
+    DB_HOSTNAME: "postgres-v15-rw.kube-system.svc.cluster.local"
     LOG_DRIVER: stdout
     MAIL_CONFIGURATION: "false"
 
