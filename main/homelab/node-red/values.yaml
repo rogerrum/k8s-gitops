@@ -1,7 +1,7 @@
 app-template:
   image:
     repository: nodered/node-red
-    tag: 3.1.11-18-minimal
+    tag: 4.0.2-18-minimal
 
   service:
     main:
