@@ -18,7 +18,7 @@ app-template:
     LANG: "en-US"
     BASE_URL: "https://tree.rsr.net"
     DB_TYPE: "pgsql"
-    DB_HOST: "postgres-rw.kube-system.svc.cluster.local"
+    DB_HOST: "postgres-v15-rw.kube-system.svc.cluster.local"
     DB_PORT: "5432"
     DB_USER: "webtrees"
     DB_PASS:
@@ -80,7 +80,7 @@ app-template:
       image: ghcr.io/onedr0p/postgres-init:14.10
       env:
         - name: INIT_POSTGRES_HOST
-          value: postgres-rw.kube-system.svc.cluster.local
+          value: postgres-v15-rw.kube-system.svc.cluster.local
         - name: INIT_POSTGRES_DBNAME
           value: webtrees
         - name: INIT_POSTGRES_SUPER_PASS
