@@ -12,6 +12,7 @@ spec:
     storageClass: {{ .Values.storage.storageClass }}
   superuserSecret:
     name: {{ .Values.superuserSecret }}
+  enableSuperuserAccess: true
   postgresql:
     parameters:
       max_connections: "300"
