@@ -12,3 +12,6 @@ storage:
 superuserSecret: postgres-superuser-secret
 
 liveCluster: postgres-v15
+
+previousCluster: postgres-v15
+
