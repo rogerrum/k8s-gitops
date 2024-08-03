@@ -3,6 +3,6 @@ apiVersion: v2
 version: 1.0.0
 dependencies:
   - name: external-secrets
-    version:  0.9.19
+    version:  0.10.0
     repository: https://charts.external-secrets.io
 
