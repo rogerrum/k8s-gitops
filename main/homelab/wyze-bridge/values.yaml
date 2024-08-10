@@ -15,6 +15,9 @@ app-template:
             NET_MODE: LAN
             ON_DEMAND: False
             SUBSTREAM: True
+            MOTION_API: True
+            MQTT_HOST: emqx.default.svc.cluster.local:1883
+            MQTT_DTOPIC: homeassistant
             # FFMPEG_LOGLEVEL: debug
             LIBVA_DRIVER_NAME: i965
           envFrom:
