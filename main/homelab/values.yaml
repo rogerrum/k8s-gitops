@@ -236,3 +236,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: mqttx
+    namespace: default
+    path: main/homelab/mqttx
+    manifest-paths: /main/homelab/mqttx
+    sync-wave: "-1"
+    helm:
+      enabled: true

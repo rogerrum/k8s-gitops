@@ -1,0 +1,40 @@
+app-template:
+  controllers:
+    mqttx:
+      containers:
+        app:
+          image:
+            repository: emqx/mqttx-web
+            tag: v1.10.1
+          env:
+            TZ: "America/Chicago"
+
+  service:
+    app:
+      controller: mqttx
+      ports:
+        http:
+          port: 80
+          primary: true
+
+  ingress:
+    app:
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/issuer: step-issuer
+        cert-manager.io/issuer-kind: StepClusterIssuer
+        cert-manager.io/issuer-group: certmanager.step.sm
+        cert-manager.io/revision-history-limit: "3"
+        cert-manager.io/duration: "2160h"
+        cert-manager.io/renew-before: "720h"
+      hosts:
+        - host: mqttx.rsr.net
+          paths:
+            - path: /
+              service:
+                identifier: app
+                port: http
+      tls:
+        - hosts:
+            - mqttx.rsr.net
+          secretName: mqttx-cert-tls
