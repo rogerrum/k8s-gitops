@@ -192,3 +192,11 @@ applications:
       enabled: true
     syncOptions:
       - CreateNamespace=true
+
+  - name: couchdb
+    namespace: kube-system
+    path: infrastructure/couchdb
+    manifest-paths: /infrastructure/couchdb
+    sync-wave: "-1"
+    helm:
+      enabled: true
