@@ -237,3 +237,10 @@ applications:
     helm:
       enabled: true
 
+  - name: nomie
+    namespace: default
+    path: main/homelab/nomie
+    manifest-paths: /main/homelab/nomie
+    sync-wave: "-1"
+    helm:
+      enabled: true
