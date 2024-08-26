@@ -23,9 +23,6 @@ app-template:
         value: mealie
       - name: TZ
         value: America/Chicago
-    volumeMounts:
-      - name: api-data
-        mountPath: /app/data/
 
         
   service:
