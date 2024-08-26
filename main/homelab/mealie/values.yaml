@@ -1,22 +1,51 @@
 app-template:
   image:
-    repository: hkotel/mealie
-    tag: frontend-v1.0.0beta-2
+    repository: ghcr.io/mealie-recipes/mealie
+    tag: v1.12.0
     pullPolicy: IfNotPresent
+    env:
+      - name: DB_ENGINE
+        value: postgres
+      - name: DB_TYPE
+        value: postgres
+      - name: POSTGRES_DB
+        value: mealie
+      - name: POSTGRES_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: mealie-secret
+            key: POSTGRES_PASSWORD
+      - name: POSTGRES_PORT
+        value: "5432"
+      - name: POSTGRES_SERVER
+        value: postgres-v15-rw.kube-system.svc.cluster.local
+      - name: POSTGRES_USER
+        value: mealie
+      - name: TZ
+        value: America/Chicago
 
+        
   service:
     main:
       ports:
         http:
-          port: 3000
-        api:
-          enabled: true
           port: 9000
 
   env:
     TZ: "America/Chicago"
     API_URL: "http://localhost:9000"
-
+    DB_ENGINE: postgres
+    DB_TYPE: postgres
+    POSTGRES_USER: mealie
+    POSTGRES_SERVER: postgres-v15-rw.kube-system.svc.cluster.local
+    POSTGRES_PORT: 5432
+    POSTGRES_DB: mealie
+    POSTGRES_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          name: mealie-secret
+          key: POSTGRES_PASSWORD
+          
   ingress:
     main:
       enabled: true
@@ -36,42 +65,7 @@ app-template:
       tls:
         - hosts:
             - food.rsr.net
-          secretName: mealie-cert-tls
-
-  additionalContainers:
-    api:
-      name: mealie-api
-      image: hkotel/mealie:api-v1.0.0beta-2
-      imagePullPolicy: IfNotPresent
-      env:
-        - name: API_PORT
-          value: "9000"
-        - name: DB_ENGINE
-          value: postgres
-        - name: DB_TYPE
-          value: postgres
-        - name: POSTGRES_DB
-          value: mealie
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mealie-secret
-              key: POSTGRES_PASSWORD
-        - name: POSTGRES_PORT
-          value: "5432"
-        - name: POSTGRES_SERVER
-          value: postgres-v15-rw.kube-system.svc.cluster.local
-        - name: POSTGRES_USER
-          value: mealie
-        - name: TZ
-          value: America/Chicago
-
-      ports:
-        - name: api
-          containerPort: 9000
-      volumeMounts:
-        - name: api-data
-          mountPath: /app/data/
+          secretName: mealie-cert-tls      
 
   persistence:
     api-data:
