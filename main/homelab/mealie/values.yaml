@@ -39,7 +39,16 @@ app-template:
     API_URL: "http://localhost:9000"
     DB_ENGINE: postgres
     DB_TYPE: postgres
-
+    POSTGRES_USER: mealie
+    POSTGRES_SERVER: postgres-v15-rw.kube-system.svc.cluster.local
+    POSTGRES_PORT: 5432
+    POSTGRES_DB: mealie
+    POSTGRES_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          name: mealie-secret
+          key: POSTGRES_PASSWORD
+          
   ingress:
     main:
       enabled: true
