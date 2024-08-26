@@ -37,6 +37,8 @@ app-template:
   env:
     TZ: "America/Chicago"
     API_URL: "http://localhost:9000"
+    DB_ENGINE: postgres
+    DB_TYPE: postgres
 
   ingress:
     main:
