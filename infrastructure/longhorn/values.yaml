@@ -28,9 +28,9 @@ longhorn:
   image:
     longhorn:
       instanceManager:
-        repository: derekbit/longhorn-instance-manager
-        tag: v1.7.0_issue9267
+        repository: longhornio/longhorn-instance-manager
+        tag: v1.7.1-rc2
 
       manager:
-        repository: derekbit/longhorn-manager
-        tag: v1.7.0_issue9267
+        repository: longhornio/longhorn-manager
+        tag: v1.7.1-rc2
