@@ -32,5 +32,5 @@ longhorn:
         tag: v1.7.0_issue9267
 
       manager:
-        repository: derekbit/longhorn-instance-manager
+        repository: derekbit/longhorn-manager
         tag: v1.7.0_issue9267
