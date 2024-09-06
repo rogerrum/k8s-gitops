@@ -70,7 +70,7 @@ loki:
         admin: loki-admin
       s3:
         s3ForcePathStyle: true
-        insecure: false
+        insecure: true
 
   gateway:
     replicas: 2
