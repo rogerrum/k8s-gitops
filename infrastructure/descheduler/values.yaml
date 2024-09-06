@@ -15,8 +15,11 @@ descheduler:
         pluginConfig:
           - name: DefaultEvictor
             args:
-              ignorePvcPods: true
+#              ignorePvcPods: true
+              evictFailedBarePods: true
               evictLocalStoragePods: true
+              evictSystemCriticalPods: true
+              nodeFit: true
           - name: RemoveDuplicates
           - name: RemovePodsHavingTooManyRestarts
             args:
@@ -31,16 +34,16 @@ descheduler:
           - name: RemovePodsViolatingTopologySpreadConstraint
 #            args:
 #              includeSoftConstraints: true
-          - name: LowNodeUtilization
-            args:
-              thresholds:
-                cpu: 20
-                memory: 20
-                pods: 20
-              targetThresholds:
-                cpu: 50
-                memory: 50
-                pods: 50
+#          - name: LowNodeUtilization
+#            args:
+#              thresholds:
+#                cpu: 20
+#                memory: 20
+#                pods: 20
+#              targetThresholds:
+#                cpu: 50
+#                memory: 50
+#                pods: 50
           - name: RemoveFailedPods
             args:
               includingInitContainers: true
