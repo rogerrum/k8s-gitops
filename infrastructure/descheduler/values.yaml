@@ -15,11 +15,11 @@ descheduler:
         pluginConfig:
           - name: DefaultEvictor
             args:
-#              ignorePvcPods: true
+              #ignorePvcPods: true
               evictFailedBarePods: true
               evictLocalStoragePods: true
               evictSystemCriticalPods: true
-              nodeFit: true
+              #nodeFit: true
           - name: RemoveDuplicates
           - name: RemovePodsHavingTooManyRestarts
             args:
