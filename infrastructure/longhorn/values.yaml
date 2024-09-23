@@ -25,12 +25,13 @@ longhorn:
       nginx.ingress.kubernetes.io/auth-signin: "https://auth.rsr.net/oauth2/start"
 
   #Temp fix
-  image:
-    longhorn:
-      instanceManager:
-        repository: longhornio/longhorn-instance-manager
-        tag: v1.7.1-rc2
+#  image:
+#    longhorn:
+#      instanceManager:
+#        repository: longhornio/longhorn-instance-manager
+#        tag: v1.7.1-rc2
+#
+#      manager:
+#        repository: longhornio/longhorn-manager
+#        tag: v1.7.1-rc2
 
-      manager:
-        repository: longhornio/longhorn-manager
-        tag: v1.7.1-rc2
