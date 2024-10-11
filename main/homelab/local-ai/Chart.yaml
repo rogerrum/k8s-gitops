@@ -3,5 +3,5 @@ apiVersion: v2
 version: 1.0.0
 dependencies:
   - name: local-ai
-    version: 3.1.0
+    version: 3.4.0
     repository: https://go-skynet.github.io/helm-charts/
