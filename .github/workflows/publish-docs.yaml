@@ -13,7 +13,7 @@ on: # yamllint disable-line rule:truthy
 
 jobs:
   publish-docs:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.event.pull_request.head.repo.fork == false
     steps:
       - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
