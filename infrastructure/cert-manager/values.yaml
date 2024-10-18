@@ -1,7 +1,8 @@
 cert-manager:
   installCRDs: true
-  webhook:
+  crds:
     enabled: true
+  webhook:
     tolerations:
       - key: "arm"
         operator: "Exists"
@@ -17,14 +18,12 @@ cert-manager:
       operator: "Exists"
   cainjector:
     replicaCount: 1
-    # extraArgs:
-    #   - --leader-elect=false
     tolerations:
       - key: "arm"
         operator: "Exists"
       - key: "arm64"
         operator: "Exists"
-    prometheus:
+  prometheus:
     enabled: true
     servicemonitor:
       enabled: true
