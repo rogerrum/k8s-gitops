@@ -28,7 +28,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: external-{{ .name }}
+                name: {{ $fullName }}-{{ .name }}
                 port:
                   number: {{ .port }}
   tls:
