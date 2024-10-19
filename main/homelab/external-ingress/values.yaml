@@ -10,4 +10,4 @@ apps:
     proxySslVerify: "off"
     proxyReadTimeout: 1800s
     service:
-      externalName: proxmox.local
+      externalName: proxmox
