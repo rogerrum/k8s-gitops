@@ -11,7 +11,7 @@ apps:
     proxyReadTimeout: 1800s
     path: /
     service:
-      externalName: proxmox
+      externalName: promox
 
   - name: pihole
     host: pihole.rsr.net
