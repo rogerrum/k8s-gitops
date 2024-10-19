@@ -11,3 +11,12 @@ apps:
     proxyReadTimeout: 1800s
     service:
       externalName: proxmox
+
+  - name: pihole
+    host: pihole.rsr.net
+    port: 90
+    backendProtocol: HTTP
+    proxySslVerify: "off"
+    proxyReadTimeout: 1800s
+    service:
+      externalName: pihole-vip
