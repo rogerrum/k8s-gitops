@@ -1,0 +1,52 @@
+{{- $fullName := include "external-ingress.fullname" . -}}
+{{- $labels := include "external-ingress.labels" . | nindent 4}}
+{{- range .Values.apps }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}-{{ .name }}
+  labels:
+    {{- $labels}}
+    app.kubernetes.io/name: {{ $fullName }}-{{ .name }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/issuer: step-issuer
+    cert-manager.io/issuer-kind: StepClusterIssuer
+    cert-manager.io/issuer-group: certmanager.step.sm
+    cert-manager.io/revision-history-limit: "3"
+    cert-manager.io/duration: "2160h"
+    cert-manager.io/renew-before: "720h"
+    nginx.ingress.kubernetes.io/backend-protocol: "{{ .backendProtocol }}"
+    nginx.ingress.kubernetes.io/proxy-ssl-verify: "{{ .proxySslVerify }}"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "{{ .proxyReadTimeout }}"
+spec:
+  rules:
+    - host: {{ .host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: external-{{ .name }}
+                port:
+                  number: {{ .port }}
+  tls:
+    - hosts:
+        - {{ .host }}
+      secretName: {{ .name }}-cert-tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullName }}-{{ .name }}
+  labels:
+    {{- $labels }}
+spec:
+  ports:
+    - name: {{ .name }}
+      port: {{ .port }}
+      targetPort: {{ .port }}
+  type: ExternalName
+  externalName: {{ .service.externalName }}
+{{- end }}

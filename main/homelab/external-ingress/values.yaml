@@ -1,0 +1,13 @@
+
+
+
+enabled: true
+apps:
+  - name: proxmox
+    host: proxmox.rsr.net
+    port: 8006
+    backendProtocol: HTTPS
+    proxySslVerify: "off"
+    proxyReadTimeout: 1800s
+    service:
+      externalName: proxmox.local
