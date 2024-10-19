@@ -24,7 +24,7 @@ spec:
     - host: {{ .host }}
       http:
         paths:
-          - path: /
+          - path: {{ .path }}
             pathType: Prefix
             backend:
               service:

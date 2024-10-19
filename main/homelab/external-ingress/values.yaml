@@ -6,9 +6,10 @@ apps:
   - name: proxmox
     host: proxmox.rsr.net
     port: 8006
-    backendProtocol: HTTP
+    backendProtocol: HTTPS
     proxySslVerify: "off"
     proxyReadTimeout: 1800s
+    path: /
     service:
       externalName: proxmox
 
@@ -18,5 +19,6 @@ apps:
     backendProtocol: HTTP
     proxySslVerify: "off"
     proxyReadTimeout: 1800s
+    path: /admin
     service:
       externalName: pihole-vip
