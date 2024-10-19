@@ -6,7 +6,7 @@ apps:
   - name: proxmox
     host: proxmox.rsr.net
     port: 8006
-    backendProtocol: HTTPS
+    backendProtocol: HTTP
     proxySslVerify: "off"
     proxyReadTimeout: 1800s
     service:
