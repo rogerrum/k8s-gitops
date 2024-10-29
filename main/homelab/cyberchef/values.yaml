@@ -4,7 +4,7 @@ app-template:
     strategy: RollingUpdate
   image:
     repository: docker.io/mpepping/cyberchef
-    tag: v10.19.2
+    tag: v10.19.4
   env:
     TZ: America/Chicago
   service:
