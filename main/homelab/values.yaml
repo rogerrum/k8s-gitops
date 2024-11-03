@@ -252,3 +252,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: teslamate
+    namespace: default
+    path: main/homelab/teslamate
+    manifest-paths: /main/homelab/teslamate
+    sync-wave: "-1"
+    helm:
+      enabled: true
