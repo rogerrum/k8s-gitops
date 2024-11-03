@@ -31,7 +31,7 @@ app-template:
     DISABLE_MQTT: "false"
     MQTT_HOST: "emqx"
     DATABASE_NAME: teslamate
-    DATABASE_HOST: postgres-v15-rw.default.svc.cluster.local
+    DATABASE_HOST: postgres-v15-rw.kube-system.svc.cluster.local
   envFrom:
     - secretRef:
         name: teslamate-secret
