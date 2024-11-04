@@ -119,6 +119,14 @@ applications:
     helm:
       enabled: true
 
+  - name: karma
+    namespace: monitoring
+    path: main/monitoring/karma
+    manifest-paths: /main/monitoring/karma
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
 #  - name: kubernetes-dashboard
 #    namespace: monitoring
 #    path: main/monitoring/kubernetes-dashboard
