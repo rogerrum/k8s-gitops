@@ -268,3 +268,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: gethomepage
+    namespace: default
+    path: main/homelab/gethomepage
+    manifest-paths: /main/homelab/gethomepage
+    sync-wave: "-1"
+    helm:
+      enabled: true

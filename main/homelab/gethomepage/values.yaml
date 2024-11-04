@@ -1,0 +1,96 @@
+homepage:
+  image:
+    repository: ghcr.io/gethomepage/homepage
+    tag: v0.9.11
+
+  resources:
+    requests:
+      cpu: 15m
+      memory: 127M
+    limits:
+      memory: 308M
+
+  podAnnotations:
+    reloader.stakater.com/auto: "true"
+    configmap.reloader.stakater.com/reload: "homepage-config"
+    secret.reloader.stakater.com/reload: "gethomepage-secret"
+
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/issuer: step-issuer
+        cert-manager.io/issuer-kind: StepClusterIssuer
+        cert-manager.io/issuer-group: certmanager.step.sm
+        cert-manager.io/revision-history-limit: "3"
+        cert-manager.io/duration: "2160h"
+        cert-manager.io/renew-before: "720h"
+        gethomepage.dev/enabled: 'false'
+      hosts:
+        - host: hp.rsr.net
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - hp.rsr.net
+          secretName: hp-cert-tls
+
+  # The service account is necessary to allow discovery of other services
+  serviceAccount:
+    create: true
+    name: gethomepage
+
+  # This enables the service account to access the necessary resources
+  enableRbac: true
+
+  persistence:
+    data:
+      enabled: false
+
+  config:
+    bookmarks:
+      - Developer:
+          - Github:
+              - abbr: GH
+                href: https://github.com/
+    services:
+      - Home:
+#          - Unifi:
+#              href:
+#              icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/master/png/unifi.png
+#          - Proxmox:
+#              href:
+#              icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/master/png/proxmox.png
+    widgets:
+      # show the kubernetes widget, with the cluster summary and individual nodes
+      - kubernetes:
+          cluster:
+            show: true
+            cpu: true
+            memory: true
+            showLabel: true
+            label: "cluster"
+          nodes:
+            show: true
+            cpu: true
+            memory: true
+            showLabel: true
+      - search:
+          provider: duckduckgo
+          target: _blank
+#      - unifi_console:
+#          url:
+#          username: "{{HOMEPAGE_VAR_UNIFI_USERNAME}}"
+#          password: "{{HOMEPAGE_VAR_UNIFI_PASSWORD}}"
+#          site: "{{HOMEPAGE_VAR_UNIFI_SITE}}"
+    kubernetes:
+      mode: cluster
+    settings: {}
+  envFrom:
+    - secretRef:
+        name: "gethomepage-secret"
+  env:
+    TZ: America/Chicago
+
