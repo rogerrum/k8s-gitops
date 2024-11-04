@@ -88,9 +88,9 @@ homepage:
     kubernetes:
       mode: cluster
     settings: {}
-  envFrom:
-    - secretRef:
-        name: "gethomepage-secret"
+#  envFrom:
+#    - secretRef:
+#        name: "gethomepage-secret"
   env:
     TZ: America/Chicago
 
