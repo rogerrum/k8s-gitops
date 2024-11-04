@@ -1,0 +1,110 @@
+app-template:
+  controllers:
+    main:
+      annotations:
+        reloader.stakater.com/auto: "true"
+      initContainers:
+        init-db:
+          image:
+            repository: ghcr.io/onedr0p/postgres-init:15.5@sha256:70b4c228f2e86de39008a35211c76c1ac6de1dcdf0e908ac09ede6a11e2344e2
+          env:
+            - name: INIT_POSTGRES_HOST
+              value: postgres-v15-rw.kube-system.svc.cluster.local
+            - name: INIT_POSTGRES_DBNAME
+              value: planka
+            - name: INIT_POSTGRES_SUPER_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-superuser-secret
+                  key: password
+            - name: INIT_POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: planka-secret
+                  key: DATABASE_USER
+            - name: INIT_POSTGRES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: planka-secret
+                  key: DATABASE_PASS
+
+      containers:
+        main:
+          image:
+            repository: ghcr.io/plankanban/planka
+            tag: 1.23.5@sha256:d75590babe0b12df953f67efea73c61d068367e29bc2fb679ccda4ed8ccc00a1
+          env:
+            TZ: America/Chicago
+            BASE_URL: https://planka.rsr.net
+            WEBHOOKS: "[]"
+            PGSSLMODE: no-verify
+          envFrom:
+            - secretRef:
+                name: planka-secret
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            limits: &resources
+              memory: 1Gi
+            requests:
+              <<: *resources
+              cpu: 10m
+      pod:
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+          fsGroup: 1000
+          fsGroupChangePolicy: OnRootMismatch
+  service:
+    main:
+      controller: main
+      ports:
+        http:
+          port: 1337
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/issuer: step-issuer
+        cert-manager.io/issuer-kind: StepClusterIssuer
+        cert-manager.io/issuer-group: certmanager.step.sm
+        cert-manager.io/revision-history-limit: "3"
+        cert-manager.io/duration: "2160h"
+        cert-manager.io/renew-before: "720h"
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Tools
+        gethomepage.dev/icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/master/png/planka.png
+        gethomepage.dev/name: Planka
+      hosts:
+        - host: &host "planka.rsr.net"
+          paths:
+            - path: /
+              service:
+                identifier: main
+                port: http
+      tls:
+        - hosts:
+            - *host
+          secretName: planka-cert-tls
+
+  persistence:
+    config:
+      enabled: true
+      accessMode: ReadWriteOnce
+      storageClass: "longhorn"
+      size: 10Gi
+      advancedMounts:
+        main:
+          main:
+            - path: /app/public/user-avatars
+              subPath: user-avatars
+            - path: /app/private/attachments
+              subPath: attachments
+            - path: /app/public/project-background-images
+              subPath: project-background-images
+
