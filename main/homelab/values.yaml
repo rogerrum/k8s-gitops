@@ -42,13 +42,13 @@ applications:
       additionalValues:
         - http://localhost/emqx.yml
 
-  - name: focalboard
-    namespace: default
-    path: main/homelab/focalboard
-    manifest-paths: /main/homelab/focalboard
-    sync-wave: "-1"
-    helm:
-      enabled: true
+#  - name: focalboard
+#    namespace: default
+#    path: main/homelab/focalboard
+#    manifest-paths: /main/homelab/focalboard
+#    sync-wave: "-1"
+#    helm:
+#      enabled: true
 
   - name: frigate
     namespace: default
