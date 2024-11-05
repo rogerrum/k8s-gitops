@@ -29,7 +29,8 @@ app-template:
   env:
     TZ: "America/Chicago"
     DISABLE_MQTT: "false"
-    MQTT_HOST: "emqx"
+    MQTT_HOST: "emqx.default.svc.cluster.local"
+    MQTT_PORT: 1883
     DATABASE_NAME: teslamate
     DATABASE_HOST: postgres-v15-rw.kube-system.svc.cluster.local
   envFrom:
