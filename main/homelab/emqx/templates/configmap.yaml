@@ -11,4 +11,12 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
   "acl.conf": |
-    {{ .Values.emqx.emqxAclConfig }}
+    %% Allow MQTT client using username "dashboard"  to subscribe to "$SYS/#" topics
+    {allow, {user, "dashboard"}, subscribe, ["$SYS/#"]}.
+    %% Allow users with IP address "127.0.0.1" to publish/subscribe to topics "$SYS/#", "#"
+    {allow, {ipaddr, "127.0.0.1"}, all, ["$SYS/#", "#"]}.
+    %% Allow "All Users" subscribe to `$SYS/#`, `#` and `+/#`
+    {allow, all, subscribe, ["$SYS/#", {eq, "#"}, {eq, "+/#"}]}.
+    %% Allow any other publish/subscribe operation
+    %% NOTE: In production, change the last rule to `{deny, all}`, and set config: `authorization.no_match = deny`
+    {allow, all}.
