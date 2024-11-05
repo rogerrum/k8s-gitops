@@ -6,7 +6,7 @@ app-template:
 
   image:
     repository: linuxserver/heimdall
-    tag: 2.6.1
+    tag: 2.6.3
 
   service:
     main:
