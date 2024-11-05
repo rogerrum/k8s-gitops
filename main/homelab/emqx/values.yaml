@@ -37,6 +37,20 @@ emqx:
     {allow, {ipaddr, "127.0.0.1"}, pubsub, ["$SYS/#", "#"]}.
     {allow, all, subscribe, ["$SYS/#", {eq, "#"}]}.
     {allow, all}.
+
+  extraVolumeMounts:
+    - name: my-owner-acl
+      mountPath: /opt/emqx/etc/acl.conf
+      subPath: acl.conf
+
+  extraVolumes:
+    - name: my-owner-acl
+      configMap:
+        name: emqx-acl
+        items:
+          - key: acl.conf
+            path: acl.conf
+
   resources:
     limits:
       memory: 400Mi
