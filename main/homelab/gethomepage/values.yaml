@@ -97,6 +97,12 @@ homepage:
         Tools:
           style: row
           columns: 6
+        Infrastructure:
+          style: row
+          columns: 3
+        Monitoring:
+          style: row
+          columns: 3
       background:
         image: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
         blur: sm # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur
