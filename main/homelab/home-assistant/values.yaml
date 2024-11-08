@@ -112,7 +112,7 @@ app-template:
         enabled: true
         annotations:
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Config
+          gethomepage.dev/group: Tools
           gethomepage.dev/icon: code-server
           gethomepage.dev/name: Home Assistant
           kubernetes.io/ingress.class: "nginx"
