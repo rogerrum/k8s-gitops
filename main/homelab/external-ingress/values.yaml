@@ -35,10 +35,23 @@ apps:
     port: 8080
     homepageGroup: "Infrastructure"
     homepageIcon: "qnap"
-    homepageName: "qnap"
+    homepageName: "QNAP"
     backendProtocol: HTTP
     proxySslVerify: "off"
     proxyReadTimeout: 1800s
     path: /
     service:
       externalName: nas
+
+  - name: dozzle
+    host: dozzle.rsr.net
+    port: 9999
+    homepageGroup: "Monitoring"
+    homepageIcon: "dozzle"
+    homepageName: "Dozzle"
+    backendProtocol: HTTP
+    proxySslVerify: "off"
+    proxyReadTimeout: 1800s
+    path: /
+    service:
+      externalName: home-docker
