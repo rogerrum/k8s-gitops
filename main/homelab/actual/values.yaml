@@ -30,6 +30,10 @@ app-template:
       enabled: true
       className: "nginx"
       annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Tools
+        gethomepage.dev/icon: actual
+        gethomepage.dev/name: Actual
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
         cert-manager.io/issuer-group: certmanager.step.sm
