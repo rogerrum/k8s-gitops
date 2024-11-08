@@ -62,6 +62,10 @@ app-template:
       enabled: true
       className: "nginx"
       annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Home
+        gethomepage.dev/icon: https://raw.githubusercontent.com/rogerrum/icons/85a25eb81c8c3e57fc192536c981f8ee34f8b555/images/wyze.svg
+        gethomepage.dev/name: Wyze Bridge
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
         cert-manager.io/issuer-group: certmanager.step.sm
