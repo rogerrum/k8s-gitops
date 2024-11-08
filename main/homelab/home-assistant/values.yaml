@@ -27,11 +27,19 @@ app-template:
     main:
       enabled: true
       annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Home
+        gethomepage.dev/icon: home-assistant
+        gethomepage.dev/name: Home Assistant Ext
         kubernetes.io/ingress.class: "nginx"
     internal:
       enabled: true
       nameSuffix: "internal"
       annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Home
+        gethomepage.dev/icon: home-assistant
+        gethomepage.dev/name: Home Assistant Int
         nginx.org/websocket-services: home-assistant
         kubernetes.io/ingress.class: nginx
         cert-manager.io/issuer: step-issuer
@@ -103,6 +111,10 @@ app-template:
       ingress:
         enabled: true
         annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Config
+          gethomepage.dev/icon: code-server
+          gethomepage.dev/name: Home Assistant
           kubernetes.io/ingress.class: "nginx"
           cert-manager.io/issuer: step-issuer
           cert-manager.io/issuer-kind: StepClusterIssuer
