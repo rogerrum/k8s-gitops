@@ -50,14 +50,6 @@ applications:
       additionalValues:
         - http://localhost/frigate.yml
 
-  - name: heimdall
-    namespace: default
-    path: main/homelab/heimdall
-    manifest-paths: /main/homelab/heimdall
-    sync-wave: "-1"
-    helm:
-      enabled: true
-
   - name: home-assistant
     namespace: default
     path: main/homelab/home-assistant
