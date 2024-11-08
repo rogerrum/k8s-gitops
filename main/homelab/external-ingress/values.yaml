@@ -69,3 +69,16 @@ apps:
     path: /
     service:
       externalName: home-docker
+
+  - name: portainer
+    host: portainer.rsr.net
+    port: 9000
+    homepageGroup: "Infrastructure"
+    homepageIcon: "portainer"
+    homepageName: "Portainer"
+    backendProtocol: HTTP
+    proxySslVerify: "off"
+    proxyReadTimeout: 1800s
+    path: /
+    service:
+      externalName: home-docker
