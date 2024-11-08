@@ -10,6 +10,7 @@ apps:
     homepageIcon: "proxmox"
     homepageName: "Proxmox"
     backendProtocol: HTTPS
+    backendInsecureIngress: true
     proxySslVerify: "off"
     proxyReadTimeout: 1800s
     path: /

@@ -21,6 +21,9 @@ metadata:
     cert-manager.io/duration: "2160h"
     cert-manager.io/renew-before: "720h"
     nginx.ingress.kubernetes.io/backend-protocol: "{{ .backendProtocol }}"
+    {{ if .backendInsecureIngress }}
+    nginx.ingress.kubernetes.io/insecure-ingress: "true"
+    {{ end }}
     nginx.ingress.kubernetes.io/proxy-ssl-verify: "{{ .proxySslVerify }}"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "{{ .proxyReadTimeout }}"
 spec:
