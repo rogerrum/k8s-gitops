@@ -9,6 +9,10 @@ metadata:
   labels:
     {{- $labels}}
   annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: {{ .homepageGroup }}
+    gethomepage.dev/icon: {{ .homepageIcon }}
+    gethomepage.dev/name: {{ .homepageName }}
     kubernetes.io/ingress.class: nginx
     cert-manager.io/issuer: step-issuer
     cert-manager.io/issuer-kind: StepClusterIssuer
