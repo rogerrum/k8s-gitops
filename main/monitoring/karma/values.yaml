@@ -62,7 +62,7 @@ app-template:
         cert-manager.io/renew-before: "720h"
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Monitoring
-        gethomepage.dev/icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/master/png/prometheus.png
+        gethomepage.dev/icon: prometheus
         gethomepage.dev/name: Karma
       hosts:
         - host: &host karma.rsr.net
