@@ -17,6 +17,10 @@ app-template:
       enabled: true
       ingressClassName: "nginx"
       annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Tools
+        gethomepage.dev/icon: cyberchef
+        gethomepage.dev/name: Cyberchef
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
         cert-manager.io/issuer-group: certmanager.step.sm
