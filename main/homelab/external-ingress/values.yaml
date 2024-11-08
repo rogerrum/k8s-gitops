@@ -29,3 +29,16 @@ apps:
     path: /admin
     service:
       externalName: pihole-vip
+
+  - name: qnap
+    host: qnap.rsr.net
+    port: 8080
+    homepageGroup: "Infrastructure"
+    homepageIcon: "qnap"
+    homepageName: "qnap"
+    backendProtocol: HTTP
+    proxySslVerify: "off"
+    proxyReadTimeout: 1800s
+    path: /
+    service:
+      externalName: nas
