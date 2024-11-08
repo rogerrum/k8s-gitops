@@ -44,6 +44,32 @@ apps:
     service:
       externalName: pihole-vip
 
+  - name: pihole-p
+    host: pihole-p.rsr.net
+    port: 90
+    homepageGroup: "Infrastructure"
+    homepageIcon: "pi-hole"
+    homepageName: "Pi-hole Primary"
+    backendProtocol: HTTP
+    proxySslVerify: "off"
+    proxyReadTimeout: 1800s
+    path: /admin
+    service:
+      externalName: home-nw-1-pi3-pihole
+
+  - name: pihole-s
+    host: pihole-s.rsr.net
+    port: 90
+    homepageGroup: "Infrastructure"
+    homepageIcon: "pi-hole"
+    homepageName: "Pi-hole Secondary"
+    backendProtocol: HTTP
+    proxySslVerify: "off"
+    proxyReadTimeout: 1800s
+    path: /admin
+    service:
+      externalName: home-nw-2-pi3-haproxy
+
   - name: qnap
     host: qnap.rsr.net
     port: 8080
