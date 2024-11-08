@@ -6,6 +6,9 @@ apps:
   - name: proxmox
     host: proxmox.rsr.net
     port: 8006
+    homepageGroup: "Infrastructure"
+    homepageIcon: "proxmox"
+    homepageName: "Proxmox"
     backendProtocol: HTTPS
     proxySslVerify: "off"
     proxyReadTimeout: 1800s
@@ -16,6 +19,9 @@ apps:
   - name: pihole
     host: pihole.rsr.net
     port: 90
+    homepageGroup: "Infrastructure"
+    homepageIcon: "pihole"
+    homepageName: "Pihole"
     backendProtocol: HTTP
     proxySslVerify: "off"
     proxyReadTimeout: 1800s
