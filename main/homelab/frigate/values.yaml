@@ -59,7 +59,7 @@ app-template:
       annotations:
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Home
-        gethomepage.dev/icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/master/png/frigate.png
+        gethomepage.dev/icon: frigate
         gethomepage.dev/name: Frigate
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
