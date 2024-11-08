@@ -20,6 +20,10 @@ app-template:
   ingress:
     app:
       annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Home
+        gethomepage.dev/icon: nomie
+        gethomepage.dev/name: Nomie
         kubernetes.io/ingress.class: nginx
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
