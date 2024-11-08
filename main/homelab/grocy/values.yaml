@@ -18,6 +18,10 @@ app-template:
     main:
       enabled: true
       annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Home
+        gethomepage.dev/icon: grocy
+        gethomepage.dev/name: Grocy
         kubernetes.io/ingress.class: nginx
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
