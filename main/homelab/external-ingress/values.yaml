@@ -17,6 +17,20 @@ apps:
     service:
       externalName: promox
 
+  - name: idrac
+    host: idrac.rsr.net
+    port: 443
+    homepageGroup: "Infrastructure"
+    homepageIcon: "idrac"
+    homepageName: "Dell iDRAC"
+    backendProtocol: HTTPS
+    backendInsecureIngress: true
+    proxySslVerify: "off"
+    proxyReadTimeout: 1800s
+    path: /
+    service:
+      externalName: idrac
+
   - name: pihole
     host: pihole.rsr.net
     port: 90
