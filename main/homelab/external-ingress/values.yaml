@@ -20,8 +20,8 @@ apps:
     host: pihole.rsr.net
     port: 90
     homepageGroup: "Infrastructure"
-    homepageIcon: "pihole"
-    homepageName: "Pihole"
+    homepageIcon: "pi-hole"
+    homepageName: "Pi-hole"
     backendProtocol: HTTP
     proxySslVerify: "off"
     proxyReadTimeout: 1800s
