@@ -12,13 +12,6 @@ applications:
     helm:
       enabled: true
 
-#  - name: change-detection
-#    namespace: default
-#    path: main/homelab/change-detection
-#    manifest-paths: /main/homelab/change-detection
-#    sync-wave: "-1"
-#    helm:
-#      enabled: true
 
   - name: cloudflare-ddns
     namespace: default
@@ -42,14 +35,6 @@ applications:
       additionalValues:
         - http://localhost/emqx.yml
 
-#  - name: focalboard
-#    namespace: default
-#    path: main/homelab/focalboard
-#    manifest-paths: /main/homelab/focalboard
-#    sync-wave: "-1"
-#    helm:
-#      enabled: true
-
   - name: frigate
     namespace: default
     path: main/homelab/frigate
@@ -64,14 +49,6 @@ applications:
           - emqx-config
       additionalValues:
         - http://localhost/frigate.yml
-
-#  - name: grocy
-#    namespace: default
-#    path: main/homelab/grocy
-#    manifest-paths: /main/homelab/grocy
-#    sync-wave: "-1"
-#    helm:
-#      enabled: true
 
   - name: heimdall
     namespace: default
@@ -197,14 +174,6 @@ applications:
     helm:
       enabled: true
 
-  - name: dashy
-    namespace: default
-    path: main/homelab/dashy
-    manifest-paths: /main/homelab/dashy
-    sync-wave: "-1"
-    helm:
-      enabled: true
-
   - name: server-tracker
     namespace: default
     path: main/homelab/server-tracker
@@ -212,22 +181,6 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
-
-#  - name: local-ai
-#    namespace: default
-#    path: main/homelab/local-ai
-#    manifest-paths: /main/homelab/local-ai
-#    sync-wave: "-1"
-#    helm:
-#      enabled: true
-
-#  - name: scrypted
-#    namespace: default
-#    path: main/homelab/scrypted
-#    manifest-paths: /main/homelab/scrypted
-#    sync-wave: "-1"
-#    helm:
-#      enabled: true
 
   - name: wyze-bridge
     namespace: default
