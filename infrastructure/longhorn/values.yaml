@@ -14,6 +14,10 @@ longhorn:
     tlsSecret: longhorn-cert
     tls: true
     annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Infrastructure
+      gethomepage.dev/icon: longhorn
+      gethomepage.dev/name: longhorn
       kubernetes.io/ingress.class: nginx
       cert-manager.io/issuer: step-issuer
       cert-manager.io/issuer-kind: StepClusterIssuer
