@@ -82,3 +82,17 @@ apps:
     path: /
     service:
       externalName: home-docker
+
+  - name: cockpit
+    host: cockpit.rsr.net
+    port: 9090
+    homepageGroup: "Infrastructure"
+    homepageIcon: "cockpit"
+    homepageName: "Cockpit"
+    backendProtocol: HTTPS
+    backendInsecureIngress: true
+    proxySslVerify: "off"
+    proxyReadTimeout: 1800s
+    path: /
+    service:
+      externalName: k8s-admin
