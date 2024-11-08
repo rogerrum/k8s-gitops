@@ -50,6 +50,10 @@ app-template:
     main:
       enabled: true
       annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Utilities
+        gethomepage.dev/icon: https://raw.githubusercontent.com/rogerrum/icons/refs/heads/main/images/airprint.png
+        gethomepage.dev/name: Airprint
         kubernetes.io/ingress.class: nginx
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
