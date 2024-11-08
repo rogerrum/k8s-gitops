@@ -20,6 +20,10 @@ app-template:
     main:
       enabled: true
       annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Home
+        gethomepage.dev/icon: node-red
+        gethomepage.dev/name: Node-Red
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
         cert-manager.io/issuer-group: certmanager.step.sm
