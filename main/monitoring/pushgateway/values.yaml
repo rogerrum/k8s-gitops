@@ -16,10 +16,7 @@ prometheus-pushgateway:
       cert-manager.io/duration: "2160h"
       cert-manager.io/renew-before: "720h"
     hosts:
-      - host: pushgateway.rsr.net
-        paths:
-          - path: /
-            pathType: Prefix
+      - pushgateway.rsr.net
     tls:
       - hosts:
           - pushgateway.rsr.net
