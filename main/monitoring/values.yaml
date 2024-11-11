@@ -127,6 +127,14 @@ applications:
     helm:
       enabled: true
 
+  - name: pushgateway
+    namespace: monitoring
+    path: main/monitoring/pushgateway
+    manifest-paths: /main/monitoring/pushgateway
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
 #  - name: kubernetes-dashboard
 #    namespace: monitoring
 #    path: main/monitoring/kubernetes-dashboard
