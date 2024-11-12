@@ -58,13 +58,10 @@ homepage:
               - abbr: GH
                 href: https://github.com/
     services:
-      - Home:
-#          - Unifi:
-#              href:
-#              icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/master/png/unifi.png
-#          - Proxmox:
-#              href:
-#              icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/master/png/proxmox.png
+      - Infrastructure:
+          - HomeDashboard:
+              href: https://grafana.rsr.net/goto/ub9IH-GNR?orgId=1
+              icon: https://raw.githubusercontent.com/rogerrum/icons/refs/heads/main/images/rsr-logo.png
     widgets:
       # show the kubernetes widget, with the cluster summary and individual nodes
       - kubernetes:
