@@ -166,14 +166,6 @@ applications:
     helm:
       enabled: true
 
-  - name: server-tracker
-    namespace: default
-    path: main/homelab/server-tracker
-    manifest-paths: /main/homelab/server-tracker
-    sync-wave: "-1"
-    helm:
-      enabled: true
-
   - name: wyze-bridge
     namespace: default
     path: main/homelab/wyze-bridge
