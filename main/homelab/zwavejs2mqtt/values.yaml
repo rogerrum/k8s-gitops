@@ -4,8 +4,7 @@ app-template:
     tag: 9.26.0
   env:
     TZ: "America/Chicago"
-    NETWORK_KEY: null
-
+    
   securityContext:
     privileged: true
 
