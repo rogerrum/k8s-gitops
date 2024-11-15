@@ -1,7 +1,7 @@
 app-template:
   image:
     repository: ghcr.io/zwave-js/zwave-js-ui
-    tag: 9.26.0
+    tag: 9.27.2
   env:
     TZ: "America/Chicago"
     
@@ -16,7 +16,23 @@ app-template:
           port: 3000
         http:
           enabled: true
-          port: 8091
+          port: &port 8091
+
+  probes:
+    liveness: &probes
+      enabled: true
+      custom: true
+      spec:
+        httpGet:
+          path: /health
+          port: *port
+        initialDelaySeconds: 0
+        periodSeconds: 10
+        timeoutSeconds: 1
+        failureThreshold: 3
+    readiness: *probes
+    startup:
+      enabled: false
 
   ingress:
     main:
@@ -33,8 +49,8 @@ app-template:
         cert-manager.io/revision-history-limit: "3"
         cert-manager.io/duration: "2160h"
         cert-manager.io/renew-before: "720h"
-        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
+#        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
+#        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
       hosts:
         - host: zwavejs2mqtt.rsr.net
           paths:
