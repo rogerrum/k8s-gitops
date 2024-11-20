@@ -7,6 +7,7 @@ spec:
   instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:15.2
   primaryUpdateStrategy: unsupervised
+  startDelay: 7200
   storage:
     size: {{ .Values.storage.size }}
     storageClass: {{ .Values.storage.storageClass }}
