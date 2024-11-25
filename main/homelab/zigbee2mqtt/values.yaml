@@ -58,6 +58,10 @@ app-template:
                 - matchExpressions:
                     - { key: "sonoff.feature.node.kubernetes.io/zigbee", operator: In, values: [ "true" ] }
 
+        tolerations:
+          - key: "arm64"
+            operator: "Exists"
+
 #        securityContext:
 #          runAsUser: 568
 #          runAsGroup: 568
