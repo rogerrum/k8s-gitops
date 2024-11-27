@@ -6,7 +6,7 @@ metadata:
 data:
   config.yml: |
     auth:
-      enabled: false
+      enabled: False
     mqtt:
       host: emqx.default.svc
       topic_prefix: frigate
