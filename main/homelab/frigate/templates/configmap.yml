@@ -5,6 +5,8 @@ metadata:
   namespace: default
 data:
   config.yml: |
+    auth:
+      enabled: false
     mqtt:
       host: emqx.default.svc
       topic_prefix: frigate
@@ -55,6 +57,18 @@ data:
           default: 14
           mode: active_objects
 
+    review:
+      alerts:
+        labels:
+          - person
+          - dog
+          - car
+      detections:
+        labels:
+          - person
+          - dog
+          - cat
+          
     snapshots:
       enabled: true
       timestamp: false
@@ -91,9 +105,6 @@ data:
           - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=6&subtype=0'
         living_room:
           - 'rtsp://{FRIGATE_WYZE_AUTH}@192.168.1.233/live'
-
-    ui:
-      live_mode: mse
 
     cameras:
       basement_room:
