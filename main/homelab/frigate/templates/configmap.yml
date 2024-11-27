@@ -28,8 +28,8 @@ data:
 
     ffmpeg:
       hwaccel_args: preset-vaapi
-      output_args:
-        record: preset-record-generic-audio-aac
+      #output_args:
+      #  record: preset-record-generic-audio-aac
         
     #ffmpeg:
       #hwaccel_args: preset-vaapi
