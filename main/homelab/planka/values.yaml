@@ -33,7 +33,7 @@ app-template:
         main:
           image:
             repository: ghcr.io/plankanban/planka
-            tag: 1.24.2@sha256:aed25499a1139b3464f924d07f416e257595c3bf83e0dfa28ab22549f1520ee8
+            tag: 1.24.3@sha256:4dc91bac45f0c2f2d3e22b3e6ec8527ad2d0ec16b3e0d6c91d434a0d2896d120
           env:
             TZ: America/Chicago
             BASE_URL: https://planka.rsr.net
