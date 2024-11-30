@@ -20,6 +20,7 @@ app-template:
             MQTT_DTOPIC: homeassistant
             # FFMPEG_LOGLEVEL: debug
             LIBVA_DRIVER_NAME: i965
+            FILTER_BLOCK: True
           envFrom:
             - secretRef:
                 name: wyze-bridge-secret
