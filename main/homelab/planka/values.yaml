@@ -7,7 +7,7 @@ app-template:
         init-db:
           image:
             repository: ghcr.io/onedr0p/postgres-init
-            tag: 15.5@sha256:70b4c228f2e86de39008a35211c76c1ac6de1dcdf0e908ac09ede6a11e2344e2
+            tag: 16.6@sha256:c1d3a845d47fe1aeebd110fefb5f43f54c4735aec1d2b0c01de8d4d5e8cdd6a4
           env:
             - name: INIT_POSTGRES_HOST
               value: postgres-v15-rw.kube-system.svc.cluster.local
