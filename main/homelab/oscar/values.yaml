@@ -2,7 +2,7 @@ app-template:
   image:
     repository: rogerrum/docker-oscar
     tag: main
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   service:
     main:

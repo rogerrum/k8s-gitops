@@ -3,5 +3,5 @@ apiVersion: v2
 version: 1.0.0
 dependencies:
   - name: node-feature-discovery
-    version: "0.16.6"
+    version: "0.17.1"
     repository: https://kubernetes-sigs.github.io/node-feature-discovery/charts
