@@ -27,7 +27,7 @@ data:
       mode: continuous
 
     ffmpeg:
-      hwaccel_args: preset-vaapi
+      hwaccel_args: h264_qsv
       #output_args:
       #  record: preset-record-generic-audio-aac
 
