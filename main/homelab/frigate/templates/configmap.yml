@@ -52,7 +52,11 @@ data:
       retain:
         days: 1
         mode: motion
-
+      alerts:
+        retain:
+          days: 14
+          mode: active_objects
+    
     review:
       alerts:
         labels:
@@ -77,6 +81,7 @@ data:
       enabled: True
       provider: ollama
       base_url: http://192.168.1.16::11434
+      model: llava:7b
 
     
     cameras:
