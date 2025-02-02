@@ -78,35 +78,7 @@ data:
       provider: ollama
       base_url: http://192.168.1.16::11434
 
-    go2rtc:
-      streams:
-        #basement_room_detect:
-        #  - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1'
-        #basement_room_record:
-        #  - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=0'
-        basement_main_detect:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=1'
-        basement_main_record:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=0'
-        deck_detect:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=1'
-        deck_record:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=0'
-        porch_detect:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=4&subtype=1'
-        porch_record:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=4&subtype=0'
-        driveway_detect:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=5&subtype=1'
-        driveway_record:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=5&subtype=0'
-        server_detect:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=6&subtype=1'
-        server_record:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=6&subtype=0'
-        living_room:
-          - 'rtsp://{FRIGATE_WYZE_AUTH}@192.168.1.233/live'
-
+    
     cameras:
       basement_room:
         ffmpeg:
@@ -136,12 +108,12 @@ data:
       basement_main:
         ffmpeg:
           inputs:
-            - path: rtsp://127.0.0.1:8554/basement_main_detect
-              input_args: preset-rtsp-restream
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=1'
+              #input_args: preset-rtsp-restream
               roles:
                 - detect
-            - path: rtsp://127.0.0.1:8554/basement_main_record
-              input_args: preset-rtsp-restream
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=0'
+              #input_args: preset-rtsp-restream
               roles:
                 - record
         live:
@@ -150,12 +122,12 @@ data:
       deck:
         ffmpeg:
           inputs:
-            - path: rtsp://127.0.0.1:8554/deck_detect
-              input_args: preset-rtsp-restream
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=1'
+              #input_args: preset-rtsp-restream
               roles:
                 - detect
-            - path: rtsp://127.0.0.1:8554/deck_record
-              input_args: preset-rtsp-restream
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=0'
+              #input_args: preset-rtsp-restream
               roles:
                 - record
         live:
@@ -164,12 +136,12 @@ data:
       porch:
         ffmpeg:
           inputs:
-            - path: rtsp://127.0.0.1:8554/porch_detect
-              input_args: preset-rtsp-restream
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=4&subtype=1'
+              #input_args: preset-rtsp-restream
               roles:
                 - detect
-            - path: rtsp://127.0.0.1:8554/porch_record
-              input_args: preset-rtsp-restream
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=4&subtype=0'
+              #input_args: preset-rtsp-restream
               roles:
                 - record
         live:
@@ -191,12 +163,12 @@ data:
               mask:
         ffmpeg:
           inputs:
-            - path: rtsp://127.0.0.1:8554/driveway_detect
-              input_args: preset-rtsp-restream
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=5&subtype=1'
+              #input_args: preset-rtsp-restream
               roles:
                 - detect
-            - path: rtsp://127.0.0.1:8554/driveway_record
-              input_args: preset-rtsp-restream
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=5&subtype=0'
+              #input_args: preset-rtsp-restream
               roles:
                 - record
         live:
@@ -205,12 +177,12 @@ data:
       server:
         ffmpeg:
           inputs:
-            - path: rtsp://127.0.0.1:8554/server_detect
-              input_args: preset-rtsp-restream
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=6&subtype=1'
+              #input_args: preset-rtsp-restream
               roles:
                 - detect
-            - path: rtsp://127.0.0.1:8554/server_record
-              input_args: preset-rtsp-restream
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=6&subtype=0'
+              #input_args: preset-rtsp-restream
               roles:
                 - record
         live:
@@ -221,12 +193,12 @@ data:
         enabled: False
         ffmpeg:
           inputs:
-            - path: rtsp://127.0.0.1:8554/living_room
-              input_args: preset-rtsp-restream
+            - path: rtsp://{FRIGATE_WYZE_AUTH}@192.168.1.233/live
+              #input_args: preset-rtsp-restream
               roles:
                 - detect
-            - path: rtsp://127.0.0.1:8554/living_room
-              input_args: preset-rtsp-restream
+            - path: rtsp://{FRIGATE_WYZE_AUTH}@192.168.1.233/live
+              #input_args: preset-rtsp-restream
               roles:
                 - record
         live:
