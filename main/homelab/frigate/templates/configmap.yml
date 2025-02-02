@@ -52,10 +52,6 @@ data:
       retain:
         days: 1
         mode: motion
-      #events:
-      #  retain:
-      #    default: 14
-      #    mode: active_objects
 
     review:
       alerts:
@@ -76,6 +72,11 @@ data:
       crop: false
       retain:
         default: 7
+    
+    genai:
+      enabled: True
+      provider: ollama
+      base_url: http://192.168.1.16::11434
 
     go2rtc:
       streams:
@@ -217,6 +218,7 @@ data:
 
 
       living_room:
+        enabled: False
         ffmpeg:
           inputs:
             - path: rtsp://127.0.0.1:8554/living_room
