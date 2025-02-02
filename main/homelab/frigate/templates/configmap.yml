@@ -80,10 +80,10 @@ data:
 
     go2rtc:
       streams:
-        basement_room_detect:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1'
-        basement_room_record:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=0'
+        #basement_room_detect:
+        #  - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1'
+        #basement_room_record:
+        #  - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=0'
         basement_main_detect:
           - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=1'
         basement_main_record:
@@ -111,12 +111,12 @@ data:
       basement_room:
         ffmpeg:
           inputs:
-            - path: rtsp://127.0.0.1:8554/basement_room_detect
-              input_args: preset-rtsp-restream
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1'
+              #input_args: preset-rtsp-restream
               roles:
                 - detect
-            - path: rtsp://127.0.0.1:8554/basement_room_record
-              input_args: preset-rtsp-restream
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=0'
+              #input_args: preset-rtsp-restream
               roles:
                 - record
 
