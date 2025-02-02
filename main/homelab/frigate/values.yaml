@@ -100,10 +100,10 @@ app-template:
       enabled: true
       type: emptyDir
       medium: Memory
-      sizeLimit: 2Gi
+      sizeLimit: 4Gi
       globalMounts:
-        - path: /tmp/cache
-        #- path: /dev/shm
+#        - path: /tmp/cache
+        - path: /dev/shm
     usb:
       enabled: true
       type: hostPath
