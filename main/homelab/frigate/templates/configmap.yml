@@ -52,10 +52,10 @@ data:
       retain:
         days: 1
         mode: motion
-      events:
-        retain:
-          default: 14
-          mode: active_objects
+      #events:
+      #  retain:
+      #    default: 14
+      #    mode: active_objects
 
     review:
       alerts:
