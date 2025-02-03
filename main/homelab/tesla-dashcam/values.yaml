@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/common-3.0.1/charts/library/common/values.schema.json
+app-template:
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: billimek/tesla_dashcam
+            tag: 0.1.21-2@sha256:784c5542d28003b9d17e5c6fa015d8f340572422a27de932c502760e4a089eef
+          env:
+            TZ: America/Chicago
+          args: ["--delete_source", "--skip_existing", "--monitor", "--monitor_trigger", "/input/SentryClips/ARCHIVE_UPLOADED", "--motion_only", "--output", "/output", "/input/SentryClips", "/input/SavedClips"]
+          probes:
+            liveness: &probes
+              enabled: false
+            readiness: *probes
+            startup:
+              enabled: false
+          securityContext:
+            fsGroup: 1001
+      pod:
+        securityContext:
+          fsGroup: 1001
+
+
+  persistence:
+    telsa:
+      existingClaim: nas-tesla-pvc
+      globalMounts:
+        - path: /input
+    media:
+      existingClaim: nas-media-pvc
+      advancedMounts:
+        main:
+          main:
+            - path: /output
+              readOnly: false
+              subPath: Videos/tesla_dashcam/

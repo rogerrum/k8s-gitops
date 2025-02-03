@@ -213,3 +213,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: tesla-dashcam
+    namespace: default
+    path: main/homelab/tesla-dashcam
+    manifest-paths: /main/homelab/tesla-dashcam
+    sync-wave: "-1"
+    helm:
+      enabled: true
