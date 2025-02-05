@@ -7,7 +7,7 @@ dependencies:
     repository: https://bjw-s.github.io/helm-charts/
     alias: intel-gpu-exporter
   - name: intel-device-plugins-gpu
-    version: 0.31.1
+    version: 0.32.0
     repository: https://intel.github.io/helm-charts
   - name: intel-device-plugins-operator
     version: 0.32.0
