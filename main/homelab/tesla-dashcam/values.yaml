@@ -19,6 +19,10 @@ app-template:
           securityContext:
             fsGroup: 1001
       pod:
+        pod:
+          nodeSelector:
+            google.feature.node.kubernetes.io/coral: "true"
+            intel.feature.node.kubernetes.io/gpu: "true"
         securityContext:
           fsGroup: 1001
 
