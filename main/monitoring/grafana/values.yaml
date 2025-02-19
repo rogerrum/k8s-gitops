@@ -9,10 +9,6 @@ grafana:
 
   rbac:
     pspEnabled: false
-
-  # tolerations:
-  # - key: "arm"
-  #   operator: "Exists"
   deploymentStrategy:
     type: Recreate
   podAnnotations:
@@ -52,8 +48,6 @@ grafana:
       cert-manager.io/revision-history-limit: "3"
       cert-manager.io/duration: "2160h"
       cert-manager.io/renew-before: "720h"
-
-
     hosts: [ grafana.rsr.net ]
     tls:
       - hosts:
@@ -386,8 +380,6 @@ grafana:
       team_ids:
       allowed_organizations:
       name: Auth0
-      client_id: # Set by env vars
-      client_secret: # Set by env vars
       scopes: openid profile email
       auth_url: https://rogerrum.us.auth0.com/authorize
       token_url: https://rogerrum.us.auth0.com/oauth/token
