@@ -135,6 +135,14 @@ applications:
     helm:
       enabled: true
 
+  - name: trivy
+    namespace: monitoring
+    path: main/monitoring/trivy
+    manifest-paths: /main/monitoring/trivy
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
 #  - name: kubernetes-dashboard
 #    namespace: monitoring
 #    path: main/monitoring/kubernetes-dashboard
