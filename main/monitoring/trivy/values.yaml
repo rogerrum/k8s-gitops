@@ -29,3 +29,12 @@ trivy-operator:
   serviceMonitor:
     enabled: true
     namespace: "monitoring"
+
+  nodeCollector:
+    tolerations:
+      - key: arm
+        operator: Exists
+      - key: arm64
+        operator: Exists
+      - effect: "NoSchedule"
+        operator: "Exists"
