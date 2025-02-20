@@ -100,7 +100,7 @@ victoria-metrics-k8s-stack:
           secretName: vm-alert-cert-tls
     config:
       route:
-        #group_by: ["alertname", "job"]
+        group_by: ["alertname", "job"]
         group_wait: 45s
         group_interval: 10m
         repeat_interval: 12h
