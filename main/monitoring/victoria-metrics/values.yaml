@@ -108,9 +108,6 @@ victoria-metrics-k8s-stack:
           - matchers:
               - alertname=~"WatchDog|InfoInhibitor|KubeMemoryOvercommit"
             receiver: 'blackhole'
-          - matchers:
-              - severity=~"warning|critical"
-            receiver: slack-notifications
           - receiver: pagerduty
             match:
               severity: critical
