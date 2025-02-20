@@ -109,10 +109,12 @@ victoria-metrics-k8s-stack:
               - alertname=~"WatchDog|InfoInhibitor|KubeMemoryOvercommit"
             receiver: 'blackhole'
           - receiver: pagerduty
-            match:
-              severity: critical
+            matchers:
+              - severity=~"critical"
             continue: true
           - receiver: discord-notifications
+            matchers:
+              - severity=~"warning|critical"
       inhibit_rules:
         - source_matchers:
             - severity = "critical"
