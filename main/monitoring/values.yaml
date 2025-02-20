@@ -94,6 +94,8 @@ applications:
           - prom-config
       additionalValues:
         - http://localhost/victoria-metrics.yml
+    syncOptions:
+      - Replace=true
 
   - name: speedtest-exporter
     namespace: monitoring
