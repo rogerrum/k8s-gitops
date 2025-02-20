@@ -346,11 +346,12 @@ grafana:
         - name: Prometheus
           type: prometheus
           access: proxy
-          url: http://thanos-query.monitoring.svc.cluster.local:9090
+          url: http://vmsingle-stack.monitoring.svc.cluster.local:8429
           isDefault: true
           jsonData:
-            prometheusType: Thanos
-            timeInterval: 1m
+            timeInterval: "15s"
+            queryTimeout: "60s"
+            httpMethod: POST
         - name: loki
           type: loki
           access: proxy
@@ -358,9 +359,10 @@ grafana:
         - name: Alertmanager
           type: alertmanager
           access: proxy
-          url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+          url: http://vmalertmanager-stack.monitoring.svc.cluster.local:9093
           jsonData:
             implementation: prometheus
+            handleGrafanaManagedAlerts: true
         - name: influxdb
           type: influxdb
           access: proxy
