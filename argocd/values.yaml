@@ -63,6 +63,10 @@ argo-cd:
                 optional: true
 
             - secret:
+                name: victoria-metrics-helm-values
+                optional: true
+
+            - secret:
                 name: minio-helm-values
                 optional: true
             - secret:
