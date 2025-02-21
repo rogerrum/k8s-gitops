@@ -18,7 +18,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host out of memory (instance {{ `{{ $labels.instance }} `}})"
-        description: "Node memory is filling up (< 10% left)\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "Node memory is filling up (< 10% left)\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostMemoryUnderMemoryPressure
       expr: rate(node_vmstat_pgmajfault[1m]) > 1000
       for: 5m
@@ -26,7 +26,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host memory under memory pressure (instance {{ `{{ $labels.instance }} `}})"
-        description: "The node is under heavy memory pressure. High rate of major page faults\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "The node is under heavy memory pressure. High rate of major page faults\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostUnusualNetworkThroughputIn
       expr: sum by (instance) (irate(node_network_receive_bytes_total[2m])) / 1024 / 1024 > 200
       for: 5m
@@ -34,7 +34,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host unusual network throughput in (instance {{ `{{ $labels.instance }} `}})"
-        description: "Host network interfaces are probably receiving too much data (> 100 MB/s)\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "Host network interfaces are probably receiving too much data (> 100 MB/s)\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostUnusualNetworkThroughputOut
       expr: sum by (instance) (irate(node_network_transmit_bytes_total[2m])) / 1024 / 1024 > 200
       for: 5m
@@ -42,7 +42,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host unusual network throughput out (instance {{ `{{ $labels.instance }} `}})"
-        description: "Host network interfaces are probably sending too much data (> 100 MB/s)\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "Host network interfaces are probably sending too much data (> 100 MB/s)\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostOutOfDiskSpace
       expr: (node_filesystem_avail_bytes{mountpoint="/rootfs"}  * 100) / node_filesystem_size_bytes{mountpoint="/rootfs"} < 10
       for: 5m
@@ -50,7 +50,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host out of disk space (instance {{ `{{ $labels.instance }} `}})"
-        description: "Disk is almost full (< 10% left)\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "Disk is almost full (< 10% left)\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostDiskWillFillIn4Hours
       expr: predict_linear(node_filesystem_free_bytes{fstype!~"tmpfs"}[1h], 4 * 3600) < 0
       for: 5m
@@ -58,7 +58,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host disk will fill in 4 hours (instance {{ `{{ $labels.instance }} `}})"
-        description: "Disk will fill in 4 hours at current write rate\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "Disk will fill in 4 hours at current write rate\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostOutOfInodes
       expr: node_filesystem_files_free{mountpoint ="/rootfs"} / node_filesystem_files{mountpoint ="/rootfs"} * 100 < 10
       for: 5m
@@ -66,7 +66,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host out of inodes (instance {{ `{{ $labels.instance }} `}})"
-        description: "Disk is almost running out of available inodes (< 10% left)\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "Disk is almost running out of available inodes (< 10% left)\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostUnusualDiskReadLatency
       expr: rate(node_disk_read_time_seconds_total[1m]) / rate(node_disk_reads_completed_total[1m]) > 100
       for: 5m
@@ -74,7 +74,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host unusual disk read latency (instance {{ `{{ $labels.instance }} `}})"
-        description: "Disk latency is growing (read operations > 100ms)\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "Disk latency is growing (read operations > 100ms)\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostUnusualDiskWriteLatency
       expr: rate(node_disk_write_time_seconds_total[1m]) / rate(node_disk_writes_completed_total[1m]) > 100
       for: 5m
@@ -82,7 +82,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host unusual disk write latency (instance {{ `{{ $labels.instance }} `}})"
-        description: "Disk latency is growing (write operations > 100ms)\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "Disk latency is growing (write operations > 100ms)\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostHighCpuLoad
       expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
       for: 5m
@@ -90,7 +90,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host high CPU load (instance {{ `{{ $labels.instance }} `}})"
-        description: "CPU load is > 80%\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "CPU load is > 80%\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostSwapIsFillingUp
       expr: (1 - (node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes)) * 100 > 80
       for: 5m
@@ -98,7 +98,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host swap is filling up (instance {{ `{{ $labels.instance }} `}})"
-        description: "Swap is filling up (>80%)\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "Swap is filling up (>80%)\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostSystemdServiceCrashed
       expr: node_systemd_unit_state{state="failed"} == 1
       for: 5m
@@ -106,7 +106,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host SystemD service crashed (instance {{ `{{ $labels.instance }} `}})"
-        description: "SystemD service crashed\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "SystemD service crashed\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostPhysicalComponentTooHot
       expr: node_hwmon_temp_celsius > 75
       for: 5m
@@ -114,7 +114,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host physical component too hot (instance {{ `{{ $labels.instance }} `}})"
-        description: "Physical hardware component too hot\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "Physical hardware component too hot\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostNodeOvertemperatureAlarm
       expr: node_hwmon_temp_alarm == 1
       for: 5m
@@ -122,7 +122,7 @@ spec:
         severity: critical
       annotations:
         summary: "Host node overtemperature alarm (instance {{ `{{ $labels.instance }} `}})"
-        description: "Physical node temperature alarm triggered\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "Physical node temperature alarm triggered\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostRaidArrayGotInactive
       expr: node_md_state{state="inactive"} > 0
       for: 5m
@@ -130,7 +130,7 @@ spec:
         severity: critical
       annotations:
         summary: "Host RAID array got inactive (instance {{ `{{ $labels.instance }} `}})"
-        description: "RAID array {{ `{{ $labels.device }} `}} is in degraded state due to one or more disks failures. Number of spare drives is insufficient to fix issue automatically.\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "RAID array {{ `{{ $labels.device }} `}} is in degraded state due to one or more disks failures. Number of spare drives is insufficient to fix issue automatically.\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostRaidDiskFailure
       expr: node_md_disks{state="fail"} > 0
       for: 5m
@@ -138,7 +138,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host RAID disk failure (instance {{ `{{ $labels.instance }} `}})"
-        description: "At least one device in RAID array on {{ `{{ $labels.instance }} `}} failed. Array {{ `{{ $labels.md_device }} `}} needs attention and possibly a disk swap\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "At least one device in RAID array on {{ `{{ $labels.instance }} `}} failed. Array {{ `{{ $labels.md_device }} `}} needs attention and possibly a disk swap\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostOomKillDetected
       expr: increase(node_vmstat_oom_kill[5m]) > 0
       for: 5m
@@ -146,7 +146,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host OOM kill detected (instance {{ `{{ $labels.instance }} `}})"
-        description: "OOM kill detected\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "OOM kill detected\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostEdacCorrectableErrorsDetected
       expr: increase(node_edac_correctable_errors_total[5m]) > 0
       for: 5m
@@ -154,7 +154,7 @@ spec:
         severity: info
       annotations:
         summary: "Host EDAC Correctable Errors detected (instance {{ `{{ $labels.instance }} `}})"
-        description: "{{ `{{ $labels.instance }} `}} has had {{ `{{ printf \"%.0f\" $value }} `}} correctable memory errors reported by EDAC in the last 5 minutes.\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "{{ `{{ $labels.instance }} `}} has had {{ `{{ printf \"%.0f\" $value }} `}} correctable memory errors reported by EDAC in the last 5 minutes.\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostEdacUncorrectableErrorsDetected
       expr: node_edac_uncorrectable_errors_total > 0
       for: 5m
@@ -162,7 +162,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host EDAC Uncorrectable Errors detected (instance {{ `{{ $labels.instance }} `}})"
-        description: "{{ `{{ $labels.instance }} `}} has had {{ `{{ printf \"%.0f\" $value }} `}} uncorrectable memory errors reported by EDAC in the last 5 minutes.\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "{{ `{{ $labels.instance }} `}} has had {{ `{{ printf \"%.0f\" $value }} `}} uncorrectable memory errors reported by EDAC in the last 5 minutes.\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostNetworkReceiveErrors
       expr: increase(node_network_receive_errs_total[5m]) > 0
       for: 15m
@@ -170,7 +170,7 @@ spec:
         severity: warning
       annotations:
         summary: "Host Network Receive Errors (instance {{ `{{ $labels.instance }} `}})"
-        description: "{{ `{{ $labels.instance }} `}} interface {{ `{{ $labels.device }} `}} has encountered {{ `{{ printf \"%.0f\" $value }} `}} receive errors in the last five minutes.\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "{{ `{{ $labels.instance }} `}} interface {{ `{{ $labels.device }} `}} has encountered {{ `{{ printf \"%.0f\" $value }} `}} receive errors in the last five minutes.\n  VALUE = {{ `{{ $value }} `}}"
     - alert: HostNetworkTransmitErrors
       expr: increase(node_network_transmit_errs_total[5m]) > 0
       for: 15m
@@ -178,4 +178,4 @@ spec:
         severity: warning
       annotations:
         summary: "Host Network Transmit Errors (instance {{ `{{ $labels.instance }} `}})"
-        description: "{{ `{{ $labels.instance }} `}} interface {{ `{{ $labels.device }} `}} has encountered {{ `{{ printf \"%.0f\" $value }} `}} transmit errors in the last five minutes.\n  VALUE = {{ `{{ $value }} `}}\n  LABELS: {{ `{{ $labels }} `}}"
+        description: "{{ `{{ $labels.instance }} `}} interface {{ `{{ $labels.device }} `}} has encountered {{ `{{ printf \"%.0f\" $value }} `}} transmit errors in the last five minutes.\n  VALUE = {{ `{{ $value }} `}}"
