@@ -1,0 +1,27 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+  name: server-tracker-rules
+  namespace: monitoring
+spec:
+  groups:
+  - name: server-tracker.rules
+    rules:
+    - alert: ServerRebootRequired
+      annotations:
+        description: Server requires a reboot
+        summary: Server {{`{{$labels.host}}`}} needs manual reboot since last 7 days
+      expr: min_over_time(server_reboot_needed[7d]) == 1
+      labels:
+        severity: warning
+    - alert: ServerRebootRequired15d
+      annotations:
+        description: Server requires a reboot for critical issues
+        summary: Server {{`{{$labels.host}}`}} needs manual reboot since last 15 days
+      expr: min_over_time(server_reboot_needed[15d]) == 1
+      labels:
+        severity: critical
