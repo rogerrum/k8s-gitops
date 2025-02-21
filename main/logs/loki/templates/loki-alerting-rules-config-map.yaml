@@ -59,7 +59,7 @@ data:
         rules:
           - alert: NodeRedUnableToReachHomeAssistant
             expr: |
-              sum by (app) (count_over_time({app="node-red"} |~ "(?i)home assistant.*connecting to undefined"[2m])) > 0
+              sum by (app) (count_over_time({app="node-red"} |~ "(?i)home assistant.*connecting to"[2m])) > 0
             for: 2m
             labels:
               severity: critical
