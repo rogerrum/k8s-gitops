@@ -130,13 +130,7 @@ loki:
     tolerations:
       - key: "arm64"
         operator: "Exists"
-    extraVolumeMounts:
-      - name: rules
-        mountPath: /rules/fake
-    extraVolumes:
-      - name: rules
-        configMap:
-          name: loki-alerting-rules
+
 
   monitoring:
     dashboards:

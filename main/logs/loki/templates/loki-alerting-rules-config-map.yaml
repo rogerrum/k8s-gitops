@@ -4,6 +4,8 @@ kind: ConfigMap
 metadata:
   name: loki-alerting-rules
   namespace: logs
+  labels:
+    loki_rule: "true"
 data:
   loki-alerting-rules.yaml: |-
     groups:
