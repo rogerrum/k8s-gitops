@@ -15,4 +15,4 @@ spec:
             severity: warning
           annotations:
             summary: Nginx latency high (instance {{`{{$labels.instance}}`}} )
-            description: "Nginx p99 latency is higher than 3 seconds\n  VALUE = {{`{{$value}}`}} \n  LABELS = {{`{{$labels}}`}}"
+            description: "Nginx p99 latency is higher than 3 seconds\n  VALUE = {{`{{$value}}`}}"

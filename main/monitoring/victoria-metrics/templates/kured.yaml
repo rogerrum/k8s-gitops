@@ -13,9 +13,9 @@ spec:
     rules:
     - alert: RebootRequired
       annotations:
-        description: Node(s) require a manual reboot
-        summary: Reboot daemon has failed to do so for 24 hours
-      expr: max(kured_reboot_required) != 0
+        description: Node require a manual reboot
+        summary: Reboot daemon has failed to do reboot node {{`{{$labels.node}}`}} for 24 hours
+      expr: max by (node) (kured_reboot_required) != 0
       for: 24h
       labels:
         severity: warning
