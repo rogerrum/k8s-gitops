@@ -25,6 +25,20 @@ spec:
       expr: min_over_time(server_reboot_needed{container="pushgateway"}[15d]) == 1
       labels:
         severity: critical
+    - alert: ServerRebootAdvised
+      annotations:
+        description: Server have not been rebooted for a while
+        summary: Server {{`{{$labels.host}}`}} has not been rebooted for 30 days
+      expr: time() - server_last_reboot_time{container="pushgateway"}  > 30d
+      labels:
+        severity: warning
+    - alert: ServerMissingPing
+      annotations:
+        description: Server missed ping for 2 hours
+        summary: Server {{`{{$labels.host}}`}} missed ping for 2 hours
+      expr: time() - server_last_push_time{container="pushgateway"}  > 2h
+      labels:
+        severity: critical
     - alert: ServerUpdateNeeded
       annotations:
         description: Server requires a updated
