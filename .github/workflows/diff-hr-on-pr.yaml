@@ -97,12 +97,7 @@ jobs:
 
       - name: Auto Merge PR if no changes
         if: ${{ contains(steps.diff.outputs.diff, 'No changes in detected in resources') }}
-        uses: actions/github-script@v6
+        uses: peter-evans/enable-pull-request-automerge@v3
         with:
-          script: |
-            github.pulls.merge({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-              merge_method: 'squash'
-            })
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
