@@ -98,5 +98,4 @@ jobs:
       - name: Debug Diff Output
         run: |
           echo "Diff Output:"
-          echo "${{ steps.diff.outputs.diff }}"
           echo "${{ steps.diff.outputs.diff == '```diff\nNo changes in detected in resources\n```' }}"
