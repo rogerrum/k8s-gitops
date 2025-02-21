@@ -32,8 +32,8 @@ trivy-operator:
 
   nodeCollector:
     tolerations:
-      - key: arm
-        operator: Exists
+#      - key: arm
+#        operator: Exists
       - key: arm64
         operator: Exists
       - effect: "NoSchedule"
