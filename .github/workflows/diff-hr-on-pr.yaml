@@ -95,7 +95,14 @@ jobs:
           body: "${{ steps.diff.outputs.diff }}"
           edit-mode: replace
 
-      - name: Debug Diff Output
-        run: |
-          echo "Diff Output:"
-          echo "${{ contains(steps.diff.outputs.diff, 'No changes in detected in resources') }}"
+      - name: Auto Merge PR if no changes
+        if: ${{ contains(steps.diff.outputs.diff, 'No changes in detected in resources') }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.pulls.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              merge_method: 'squash'
+            })
