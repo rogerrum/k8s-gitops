@@ -113,11 +113,13 @@ grafana:
             path: /var/lib/grafana/dashboards/thanos
   dashboards:
     default:
+      # Ref: https://grafana.com/grafana/dashboards/22413-k8s-node-metrics-multi-clusters-node-exporter-prometheus-grafana11-2024-en/
       1-node-exporter:
-        url: https://grafana.com/api/dashboards/11074/revisions/9/download
+        url: https://grafana.com/api/dashboards/22413/revisions/4/download
         datasource: Prometheus
       cert-manager:
-        url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
+        gnetId: 20842
+        revision: 3
         datasource: Prometheus
       cloudnative-pg:
         url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-dashboard.json
@@ -134,6 +136,9 @@ grafana:
       home-assistant:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/home_assistant.json
         datasource: home_assistant
+      loki-logs:
+        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/loki_logs.json
+        datasource: Loki
       # Ref: https://grafana.com/grafana/dashboards/13177-ipmi-for-prometheus/
       ipmi:
         gnetId: 13177
@@ -157,8 +162,11 @@ grafana:
       prometheus-exporter-summary:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/prometheus_exporter_summary.json
         datasource: Prometheus
+      # Ref: https://grafana.com/grafana/dashboards/22651-prometheus-speedtest-exporter/
+      # renovate: dashboardName="Prometheus Speedtest Exporter"
       speedtest-exporter:
-        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/speedtest-exporter.json
+        gnetId: 22651
+        revision: 1
         datasource: Prometheus
       speedtest-exporter-hub:
         # renovate: dashboardName="Speedtest-Exporter Dashboard"
@@ -167,6 +175,16 @@ grafana:
         datasource:
           - name: "DS_PROMETHEUS"
             value: Prometheus
+      spegel:
+        # renovate: depName="Spegel"
+        gnetId: 18089
+        revision: 1
+        datasource:
+          - { name: DS_PROMETHEUS, value: Prometheus }
+      trivy:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-addons-trivy-operator.json
+        datasource:
+          - { name: DS_PROMETHEUS, value: Prometheus }
       # Ref: https://grafana.com/grafana/dashboards/11315
       unifi-client-insights:
         gnetId: 11315
@@ -328,11 +346,12 @@ grafana:
         - name: Prometheus
           type: prometheus
           access: proxy
-          url: http://thanos-query.monitoring.svc.cluster.local:9090
+          url: http://vmsingle-stack.monitoring.svc.cluster.local:8429
           isDefault: true
           jsonData:
-            prometheusType: Thanos
-            timeInterval: 1m
+            timeInterval: "15s"
+            queryTimeout: "60s"
+            httpMethod: POST
         - name: loki
           type: loki
           access: proxy
@@ -340,9 +359,10 @@ grafana:
         - name: Alertmanager
           type: alertmanager
           access: proxy
-          url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+          url: http://vmalertmanager-stack.monitoring.svc.cluster.local:9093
           jsonData:
             implementation: prometheus
+            handleGrafanaManagedAlerts: true
         - name: influxdb
           type: influxdb
           access: proxy

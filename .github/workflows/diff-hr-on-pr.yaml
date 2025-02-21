@@ -94,3 +94,10 @@ jobs:
           issue-number: "${{ github.event.pull_request.number }}"
           body: "${{ steps.diff.outputs.diff }}"
           edit-mode: replace
+
+      - name: Auto Merge PR if no changes
+        if: ${{ contains(steps.diff.outputs.diff, 'No changes in detected in resources') }}
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash

@@ -57,21 +57,11 @@ applications:
     helm:
       enabled: true
 
-  - name: kube-prometheus-stack
+  - name: victoria-metrics
     namespace: monitoring
-    path: main/monitoring/kube-prometheus-stack
-    manifest-paths: /main/monitoring/kube-prometheus-stack
+    path: main/monitoring/victoria-metrics
+    manifest-paths: /main/monitoring/victoria-metrics
     sync-wave: "-1"
-    ignoreDifferences:
-      - kind: MutatingWebhookConfiguration
-        jsonPointers:
-          - /webhooks/0/failurePolicy
-      - kind: ValidatingWebhookConfiguration
-        jsonPointers:
-          - /webhooks/0/failurePolicy
-      - kind: ServiceAccount
-        jsonPointers:
-          - /imagePullSecrets
     helm:
       enabled: true
       secrets:
@@ -79,7 +69,9 @@ applications:
         keys:
           - prom-config
       additionalValues:
-        - http://localhost/kube-prometheus-stack.yml
+        - http://localhost/victoria-metrics.yml
+    syncOptions:
+      - Replace=true
 
   - name: speedtest-exporter
     namespace: monitoring
@@ -88,20 +80,6 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
-
-  - name: thanos
-    namespace: monitoring
-    path: main/monitoring/thanos
-    manifest-paths: /main/monitoring/thanos
-    sync-wave: "-1"
-    helm:
-      enabled: true
-      secrets:
-        enabled: true
-        keys:
-          - minio-config
-      additionalValues:
-        - http://localhost/thanos.yml
 
   - name: unifi-poller
     namespace: monitoring
@@ -135,10 +113,10 @@ applications:
     helm:
       enabled: true
 
-#  - name: kubernetes-dashboard
-#    namespace: monitoring
-#    path: main/monitoring/kubernetes-dashboard
-#    manifest-paths: /main/monitoring/kubernetes-dashboard
-#    sync-wave: "-1"
-#    helm:
-#      enabled: true
+  - name: trivy
+    namespace: monitoring
+    path: main/monitoring/trivy
+    manifest-paths: /main/monitoring/trivy
+    sync-wave: "-1"
+    helm:
+      enabled: true

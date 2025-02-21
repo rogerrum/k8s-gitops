@@ -56,16 +56,16 @@ prometheus-blackbox-exporter:
       - name: router
         url: 192.168.1.1
         module: icmp
-      - name: home-lb
+      - name: home-nw-4-pi2-wireguard
         url: 192.168.1.232
         module: icmp
-      - name: home-lb-pihole
+      - name: home-nw-1-pi3-pihole
         url: 192.168.1.237
         module: icmp
-      - name: home-vpn-0-pi3
+      - name: home-nw-2-pi3-haproxy
         url: 192.168.1.190
         module: icmp
-      - name: home-vpn-1-pi0
+      - name: home-nw-3-pi0-tailscale
         url: 192.168.1.191
         module: icmp
 #      - name: garage

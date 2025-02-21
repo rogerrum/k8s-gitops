@@ -1,0 +1,7 @@
+name: victoria-metrics
+apiVersion: v2
+version: 1.0.0
+dependencies:
+  - name: victoria-metrics-k8s-stack
+    version: 0.36.2
+    repository: oci://ghcr.io/victoriametrics/helm-charts

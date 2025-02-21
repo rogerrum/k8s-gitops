@@ -9,7 +9,7 @@ app-template:
             tag: v0.120@sha256:733bff15f2529065f1c1b50b13e4a56a541d3c0615dbc6b4b6a07befbfcc27ff
           env:
             TZ: America/Chicago
-            ALERTMANAGER_URI: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+            ALERTMANAGER_URI: http://vmalertmanager-stack.monitoring.svc.cluster.local:9093
           probes:
             liveness: &probes
               enabled: true

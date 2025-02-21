@@ -29,16 +29,6 @@ applications:
       - CreateNamespace=true
       - RespectIgnoreDifferences=true
 
-#  - name: promtail
-#    namespace: logs
-#    path: main/logs/promtail
-#    manifest-paths: /main/logs/promtail
-#    sync-wave: "-1"
-#    helm:
-#      enabled: true
-#    syncOptions:
-#      - CreateNamespace=true
-
   - name: vector
     namespace: logs
     path: main/logs/vector

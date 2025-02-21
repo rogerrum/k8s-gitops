@@ -1,0 +1,41 @@
+trivy-operator:
+  operator:
+    replicas: 1
+    scanJobsConcurrentLimit: 4
+    scanJobTTL: 10s
+    builtInTrivyServer: true
+    vulnerabilityScannerScanOnlyCurrentRevisions: true
+    configAuditScannerScanOnlyCurrentRevisions: true
+    metricsVulnIdEnabled: true
+
+  trivyOperator:
+    scanJobTolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+
+  trivy:
+    ignoreUnfixed: true
+    mode: ClientServer
+    storageClassName: "longhorn"
+
+    slow: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 100M
+      limits:
+        memory: 2Gi
+
+  serviceMonitor:
+    enabled: true
+    namespace: "monitoring"
+
+  nodeCollector:
+    excludeNodes: kubernetes.io/arch=arm
+    tolerations:
+#      - key: arm
+#        operator: Exists
+      - key: arm64
+        operator: Exists
+      - effect: "NoSchedule"
+        operator: "Exists"
