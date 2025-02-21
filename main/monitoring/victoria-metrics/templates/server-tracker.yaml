@@ -41,7 +41,7 @@ spec:
         severity: critical
     - alert: ServerUpdateNeeded
       annotations:
-        description: Server requires a updated
+        description: Server requires a update
         summary: Server {{`{{$labels.host}}`}} has updates available.
       expr: server_updates_available{container="pushgateway"} > 5
       for: 5d
