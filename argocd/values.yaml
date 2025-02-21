@@ -585,7 +585,6 @@ argo-cd:
         headers:
         - name: Content-Type
           value: application/json
-#    logLevel: debug
     bots:
       slack: 
         serviceAccount:
