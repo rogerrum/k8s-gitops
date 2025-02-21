@@ -31,8 +31,7 @@ trivy-operator:
     namespace: "monitoring"
 
   nodeCollector:
-    excludeNodes:
-      - "kubernetes.io/arch=arm"
+    excludeNodes: kubernetes.io/arch=arm
     tolerations:
 #      - key: arm
 #        operator: Exists
