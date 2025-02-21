@@ -15,7 +15,8 @@ spec:
       annotations:
         description: Node require a manual reboot
         summary: Reboot daemon has failed to do reboot node {{`{{$labels.node}}`}} for 24 hours
-      expr: min_over_time(kured_reboot_required[24h]) == 1
+      expr: kured_reboot_required > 0
+      for: 24h
       labels:
         severity: warning
     - alert: RebootScheduled
