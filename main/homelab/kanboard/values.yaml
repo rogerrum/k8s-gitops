@@ -52,7 +52,7 @@ app-template:
 
   initContainers:
     init-db:
-      image: ghcr.io/onedr0p/postgres-init:14.10
+      image: ghcr.io/onedr0p/postgres-init:16.8
       env:
         - name: INIT_POSTGRES_HOST
           value: postgres-v15-rw.kube-system.svc.cluster.local
