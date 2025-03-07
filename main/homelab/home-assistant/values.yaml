@@ -76,6 +76,32 @@ app-template:
       skipuninstall: true
       size: "10Gi"
 
+    hass-gcp-sa-json:
+      enabled: true
+      type: secret
+      name: home-assistant-gcp-sa-secret
+      subPath: home-assistant-0ed67c5e16f3.json
+      mountPath: /config/home-assistant-0ed67c5e16f3.json
+      readOnly: true
+    tmp:
+      enabled: true
+      type: emptyDir
+      globalMounts:
+        - path: /tmp
+
+    docker-env-empty:
+      enabled: true
+      type: emptyDir
+      subPath: .dockerenv
+      mountPath: /.dockerenv
+      readOnly: true
+
+    config-tts:
+      enabled: true
+      type: emptyDir
+      globalMounts:
+        - path: /config/tts
+
     tts-fix:
       enabled: true
       type: emptyDir
@@ -102,6 +128,8 @@ app-template:
       workingDir: "/config"
       args:
         - --user-data-dir
+        - "/config/.vscode"
+        - --extensions-dir
         - "/config/.vscode"
         - --auth
         - "none"
