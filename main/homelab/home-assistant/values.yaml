@@ -98,7 +98,7 @@ app-template:
       readOnly: true
 
     config-tts:
-      enabled: false
+      enabled: true
       type: emptyDir
       globalMounts:
         - path: /config/tts
