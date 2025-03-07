@@ -83,6 +83,7 @@ app-template:
       subPath: home-assistant-0ed67c5e16f3.json
       mountPath: /config/home-assistant-0ed67c5e16f3.json
       readOnly: true
+
     tmp:
       enabled: true
       type: emptyDir
@@ -97,7 +98,7 @@ app-template:
       readOnly: true
 
     config-tts:
-      enabled: true
+      enabled: false
       type: emptyDir
       globalMounts:
         - path: /config/tts
