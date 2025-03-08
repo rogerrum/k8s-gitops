@@ -21,6 +21,8 @@ app-template:
             # FFMPEG_LOGLEVEL: debug
             LIBVA_DRIVER_NAME: i965
             FILTER_BLOCK: True
+            CONNECT_TIMEOUT: 60
+            IGNORE_OFFLINE: True
           envFrom:
             - secretRef:
                 name: wyze-bridge-secret
