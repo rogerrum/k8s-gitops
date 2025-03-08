@@ -1,4 +1,7 @@
 app-template:
+  defaultPodOptions:
+    hostNetwork: true
+    dnsPolicy: ClusterFirstWithHostNet
   controllers:
     main:
       annotations:
