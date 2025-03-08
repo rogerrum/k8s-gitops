@@ -43,6 +43,8 @@ app-template:
 
   service:
     main:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.100.71
       ports:
         http:
           enabled: true
