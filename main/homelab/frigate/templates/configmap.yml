@@ -90,6 +90,9 @@ data:
     
     cameras:
       basement_room:
+        motion:
+          mask:
+            - 0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035
         ffmpeg:
           inputs:
             - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1'
@@ -117,7 +120,7 @@ data:
       basement_main:
         motion:
           mask:
-            - 0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035
+            - 0.549,0.033,0.549,0.082,0.95,0.087,0.95,0.033
         ffmpeg:
           inputs:
             - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=1'
@@ -134,7 +137,7 @@ data:
       deck:
         motion:
           mask:
-            - 0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035
+            - 0.497,0.05,0.497,0.106,0.948,0.106,0.948,0.05
         ffmpeg:
           inputs:
             - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=1'
@@ -151,7 +154,7 @@ data:
       porch:
         motion:
           mask:
-            - 0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035
+            - 0.624,0.036,0.624,0.081,0.963,0.081,0.963,0.036
         ffmpeg:
           inputs:
             - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=4&subtype=1'
@@ -170,7 +173,7 @@ data:
         motion:
           mask:
             - 91,168,283,62,438,0,0,0,0,0,0,92,0,247
-            - 0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035
+            - 0.547,0.035,0.547,0.085,0.948,0.085,0.948,0.035
         objects:
           filters:
             bird:
@@ -196,7 +199,7 @@ data:
       server:
         motion:
           mask:
-            - 0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035
+            - 0.55,0.033,0.55,0.081,0.945,0.081,0.945,0.033
         ffmpeg:
           inputs:
             - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=6&subtype=1'
