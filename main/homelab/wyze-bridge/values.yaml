@@ -15,9 +15,11 @@ app-template:
           env:
             TZ: America/Chicago
             H264_ENC: h264_qsv
-            NET_MODE: LAN
+            NET_MODE: ANY
+            #NET_MODE: LAN
             ON_DEMAND: False
-            SUBSTREAM: True
+            #SUBSTREAM: True
+            SUBSTREAM: False
             MOTION_API: True
             MQTT_HOST: emqx.default.svc.cluster.local:1883
             MQTT_DTOPIC: homeassistant
