@@ -111,4 +111,5 @@ homepage:
 #        name: "gethomepage-secret"
   env:
     TZ: America/Chicago
+    HOMEPAGE_ALLOWED_HOSTS: home.rsr.net
 
