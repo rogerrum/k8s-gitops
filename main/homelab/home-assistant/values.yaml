@@ -1,7 +1,7 @@
 app-template:
   image:
     repository: ghcr.io/home-assistant/home-assistant
-    tag: 2025.4.0
+    tag: 2025.4.1
   env:
     TZ: "America/Chicago"
 
@@ -186,7 +186,7 @@ app-template:
 
   initContainers:
     fix-tts:
-      image: ghcr.io/home-assistant/home-assistant:2025.4.0
+      image: ghcr.io/home-assistant/home-assistant:2025.4.1
       command: [ 'sh', '-c', 'sed  "s/base_url = get_url(hass)/base_url = get_url(hass,prefer_external=True)/g" /usr/src/homeassistant/homeassistant/components/media_player/browse_media.py > /ttsFix/tts.py' ]
       volumeMounts:
         - mountPath: /ttsFix
