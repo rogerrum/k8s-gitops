@@ -15,14 +15,14 @@ spec:
       annotations:
         description: Server requires a reboot
         summary: Server {{`{{$labels.host}}`}} needs manual reboot since last 7 days
-      expr: min_over_time(server_reboot_needed{container="pushgateway"}[7d]) == 1
+      expr: min(min_over_time(server_reboot_needed{container="pushgateway"}[7d])) by (host) == 1
       labels:
         severity: warning
     - alert: ServerRebootRequired25d
       annotations:
         description: Server requires a reboot for critical issues
         summary: Server {{`{{$labels.host}}`}} needs manual reboot since last 25 days
-      expr: min_over_time(server_reboot_needed{container="pushgateway"}[25d]) == 1
+      expr: min(min_over_time(server_reboot_needed{container="pushgateway"}[25d])) by (host) == 1
       labels:
         severity: warning
     - alert: ServerRebootAdvised
