@@ -89,50 +89,50 @@ data:
 
     
     cameras:
-      basement_room:
-        motion:
-          mask:
-            - 0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035
-        ffmpeg:
-          inputs:
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1'
-              #input_args: preset-rtsp-restream
-              roles:
-                - detect
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=0'
-              #input_args: preset-rtsp-restream
-              roles:
-                - record
+{{/*      basement_room:*/}}
+{{/*        motion:*/}}
+{{/*          mask:*/}}
+{{/*            - 0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035*/}}
+{{/*        ffmpeg:*/}}
+{{/*          inputs:*/}}
+{{/*            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1'*/}}
+{{/*              #input_args: preset-rtsp-restream*/}}
+{{/*              roles:*/}}
+{{/*                - detect*/}}
+{{/*            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=0'*/}}
+{{/*              #input_args: preset-rtsp-restream*/}}
+{{/*              roles:*/}}
+{{/*                - record*/}}
 
 
-        objects:
-          track:
-            - person
-          filters:
-            person:
-              min_area: 1500
-              max_area: 100000
-              threshold: 0.80
-              min_score: 0.60
-        live:
-          stream_name: basement_room_record
+{{/*        objects:*/}}
+{{/*          track:*/}}
+{{/*            - person*/}}
+{{/*          filters:*/}}
+{{/*            person:*/}}
+{{/*              min_area: 1500*/}}
+{{/*              max_area: 100000*/}}
+{{/*              threshold: 0.80*/}}
+{{/*              min_score: 0.60*/}}
+{{/*        live:*/}}
+{{/*          stream_name: basement_room_record*/}}
 
-      basement_main:
-        motion:
-          mask:
-            - 0.549,0.033,0.549,0.082,0.95,0.087,0.95,0.033
-        ffmpeg:
-          inputs:
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=1'
-              #input_args: preset-rtsp-restream
-              roles:
-                - detect
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=0'
-              #input_args: preset-rtsp-restream
-              roles:
-                - record
-        live:
-          stream_name: basement_main_record
+{{/*      basement_main:*/}}
+{{/*        motion:*/}}
+{{/*          mask:*/}}
+{{/*            - 0.549,0.033,0.549,0.082,0.95,0.087,0.95,0.033*/}}
+{{/*        ffmpeg:*/}}
+{{/*          inputs:*/}}
+{{/*            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=1'*/}}
+{{/*              #input_args: preset-rtsp-restream*/}}
+{{/*              roles:*/}}
+{{/*                - detect*/}}
+{{/*            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=0'*/}}
+{{/*              #input_args: preset-rtsp-restream*/}}
+{{/*              roles:*/}}
+{{/*                - record*/}}
+{{/*        live:*/}}
+{{/*          stream_name: basement_main_record*/}}
 
       deck:
         motion:
@@ -214,22 +214,22 @@ data:
           stream_name: server_record
 
 
-      living_room:
-        enabled: False
-        ffmpeg:
-          inputs:
-            - path: rtsp://{FRIGATE_WYZE_AUTH}@192.168.1.233/live
-              #input_args: preset-rtsp-restream
-              roles:
-                - detect
-            - path: rtsp://{FRIGATE_WYZE_AUTH}@192.168.1.233/live
-              #input_args: preset-rtsp-restream
-              roles:
-                - record
-        live:
-          stream_name: living_room
+{{/*      living_room:*/}}
+{{/*        enabled: False*/}}
+{{/*        ffmpeg:*/}}
+{{/*          inputs:*/}}
+{{/*            - path: rtsp://{FRIGATE_WYZE_AUTH}@192.168.1.233/live*/}}
+{{/*              #input_args: preset-rtsp-restream*/}}
+{{/*              roles:*/}}
+{{/*                - detect*/}}
+{{/*            - path: rtsp://{FRIGATE_WYZE_AUTH}@192.168.1.233/live*/}}
+{{/*              #input_args: preset-rtsp-restream*/}}
+{{/*              roles:*/}}
+{{/*                - record*/}}
+{{/*        live:*/}}
+{{/*          stream_name: living_room*/}}
 
-        objects:
-          # Optional: list of objects to track from labelmap.txt (default: shown below)
-          track:
-            - car
+{{/*        objects:*/}}
+{{/*          # Optional: list of objects to track from labelmap.txt (default: shown below)*/}}
+{{/*          track:*/}}
+{{/*            - car*/}}
