@@ -1,7 +1,7 @@
 app-template:
   image:
     repository: ghcr.io/zwave-js/zwave-js-ui
-    tag: 10.1.5
+    tag: 10.2.0
   env:
     TZ: "America/Chicago"
     
