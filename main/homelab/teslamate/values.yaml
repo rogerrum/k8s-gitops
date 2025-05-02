@@ -4,7 +4,7 @@ app-template:
       image: ghcr.io/onedr0p/postgres-init:15.5@sha256:70b4c228f2e86de39008a35211c76c1ac6de1dcdf0e908ac09ede6a11e2344e2
       env:
         - name: INIT_POSTGRES_HOST
-          value: postgres-v15-rw.kube-system.svc.cluster.local
+          value: postgres-lb.kube-system.svc.cluster.local
         - name: INIT_POSTGRES_DBNAME
           value: teslamate
         - name: INIT_POSTGRES_SUPER_PASS
@@ -32,7 +32,7 @@ app-template:
     MQTT_HOST: "emqx.default.svc.cluster.local"
     MQTT_PORT: 1883
     DATABASE_NAME: teslamate
-    DATABASE_HOST: postgres-v15-rw.kube-system.svc.cluster.local
+    DATABASE_HOST: postgres-lb.kube-system.svc.cluster.local
   envFrom:
     - secretRef:
         name: teslamate-secret
