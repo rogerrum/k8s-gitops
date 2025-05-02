@@ -23,5 +23,5 @@ activeDatabases:
 clusterUpgrade:
   enabled: true
   newClusterName: postgres-v17
-  newClusterImage: ghcr.io/cloudnative-pg/postgresql:17.2
+  newClusterImage: ghcr.io/cloudnative-pg/postgresql:17.4
   currentClusterName: postgres-v15
