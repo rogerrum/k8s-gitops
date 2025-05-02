@@ -381,7 +381,7 @@ grafana:
         - name: TeslaMate
           type: postgres
           access: proxy
-          url: postgres-v15-rw.kube-system.svc.cluster.local:5432
+          url: postgres-lb.kube-system.svc.cluster.local:5432
           database: teslamate
           user: teslamate
           secureJsonData:
