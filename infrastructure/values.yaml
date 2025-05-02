@@ -36,6 +36,19 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+    syncOptions:
+      - ServerSideApply=true
+    ignoreDifferences:
+      - group: "admissionregistration.k8s.io"
+        kind: MutatingWebhookConfiguration
+        name: cnpg-mutating-webhook-configuration
+        jqPathExpressions:
+          - .webhooks[].clientConfig.caBundle
+      - group: "admissionregistration.k8s.io"
+        kind: ValidatingWebhookConfiguration
+        name: cnpg-validating-webhook-configuration
+        jqPathExpressions:
+          - .webhooks[].clientConfig.caBundle
 
   - name: descheduler
     namespace: kube-system
