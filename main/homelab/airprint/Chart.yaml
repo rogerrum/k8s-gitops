@@ -15,4 +15,4 @@ maintainers:
 dependencies:
   - name: app-template
     version: 1.5.1
-    repository: https://bjw-s.github.io/helm-charts/
+    repository: https://bjw-s-labs.github.io/helm-charts/
