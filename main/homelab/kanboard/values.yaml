@@ -21,7 +21,7 @@ app-template:
           name: kanboard-secret
           key: DB_PASSWORD
     DB_PORT: null
-    DB_HOSTNAME: "postgres.kube-system.svc.cluster.local"
+    DB_HOSTNAME: "postgres-lb.kube-system.svc.cluster.local"
     LOG_DRIVER: stdout
     MAIL_CONFIGURATION: "false"
 
@@ -55,7 +55,7 @@ app-template:
       image: ghcr.io/onedr0p/postgres-init:14.10
       env:
         - name: INIT_POSTGRES_HOST
-          value: postgres.kube-system.svc.cluster.local
+          value: postgres-lb.kube-system.svc.cluster.local
         - name: INIT_POSTGRES_DBNAME
           value: kanboard
         - name: INIT_POSTGRES_SUPER_PASS
