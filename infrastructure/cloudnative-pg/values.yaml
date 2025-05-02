@@ -21,7 +21,7 @@ activeDatabases:
   - planka
 
 clusterUpgrade:
-  enabled: false
+  enabled: true
   newClusterName: postgres-v17
   newClusterImage: ghcr.io/cloudnative-pg/postgresql:17.2
   currentClusterName: postgres-v15
