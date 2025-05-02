@@ -18,7 +18,7 @@ app-template:
       - name: POSTGRES_PORT
         value: "5432"
       - name: POSTGRES_SERVER
-        value: postgres-v15-rw.kube-system.svc.cluster.local
+        value: postgres.kube-system.svc.cluster.local
       - name: POSTGRES_USER
         value: mealie
       - name: TZ
@@ -37,7 +37,7 @@ app-template:
     DB_ENGINE: postgres
     DB_TYPE: postgres
     POSTGRES_USER: mealie
-    POSTGRES_SERVER: postgres-v15-rw.kube-system.svc.cluster.local
+    POSTGRES_SERVER: postgres.kube-system.svc.cluster.local
     POSTGRES_PORT: 5432
     POSTGRES_DB: mealie
     POSTGRES_PASSWORD:
@@ -85,7 +85,7 @@ app-template:
       image: ghcr.io/onedr0p/postgres-init:14.10
       env:
         - name: INIT_POSTGRES_HOST
-          value: postgres-v15-rw.kube-system.svc.cluster.local
+          value: postgres.kube-system.svc.cluster.local
         - name: INIT_POSTGRES_DBNAME
           value: mealie
         - name: INIT_POSTGRES_SUPER_PASS
