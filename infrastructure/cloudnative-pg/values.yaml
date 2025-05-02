@@ -13,7 +13,7 @@ cluster:
   image: ghcr.io/cloudnative-pg/postgresql:17.4
 
 previousCluster:
-  enabled: true
+  enabled: false
   name: postgres-v15
   image: ghcr.io/cloudnative-pg/postgresql:15.2
 
