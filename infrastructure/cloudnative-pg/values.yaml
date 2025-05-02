@@ -14,8 +14,8 @@ cluster:
 
 previousCluster:
   enabled: false
-  name: postgres-v15
-  image: ghcr.io/cloudnative-pg/postgresql:15.2
+  name: postgres-v17
+  image: ghcr.io/cloudnative-pg/postgresql:17.4
 
 activeDatabases:
   - mealie
@@ -27,9 +27,9 @@ activeDatabases:
 
 clusterUpgrade:
   enabled: false
-  newClusterName: postgres-v17
+  newClusterName: postgres-vXX
   newClusterImage: ghcr.io/cloudnative-pg/postgresql:17.4
-  currentClusterName: postgres-v15
+  currentClusterName: postgres-v17
 
 ##  3 step upgrade process:
 ## 1. Initial setup - Create new cluster and copy data
