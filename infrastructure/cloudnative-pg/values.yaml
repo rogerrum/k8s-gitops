@@ -9,6 +9,11 @@ storage:
 superuserSecret: postgres-superuser-secret
 
 cluster:
+  name: postgres-v17
+  image: ghcr.io/cloudnative-pg/postgresql:17.4
+
+previousCluster:
+  enabled: true
   name: postgres-v15
   image: ghcr.io/cloudnative-pg/postgresql:15.2
 
@@ -21,7 +26,26 @@ activeDatabases:
   - planka
 
 clusterUpgrade:
-  enabled: true
+  enabled: false
   newClusterName: postgres-v17
   newClusterImage: ghcr.io/cloudnative-pg/postgresql:17.4
   currentClusterName: postgres-v15
+
+##  3 step upgrade process:
+## 1. Initial setup - Create new cluster and copy data
+##    - Set clusterUpgrade.enabled: true
+##    - Set newClusterName to your target version (e.g., postgres-v17)
+##    - Set newClusterImage to the desired PostgreSQL version
+##    - Set currentClusterName to your existing cluster name
+##    - Push changes to create new pods and copy data from current cluster
+##
+## 2. Switch to new cluster
+##    - After validating the new cluster is working, update cluster.name to match newClusterName
+##    - Set clusterUpgrade.enabled: false
+##    - Copy current cluster name to previousCluster.name
+##    - Set previousCluster.enabled: true
+##    - This keeps the old cluster running while testing the new one as primary
+##
+## 3. Clean up old cluster
+##    - Once confident the new cluster is stable, set previousCluster.enabled: false
+##    - This will remove the old cluster's resources

@@ -11,3 +11,19 @@ spec:
   backupOwnerReference: self
   cluster:
     name: {{ .Values.cluster.name }}
+---
+{{- if .Values.previousCluster.enabled }}
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: {{ .Values.previousCluster.name }}
+  namespace: kube-system
+spec:
+  #schedule: "@weekly"
+  # daily, 2am UCT
+  schedule: "0 0 2 * * *"
+  immediate: true
+  backupOwnerReference: self
+  cluster:
+    name: {{ .Values.previousCluster.name }}
+{{- end }}
