@@ -61,7 +61,7 @@ spec:
     # this represents an existing cnpg cluster to migrate from (e.g. upgrading from postgres v14 to postgres v15)
     - name: {{ .Values.clusterUpgrade.currentClusterName }}
       connectionParameters:
-        host: {{ .Values.clusterUpgrade.currentClusterName }}-rw.default.svc.cluster.local
+        host: {{ .Values.clusterUpgrade.currentClusterName }}-rw.kube-system.svc.cluster.local
         user: postgres
         dbname: postgres
         sslmode: require
