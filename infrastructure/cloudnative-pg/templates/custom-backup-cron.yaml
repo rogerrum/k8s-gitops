@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Values.liveCluster }}-backup
+  name: {{ .Values.cluster.name }}-backup
 spec:
   schedule: "0 4 * * *"
   concurrencyPolicy: Forbid
@@ -27,7 +27,7 @@ spec:
                 - "/backup.sh"
               env:
                 - name: POSTGRES_HOST
-                  value: {{ .Values.liveCluster }}-rw.kube-system.svc.cluster.local
+                  value: {{ .Values.cluster.name }}-rw.kube-system.svc.cluster.local
                 - name: POSTGRES_USER
                   valueFrom:
                     secretKeyRef:
@@ -39,11 +39,11 @@ spec:
                       name: {{ .Values.superuserSecret }}
                       key: password
                 - name: POSTGRES_DB
-                  value: "mealie,kanboard,home-assistant,webtrees"
+                  value: {{ .Values.activeDatabases | join "," }}
               volumeMounts:
                 - name: backup
                   mountPath: /backups
-                  subPath: {{ .Values.liveCluster }}
+                  subPath: {{ .Values.cluster.name }}
 
           restartPolicy: OnFailure
 

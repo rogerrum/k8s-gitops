@@ -12,7 +12,7 @@ spec:
       protocol: TCP
       targetPort: 5432
   selector:
-    cnpg.io/cluster: {{ .Values.liveCluster }}
+    cnpg.io/cluster: {{ .Values.cluster.name }}
     role: primary
   type: LoadBalancer
   externalTrafficPolicy: Local

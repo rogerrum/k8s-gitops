@@ -2,16 +2,26 @@ cloudnative-pg:
 
   replicaCount: 1
 
-
-replicas : 3
-
 storage:
   size: 20Gi
   storageClass: "longhorn"
 
 superuserSecret: postgres-superuser-secret
 
-liveCluster: postgres-v15
+cluster:
+  name: postgres-v15
+  image: ghcr.io/cloudnative-pg/postgresql:15.2
 
-previousCluster: postgres-v15
+activeDatabases:
+  - mealie
+  - kanboard
+  - teslamate
+  - webtrees
+  - grafana
+  - planka
 
+clusterUpgrade:
+  enabled: false
+  newClusterName: postgres-v17
+  newClusterImage: ghcr.io/cloudnative-pg/postgresql:17.2
+  currentClusterName: postgres-v15
