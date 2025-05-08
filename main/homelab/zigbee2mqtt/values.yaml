@@ -36,6 +36,7 @@ app-template:
             ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
             ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE: 115200
             ZIGBEE2MQTT_CONFIG_SERIAL_DISABLE_LED: "false"
+            ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ember
             ZIGBEE2MQTT_CONFIG_SERIAL_PORT: "/dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_72de2ed2c445ed11a8848da40a86e0b4-if00-port0"
           envFrom:
             - secretRef:
