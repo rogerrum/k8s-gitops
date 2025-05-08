@@ -8,6 +8,8 @@ app-template:
           image:
             repository: ghcr.io/koenkk/zigbee2mqtt
             tag: 2.3.0
+          command: [ "/bin/sh" ]
+          args: [ "-c", "while true; do sleep 10;done" ]
           env:
             TZ: America/Chicago
             ZIGBEE2MQTT_DATA: /config
