@@ -128,7 +128,7 @@ grafana:
         url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
         datasource: Prometheus
       argo-cd:
-        url: https://raw.githubusercontent.com/argoproj/argo-cd/v2.14.11/examples/dashboard.json
+        url: https://raw.githubusercontent.com/argoproj/argo-cd/v3.0.0/examples/dashboard.json
         datasource: Prometheus
       frigate:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/frigate.json
