@@ -89,33 +89,32 @@ data:
 
     
     cameras:
-{{/*      basement_room:*/}}
-{{/*        motion:*/}}
-{{/*          mask:*/}}
-{{/*            - 0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035*/}}
-{{/*        ffmpeg:*/}}
-{{/*          inputs:*/}}
-{{/*            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1'*/}}
-{{/*              #input_args: preset-rtsp-restream*/}}
-{{/*              roles:*/}}
-{{/*                - detect*/}}
-{{/*            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=0'*/}}
-{{/*              #input_args: preset-rtsp-restream*/}}
-{{/*              roles:*/}}
-{{/*                - record*/}}
+      side_room:
+        motion:
+          mask:
+            - 0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035
+        ffmpeg:
+          inputs:
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=8&subtype=1'
+              #input_args: preset-rtsp-restream
+              roles:
+                - detect
+            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=8&subtype=0'
+              #input_args: preset-rtsp-restream
+              roles:
+                - record
 
-
-{{/*        objects:*/}}
-{{/*          track:*/}}
-{{/*            - person*/}}
-{{/*          filters:*/}}
-{{/*            person:*/}}
-{{/*              min_area: 1500*/}}
-{{/*              max_area: 100000*/}}
-{{/*              threshold: 0.80*/}}
-{{/*              min_score: 0.60*/}}
-{{/*        live:*/}}
-{{/*          stream_name: basement_room_record*/}}
+        objects:
+          track:
+            - person
+          filters:
+            person:
+              min_area: 1500
+              max_area: 100000
+              threshold: 0.80
+              min_score: 0.60
+        live:
+          stream_name: side_room_record
 
 {{/*      basement_main:*/}}
 {{/*        motion:*/}}
