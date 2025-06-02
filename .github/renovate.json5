@@ -38,16 +38,16 @@
     '**/archive/**',
   ],
   'helm-values': {
-    fileMatch: [
-      './.+\\.yaml$',
+    managerFilePatterns: [
+      '/./.+\\.yaml$/',
     ],
     ignorePaths: [
       '**/archive/**',
     ],
   },
   kubernetes: {
-    fileMatch: [
-      '\\.yaml$',
+    managerFilePatterns: [
+      '/\\.yaml$/',
     ],
     ignorePaths: [
       '.github',
