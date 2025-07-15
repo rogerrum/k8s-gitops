@@ -43,6 +43,7 @@ data:
           threshold: 0.75
 
     detect:
+      enabled: true
       height: 480
       width: 704
       fps: 5
