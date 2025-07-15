@@ -113,8 +113,8 @@ data:
               max_area: 100000
               threshold: 0.80
               min_score: 0.60
-        live:
-          stream_name: side_room_record
+{{/*        live:*/}}
+{{/*          stream_name: side_room_record*/}}
 
 {{/*      basement_main:*/}}
 {{/*        motion:*/}}
@@ -147,8 +147,8 @@ data:
               #input_args: preset-rtsp-restream
               roles:
                 - record
-        live:
-          stream_name: deck_record
+{{/*        live:*/}}
+{{/*          stream_name: deck_record*/}}
 
       porch:
         motion:
@@ -164,8 +164,8 @@ data:
               #input_args: preset-rtsp-restream
               roles:
                 - record
-        live:
-          stream_name: porch_record
+{{/*        live:*/}}
+{{/*          stream_name: porch_record*/}}
 
 
       driveway:
@@ -192,8 +192,8 @@ data:
               #input_args: preset-rtsp-restream
               roles:
                 - record
-        live:
-          stream_name: driveway_record
+{{/*        live:*/}}
+{{/*          stream_name: driveway_record*/}}
 
       server:
         motion:
@@ -209,8 +209,8 @@ data:
               #input_args: preset-rtsp-restream
               roles:
                 - record
-        live:
-          stream_name: server_record
+{{/*        live:*/}}
+{{/*          stream_name: server_record*/}}
 
 
 {{/*      living_room:*/}}
