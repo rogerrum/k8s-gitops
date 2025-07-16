@@ -152,6 +152,8 @@ data:
 {{/*          stream_name: deck_record*/}}
 
       porch:
+        lpr:
+          enabled: True
         motion:
           mask:
             - 0.624,0.036,0.624,0.081,0.963,0.081,0.963,0.036
@@ -170,6 +172,8 @@ data:
 
 
       driveway:
+        lpr:
+          enabled: True
         motion:
           mask:
             - 91,168,283,62,438,0,0,0,0,0,0,92,0,247
