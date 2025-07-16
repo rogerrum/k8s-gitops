@@ -47,6 +47,8 @@ data:
       height: 480
       width: 704
       fps: 5
+    lpr:
+      enabled: true
 
     record:
       enabled: true
