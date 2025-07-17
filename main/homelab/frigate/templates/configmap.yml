@@ -142,8 +142,6 @@ data:
               max_area: 100000
               threshold: 0.80
               min_score: 0.60
-{{/*        live:*/}}
-{{/*          stream_name: side_room_record*/}}
 
 {{/*      basement_main:*/}}
 {{/*        motion:*/}}
@@ -168,16 +166,19 @@ data:
             - 0.497,0.05,0.497,0.106,0.948,0.106,0.948,0.05
         ffmpeg:
           inputs:
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=1'
+            - path:  rtsp://127.0.0.1:8554/deck_detect
               #input_args: preset-rtsp-restream
               roles:
                 - detect
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=0'
+            - path:  rtsp://127.0.0.1:8554/deck_record
               #input_args: preset-rtsp-restream
               roles:
                 - record
-{{/*        live:*/}}
-{{/*          stream_name: deck_record*/}}
+        live:
+          streams:
+            Main Stream: deck_record
+            Sub Stream: deck_detect
+
 
       porch:
         lpr:
@@ -187,17 +188,18 @@ data:
             - 0.624,0.036,0.624,0.081,0.963,0.081,0.963,0.036
         ffmpeg:
           inputs:
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=4&subtype=1'
+            - path:  rtsp://127.0.0.1:8554/porch_detect
               #input_args: preset-rtsp-restream
               roles:
                 - detect
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=4&subtype=0'
+            - path:  rtsp://127.0.0.1:8554/porch_record
               #input_args: preset-rtsp-restream
               roles:
                 - record
-{{/*        live:*/}}
-{{/*          stream_name: porch_record*/}}
-
+        live:
+          streams:
+            Main Stream: porch_record
+            Sub Stream: porch_detect
 
       driveway:
         lpr:
@@ -217,16 +219,18 @@ data:
               mask:
         ffmpeg:
           inputs:
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=5&subtype=1'
+            - path:  rtsp://127.0.0.1:8554/driveway_detect
               #input_args: preset-rtsp-restream
               roles:
                 - detect
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=5&subtype=0'
+            - path:  rtsp://127.0.0.1:8554/driveway_record
               #input_args: preset-rtsp-restream
               roles:
                 - record
-{{/*        live:*/}}
-{{/*          stream_name: driveway_record*/}}
+        live:
+          streams:
+            Main Stream: driveway_record
+            Sub Stream: driveway_detect
 
       server:
         motion:
@@ -234,34 +238,15 @@ data:
             - 0.55,0.033,0.55,0.081,0.945,0.081,0.945,0.033
         ffmpeg:
           inputs:
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=6&subtype=1'
+            - path:  rtsp://127.0.0.1:8554/server_detect
               #input_args: preset-rtsp-restream
               roles:
                 - detect
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=6&subtype=0'
+            - path:  rtsp://127.0.0.1:8554/server_record
               #input_args: preset-rtsp-restream
               roles:
                 - record
-{{/*        live:*/}}
-{{/*          stream_name: server_record*/}}
-
-
-{{/*      living_room:*/}}
-{{/*        enabled: False*/}}
-{{/*        ffmpeg:*/}}
-{{/*          inputs:*/}}
-{{/*            - path: rtsp://{FRIGATE_WYZE_AUTH}@192.168.1.233/live*/}}
-{{/*              #input_args: preset-rtsp-restream*/}}
-{{/*              roles:*/}}
-{{/*                - detect*/}}
-{{/*            - path: rtsp://{FRIGATE_WYZE_AUTH}@192.168.1.233/live*/}}
-{{/*              #input_args: preset-rtsp-restream*/}}
-{{/*              roles:*/}}
-{{/*                - record*/}}
-{{/*        live:*/}}
-{{/*          stream_name: living_room*/}}
-
-{{/*        objects:*/}}
-{{/*          # Optional: list of objects to track from labelmap.txt (default: shown below)*/}}
-{{/*          track:*/}}
-{{/*            - car*/}}
+        live:
+          streams:
+            Main Stream: server_record
+            Sub Stream: server_detect
