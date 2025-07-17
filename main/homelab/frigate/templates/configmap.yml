@@ -90,7 +90,29 @@ data:
       base_url: http://192.168.1.16:11434
       model: llava:7b
 
-    
+    go2rtc:
+      streams:
+        deck_detect:
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=1'
+        deck_record:
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=0'
+        porch_detect:
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=4&subtype=1'
+        porch_record:
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=4&subtype=0'
+        driveway_detect:
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=5&subtype=1'
+        driveway_record:
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=5&subtype=0'
+        server_detect:
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=6&subtype=1'
+        server_record:
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=6&subtype=0'
+        side_room_detect:
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=8&subtype=1'
+        side_room_record:
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=8&subtype=0'
+
     cameras:
       side_room:
         motion:
@@ -98,11 +120,11 @@ data:
             - 0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035
         ffmpeg:
           inputs:
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=8&subtype=1'
+            - path: rtsp://127.0.0.1:8554/side_room_detect
               #input_args: preset-rtsp-restream
               roles:
                 - detect
-            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=8&subtype=0'
+            - path: rtsp://127.0.0.1:8554/side_room_record
               #input_args: preset-rtsp-restream
               roles:
                 - record
