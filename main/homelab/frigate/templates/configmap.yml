@@ -128,6 +128,10 @@ data:
               #input_args: preset-rtsp-restream
               roles:
                 - record
+        live:
+          streams:
+            Main Stream: side_room_record
+            Sub Stream: side_room_detect
 
         objects:
           track:
