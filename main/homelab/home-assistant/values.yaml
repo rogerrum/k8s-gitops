@@ -22,6 +22,9 @@ app-template:
       ports:
         http:
           port: 8123
+        go2rtc:
+          port: 11984
+
 
   ingress:
     main:
