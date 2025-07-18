@@ -112,6 +112,14 @@ data:
           - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=8&subtype=1'
         side_room_record:
           - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=8&subtype=0'
+        office:
+          - 'rtsp://{FRIGATE_WYZE_AUTH}@192.168.1.88/live'
+        living_room:
+          - 'rtsp://{FRIGATE_TAPO_AUTH}@192.168.1.153/stream1'
+        upstairs:
+          - 'rtsp://{FRIGATE_TAPO_AUTH}@192.168.1.212/stream1'
+        basement:
+          - 'rtsp://{FRIGATE_TAPO_AUTH}@192.168.1.236/stream1'
 
     cameras:
       side_room:
