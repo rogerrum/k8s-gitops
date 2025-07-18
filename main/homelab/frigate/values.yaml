@@ -46,11 +46,15 @@ app-template:
           intel.feature.node.kubernetes.io/gpu: "true"
   service:
     main:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.100.51
       ports:
         http:
           port: *port
         rtsp:
           port: 8554
+        go2rtc:
+          port: 1984
 
   ingress:
     main:
