@@ -55,6 +55,8 @@ app-template:
           port: 8554
         go2rtc:
           port: 1984
+        webrtc:
+          port: 8555
 
   ingress:
     main:
