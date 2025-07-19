@@ -120,6 +120,12 @@ data:
           - 'rtsp://{FRIGATE_TAPO_AUTH}@192.168.1.212/stream1'
         basement:
           - 'rtsp://{FRIGATE_TAPO_AUTH}@192.168.1.236/stream1'
+        garden:
+          - '{FRIGATE_TAPO_CLOUD_AUTH}@192.168.20.82'
+        garage_side:
+          - '{FRIGATE_TAPO_CLOUD_AUTH}@192.168.20.217'
+        ac:
+          - '{FRIGATE_TAPO_CLOUD_AUTH}@192.168.20.110'
 
     cameras:
       side_room:
