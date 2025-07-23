@@ -267,13 +267,13 @@ data:
             Main Stream: server_record
             Sub Stream: server_detect
 
-{{/*      front_door:*/}}
-{{/*        ffmpeg:*/}}
-{{/*          inputs:*/}}
-{{/*            - path:  rtsp://127.0.0.1:8554/front_door*/}}
-{{/*              roles:*/}}
-{{/*                - detect*/}}
-{{/*                - record*/}}
-{{/*        live:*/}}
-{{/*          streams:*/}}
-{{/*            Main Stream: front_door*/}}
+      front_door:
+        ffmpeg:
+          inputs:
+            - path:  rtsp://127.0.0.1:8554/front_door
+              roles:
+                - detect
+                - record
+        live:
+          streams:
+            Main Stream: front_door
