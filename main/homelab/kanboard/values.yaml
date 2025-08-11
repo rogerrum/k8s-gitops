@@ -1,7 +1,7 @@
 app-template:
   image:
     repository: kanboard/kanboard
-    tag: v1.2.46
+    tag: v1.2.47
 
   service:
     main:
