@@ -3,7 +3,7 @@ app-template:
 
   image:
     repository: ghcr.io/nathanvaughn/webtrees
-    tag: "2.2.1"
+    tag: "2.2.4"
 
   service:
     main:
