@@ -1,7 +1,7 @@
 homepage:
   image:
     repository: ghcr.io/gethomepage/homepage
-    tag: v1.4.0
+    tag: v1.4.4
 
   resources:
     requests:
