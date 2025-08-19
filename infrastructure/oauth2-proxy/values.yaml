@@ -1,7 +1,7 @@
 oauth2-proxy:
   image:
     repository: "quay.io/oauth2-proxy/oauth2-proxy"
-    tag: "v7.11.0"
+    tag: "v7.12.0"
   replicaCount: 2
   # tolerations:
   #   - key: "arm"
