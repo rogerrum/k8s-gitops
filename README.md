@@ -11,7 +11,6 @@ _ managed by ArgoCD and serviced with RenovateBot :robot:
 
 <div align="center">
 
-[![k3s](https://img.shields.io/badge/k3s-v1.25.3-blue?style=for-the-badge&logo=kubernetes&logoColor=white)](https://k3s.io/)
 [![GitHub stars](https://img.shields.io/github/stars/rogerrum/k8s-gitops?color=green&style=for-the-badge)](https://github.com/rogerrum/k8s-gitops/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/rogerrum/k8s-gitops?style=for-the-badge)](https://github.com/rogerrum/k8s-gitops/issues)
 [![GitHub last commit](https://img.shields.io/github/last-commit/rogerrum/k8s-gitops?color=purple&style=for-the-badge)](https://github.com/rogerrum/k8s-gitops/commits/main)
