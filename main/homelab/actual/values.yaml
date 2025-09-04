@@ -11,7 +11,7 @@ app-template:
         main:
           image:
             repository: ghcr.io/actualbudget/actual-server
-            tag: 25.8.0
+            tag: 25.9.0
           resources:
             requests:
               cpu: 12m
