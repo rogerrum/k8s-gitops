@@ -346,7 +346,7 @@ grafana:
         - name: Prometheus
           type: prometheus
           access: proxy
-          url: http://vmsingle-stack.monitoring.svc.cluster.local:8429
+          url: http://vmsingle-stack.monitoring.svc.cluster.local:8428
           isDefault: true
           jsonData:
             timeInterval: "15s"
