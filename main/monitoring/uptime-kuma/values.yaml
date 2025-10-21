@@ -1,7 +1,7 @@
 app-template:
   image:
     repository: louislam/uptime-kuma
-    tag: 1.23.16
+    tag: 2.0.1
 
 
   service:
