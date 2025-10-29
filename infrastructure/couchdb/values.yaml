@@ -24,7 +24,7 @@ app-template:
         init-config:
           image:
             repository: public.ecr.aws/docker/library/busybox
-            tag: latest@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74
+            tag: latest@sha256:e3652a00a2fabd16ce889f0aa32c38eec347b997e73bd09e69c962ec7f8732ee
             pullPolicy: IfNotPresent
           command:
             - "/bin/sh"
