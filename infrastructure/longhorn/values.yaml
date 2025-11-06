@@ -1,8 +1,8 @@
 longhorn:
   persistence:
-    defaultClassReplicaCount: 3
+    defaultClassReplicaCount: "3"
   defaultSettings:
-    defaultReplicaCount: 3
+    defaultReplicaCount: "3"
     createDefaultDiskLabeledNodes: true
     backupTarget: s3://longhorn@us-east-1/
     backupTargetCredentialSecret: longhorn-backup-secret
