@@ -93,21 +93,21 @@ data:
     go2rtc:
       streams:
         deck_detect:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1'
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=1'
         deck_record:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=0'
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=0'
         porch_detect:
           - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=4&subtype=1'
         porch_record:
           - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=4&subtype=0'
         driveway_detect:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=1'
-        driveway_record:
-          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=3&subtype=0'
-        server_detect:
           - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=1'
-        server_record:
+        driveway_record:
           - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=0'
+        server_detect:
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=1'
+        server_record:
+          - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=1&subtype=0'
         side_room_detect:
           - '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=8&subtype=1'
         side_room_record:
