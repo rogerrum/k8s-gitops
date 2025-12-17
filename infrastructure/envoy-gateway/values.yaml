@@ -5,3 +5,51 @@ gateway-helm:
         controllerName: gateway.envoyproxy.io/gatewayclass-controller
       extensionApis:
         enableBackend: true
+
+
+error-pages:
+  controllers:
+    error-pages:
+      replicas: 2
+      strategy: RollingUpdate
+      containers:
+        app:
+          image:
+            repository: ghcr.io/tarampampam/error-pages
+            tag: 3.8.0
+          env:
+            TEMPLATE_NAME: orient
+            SHOW_DETAILS: "false"
+          probes:
+            liveness:
+              enabled: true
+            readiness:
+              enabled: true
+            startup:
+              enabled: true
+              spec:
+                failureThreshold: 30
+                periodSeconds: 5
+          resources:
+            requests:
+              cpu: 5m
+              memory: 16M
+            limits:
+              memory: 32M
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop: [ "ALL" ]
+
+  service:
+    app:
+      controller: error-pages
+      ports:
+        http:
+          port: 8080

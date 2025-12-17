@@ -5,3 +5,7 @@ dependencies:
   - name: gateway-helm
     version: v1.6.1
     repository: oci://docker.io/envoyproxy
+  - name: app-template
+    version: 4.5.0
+    repository: oci://ghcr.io/bjw-s-labs/helm
+    alias: error-pages
