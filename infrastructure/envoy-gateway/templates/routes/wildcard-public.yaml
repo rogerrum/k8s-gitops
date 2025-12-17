@@ -14,7 +14,7 @@ spec:
     - "*.techbuzzworld.com"
   rules:
     - backendRefs:
-        - name: error-pages
+        - name: envoy-gateway-error-pages
           port: 8080
           kind: Service
           group: ""
