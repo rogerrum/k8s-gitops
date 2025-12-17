@@ -8,6 +8,8 @@ gateway-helm:
 
 
 error-pages:
+  global:
+    nameOverride: error-pages
   controllers:
     error-pages:
       replicas: 2
