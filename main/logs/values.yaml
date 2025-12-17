@@ -38,3 +38,13 @@ applications:
       enabled: true
     syncOptions:
       - CreateNamespace=true
+
+  - name: fluent-bit
+    namespace: logs
+    path: main/logs/fluent-bit
+    manifest-paths: /main/logs/fluent-bit
+    sync-wave: "0"
+    helm:
+      enabled: true
+    syncOptions:
+      - CreateNamespace=true
