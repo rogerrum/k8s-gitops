@@ -27,20 +27,6 @@ applications:
     syncOptions:
       - RespectIgnoreDifferences=true
 
-  - name: botkube
-    namespace: monitoring
-    path: main/monitoring/botkube
-    manifest-paths: /main/monitoring/botkube
-    sync-wave: "-1"
-    helm:
-      enabled: true
-      secrets:
-        enabled: true
-        keys:
-          - discord-config
-      additionalValues:
-        - http://localhost/botkube.yml
-
   - name: grafana
     namespace: monitoring
     path: main/monitoring/grafana
