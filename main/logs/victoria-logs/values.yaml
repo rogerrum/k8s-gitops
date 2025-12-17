@@ -8,7 +8,6 @@ victoria-logs-single:
       size: 20Gi
     serviceMonitor:
       enabled: true
-
     ingress:
       enabled: true
       ingressClassName: nginx
@@ -25,11 +24,15 @@ victoria-logs-single:
         cert-manager.io/duration: "2160h"
         cert-manager.io/renew-before: "720h"
       hosts:
-        - vm-logs.rsr.net
+        - name: vm-logs.rsr.net
+          path:
+            - /
+          port: http
       tls:
         - hosts:
             - vm-logs.rsr.net
           secretName: vm-logs-cert-tls
+
   dashboards:
     enabled: true
     annotations:
