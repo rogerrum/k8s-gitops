@@ -74,7 +74,7 @@ fluent-bit:
       [OUTPUT]
         name http
         match kubernetes.*
-        host victoria-logs-server.monitoring.svc.cluster.local
+        host victoria-logs.logs.svc.cluster.local
         port 9428
         uri /insert/jsonline?_stream_fields=stream,k_namespace_name,k_pod_name,app&_msg_field=log&_time_field=date
         format json_lines

@@ -48,3 +48,13 @@ applications:
       enabled: true
     syncOptions:
       - CreateNamespace=true
+
+  - name: victoria-logs
+    namespace: logs
+    path: main/logs/victoria-logs
+    manifest-paths: /main/logs/victoria-logs
+    sync-wave: "0"
+    helm:
+      enabled: true
+    syncOptions:
+      - CreateNamespace=true
