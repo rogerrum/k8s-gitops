@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/gateway_v1.json
+# Gateway for internal/local DNS records (piHole)
+# Routes referencing this gateway will have DNS records pointing to 192.168.100.151 (local gateway IP)
+# This provides ISP outage resilience by allowing local DNS resolution
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: internal
+  namespace: kube-system
+spec:
+  gatewayClassName: eg-standard
+  infrastructure:
+    annotations:
+      #lbipam.cilium.io/ips: "192.168.100.151"
+      metallb.universe.tf/loadBalancerIPs: "192.168.100.151"
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: "*.rsr.net"
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.rsr.net"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: acme-crt-secret
+            namespace: cert-manager
