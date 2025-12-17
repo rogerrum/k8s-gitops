@@ -12,24 +12,19 @@ victoria-metrics-k8s-stack:
     operator:
       disable_prometheus_converter: false # Ensure we keep enabled the converter to sync prom rules to VM rules
       enable_converter_ownership: true # Required to allow VM to remove VM rules it imports if a prometheus rule is deleted
-  
+
   defaultDashboards:
     enabled: true
     grafanaOperator:
       # -- Create dashboards as CRDs (requires grafana-operator to be installed)
       enabled: false
-  
+
   defaultRules:
     create: true
-    rules:
-      groups:
-        kubernetesSystemControllerManager:
-          create: false
-        etcd:
-          create: false
-        kubernetesSystemScheduler:
-          create: false
-  
+    groups:
+      k8sContainerMemorySwap:
+        create: false
+
   vmsingle:
     enabled: true
     spec:
@@ -101,10 +96,11 @@ victoria-metrics-k8s-stack:
     config:
       route:
         group_by: ["alertname", "job"]
-        group_wait: 45s
+        group_wait: 30s
         group_interval: 10m
         repeat_interval: 12h
         routes:
+          # Route 1: Blackhole for noise
           - matchers:
               - alertname=~"WatchDog|InfoInhibitor|KubeMemoryOvercommit"
             receiver: 'blackhole'
@@ -273,8 +269,18 @@ victoria-metrics-k8s-stack:
     enabled: true
   
   kubeControllerManager:
-    enabled: false
-  
+    enabled: true
+    vmScrape:
+      spec:
+        endpoints:
+          - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+            port: http-metrics
+            scheme: https
+            tlsConfig:
+              caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+              insecureSkipVerify: true
+              serverName: localhost
+
   coreDns:
     enabled: true
   
@@ -282,8 +288,18 @@ victoria-metrics-k8s-stack:
     enabled: false
   
   kubeScheduler:
-    enabled: false
-  
+    enabled: true
+    vmScrape:
+      spec:
+        endpoints:
+          - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+            port: http-metrics
+            scheme: https
+            tlsConfig:
+              caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+              insecureSkipVerify: true
+              serverName: localhost
+
   kubeProxy:
     enabled: false
   
