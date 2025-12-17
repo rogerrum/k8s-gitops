@@ -7,37 +7,6 @@ repo:
 
 
 applications:
-#  - name: loki
-#    namespace: logs
-#    path: main/logs/loki
-#    manifest-paths: /main/logs/loki
-#    sync-wave: "-1"
-#    ignoreDifferences:
-#      - group: "*"
-#        kind: "StatefulSet"
-#        jqPathExpressions:
-#          - .spec.persistentVolumeClaimRetentionPolicy
-#    helm:
-#      enabled: true
-#      secrets:
-#        enabled: true
-#        keys:
-#          - minio-config
-#      additionalValues:
-#        - http://localhost/loki.yml
-#    syncOptions:
-#      - CreateNamespace=true
-#      - RespectIgnoreDifferences=true
-#
-#  - name: vector
-#    namespace: logs
-#    path: main/logs/vector
-#    manifest-paths: /main/logs/vector
-#    sync-wave: "0"
-#    helm:
-#      enabled: true
-#    syncOptions:
-#      - CreateNamespace=true
 
   - name: fluent-bit
     namespace: logs
