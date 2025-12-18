@@ -39,6 +39,11 @@ app-template:
           port: &port 5006
   route:
     main:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Tools
+        gethomepage.dev/icon: sh-actual-budget
+        gethomepage.dev/name: Actual-new
       enabled: true
       parentRefs:
         - name: internal
