@@ -12,6 +12,19 @@ app-template:
           image:
             repository: ghcr.io/actualbudget/actual-server
             tag: 25.12.0
+          env:
+            TZ: "America/Chicago"
+          probes:
+            liveness:
+              enabled: true
+            readiness:
+              enabled: true
+            startup:
+              enabled: true
+              spec:
+                failureThreshold: 30
+                periodSeconds: 5
+
           resources:
             requests:
               cpu: 12m
@@ -24,6 +37,22 @@ app-template:
       ports:
         http:
           port: 5006
+  route:
+    main:
+      enabled: true
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - actual.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: actual
+              port: 8000
 
   ingress:
     main:
@@ -44,9 +73,6 @@ app-template:
         - host: &host "actual.rsr.net"
           paths:
             - path: /
-              service:
-                name: main
-                port: http
       tls:
         - hosts:
             - *host
@@ -55,6 +81,7 @@ app-template:
   persistence:
     data:
       enabled: true
+      suffix: data
       storageClass: "longhorn"
       size: 5Gi
       accessMode: ReadWriteOnce
