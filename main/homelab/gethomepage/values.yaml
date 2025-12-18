@@ -86,6 +86,7 @@ homepage:
 #          site: "{{HOMEPAGE_VAR_UNIFI_SITE}}"
     kubernetes:
       mode: cluster
+      gateway: true
     settings:
       layout:
         Home:
