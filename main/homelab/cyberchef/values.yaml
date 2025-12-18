@@ -1,21 +1,24 @@
 app-template:
-  controller:
-    replicas: 1
-    strategy: RollingUpdate
-  image:
-    repository: docker.io/mpepping/cyberchef
-    tag: v10.19.4
-  env:
-    TZ: America/Chicago
+  controllers:
+    cyberchef:
+      containers:
+        app:
+          image:
+            repository: docker.io/mpepping/cyberchef
+            tag: v10.19.4
+          env:
+            TZ: America/Chicago
   service:
-    main:
+    app:
+      controller: cyberchef
       ports:
         http:
           port: 8000
+
   ingress:
     main:
       enabled: true
-      ingressClassName: "nginx"
+      className: "nginx"
       annotations:
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Tools
