@@ -1,59 +1,73 @@
 app-template:
-  image:
-    repository: rogerrum/cups-airprint
-    tag: "1.0.0"
-    pullPolicy: IfNotPresent
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: rogerrum/cups-airprint
+            tag: "1.0.0"
+            pullPolicy: IfNotPresent
+          env:
+            TZ: "America/Chicago"
+            CUPS_ADMIN_USER: "admin"
+            CUPS_ADMIN_PASSWORD: "admin"
+            CUPS_REMOTE_ADMIN: "yes"
+            CUPS_WEBINTERFACE: "yes"
+            CUPS_SHARE_PRINTERS: "yes"
+            CUPS_ACCESS_LOGLEVEL: access
+            CUPS_LOGLEVEL: info
+            CUPS_LPADMIN_PRINTER1: "lpadmin -p Air-Brother-HL-2270DW -D 'Airprinter Brother-HL-2270DW' -m 'HL2270DW.ppd' -o PageSize=A4 -v lpd://192.168.1.58/BINARY_P1"
+            CUPS_LPADMIN_PRINTER1_ENABLE: cupsenable Air-Brother-HL-2270DW
+            CUPS_LPADMIN_PRINTER1_ACCEPT: cupsaccept Air-Brother-HL-2270DW
+            CUPS_HOSTNAME: "airprint.rsr.net"
+            CUPS_ENV_DEBUG: "yes"
+          securityContext:
+            privileged: true
 
-  strategy:
-    type: Recreate
+      strategy: Recreate
 
-  hostNetwork: true
-  dnsPolicy: ClusterFirstWithHostNet
+      pod:
+        hostNetwork: true
+        dnsPolicy: ClusterFirstWithHostNet
+        enableServiceLinks: true
 
-  securityContext:
-    privileged: true
-
-  probes:
-    startup:
-      enabled: false
-
-    liveness:
-      enabled: false
-
-    readiness:
-      enabled: false
-
-  env:
-    TZ: "America/Chicago"
-    CUPS_ADMIN_USER: "admin"
-    CUPS_ADMIN_PASSWORD: "admin"
-    CUPS_REMOTE_ADMIN: "yes"
-    CUPS_WEBINTERFACE: "yes"
-    CUPS_SHARE_PRINTERS: "yes"
-    CUPS_ACCESS_LOGLEVEL: access
-    CUPS_LOGLEVEL: info
-    CUPS_LPADMIN_PRINTER1: "lpadmin -p Air-Brother-HL-2270DW -D 'Airprinter Brother-HL-2270DW' -m 'HL2270DW.ppd' -o PageSize=A4 -v lpd://192.168.1.58/BINARY_P1"
-    CUPS_LPADMIN_PRINTER1_ENABLE: cupsenable Air-Brother-HL-2270DW
-    CUPS_LPADMIN_PRINTER1_ACCEPT: cupsaccept Air-Brother-HL-2270DW
-    CUPS_HOSTNAME: "airprint.rsr.net"
-    CUPS_ENV_DEBUG: "yes"
 
   service:
     main:
       type: LoadBalancer
-      loadBalancerIP: 192.168.100.52
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: 192.168.100.52
       ports:
         http:
-          port: 631
+          port: &port 631
 
-  ingress:
+  route:
     main:
-      enabled: true
       annotations:
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Tools
         gethomepage.dev/icon: https://raw.githubusercontent.com/rogerrum/icons/refs/heads/main/images/airprint.png
         gethomepage.dev/name: Airprint
+      enabled: true
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - airprint.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: airprint
+              port: *port
+
+  ingress:
+    main:
+      enabled: true
+      className: "nginx"
+      annotations:
         kubernetes.io/ingress.class: nginx
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
@@ -71,8 +85,5 @@ app-template:
             - airprint.rsr.net
           secretName: airprint-cert-tls
 
-  persistence:
-    config:
-      enabled: false
 
 
