@@ -48,7 +48,7 @@ app-template:
           namespace: kube-system
           sectionName: https
       hostnames:
-        - rsr.net
+        - www.rsr.net
 
   ingress:
     main:
