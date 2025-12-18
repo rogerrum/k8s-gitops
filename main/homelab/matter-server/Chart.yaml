@@ -1,0 +1,8 @@
+name: matter-server
+apiVersion: v2
+version: 1.0.0
+dependencies:
+  - name: app-template
+    version: 4.5.0
+    repository: oci://ghcr.io/bjw-s-labs/helm
+

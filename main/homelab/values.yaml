@@ -80,6 +80,14 @@ applications:
     helm:
       enabled: true
 
+  - name: matter-server
+    namespace: default
+    path: main/homelab/matter-server
+    manifest-paths: /main/homelab/matter-server
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
   - name: minio
     namespace: default
     path: main/homelab/minio

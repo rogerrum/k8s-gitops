@@ -1,0 +1,107 @@
+app-template:
+  controllers:
+    main:
+      annotations:
+        reloader.stakater.com/auto: "true"
+      containers:
+        main:
+          image:
+            repository: ghcr.io/home-assistant-libs/python-matter-server
+            tag: 8.1.0@sha256:170aa093ce91c76cde4cc390918307590f0f5558fcec93f913af3cb019e6562a
+          env:
+            TZ: America/Chicago
+            MATTER_SERVER__INSTANCE_NAME: matter-server
+            MATTER_SERVER__PORT: &port 5580
+            MATTER_SERVER__APPLICATION_URL: &host "matter.rsr.net"
+            MATTER_SERVER__LOG_LEVEL: info
+          args:
+            - --storage-path=/data
+            - --paa-root-cert-dir=/data/credentials
+            - --bluetooth-adapter=0
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              memory: 100Mi
+
+      pod:
+        securityContext:
+          runAsNonRoot: false
+          runAsUser: 0
+          runAsGroup: 0
+          fsGroup: 0
+          fsGroupChangePolicy: OnRootMismatch
+          supplementalGroups: [ 34 ]
+
+  service:
+    main:
+      ports:
+        http:
+          port: *port
+
+  route:
+    main:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Home
+        gethomepage.dev/icon: home-assistant
+        gethomepage.dev/name: Matter Server
+      enabled: true
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - matter.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: matter-server
+              port: *port
+
+  ingress:
+    main:
+      enabled: true
+      className: "nginx"
+      annotations:
+        cert-manager.io/issuer: step-issuer
+        cert-manager.io/issuer-kind: StepClusterIssuer
+        cert-manager.io/issuer-group: certmanager.step.sm
+        cert-manager.io/revision-history-limit: "3"
+        cert-manager.io/duration: "2160h"
+        cert-manager.io/renew-before: "720h"
+        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
+        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
+      hosts:
+        - host: &host "matter.rsr.net"
+          paths:
+            - path: /
+      tls:
+        - hosts:
+            - *host
+          secretName: matter-server-tls
+
+  persistence:
+    data:
+      enabled: true
+      storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      suffix: data
+      size: "1Gi"
+      retain: true
+      advancedMounts:
+        main:
+          main:
+            - path: /data
+    tmp:
+      enabled: true
+      type: emptyDir
+      advancedMounts:
+        main:
+          main:
+            - path: /tmp
+
+
