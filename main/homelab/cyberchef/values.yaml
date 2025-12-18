@@ -1,16 +1,16 @@
 app-template:
   controllers:
-    cyberchef:
+    main:
       containers:
-        app:
+        main:
           image:
             repository: docker.io/mpepping/cyberchef
             tag: v10.19.4
           env:
             TZ: America/Chicago
   service:
-    app:
-      controller: cyberchef
+    main:
+      controller: main
       ports:
         http:
           port: 8000
