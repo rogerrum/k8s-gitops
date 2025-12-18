@@ -43,7 +43,7 @@ app-template:
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Tools
         gethomepage.dev/icon: sh-actual-budget
-        gethomepage.dev/name: Actual-new
+        gethomepage.dev/name: Actual
       enabled: true
       parentRefs:
         - name: internal
@@ -64,10 +64,6 @@ app-template:
       enabled: true
       className: "nginx"
       annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/group: Tools
-        gethomepage.dev/icon: sh-actual-budget
-        gethomepage.dev/name: Actual
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
         cert-manager.io/issuer-group: certmanager.step.sm
