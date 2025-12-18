@@ -36,7 +36,7 @@ app-template:
     main:
       ports:
         http:
-          port: 5006
+          port: &port 5006
   route:
     main:
       enabled: true
@@ -52,7 +52,7 @@ app-template:
                 value: /
           backendRefs:
             - name: actual
-              port: 8000
+              port: *port
 
   ingress:
     main:
