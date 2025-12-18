@@ -15,6 +15,23 @@ app-template:
         http:
           port: 8000
 
+  route:
+    main:
+      enabled: true
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - tools.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: cyberchef
+              port: 8000
+
   ingress:
     main:
       enabled: true
