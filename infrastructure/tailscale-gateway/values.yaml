@@ -1,41 +1,60 @@
 app-template:
-  serviceAccount:
-    create: true
-    name: tailscale
 
-  image:
-    repository: ghcr.io/tailscale/tailscale
-    tag: v1.92.4
-  env:
-    TZ: "America/Chicago"
-    TS_KUBE_SECRET: "tailscale-auth"
-    SA_NAME: tailscale
-    TS_USERSPACE: "true"
-    TS_ROUTES: "192.168.1.0/24"
-    TS_EXTRA_ARGS: "--advertise-exit-node"
-  envFrom:
-    - secretRef:
-        name: tailscale-auth
+  serviceAccount:
+    tailscale:
+      staticToken: true
+
+  controllers:
+    main:
+      serviceAccount:
+        identifier: tailscale
+
+
+      pod:
+        enableServiceLinks: false
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+
+      containers:
+        main:
+          image:
+            repository: ghcr.io/tailscale/tailscale
+            tag: v1.92.4
+          env:
+            TZ: "America/Chicago"
+            TS_KUBE_SECRET: "tailscale-auth"
+            SA_NAME: tailscale
+            TS_USERSPACE: "true"
+            TS_ROUTES: "192.168.1.0/24"
+            TS_EXTRA_ARGS: "--advertise-exit-node"
+          envFrom:
+            - secretRef:
+                name: tailscale-auth
+          probes:
+            liveness:
+              enabled: false
+            readiness:
+              enabled: false
+            startup:
+              enabled: false
+
+
+          resources:
+            requests:
+              cpu: 12m
+              memory: 128M
+            limits:
+              memory: 512M
 
   service:
     main:
       enabled: false
       ports:
         http:
-          port: 45387
+          port: &port 45387
 
-  podSecurityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
 
   ingress:
     main:
-      enabled: false
-
-  probes:
-    liveness:
-      enabled: false
-    readiness:
-      enabled: false
-    startup:
       enabled: false
