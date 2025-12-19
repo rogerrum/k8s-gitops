@@ -1,33 +1,66 @@
 app-template:
-  image:
-    repository: louislam/uptime-kuma
-    tag: 2.0.2
+  controllers:
+    main:
+      pod:
+        enableServiceLinks: false
+      containers:
+        main:
+          image:
+            repository: louislam/uptime-kuma
+            tag: 2.0.2
+          env:
+            TZ: "America/Chicago"
+            NODE_EXTRA_CA_CERTS: /rootcert/ca.crt
+            UPTIME_KUMA_DISABLE_FRAME_SAMEORIGIN: "0"
+            UPTIME_KUMA_PORT: &port 3001
+          probes:
+            liveness:
+              enabled: false
+            readiness:
+              enabled: false
+            startup:
+              enabled: false
 
+
+          resources:
+            requests:
+              cpu: 12m
+              memory: 128M
+            limits:
+              memory: 512M
 
   service:
     main:
-      enabled: true
       ports:
         http:
-          port: &port 3001
-
-  # See more environment variables in the statping documentation
-  # https://github.com/statping/statping/wiki/Config-with-.env-File
-  env:
-    TZ: "America/Chicago"
-    NODE_EXTRA_CA_CERTS: /rootcert/ca.crt
-    UPTIME_KUMA_DISABLE_FRAME_SAMEORIGIN: "0"
-    UPTIME_KUMA_PORT: *port
-
-  ingress:
+          port: *port
+  route:
     main:
-      enabled: true
       annotations:
         gethomepage.dev/enabled: 'true'
         gethomepage.dev/group: Monitoring
         gethomepage.dev/icon: uptime-kuma
         gethomepage.dev/name: Uptime-kuma
-        kubernetes.io/ingress.class: nginx
+      enabled: true
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - up.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: uptime-kuma
+              port: *port
+
+  ingress:
+    main:
+      enabled: true
+      className: "nginx"
+      annotations:
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
         cert-manager.io/issuer-group: certmanager.step.sm
@@ -35,10 +68,9 @@ app-template:
         cert-manager.io/duration: "2160h"
         cert-manager.io/renew-before: "720h"
       hosts:
-        - host: &host up.rsr.net
+        - host: &host "up.rsr.net"
           paths:
             - path: /
-              pathType: Prefix
       tls:
         - hosts:
             - *host
@@ -46,23 +78,18 @@ app-template:
 
   persistence:
     data:
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-      skipuninstall: true
-      size: "3Gi"
-      mountPath: /app/data
       enabled: true
+      suffix: data
+      storageClass: "longhorn"
+      size: 5Gi
+      accessMode: ReadWriteOnce
+      advancedMounts:
+        main:
+          main:
+            - path: /app/data
     rootcert:
       enabled: true
       type: secret
       name: *tls-cert
 
-  probes:
-    startup:
-      enabled: false
 
-    liveness:
-      enabled: false
-
-    readiness:
-      enabled: false
