@@ -1,47 +1,62 @@
 app-template:
-  image:
-    repository: ghcr.io/zwave-js/zwave-js-ui
-    tag: 11.9.0
-  env:
-    TZ: "America/Chicago"
-    
-  securityContext:
-    privileged: true
+  controllers:
+    zwave:
+      containers:
+        app:
+          image:
+            repository: ghcr.io/zwave-js/zwave-js-ui
+            tag: 11.9.0@sha256:f2f10ee88405c1be4bc3e3d4fe76def141d0d5febe5ecd6100970b2fb1e208b2
+          env:
+            TZ: America/Chicago
+            PORT: &port 8091
+          probes:
+            liveness: &probes
+              enabled: true
+              custom: true
+              spec:
+                httpGet:
+                  path: /health
+                  port: *port
+                initialDelaySeconds: 0
+                periodSeconds: 10
+                timeoutSeconds: 1
+                failureThreshold: 3
+            readiness: *probes
+          securityContext:
+            privileged: true
+          resources:
+            requests:
+              cpu: 10m
+              memory: 200Mi
+            limits:
+              memory: 512Mi
 
+  defaultPodOptions:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: nortek.feature.node.kubernetes.io/zwave
+                  operator: In
+                  values:
+                    - "true"
+    tolerations:
+      - key: "arm64"
+        operator: "Exists"
   service:
-    main:
+    app:
+      controller: zwave
       ports:
-        websockets:
-          enabled: true
-          port: 3000
         http:
-          enabled: true
-          port: &port 8091
-
-  probes:
-    liveness: &probes
-      enabled: true
-      custom: true
-      spec:
-        httpGet:
-          path: /health
           port: *port
-        initialDelaySeconds: 0
-        periodSeconds: 10
-        timeoutSeconds: 1
-        failureThreshold: 3
-    readiness: *probes
-    startup:
-      enabled: false
+        websocket:
+          port: 3000
 
   ingress:
     main:
       enabled: true
       annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/group: Home
-        gethomepage.dev/icon: zwavejs2mqtt
-        gethomepage.dev/name: Zwavejs2mqtt
         kubernetes.io/ingress.class: "nginx"
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
@@ -60,28 +75,43 @@ app-template:
         - hosts:
             - "zwavejs2mqtt.rsr.net"
           secretName: zwavejs2mqtt-cert
+
+  route:
+    main:
+      enabled: true
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Home
+        gethomepage.dev/icon: zwavejs2mqtt
+        gethomepage.dev/name: Zwavejs2mqtt
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - zwavejs2mqtt.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: zwave2mqtt
+              port: 8091
+
   persistence:
     config:
-      enabled: true
-      emptyDir:
-        enabled: false
-      mountPath: /usr/src/app/store
+      suffix: config
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
       size: "1Gi"
-      skipuninstall: true
+      globalMounts:
+        - path: /usr/src/app/store
+    tmp:
+      type: emptyDir
 
     usb:
-      enabled: true
       type: hostPath
       hostPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if00-port0
       hostPathType: CharDevice
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - { key: "nortek.feature.node.kubernetes.io/zwave", operator: In, values: [ "true" ] }
-  tolerations:
-    - key: "arm64"
-      operator: "Exists"
+
+
