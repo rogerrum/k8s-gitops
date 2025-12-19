@@ -43,15 +43,32 @@ victoria-metrics-k8s-stack:
         requests:
           cpu: 530m
           memory: 2Gi
-    
-    ingress:
+
+    route:
       enabled: true
-      ingressClassName: nginx
       annotations:
         gethomepage.dev/enabled: 'true'
         gethomepage.dev/group: Monitoring
         gethomepage.dev/icon: sh-victoriametrics
         gethomepage.dev/name: VM
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - vm.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: vmsingle-stack
+              port: 8428
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
         kubernetes.io/ingress.class: nginx
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
@@ -70,14 +87,30 @@ victoria-metrics-k8s-stack:
     enabled: true
     spec:
       externalURL: "https://vm-alert.rsr.net"
-    ingress:
+    route:
       enabled: true
-      ingressClassName: nginx
       annotations:
         gethomepage.dev/enabled: 'true'
         gethomepage.dev/group: Monitoring
         gethomepage.dev/icon: prometheus
         gethomepage.dev/name: Alertmanager
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - vm-alert.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: vmalertmanager-stack
+              port: 9093
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
         kubernetes.io/ingress.class: nginx
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
@@ -140,14 +173,30 @@ victoria-metrics-k8s-stack:
     spec:
       extraArgs:
         external.url: "https://vmalert.rsr.net"
-    ingress:
+    route:
       enabled: true
-      ingressClassName: nginx
       annotations:
         gethomepage.dev/enabled: 'true'
         gethomepage.dev/group: Monitoring
         gethomepage.dev/icon: prometheus
         gethomepage.dev/name: VMalert
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - vmalert.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: vmalert-stack
+              port: 8080
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
         kubernetes.io/ingress.class: nginx
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
@@ -166,14 +215,30 @@ victoria-metrics-k8s-stack:
   
   vmagent:
     enabled: true
-    ingress:
+    route:
       enabled: true
-      ingressClassName: nginx
       annotations:
         gethomepage.dev/enabled: 'true'
         gethomepage.dev/group: Monitoring
         gethomepage.dev/icon: sh-victoriametrics
         gethomepage.dev/name: vmagent
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - vmagent.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: vmagent-stack
+              port: 8429
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
         kubernetes.io/ingress.class: nginx
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
