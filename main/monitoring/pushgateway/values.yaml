@@ -5,10 +5,6 @@ prometheus-pushgateway:
     enabled: true
     className: nginx
     annotations:
-      gethomepage.dev/enabled: "true"
-      gethomepage.dev/group: Monitoring
-      gethomepage.dev/icon: prometheus
-      gethomepage.dev/name: Pushgateway
       cert-manager.io/issuer: step-issuer
       cert-manager.io/issuer-kind: StepClusterIssuer
       cert-manager.io/issuer-group: certmanager.step.sm
@@ -21,6 +17,21 @@ prometheus-pushgateway:
       - hosts:
           - pushgateway.rsr.net
         secretName: pushgateway-cert-tls
+
+  route:
+    main:
+      enabled: true
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Monitoring
+        gethomepage.dev/icon: prometheus
+        gethomepage.dev/name: Pushgateway
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+
+      hostnames:
+        - pushgateway.rsr.net
 
   serviceMonitor:
     enabled: true
