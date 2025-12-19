@@ -48,7 +48,7 @@ app-template:
       controller: main
       ports:
         http:
-          port: 8080
+          port: &port 8080
   ingress:
     main:
       enabled: true
@@ -60,10 +60,6 @@ app-template:
         cert-manager.io/revision-history-limit: "3"
         cert-manager.io/duration: "2160h"
         cert-manager.io/renew-before: "720h"
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/group: Monitoring
-        gethomepage.dev/icon: prometheus
-        gethomepage.dev/name: Karma
       hosts:
         - host: &host karma.rsr.net
           paths:
@@ -75,3 +71,26 @@ app-template:
         - hosts:
             - *host
           secretName: karma-cert-tls
+
+  route:
+    main:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Monitoring
+        gethomepage.dev/icon: prometheus
+        gethomepage.dev/name: Karma
+      enabled: true
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - karma.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: karma
+              port: *port
+
