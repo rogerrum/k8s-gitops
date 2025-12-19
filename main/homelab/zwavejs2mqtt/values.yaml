@@ -95,7 +95,7 @@ app-template:
                 type: PathPrefix
                 value: /
           backendRefs:
-            - name: zwave2mqtt
+            - name: zwavejs2mqtt
               port: 8091
 
   persistence:
