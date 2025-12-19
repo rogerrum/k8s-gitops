@@ -37,10 +37,6 @@ grafana:
   ingress:
     enabled: true
     annotations:
-      gethomepage.dev/enabled: "true"
-      gethomepage.dev/group: Monitoring
-      gethomepage.dev/icon: grafana
-      gethomepage.dev/name: Grafana
       kubernetes.io/ingress.class: "nginx"
       cert-manager.io/issuer: step-issuer
       cert-manager.io/issuer-kind: StepClusterIssuer
@@ -408,3 +404,27 @@ grafana:
     auth.generic_oauth.group_mapping:
       role_attribute_path: |
         contains("https://rsr.net/groups"[*], 'Admin') && 'Admin' || contains("https://rsr.net/groups"[*], 'Editor') && 'Editor' || 'Viewer'
+
+  route:
+    main:
+      enabled: true
+      apiVersion: gateway.networking.k8s.io/v1
+      kind: HTTPRoute
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Monitoring
+        gethomepage.dev/icon: grafana
+        gethomepage.dev/name: Grafana
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - grafana.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: grafana
+              port: 80
