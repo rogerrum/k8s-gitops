@@ -1,0 +1,48 @@
+{{- $fullName := include "external-route.fullname" . -}}
+{{- $labels := include "external-route.labels" . | nindent 4}}
+{{- range .Values.apps }}
+---
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/gateway.envoyproxy.io/backend_v1alpha1.json
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: Backend
+metadata:
+  name: {{ $fullName }}-{{ .name }}
+  labels:
+    {{- $labels}}
+spec:
+  endpoints:
+    - fqdn:
+        hostname: {{ .service.externalName }}
+        port: {{ .port }}
+  {{ if .backendInsecure }}
+  tls:
+    insecureSkipVerify: true
+  {{ end }}
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullName }}-{{ .name }}
+  annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: {{ .homepageGroup }}
+      gethomepage.dev/icon: {{ .homepageIcon }}
+      gethomepage.dev/name: {{ .homepageName }}
+spec:
+  parentRefs:
+    - name: internal
+  hostnames:
+    - {{ .host }}
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - group: gateway.envoyproxy.io
+          kind: Backend
+          name: {{ $fullName }}-{{ .name }}
+          port: {{ .port }}
+{{- end }}

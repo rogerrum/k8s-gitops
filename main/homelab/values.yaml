@@ -198,6 +198,14 @@ applications:
     helm:
       enabled: true
 
+  - name: external-route
+    namespace: default
+    path: main/homelab/external-route
+    manifest-paths: /main/homelab/external-route
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
   - name: teslamate
     namespace: default
     path: main/homelab/teslamate
