@@ -4,8 +4,8 @@ app-template:
     main:
       pod:
         tolerations:
-          - key: "arm"
-            operator: "Exists"
+#          - key: "arm"
+#            operator: "Exists"
           - key: "arm64"
             operator: "Exists"
       containers:
