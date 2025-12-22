@@ -6,20 +6,26 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: {{ $app.namespace }}
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
   annotations:
   {{- if index $app "namespace-sync-wave" }}
     argocd.argoproj.io/sync-wave: {{ index $app "namespace-sync-wave" | quote}}
   {{- end }}
-{{- end}}
+{{- end }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ $app.name }}
   namespace: argocd
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
   annotations:
   {{- if index $app "sync-wave" }}
-    argocd.argoproj.io/sync-wave: {{ index $app "sync-wave" | quote}}
+    argocd.argoproj.io/sync-wave: {{ index $app "sync-wave" | quote }}
   {{- end }}
     argocd.argoproj.io/manifest-generate-paths: {{ index $app "manifest-paths" }}
   finalizers:
@@ -43,9 +49,9 @@ spec:
         - values.yaml
       {{- if $app.helm.additionalValues }}
         {{- range $adIndx, $adVal := $app.helm.additionalValues }}
-        - {{$adVal}}
+        - {{ $adVal }}
         {{- end }}
-        {{- end}}
+        {{- end }}
     {{- end }}
   syncPolicy:
     automated:
@@ -55,7 +61,7 @@ spec:
       - ApplyOutOfSyncOnly=true
     {{- if $app.syncOptions }}
     {{- range $indx, $opt := $app.syncOptions }}
-      - {{$opt}}
+      - {{ $opt }}
     {{- end }}
-    {{- end}}
+    {{- end }}
 {{- end }}
