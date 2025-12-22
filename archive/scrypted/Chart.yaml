@@ -1,7 +1,0 @@
-name: scrypted
-apiVersion: v2
-version: 1.0.0
-dependencies:
-  - name: app-template
-    version: 2.5.0
-    repository: https://bjw-s-labs.github.io/helm-charts/

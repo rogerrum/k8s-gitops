@@ -1,8 +1,0 @@
-name: mariadb
-apiVersion: v2
-version: 1.0.0
-dependencies:
-  - name: mariadb
-    version: 18.0.2
-    repository:  https://charts.bitnami.com/bitnami
-

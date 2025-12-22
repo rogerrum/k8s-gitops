@@ -1,3 +1,0 @@
-traccar:
-  database:
-    password: "$TRACCAR_POSTGRES_PASSWORD"
