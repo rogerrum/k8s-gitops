@@ -59,16 +59,34 @@ app-template:
       controller: couchdb
       ports:
         http:
-          port: 5984
+          port: &port 5984
 
-  ingress:
-    app:
-      enabled: true
+  route:
+    main:
       annotations:
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Infrastructure
         gethomepage.dev/icon: sh-couchdb
         gethomepage.dev/name: CouchDB
+      enabled: true
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - couchdb.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: couchdb
+              port: *port
+
+  ingress:
+    app:
+      enabled: true
+      annotations:
         kubernetes.io/ingress.class: nginx
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
