@@ -55,7 +55,7 @@ app-template:
       type: ClusterIP
       ports:
         http:
-          port: 4000
+          port: &port 4000
 
   route:
     main:
