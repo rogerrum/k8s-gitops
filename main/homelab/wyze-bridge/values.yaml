@@ -79,15 +79,33 @@ app-template:
           enabled: true
           port: 8889
 
-  ingress:
+  route:
     main:
       enabled: true
-      className: "nginx"
       annotations:
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Home
         gethomepage.dev/icon: https://raw.githubusercontent.com/rogerrum/icons/85a25eb81c8c3e57fc192536c981f8ee34f8b555/images/wyze.svg
         gethomepage.dev/name: Wyze Bridge
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - wyze.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: wyze-bridge
+              port: 5000
+
+  ingress:
+    main:
+      enabled: true
+      className: "nginx"
+      annotations:
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
         cert-manager.io/issuer-group: certmanager.step.sm
