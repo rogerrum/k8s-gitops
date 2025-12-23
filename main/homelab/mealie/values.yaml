@@ -1,50 +1,64 @@
 app-template:
-  image:
-    repository: ghcr.io/mealie-recipes/mealie
-    tag: v3.8.0
-    pullPolicy: IfNotPresent
-    env:
-      - name: DB_ENGINE
-        value: postgres
-      - name: DB_TYPE
-        value: postgres
-      - name: POSTGRES_DB
-        value: mealie
-      - name: POSTGRES_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: mealie-secret
-            key: POSTGRES_PASSWORD
-      - name: POSTGRES_PORT
-        value: "5432"
-      - name: POSTGRES_SERVER
-        value: postgres-lb.kube-system.svc.cluster.local
-      - name: POSTGRES_USER
-        value: mealie
-      - name: TZ
-        value: America/Chicago
 
-        
+  controllers:
+    main:
+      initContainers:
+        init-db:
+          image:
+            repository: ghcr.io/onedr0p/postgres-init
+            tag: 17.4
+          env:
+            - name: INIT_POSTGRES_HOST
+              value: postgres-lb.kube-system.svc.cluster.local
+            - name: INIT_POSTGRES_DBNAME
+              value: mealie
+            - name: INIT_POSTGRES_SUPER_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-superuser-secret
+                  key: password
+            - name: INIT_POSTGRES_USER
+              value: mealie
+            - name: INIT_POSTGRES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mealie-secret
+                  key: POSTGRES_PASSWORD
+
+      containers:
+        main:
+          image:
+            repository: ghcr.io/mealie-recipes/mealie
+            tag: v3.8.0
+            pullPolicy: IfNotPresent
+          env:
+            - name: API_URL
+              value: http://localhost:9000
+            - name: DB_ENGINE
+              value: postgres
+            - name: DB_TYPE
+              value: postgres
+            - name: POSTGRES_DB
+              value: mealie
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mealie-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_SERVER
+              value: postgres-lb.kube-system.svc.cluster.local
+            - name: POSTGRES_USER
+              value: mealie
+            - name: TZ
+              value: America/Chicago
   service:
     main:
+      controller: main
       ports:
         http:
           port: 9000
-
-  env:
-    TZ: "America/Chicago"
-    API_URL: "http://localhost:9000"
-    DB_ENGINE: postgres
-    DB_TYPE: postgres
-    POSTGRES_USER: mealie
-    POSTGRES_SERVER: postgres-lb.kube-system.svc.cluster.local
-    POSTGRES_PORT: 5432
-    POSTGRES_DB: mealie
-    POSTGRES_PASSWORD:
-      valueFrom:
-        secretKeyRef:
-          name: mealie-secret
-          key: POSTGRES_PASSWORD
           
   ingress:
     main:
@@ -75,28 +89,10 @@ app-template:
     api-data:
       enabled: true
       storageClass: "longhorn"
+      suffix: "api-data"
       accessMode: ReadWriteOnce
       size: "1Gi"
-      skipuninstall: true
-      mountPath: /app/data/
+      globalMounts:
+        - path: /app/data/
 
-  initContainers:
-    init-db:
-      image: ghcr.io/onedr0p/postgres-init:17.4
-      env:
-        - name: INIT_POSTGRES_HOST
-          value: postgres-lb.kube-system.svc.cluster.local
-        - name: INIT_POSTGRES_DBNAME
-          value: mealie
-        - name: INIT_POSTGRES_SUPER_PASS
-          valueFrom:
-            secretKeyRef:
-              name: postgres-superuser-secret
-              key: password
-        - name: INIT_POSTGRES_USER
-          value: mealie
-        - name: INIT_POSTGRES_PASS
-          valueFrom:
-            secretKeyRef:
-              name: mealie-secret
-              key: POSTGRES_PASSWORD
+
