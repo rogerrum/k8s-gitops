@@ -113,6 +113,15 @@ app-template:
           code-server:
             - path: /config
 
+    hass-cache:
+      storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      size: "1Gi"
+      advancedMounts:
+        home-assistant:
+          app:
+            - path: /config/.venv
+              subPath: hass-venv
     tmpfs:
       type: emptyDir
       advancedMounts:
