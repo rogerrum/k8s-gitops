@@ -20,6 +20,6 @@ spec:
       namespace: kube-system
   rules:
     - backendRefs:
-        - name: longhorn-ui
+        - name: longhorn-frontend
           namespace: longhorn-system
           port: 80
