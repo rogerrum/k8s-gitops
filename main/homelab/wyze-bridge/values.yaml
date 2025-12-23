@@ -33,7 +33,19 @@ app-template:
                 name: wyze-bridge-secret
           securityContext:
             privileged: true
-
+          probes:
+            liveness:
+              enabled: true
+              port: 5000
+            readiness:
+              enabled: true
+              port: 5000
+            startup:
+              enabled: true
+              port: 5000
+              spec:
+                failureThreshold: 30
+                periodSeconds: 5
           resources:
             requests:
               cpu: 1000m
@@ -89,8 +101,7 @@ app-template:
           paths:
             - path: /
               service:
-                name: main
-                port: http
+                port: 5000
       tls:
         - hosts:
             - *host
