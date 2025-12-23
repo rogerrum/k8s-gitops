@@ -14,15 +14,12 @@ app-template:
           fsGroupChangePolicy: OnRootMismatch
 
 
-      initContainers:
-        fix-tts:
-          image:
-            repository: ghcr.io/home-operations/home-assistant
-            tag: 2025.12.4
-          command: [ 'sh', '-c', 'sed  "s/base_url = get_url(hass)/base_url = get_url(hass,prefer_external=True)/g" /usr/src/homeassistant/homeassistant/components/media_player/browse_media.py > /ttsFix/tts.py' ]
-#          volumeMounts:
-#            - mountPath: /ttsFix
-#              name: tts-fix
+#      initContainers:
+#        fix-tts:
+#          image:
+#            repository: ghcr.io/home-operations/home-assistant
+#            tag: 2025.12.4
+#          command: [ 'sh', '-c', 'sed  "s/base_url = get_url(hass)/base_url = get_url(hass,prefer_external=True)/g" /usr/src/homeassistant/homeassistant/components/media_player/browse_media.py > /ttsFix/tts.py' ]
 
 
       containers:
