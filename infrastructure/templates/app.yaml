@@ -6,6 +6,9 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: {{ $app.namespace }}
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
   annotations:
   {{- if index $app "namespace-sync-wave" }}
     argocd.argoproj.io/sync-wave: {{ index $app "namespace-sync-wave" | quote}}
@@ -16,6 +19,9 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ $app.name }}
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
   {{- if index $app "app-namespace" }}
   namespace: {{ index $app "app-namespace" }}
   {{- end }}
