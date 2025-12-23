@@ -1,30 +1,180 @@
 app-template:
-  image:
-    repository: ghcr.io/home-assistant/home-assistant
-    tag: 2025.12.4
-  env:
-    TZ: "America/Chicago"
 
-#  envFrom:
-#    - secretRef:
-#        name: home-assistant-secret
+  defaultPodOptions:
+   hostNetwork: true
+   dnsPolicy: ClusterFirstWithHostNet
 
-  hostNetwork: true
-  dnsPolicy: ClusterFirstWithHostNet
+  controllers:
+    home-assistant:
+      pod:
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          fsGroup: 1000
+          fsGroupChangePolicy: OnRootMismatch
 
-  securityContext:
-    privileged: true
+
+      initContainers:
+        fix-tts:
+          image:
+            repository: ghcr.io/home-assistant/home-assistant
+            tag: 2025.12.4
+          command: [ 'sh', '-c', 'sed  "s/base_url = get_url(hass)/base_url = get_url(hass,prefer_external=True)/g" /usr/src/homeassistant/homeassistant/components/media_player/browse_media.py > /ttsFix/tts.py' ]
+#          volumeMounts:
+#            - mountPath: /ttsFix
+#              name: tts-fix
+
+
+      containers:
+        app:
+          image:
+            repository: ghcr.io/home-assistant/home-assistant
+            tag: 2025.12.4
+          env:
+            TZ: "America/Chicago"
+#          envFrom:
+#            - secretRef:
+#                name: home-assistant-secret
+          resources:
+            requests:
+              cpu: 50m
+              memory: 512M
+            limits:
+              memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
+        code-server:
+          image:
+            repository: ghcr.io/coder/code-server
+            tag: 4.107.0@sha256:4b622c4cd1b0f559fec0df67fcf09042d63e9ce84c575102066afd9511695627
+          args:
+            - --auth
+            - none
+            - --disable-telemetry
+            - --disable-update-check
+            - --user-data-dir
+            - /config/.vscode
+            - --extensions-dir
+            - /config/.vscode
+            - --port
+            - "12321"
+            - /config
+          env:
+            TZ: America/Chicago
+            HASS_SERVER: http://localhost:8123
+          resources:
+            requests:
+              cpu: 10m
+            limits:
+              memory: 1Gi
+
+
 
   service:
     main:
+      primary: true
+      forceRename: home-assistant
       type: LoadBalancer
+      controller: home-assistant
       loadBalancerIP: 192.168.100.55
+      externalTrafficPolicy: Local
       ports:
         http:
           port: 8123
         go2rtc:
           port: 11984
 
+    # Separate ClusterIP service for Gateway API routing
+    gateway:
+      controller: home-assistant
+      type: ClusterIP
+      ports:
+        http:
+          port: 8123
+    code:
+      type: ClusterIP
+      controller: home-assistant
+      ports:
+        http:
+          port: 12321
+
+  persistence:
+    config:
+      suffix: config
+      storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      size: "10Gi"
+      advancedMounts:
+        home-assistant:
+          app:
+            - path: /config
+          code-server:
+            - path: /config
+
+    tmpfs:
+      type: emptyDir
+      advancedMounts:
+        home-assistant:
+          app:
+            - path: /tmp
+              subPath: hass-tmp
+          code-server:
+            - path: /tmp
+              subPath: code-server-tmp
+            - path: /nonexistent
+              subPath: nonexistent
+
+
+    hass-gcp-sa-json:
+      type: secret
+      name: home-assistant-gcp-sa-secret
+      advancedMounts:
+        home-assistant:
+          app:
+            - path: /config/home-assistant-0ed67c5e16f3.json
+              subPath: home-assistant-0ed67c5e16f3.json
+              readOnly: true
+#      globalMounts:
+#        - path: /config/home-assistant-0ed67c5e16f3.json
+#          subPath: home-assistant-0ed67c5e16f3.json
+#          readOnly: true
+
+
+    docker-env-empty:
+      type: emptyDir
+      advancedMounts:
+        home-assistant:
+          app:
+            - path: /.dockerenv
+              subPath: .dockerenv
+              readOnly: true
+          code-server:
+            - path: /.dockerenv
+              subPath: .dockerenv
+              readOnly: true
+
+    config-tts:
+      type: emptyDir
+      advancedMounts:
+        home-assistant:
+          app:
+            - path: /config/tts
+
+    tts-fix:
+      type: emptyDir
+      sizeLimit: 2Mi
+      advancedMounts:
+        home-assistant:
+          app:
+            - path: /usr/src/homeassistant/homeassistant/components/media_player/browse_media.py
+              subPath: tts.py
+          fix-tts:
+            - path: /ttsFix
 
   ingress:
     main:
@@ -37,7 +187,7 @@ app-template:
         kubernetes.io/ingress.class: "nginx"
     internal:
       enabled: true
-      nameSuffix: "internal"
+      suffix: "internal"
       annotations:
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Home
@@ -56,141 +206,38 @@ app-template:
           paths:
             - path: /
               pathType: Prefix
+              service:
+                identifier: main
+                port: http
       tls:
         - hosts:
             - "ha.rsr.net"
           secretName: ha-cert-int-tls
-#  metrics:
-#    enabled: true
-
-  probes:
-    liveness:
-      enabled: false
-    readiness:
-      enabled: false
-    startup:
+    code-server:
       enabled: true
-  persistence:
-    config:
-      enabled: true
-#      existingClaim: home-assistant-pvc
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-      skipuninstall: true
-      size: "10Gi"
-
-    hass-gcp-sa-json:
-      enabled: true
-      type: secret
-      name: home-assistant-gcp-sa-secret
-      subPath: home-assistant-0ed67c5e16f3.json
-      mountPath: /config/home-assistant-0ed67c5e16f3.json
-      readOnly: true
-
-    tmp:
-      enabled: true
-      type: emptyDir
-      globalMounts:
-        - path: /tmp
-
-    docker-env-empty:
-      enabled: true
-      type: emptyDir
-      subPath: .dockerenv
-      mountPath: /.dockerenv
-      readOnly: true
-
-    config-tts:
-      enabled: true
-      type: emptyDir
-      globalMounts:
-        - path: /config/tts
-
-    tts-fix:
-      enabled: true
-      type: emptyDir
-      sizeLimit: 2Mi
-      mountPath: /usr/src/homeassistant/homeassistant/components/media_player/browse_media.py
-      subPath: tts.py
-
-
-
-  # additionalVolumeMounts:
-  #   - name: zigbee-usb
-  #     mountPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if01-port0
-
-  # additionalVolumes:
-  #   - name: zigbee-usb
-  #     hostPath:
-  #       path: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if01-port0
-  addons:
-    codeserver:
-      enabled: true
-      image:
-        repository: codercom/code-server
-        tag: 4.107.0
-      workingDir: "/config"
-      args:
-        - --user-data-dir
-        - "/config/.vscode"
-        - --extensions-dir
-        - "/config/.vscode"
-        - --auth
-        - "none"
-      env:
-        TZ: America/Chicago
-        HASS_SERVER: http://localhost:8123
-      ingress:
-        enabled: true
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Tools
-          gethomepage.dev/icon: code-server
-          gethomepage.dev/name: Home Assistant
-          kubernetes.io/ingress.class: "nginx"
-          cert-manager.io/issuer: step-issuer
-          cert-manager.io/issuer-kind: StepClusterIssuer
-          cert-manager.io/issuer-group: certmanager.step.sm
-          cert-manager.io/revision-history-limit: "3"
-          cert-manager.io/duration: "2160h"
-          cert-manager.io/renew-before: "720h"
-          nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
-          nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
-        hosts:
-          - host: ha-config.rsr.net
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - ha-config.rsr.net
-            secretName: ha-config-cert-tls
-      volumeMounts:
-        - name: config
-          mountPath: /config
-
-  # affinity:
-  #   nodeAffinity:
-  #     requiredDuringSchedulingIgnoredDuringExecution:
-  #       nodeSelectorTerms:
-  #         - matchExpressions:
-  #             - { key: "nortek.feature.node.kubernetes.io/zigbee", operator: In, values: [ "true" ] }
-#  tolerations:
-#    - key: "arm"
-#      operator: "Exists"
-#    - key: "arm64"
-#      operator: "Exists"
-#  resources:
-#    limits:
-#      memory: 2500Mi
-#    requests:
-#      cpu: 100m
-#      memory: 1000Mi
-
-  initContainers:
-    fix-tts:
-      image: ghcr.io/home-assistant/home-assistant:2025.12.4
-      command: [ 'sh', '-c', 'sed  "s/base_url = get_url(hass)/base_url = get_url(hass,prefer_external=True)/g" /usr/src/homeassistant/homeassistant/components/media_player/browse_media.py > /ttsFix/tts.py' ]
-      volumeMounts:
-        - mountPath: /ttsFix
-          name: tts-fix
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Tools
+        gethomepage.dev/icon: code-server
+        gethomepage.dev/name: Home Assistant
+        kubernetes.io/ingress.class: "nginx"
+        cert-manager.io/issuer: step-issuer
+        cert-manager.io/issuer-kind: StepClusterIssuer
+        cert-manager.io/issuer-group: certmanager.step.sm
+        cert-manager.io/revision-history-limit: "3"
+        cert-manager.io/duration: "2160h"
+        cert-manager.io/renew-before: "720h"
+        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
+        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
+      hosts:
+        - host: ha-config.rsr.net
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                identifier: code
+                port: http
+      tls:
+        - hosts:
+            - ha-config.rsr.net
+          secretName: ha-config-cert-tls
