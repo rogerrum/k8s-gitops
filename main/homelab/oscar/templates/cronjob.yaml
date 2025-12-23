@@ -2,6 +2,9 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: oscar-downloader
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
 spec:
   schedule: "{{ .Values.cron.schedule }}"
   concurrencyPolicy: {{ .Values.cron.concurrencyPolicy }}

@@ -1,11 +1,17 @@
 app-template:
-  image:
-    repository: rogerrum/docker-oscar
-    tag: main
-    pullPolicy: Always
+
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: rogerrum/docker-oscar
+            tag: main
+            pullPolicy: Always
 
   service:
     main:
+      controller: main
       ports:
         http:
           port: 3000
@@ -39,8 +45,9 @@ app-template:
     data:
       enabled: true
       existingClaim: "nas-data-pvc"
-      subPath: "oscar"
-      mountPath: /config/
+      globalMounts:
+        - path: /config/
+          subPath: oscar
 
 cron:
   image:
