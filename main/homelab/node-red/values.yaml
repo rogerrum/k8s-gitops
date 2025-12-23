@@ -1,22 +1,41 @@
 app-template:
-  image:
-    repository: nodered/node-red
-    tag: 4.1.2-18-minimal
+
+  controllers:
+    main:
+      pod:
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+          fsGroup: 1000
+          fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        main:
+          image:
+            repository: nodered/node-red
+            tag: 4.1.2-18-minimal
+          env:
+            TZ: "America/Chicago"
+            FLOWS: "flows.json"
+            NODE_RED_ENABLE_PROJECTS: "true"
+            NODE_RED_ENABLE_SAFE_MODE: "false"
+            NODE_OPTIONS: null
+          resources:
+            requests:
+              memory: 350Mi
+              cpu: 150m
+            limits:
+              memory: 1Gi
 
   service:
     main:
+      controller: main
       enabled: true
       ports:
         http:
           port: &port 1880
-  env:
-    TZ: "America/Chicago"
-    FLOWS: "flows.json"
-    NODE_RED_ENABLE_PROJECTS: "true"
-    NODE_RED_ENABLE_SAFE_MODE: "false"
-    NODE_OPTIONS: null
 
-  ingress:
+  route:
     main:
       enabled: true
       annotations:
@@ -24,6 +43,24 @@ app-template:
         gethomepage.dev/group: Home
         gethomepage.dev/icon: node-red
         gethomepage.dev/name: Node-Red
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - node-red.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: node-red
+              port: *port
+
+  ingress:
+    main:
+      enabled: true
+      annotations:
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
         cert-manager.io/issuer-group: certmanager.step.sm
@@ -45,23 +82,15 @@ app-template:
   persistence:
     data:
       enabled: true
+      suffix: data
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
       size: "5Gi"
-      skipuninstall: true
-  tolerations:
-    - key: "arm"
-      operator: "Exists"
-    - key: "arm64"
-      operator: "Exists"
-  resources:
-    requests:
-      memory: 350Mi
-      cpu: 25m
-    limits:
-      memory: 500Mi
 
-  podSecurityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
-    fsGroup: 1000
+  defaultPodOptions:
+    tolerations:
+      - key: "arm"
+        operator: "Exists"
+      - key: "arm64"
+        operator: "Exists"
+
