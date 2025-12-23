@@ -41,6 +41,16 @@ app-template:
           envFrom:
             - secretRef:
                 name: zigbee2mqtt-secret
+          probes:
+            liveness:
+              enabled: true
+            readiness:
+              enabled: true
+            startup:
+              enabled: true
+              spec:
+                failureThreshold: 30
+                periodSeconds: 5
           resources:
             requests:
               cpu: 10m
@@ -50,18 +60,18 @@ app-template:
 
           securityContext:
             privileged: true
-      pod:
+  defaultPodOptions:
 
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-                - matchExpressions:
-                    - { key: "sonoff.feature.node.kubernetes.io/zigbee", operator: In, values: [ "true" ] }
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - { key: "sonoff.feature.node.kubernetes.io/zigbee", operator: In, values: [ "true" ] }
 
-        tolerations:
-          - key: "arm64"
-            operator: "Exists"
+    tolerations:
+      - key: "arm64"
+        operator: "Exists"
 
   #        securityContext:
   #          runAsUser: 568
@@ -74,11 +84,12 @@ app-template:
   persistence:
     config:
       enabled: true
-      mountPath: /config
+      suffix: config
+      globalMounts:
+        - path: /config
       storageClass: "longhorn"
       accessMode: ReadWriteOnce
       size: "1Gi"
-      skipuninstall: true
 
     zigbee-usb:
       enabled: true
@@ -112,9 +123,6 @@ app-template:
         - host: &host "zigbee.rsr.net"
           paths:
             - path: /
-              service:
-                name: main
-                port: http
       tls:
         - hosts:
             - *host
