@@ -182,23 +182,68 @@ app-template:
           fix-tts:
             - path: /ttsFix
 
-  ingress:
-    main:
-      enabled: true
+  route:
+    app:
       annotations:
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Home
         gethomepage.dev/icon: home-assistant
         gethomepage.dev/name: Home Assistant Ext
-        kubernetes.io/ingress.class: "nginx"
+      parentRefs:
+        - name: public
+          namespace: kube-system
+          sectionName: https
+      rules:
+        - backendRefs:
+            - identifier: gateway
+              port: 8123
+
     internal:
-      enabled: true
-      suffix: "internal"
       annotations:
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Home
         gethomepage.dev/icon: home-assistant
         gethomepage.dev/name: Home Assistant Int
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+          sectionName: https
+      hostnames:
+        - ha.rsr.net
+      rules:
+        - backendRefs:
+            - identifier: gateway
+              port: 8123
+    code:
+      enabled: true
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Tools
+        gethomepage.dev/icon: code-server
+        gethomepage.dev/name: Home Assistant
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - ha-config.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: home-assistant-code
+              port: 12321
+
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "nginx"
+    internal:
+      enabled: true
+      suffix: "internal"
+      annotations:
         nginx.org/websocket-services: home-assistant
         kubernetes.io/ingress.class: nginx
         cert-manager.io/issuer: step-issuer
@@ -222,10 +267,6 @@ app-template:
     code-server:
       enabled: true
       annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/group: Tools
-        gethomepage.dev/icon: code-server
-        gethomepage.dev/name: Home Assistant
         kubernetes.io/ingress.class: "nginx"
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
