@@ -65,7 +65,30 @@ app-template:
       controller: main
       ports:
         http:
-          port: 1337
+          port: &port 1337
+
+  route:
+    main:
+      enabled: true
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Tools
+        gethomepage.dev/icon: planka
+        gethomepage.dev/name: Planka
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - planka.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: planka
+              port: *port
+
   ingress:
     main:
       enabled: true
@@ -77,10 +100,6 @@ app-template:
         cert-manager.io/revision-history-limit: "3"
         cert-manager.io/duration: "2160h"
         cert-manager.io/renew-before: "720h"
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/group: Tools
-        gethomepage.dev/icon: planka
-        gethomepage.dev/name: Planka
       hosts:
         - host: &host "planka.rsr.net"
           paths:
@@ -96,6 +115,7 @@ app-template:
   persistence:
     config:
       enabled: true
+      suffix: "config"
       accessMode: ReadWriteOnce
       storageClass: "longhorn"
       size: 10Gi
