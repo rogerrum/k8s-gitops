@@ -62,10 +62,6 @@ emqx:
     dashboard:
       enabled: true
       annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/group: Infrastructure
-        gethomepage.dev/icon: emqx
-        gethomepage.dev/name: EMQX
         kubernetes.io/ingress.class: nginx
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
