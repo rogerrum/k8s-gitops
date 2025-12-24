@@ -191,7 +191,7 @@ applications:
       enabled: true
 
   - name: external-route
-    namespace: default
+    namespace: kube-system
     path: main/homelab/external-route
     manifest-paths: /main/homelab/external-route
     sync-wave: "-1"
