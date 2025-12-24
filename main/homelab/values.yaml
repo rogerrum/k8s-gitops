@@ -190,6 +190,14 @@ applications:
     helm:
       enabled: true
 
+  - name: external-ingress
+    namespace: default
+    path: main/homelab/external-ingress
+    manifest-paths: /main/homelab/external-ingress
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
   - name: external-route
     namespace: default
     path: main/homelab/external-route
