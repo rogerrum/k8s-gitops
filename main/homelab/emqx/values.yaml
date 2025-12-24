@@ -57,24 +57,3 @@ emqx:
     requests:
       cpu: 100m
       memory: 256Mi
-
-  ingress:
-    dashboard:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: nginx
-        cert-manager.io/issuer: step-issuer
-        cert-manager.io/issuer-kind: StepClusterIssuer
-        cert-manager.io/issuer-group: certmanager.step.sm
-        cert-manager.io/revision-history-limit: "3"
-        cert-manager.io/duration: "2160h"
-        cert-manager.io/renew-before: "720h"
-        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
-      path: /
-      hosts:
-        - emqx.rsr.net
-      tls:
-        - hosts:
-            - emqx.rsr.net
-          secretName: emqx-cert-tls
