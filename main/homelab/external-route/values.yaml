@@ -3,21 +3,20 @@
 
 enabled: true
 apps:
-  - name: proxmox.lab
+  - name: proxmox
     host: proxmox.rsr.net
     port: 8006
     homepageGroup: "Infrastructure"
     homepageIcon: "proxmox"
     homepageName: "Proxmox"
     backendInsecure: true
-
     backendProtocol: HTTPS
     backendInsecureIngress: true
     proxySslVerify: "off"
     proxyReadTimeout: 1800s
     path: /
     service:
-      externalName: promox
+      externalName: proxmox.lab
 
   - name: idrac
     host: idrac.rsr.net
