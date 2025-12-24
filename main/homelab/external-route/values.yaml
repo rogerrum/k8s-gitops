@@ -3,7 +3,7 @@
 
 enabled: true
 apps:
-  - name: proxmox
+  - name: proxmox.lab
     host: proxmox.rsr.net
     port: 8006
     homepageGroup: "Infrastructure"
