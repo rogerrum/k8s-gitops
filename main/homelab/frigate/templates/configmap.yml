@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: frigate-configmap
   namespace: default
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
 data:
   config.yml: |
     auth:

@@ -2,12 +2,13 @@ app-template:
   controllers:
     main:
       annotations:
-        reloader.stakater.com/auto: "true"
+        secret.reloader.stakater.com/reload: frigate-secret
+        configmap.reloader.stakater.com/reload: frigate-configmap
       containers:
         main:
           image:
             repository: ghcr.io/blakeblackshear/frigate
-            tag: 0.16.0-beta4
+            tag: 0.16.3@sha256:cf4305d9f1c673d71c4d0fab30ca56ca05ac91168711a74ee7867a4691a7ad02
           env:
             TZ: "America/Chicago"
             #LIBVA_DRIVER_NAME: "radeonsi"
@@ -46,11 +47,13 @@ app-template:
           intel.feature.node.kubernetes.io/gpu: "true"
   service:
     main:
+      controller: main
       type: LoadBalancer
       loadBalancerIP: 192.168.100.51
       ports:
         http:
           port: *port
+          primary: true
         rtsp:
           port: 8554
         go2rtc:
@@ -58,15 +61,33 @@ app-template:
         webrtc:
           port: 8555
 
-  ingress:
+  route:
     main:
       enabled: true
-      className: "nginx"
       annotations:
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Home
         gethomepage.dev/icon: frigate
         gethomepage.dev/name: Frigate
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - frigate.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: frigate
+              port: *port
+
+  ingress:
+    main:
+      enabled: true
+      className: "nginx"
+      annotations:
         cert-manager.io/issuer: step-issuer
         cert-manager.io/issuer-kind: StepClusterIssuer
         cert-manager.io/issuer-group: certmanager.step.sm
@@ -81,7 +102,7 @@ app-template:
             - path: /
               service:
                 name: main
-                port: http
+                port: *port
       tls:
         - hosts:
             - *host
@@ -90,6 +111,7 @@ app-template:
   persistence:
     config:
       enabled: true
+      suffix: config
       storageClass: longhorn
       accessMode: ReadWriteOnce
       size: 10Gi
@@ -103,7 +125,6 @@ app-template:
           subPath: config.yml
           readOnly: true
     cache:
-      enabled: true
       type: emptyDir
       medium: Memory
       sizeLimit: 4Gi
@@ -111,14 +132,12 @@ app-template:
 #        - path: /tmp/cache
         - path: /dev/shm
     usb:
-      enabled: true
       type: hostPath
       hostPath: /dev/bus/usb
       hostPathType: Directory
       globalMounts:
         - path: /dev/bus/usb
     media:
-      enabled: true
       existingClaim: nas-media-pvc
-      mountPath: /media
-      subPath: Videos
+      globalMounts:
+        - path: /media
