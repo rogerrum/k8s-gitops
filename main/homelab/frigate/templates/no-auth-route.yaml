@@ -17,16 +17,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /api/events/.*/clip\.mp4
-        - path:
-            type: PathPrefix
-            value: /api/events/.*/thumbnail\.jpg
-        - path:
-            type: PathPrefix
-            value: /api/events/.*/snapshot\.jpg
-        - path:
-            type: PathPrefix
-            value: /api/events/.*/preview\.gif
+            value: /api/events/
       backendRefs:
         - name: frigate
           port: 5000
