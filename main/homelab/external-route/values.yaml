@@ -114,6 +114,7 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "cockpit"
     homepageName: "Cockpit"
+    backendInsecure: true
     backendProtocol: HTTPS
     backendInsecureIngress: true
     proxySslVerify: "off"
