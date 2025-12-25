@@ -42,7 +42,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /
+            value: {{ .path }}
       backendRefs:
         - group: gateway.envoyproxy.io
           kind: Backend

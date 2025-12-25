@@ -21,6 +21,7 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "idrac"
     homepageName: "Dell iDRAC"
+    backendInsecure: true
     backendProtocol: HTTPS
     backendInsecureIngress: true
     proxySslVerify: "off"
