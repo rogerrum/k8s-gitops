@@ -1,6 +1,3 @@
-
-
-
 enabled: true
 apps:
   - name: proxmox
@@ -16,7 +13,7 @@ apps:
     proxyReadTimeout: 1800s
     path: /
     service:
-      externalName: proxmox.lab
+      externalName: proxmox.home
 
   - name: idrac
     host: idrac.rsr.net
@@ -30,7 +27,7 @@ apps:
     proxyReadTimeout: 1800s
     path: /
     service:
-      externalName: idrac
+      externalName: idrac.home
 
   - name: pihole
     host: pihole.rsr.net
@@ -43,7 +40,7 @@ apps:
     proxyReadTimeout: 1800s
     path: /admin
     service:
-      externalName: pihole-vip
+      externalName: pihole-vip.home
 
   - name: pihole-p
     host: pihole-p.rsr.net
@@ -56,7 +53,7 @@ apps:
     proxyReadTimeout: 1800s
     path: /admin
     service:
-      externalName: home-nw-1
+      externalName: home-nw-1.home
 
   - name: pihole-s
     host: pihole-s.rsr.net
@@ -69,7 +66,7 @@ apps:
     proxyReadTimeout: 1800s
     path: /admin
     service:
-      externalName: home-nw-2
+      externalName: home-nw-2.home
 
   - name: qnap
     host: qnap.rsr.net
@@ -82,7 +79,7 @@ apps:
     proxyReadTimeout: 1800s
     path: /
     service:
-      externalName: nas
+      externalName: nas.home
 
   - name: dozzle
     host: dozzle.rsr.net
@@ -95,7 +92,7 @@ apps:
     proxyReadTimeout: 1800s
     path: /
     service:
-      externalName: home-docker
+      externalName: home-docker.home
 
   - name: portainer
     host: portainer.rsr.net
@@ -108,7 +105,7 @@ apps:
     proxyReadTimeout: 1800s
     path: /
     service:
-      externalName: home-docker
+      externalName: home-docker.home
 
   - name: cockpit
     host: cockpit.rsr.net
@@ -122,4 +119,4 @@ apps:
     proxyReadTimeout: 1800s
     path: /
     service:
-      externalName: k8s-admin
+      externalName: k8s-admin.home

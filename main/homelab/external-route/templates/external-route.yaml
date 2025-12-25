@@ -9,7 +9,7 @@ kind: Backend
 metadata:
   name: {{ $fullName }}-{{ .name }}
   labels:
-    {{- $labels}}
+    {{- $labels }}
 spec:
   endpoints:
     - fqdn:
