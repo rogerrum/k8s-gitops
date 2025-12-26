@@ -40,6 +40,15 @@ metadata:
   labels:
     {{- $labels }}
 spec:
+  {{- if and .tlsProxy .tlsProxy.enabled }}
+  # Use shared TLS proxy service for TLS bridging
+  endpoints:
+    - serviceName:
+        name: {{ $fullName }}-tls-proxy
+        namespace: {{ $.Release.Namespace }}
+        port: 8080
+  {{- else }}
+  # Direct connection to external service
   endpoints:
     - fqdn:
         hostname: {{ .service.externalName }}
@@ -56,6 +65,7 @@ spec:
     {{ end }}
   {{ end }}
   {{ end }}
+  {{- end }}
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/gateway.networking.k8s.io/httproute_v1.json
 apiVersion: gateway.networking.k8s.io/v1
@@ -84,5 +94,9 @@ spec:
         - group: gateway.envoyproxy.io
           kind: Backend
           name: {{ $fullName }}-{{ .name }}
+          {{- if and .tlsProxy .tlsProxy.enabled }}
+          port: 8080
+          {{- else }}
           port: {{ .port }}
+          {{- end }}
 {{- end }}

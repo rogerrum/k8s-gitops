@@ -1,4 +1,17 @@
 enabled: true
+
+# Global TLS Proxy settings (applies to all apps with tlsProxy.enabled: true)
+tlsProxy:
+  image: "nginx:1.27-alpine"
+  replicas: 2
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
 apps:
   - name: proxmox
     host: proxmox.rsr.net
@@ -6,10 +19,6 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "proxmox"
     homepageName: "Proxmox"
-    tls:
-      insecure: true
-      minVersion: "1.0"    # allow legacy TLS
-      maxVersion: "1.1"
     path: /
     service:
       externalName: proxmox.home
@@ -18,6 +27,8 @@ apps:
       privateKey:
         algorithm: RSA
         size: 2048
+    tlsProxy:
+      enabled: true
 
   - name: idrac
     host: idrac.rsr.net
@@ -25,10 +36,6 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "idrac"
     homepageName: "Dell iDRAC"
-    tls:
-      insecure: true
-      minVersion: "1.0"    # allow legacy TLS
-      maxVersion: "1.1"
     path: /
     service:
       externalName: idrac.home
@@ -37,6 +44,8 @@ apps:
       privateKey:
         algorithm: RSA
         size: 2048
+    tlsProxy:
+      enabled: true
 
   - name: pihole
     host: pihole.rsr.net
