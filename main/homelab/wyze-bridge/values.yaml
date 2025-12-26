@@ -101,26 +101,3 @@ app-template:
             - name: wyze-bridge
               port: 5000
 
-  ingress:
-    main:
-      enabled: true
-      className: "nginx"
-      annotations:
-        cert-manager.io/issuer: step-issuer
-        cert-manager.io/issuer-kind: StepClusterIssuer
-        cert-manager.io/issuer-group: certmanager.step.sm
-        cert-manager.io/revision-history-limit: "3"
-        cert-manager.io/duration: "2160h"
-        cert-manager.io/renew-before: "720h"
-#        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
-#        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
-      hosts:
-        - host: &host "wyze.rsr.net"
-          paths:
-            - path: /
-              service:
-                port: 5000
-      tls:
-        - hosts:
-            - *host
-          secretName: wyze-tls

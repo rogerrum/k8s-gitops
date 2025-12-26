@@ -57,28 +57,6 @@ app-template:
             - name: node-red
               port: *port
 
-  ingress:
-    main:
-      enabled: true
-      annotations:
-        cert-manager.io/issuer: step-issuer
-        cert-manager.io/issuer-kind: StepClusterIssuer
-        cert-manager.io/issuer-group: certmanager.step.sm
-        cert-manager.io/revision-history-limit: "3"
-        cert-manager.io/duration: "2160h"
-        cert-manager.io/renew-before: "720h"
-        kubernetes.io/ingress.class: nginx
-        #nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
-        #nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
-      hosts:
-        - host: node-red.rsr.net
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - "node-red.rsr.net"
-          secretName: node-red-cert
   persistence:
     data:
       enabled: true

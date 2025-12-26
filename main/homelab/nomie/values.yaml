@@ -39,24 +39,3 @@ app-template:
             - name: nomie
               port: *port
 
-  ingress:
-    app:
-      annotations:
-        kubernetes.io/ingress.class: nginx
-        cert-manager.io/issuer: step-issuer
-        cert-manager.io/issuer-kind: StepClusterIssuer
-        cert-manager.io/issuer-group: certmanager.step.sm
-        cert-manager.io/revision-history-limit: "3"
-        cert-manager.io/duration: "2160h"
-        cert-manager.io/renew-before: "720h"
-      hosts:
-        - host: nomie.rsr.net
-          paths:
-            - path: /
-              service:
-                identifier: app
-                port: http
-      tls:
-        - hosts:
-            - nomie.rsr.net
-          secretName: nomie-cert-tls

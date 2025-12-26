@@ -28,26 +28,7 @@ victoria-logs-single:
           backendRefs:
             - name: victoria-logs-server
               port: 9428
-    ingress:
-      enabled: true
-      ingressClassName: nginx
-      annotations:
-        kubernetes.io/ingress.class: nginx
-        cert-manager.io/issuer: step-issuer
-        cert-manager.io/issuer-kind: StepClusterIssuer
-        cert-manager.io/issuer-group: certmanager.step.sm
-        cert-manager.io/revision-history-limit: "3"
-        cert-manager.io/duration: "2160h"
-        cert-manager.io/renew-before: "720h"
-      hosts:
-        - name: vm-logs.rsr.net
-          path:
-            - /
-          port: http
-      tls:
-        - hosts:
-            - vm-logs.rsr.net
-          secretName: vm-logs-cert-tls
+
 
   dashboards:
     enabled: true

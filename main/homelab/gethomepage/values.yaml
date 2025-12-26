@@ -15,29 +15,6 @@ homepage:
     configmap.reloader.stakater.com/reload: "homepage-config"
     secret.reloader.stakater.com/reload: "gethomepage-secret"
 
-  ingress:
-    main:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: nginx
-        cert-manager.io/issuer: step-issuer
-        cert-manager.io/issuer-kind: StepClusterIssuer
-        cert-manager.io/issuer-group: certmanager.step.sm
-        cert-manager.io/revision-history-limit: "3"
-        cert-manager.io/duration: "2160h"
-        cert-manager.io/renew-before: "720h"
-        gethomepage.dev/enabled: 'false'
-        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local:80/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: https://auth.rsr.net/oauth2/start
-      hosts:
-        - host: home.rsr.net
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - home.rsr.net
-          secretName: home-cert-tls
 
   # The service account is necessary to allow discovery of other services
   serviceAccount:

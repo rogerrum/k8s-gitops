@@ -40,26 +40,6 @@ app-template:
             - name: openttd
               port: *port
 
-  ingress:
-    main:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: nginx
-        cert-manager.io/issuer: step-issuer
-        cert-manager.io/issuer-kind: StepClusterIssuer
-        cert-manager.io/issuer-group: certmanager.step.sm
-        cert-manager.io/revision-history-limit: "3"
-        cert-manager.io/duration: "2160h"
-        cert-manager.io/renew-before: "720h"
-      hosts:
-        - host: ttd.rsr.net
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - ttd.rsr.net
-          secretName: ttd-cert-tls
 
   persistence:
     config:

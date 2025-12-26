@@ -1,22 +1,6 @@
 prometheus-pushgateway:
   fullnameOverride: pushgateway
 
-  ingress:
-    enabled: true
-    className: nginx
-    annotations:
-      cert-manager.io/issuer: step-issuer
-      cert-manager.io/issuer-kind: StepClusterIssuer
-      cert-manager.io/issuer-group: certmanager.step.sm
-      cert-manager.io/revision-history-limit: "3"
-      cert-manager.io/duration: "2160h"
-      cert-manager.io/renew-before: "720h"
-    hosts:
-      - pushgateway.rsr.net
-    tls:
-      - hosts:
-          - pushgateway.rsr.net
-        secretName: pushgateway-cert-tls
 
   route:
     main:
