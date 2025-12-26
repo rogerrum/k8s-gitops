@@ -14,6 +14,11 @@ apps:
     path: /
     service:
       externalName: proxmox.home
+    certificate:
+      enabled: true
+      privateKey:
+        algorithm: RSA
+        size: 2048
 
   - name: idrac
     host: idrac.rsr.net
@@ -29,6 +34,11 @@ apps:
     path: /
     service:
       externalName: idrac.home
+    certificate:
+      enabled: true
+      privateKey:
+        algorithm: RSA
+        size: 2048
 
   - name: pihole
     host: pihole.rsr.net
