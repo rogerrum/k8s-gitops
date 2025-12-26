@@ -43,9 +43,8 @@ spec:
   {{- if and .tlsProxy .tlsProxy.enabled }}
   # Use shared TLS proxy service for TLS bridging
   endpoints:
-    - serviceName:
-        name: {{ $fullName }}-tls-proxy
-        namespace: {{ $.Release.Namespace }}
+    - fqdn:
+        hostname: {{ $fullName }}-tls-proxy.{{ $.Release.Namespace }}.svc.cluster.local
         port: 8080
   {{- else }}
   # Direct connection to external service
