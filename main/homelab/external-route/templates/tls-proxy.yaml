@@ -45,16 +45,9 @@ data:
       {{- range $tlsProxyApps }}
       # Server block for {{ .name }}
       server {
-        listen 8080 ssl;
+        listen 8080;
         http2 on;
         server_name {{ .host }};
-
-        # TLS configuration using {{ .name }}'s certificate
-        ssl_certificate /etc/nginx/certs-{{ .name }}/tls.crt;
-        ssl_certificate_key /etc/nginx/certs-{{ .name }}/tls.key;
-        ssl_protocols TLSv1.2 TLSv1.3;
-        ssl_ciphers HIGH:!aNULL:!MD5;
-        ssl_prefer_server_ciphers on;
 
         # Proxy settings for legacy TLS backend
         proxy_ssl_verify off;
@@ -119,11 +112,6 @@ spec:
         - name: config
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
-        {{- range $tlsProxyApps }}
-        - name: certs-{{ .name }}
-          mountPath: /etc/nginx/certs-{{ .name }}
-          readOnly: true
-        {{- end }}
         livenessProbe:
           tcpSocket:
             port: 8080
@@ -153,11 +141,6 @@ spec:
       - name: config
         configMap:
           name: {{ $fullName }}-tls-proxy-config
-      {{- range $tlsProxyApps }}
-      - name: certs-{{ .name }}
-        secret:
-          secretName: {{ .certificate.secretName | default (printf "%s-%s-cert-secret" $fullName .name) }}
-      {{- end }}
 ---
 # Service for shared NGINX TLS proxy
 apiVersion: v1
