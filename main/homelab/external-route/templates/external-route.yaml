@@ -44,6 +44,7 @@ spec:
     - fqdn:
         hostname: {{ .service.externalName }}
         port: {{ .port }}
+  {{ if .tls }}
   {{ if .tls.insecure }}
   tls:
     insecureSkipVerify: true
@@ -53,6 +54,7 @@ spec:
     {{ if .tls.maxVersion }}
     maxVersion: {{ .tls.maxVersion }}
     {{ end }}
+  {{ end }}
   {{ end }}
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/gateway.networking.k8s.io/httproute_v1.json
