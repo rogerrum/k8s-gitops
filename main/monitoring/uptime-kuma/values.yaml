@@ -10,7 +10,7 @@ app-template:
             tag: 2.0.2
           env:
             TZ: "America/Chicago"
-            NODE_EXTRA_CA_CERTS: /rootcert/ca.crt
+            #NODE_EXTRA_CA_CERTS: /rootcert/ca.crt
             UPTIME_KUMA_DISABLE_FRAME_SAMEORIGIN: "0"
             UPTIME_KUMA_PORT: &port 3001
           probes:
@@ -68,9 +68,9 @@ app-template:
         main:
           main:
             - path: /app/data
-    rootcert:
-      enabled: true
-      type: secret
-      name: *tls-cert
+#    rootcert:
+#      enabled: true
+#      type: secret
+#      name: *tls-cert
 
 
