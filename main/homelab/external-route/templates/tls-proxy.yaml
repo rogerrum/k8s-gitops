@@ -45,7 +45,6 @@ data:
         # Use hostname (requires DNS resolution)
         server {{ .service.externalName }}:{{ .port }} max_fails=3 fail_timeout=30s;
         {{- end }}
-        keepalive 0;
       }
       {{- end }}
 
@@ -130,7 +129,6 @@ spec:
     metadata:
       labels:
         app: {{ $fullName }}-tls-proxy
-        {{- $labels }}
     spec:
       containers:
       - name: nginx
