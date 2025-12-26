@@ -49,32 +49,40 @@ data:
         http2 on;
         server_name {{ .host }};
 
-        # Proxy settings for legacy TLS backend
-        proxy_ssl_verify off;
-        proxy_ssl_protocols TLSv1 TLSv1.2;
-        proxy_ssl_ciphers DEFAULT:@SECLEVEL=0;
-
-        proxy_http_version 1.1;
-        proxy_buffering off;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection $connection_upgrade;
-
-        # Timeouts
+        # Timeouts at server level
         proxy_connect_timeout 60s;
         proxy_send_timeout 60s;
         proxy_read_timeout 1800s;
 
-        # Large buffer sizes for consoles
+        # Buffer settings
         proxy_buffers 16 32k;
         proxy_buffer_size 64k;
         client_max_body_size 0;
 
         location / {
+          # Proxy to legacy TLS backend
           proxy_pass https://{{ .name }}_backend;
+
+          # SSL settings for backend connection
+          proxy_ssl_verify off;
+          proxy_ssl_protocols TLSv1 TLSv1.2;
+          proxy_ssl_ciphers DEFAULT:@SECLEVEL=0;
+          proxy_ssl_server_name on;
+
+          # HTTP settings
+          proxy_http_version 1.1;
+          proxy_buffering off;
+
+          # Headers
+          proxy_set_header Host {{ .service.externalName }};
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto https;
+          proxy_set_header X-Forwarded-Host $host;
+
+          # WebSocket support
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection $connection_upgrade;
         }
       }
       {{- end }}
