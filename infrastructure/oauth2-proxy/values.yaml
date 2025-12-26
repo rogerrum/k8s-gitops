@@ -4,25 +4,11 @@ oauth2-proxy:
     repository: "oauth2-proxy/oauth2-proxy"
     tag: "v7.12.0"
   replicaCount: 2
-  # tolerations:
-  #   - key: "arm"
-  #     operator: "Exists"
+
+  # Disable built-in ingress - we'll use HTTPRoute
   ingress:
-    enabled: true
-    path: /oauth2
-    hosts: [ auth.rsr.net ]
-    annotations:
-      kubernetes.io/ingress.class: nginx
-      cert-manager.io/issuer: step-issuer
-      cert-manager.io/issuer-kind: StepClusterIssuer
-      cert-manager.io/issuer-group: certmanager.step.sm
-      cert-manager.io/revision-history-limit: "3"
-      cert-manager.io/duration: "2160h"
-      cert-manager.io/renew-before: "720h"
-    tls:
-      - hosts:
-          - auth.rsr.net
-        secretName: oauth2-proxy-cert-tls
+    enabled: false
+
   extraArgs:
     provider: oidc
     oidc-issuer-url: "https://rogerrum.us.auth0.com/"
@@ -31,6 +17,10 @@ oauth2-proxy:
     email-domain: "*"
     cookie-domain: ".rsr.net"
     whitelist-domain: ".rsr.net"
+    # Important: Enable headers for ExtAuth
+    set-xauthrequest:
+    pass-access-token:
+    pass-user-headers:
 
   affinity:
     podAntiAffinity:
