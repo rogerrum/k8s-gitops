@@ -6,11 +6,10 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "proxmox"
     homepageName: "Proxmox"
-    backendInsecure: true
-    backendProtocol: HTTPS
-    backendInsecureIngress: true
-    proxySslVerify: "off"
-    proxyReadTimeout: 1800s
+    tls:
+      insecure: true
+      minVersion: "1.0"    # allow legacy TLS
+      maxVersion: "1.1"
     path: /
     service:
       externalName: proxmox.home
@@ -26,11 +25,10 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "idrac"
     homepageName: "Dell iDRAC"
-    backendInsecure: true
-    backendProtocol: HTTPS
-    backendInsecureIngress: true
-    proxySslVerify: "off"
-    proxyReadTimeout: 1800s
+    tls:
+      insecure: true
+      minVersion: "1.0"    # allow legacy TLS
+      maxVersion: "1.1"
     path: /
     service:
       externalName: idrac.home
@@ -46,9 +44,6 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "pi-hole"
     homepageName: "Pi-hole"
-    backendProtocol: HTTP
-    proxySslVerify: "off"
-    proxyReadTimeout: 1800s
     path: /admin
     service:
       externalName: pihole-vip.home
@@ -59,9 +54,6 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "pi-hole"
     homepageName: "Pi-hole Primary"
-    backendProtocol: HTTP
-    proxySslVerify: "off"
-    proxyReadTimeout: 1800s
     path: /admin
     service:
       externalName: home-nw-1.home
@@ -72,9 +64,6 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "pi-hole"
     homepageName: "Pi-hole Secondary"
-    backendProtocol: HTTP
-    proxySslVerify: "off"
-    proxyReadTimeout: 1800s
     path: /admin
     service:
       externalName: home-nw-2.home
@@ -85,9 +74,6 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "qnap"
     homepageName: "QNAP"
-    backendProtocol: HTTP
-    proxySslVerify: "off"
-    proxyReadTimeout: 1800s
     path: /
     service:
       externalName: nas.home
@@ -98,9 +84,6 @@ apps:
     homepageGroup: "Monitoring"
     homepageIcon: "dozzle"
     homepageName: "Dozzle"
-    backendProtocol: HTTP
-    proxySslVerify: "off"
-    proxyReadTimeout: 1800s
     path: /
     service:
       externalName: home-docker.home
@@ -111,9 +94,6 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "portainer"
     homepageName: "Portainer"
-    backendProtocol: HTTP
-    proxySslVerify: "off"
-    proxyReadTimeout: 1800s
     path: /
     service:
       externalName: home-docker.home
@@ -124,11 +104,8 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "cockpit"
     homepageName: "Cockpit"
-    backendInsecure: true
-    backendProtocol: HTTPS
-    backendInsecureIngress: true
-    proxySslVerify: "off"
-    proxyReadTimeout: 1800s
+    tls:
+      insecure: true
     path: /
     service:
       externalName: k8s-admin.home
