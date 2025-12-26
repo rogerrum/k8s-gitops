@@ -1,17 +1,5 @@
 enabled: true
 
-# Global TLS Proxy settings (applies to all apps with tlsProxy.enabled: true)
-tlsProxy:
-  image: "nginx:1.27-alpine"
-  replicas: 2
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 500m
-      memory: 256Mi
-
 apps:
   - name: proxmox
     host: proxmox.rsr.net
@@ -22,15 +10,8 @@ apps:
     path: /
     service:
       externalName: proxmox.home
-      # Use IP address in upstream to bypass slow DNS
-      ip: 192.168.1.160  # Uncomment and set your Proxmox IP
-    certificate:
-      enabled: true
-      privateKey:
-        algorithm: RSA
-        size: 2048
-    tlsProxy:
-      enabled: true
+      ip: 192.168.1.160
+    backendInsecure: true
 
   - name: idrac
     host: idrac.rsr.net
@@ -41,15 +22,8 @@ apps:
     path: /
     service:
       externalName: idrac.home
-      # Use IP address in upstream to bypass slow DNS
-      ip: 192.168.1.120  # Uncomment and set your iDRAC IP
-    certificate:
-      enabled: true
-      privateKey:
-        algorithm: RSA
-        size: 2048
-    tlsProxy:
-      enabled: true
+      ip: 192.168.1.120
+    backendInsecure: true
 
   - name: pihole
     host: pihole.rsr.net

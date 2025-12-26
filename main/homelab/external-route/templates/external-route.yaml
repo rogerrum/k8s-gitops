@@ -2,36 +2,6 @@
 {{- $labels := include "external-route.labels" . | nindent 4}}
 {{- range .Values.apps }}
 ---
-{{ if .certificate }}
-{{ if .certificate.enabled }}
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cert-manager.io/certificate_v1.json
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: {{ $fullName }}-{{ .name }}-cert
-  #namespace: {{ .certificate.namespace | default "cert-manager" }}
-  labels:
-    {{- $labels }}
-spec:
-  secretName: {{ .certificate.secretName | default (printf "%s-%s-cert-secret" $fullName .name) }}
-  duration: {{ .certificate.duration | default "2160h" }}        # 90 days
-  renewBefore: {{ .certificate.renewBefore | default "720h" }}      # 30 days
-  revisionHistoryLimit: {{ .certificate.revisionHistoryLimit | default 3 }}
-  issuerRef:
-    name: step-issuer
-    kind: StepClusterIssuer
-    group: certmanager.step.sm
-  dnsNames:
-    - {{ .host }}
-  {{ if .certificate.privateKey }}
-  privateKey:
-    algorithm: {{ .certificate.privateKey.algorithm }}
-    size: {{ .certificate.privateKey.size }}
-  {{ end }}
-{{ end }}
-{{ end }}
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/gateway.envoyproxy.io/backend_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: Backend
@@ -40,30 +10,19 @@ metadata:
   labels:
     {{- $labels }}
 spec:
-  {{- if and .tlsProxy .tlsProxy.enabled }}
-  # Use shared TLS proxy service for TLS bridging
   endpoints:
-    - fqdn:
-        hostname: {{ $fullName }}-tls-proxy.{{ $.Release.Namespace }}.svc.cluster.local
-        port: 8080
-  {{- else }}
-  # Direct connection to external service
-  endpoints:
+    {{- if .service.ip }}
+    - ip:
+        address: {{ .service.ip }}
+        port: {{ .port }}
+    {{- else }}
     - fqdn:
         hostname: {{ .service.externalName }}
         port: {{ .port }}
-  {{ if .tls }}
-  {{ if .tls.insecure }}
+    {{- end }}
+  {{- if .backendInsecure }}
   tls:
     insecureSkipVerify: true
-    {{ if .tls.minVersion }}
-    minVersion: {{ .tls.minVersion | quote }}
-    {{ end }}
-    {{ if .tls.maxVersion }}
-    maxVersion: {{ .tls.maxVersion | quote }}
-    {{ end }}
-  {{ end }}
-  {{ end }}
   {{- end }}
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/gateway.networking.k8s.io/httproute_v1.json
@@ -93,9 +52,5 @@ spec:
         - group: gateway.envoyproxy.io
           kind: Backend
           name: {{ $fullName }}-{{ .name }}
-          {{- if and .tlsProxy .tlsProxy.enabled }}
-          port: 8080
-          {{- else }}
           port: {{ .port }}
-          {{- end }}
 {{- end }}
