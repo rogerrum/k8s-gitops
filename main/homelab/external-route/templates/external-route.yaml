@@ -49,10 +49,10 @@ spec:
   tls:
     insecureSkipVerify: true
     {{ if .tls.minVersion }}
-    minVersion: {{ .tls.minVersion }}
+    minVersion: {{ .tls.minVersion | quote }}
     {{ end }}
     {{ if .tls.maxVersion }}
-    maxVersion: {{ .tls.maxVersion }}
+    maxVersion: {{ .tls.maxVersion | quote }}
     {{ end }}
   {{ end }}
   {{ end }}
