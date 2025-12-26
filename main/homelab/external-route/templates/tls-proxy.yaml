@@ -63,11 +63,12 @@ data:
           # Proxy to legacy TLS backend
           proxy_pass https://{{ .name }}_backend;
 
-          # SSL settings for backend connection
+          # SSL settings for very old backends (iDRAC 7, old Proxmox)
           proxy_ssl_verify off;
-          proxy_ssl_protocols TLSv1 TLSv1.2;
-          proxy_ssl_ciphers DEFAULT:@SECLEVEL=0;
-          proxy_ssl_server_name on;
+          proxy_ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+          proxy_ssl_ciphers 'ALL:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA:@SECLEVEL=0';
+          proxy_ssl_server_name off;
+          proxy_ssl_session_reuse off;
 
           # HTTP settings
           proxy_http_version 1.1;
