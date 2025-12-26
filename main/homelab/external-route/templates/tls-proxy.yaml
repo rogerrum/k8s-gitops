@@ -38,7 +38,14 @@ data:
       # Define upstreams for each backend
       {{- range $tlsProxyApps }}
       upstream {{ .name }}_backend {
-        server {{ .service.externalName }}:{{ .port }};
+        {{- if .service.ip }}
+        # Use IP address to bypass slow DNS resolution
+        server {{ .service.ip }}:{{ .port }} max_fails=3 fail_timeout=30s;
+        {{- else }}
+        # Use hostname (requires DNS resolution)
+        server {{ .service.externalName }}:{{ .port }} max_fails=3 fail_timeout=30s;
+        {{- end }}
+        keepalive 0;
       }
       {{- end }}
 
@@ -78,6 +85,16 @@ data:
           # HTTP settings
           proxy_http_version 1.1;
           proxy_buffering off;
+
+          # Retry on errors
+          proxy_next_upstream error timeout http_502 http_503 http_504;
+          proxy_next_upstream_tries 2;
+
+          # Connection settings
+          proxy_socket_keepalive off;
+          proxy_connect_timeout 180s;
+          proxy_send_timeout 180s;
+          proxy_read_timeout 300s;
 
           # Headers - use backend hostname so it accepts the request
           proxy_set_header Host {{ .service.externalName }};

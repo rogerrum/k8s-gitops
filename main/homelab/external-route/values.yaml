@@ -22,6 +22,8 @@ apps:
     path: /
     service:
       externalName: proxmox.home
+      # Use IP address in upstream to bypass slow DNS
+      ip: 192.168.1.160  # Uncomment and set your Proxmox IP
     certificate:
       enabled: true
       privateKey:
@@ -39,6 +41,8 @@ apps:
     path: /
     service:
       externalName: idrac.home
+      # Use IP address in upstream to bypass slow DNS
+      ip: 192.168.1.120  # Uncomment and set your iDRAC IP
     certificate:
       enabled: true
       privateKey:
