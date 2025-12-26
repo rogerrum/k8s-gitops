@@ -17,6 +17,8 @@ oauth2-proxy:
     email-domain: "*"
     cookie-domain: ".rsr.net"
     whitelist-domain: ".rsr.net"
+    # Important: Use auth.rsr.net for OAuth callback instead of individual app domains
+    redirect-url: "https://auth.rsr.net/oauth2/callback"
     # Important: Enable headers for ExtAuth
     set-xauthrequest:
     pass-access-token:
