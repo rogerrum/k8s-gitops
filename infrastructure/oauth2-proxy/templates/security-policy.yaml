@@ -1,0 +1,31 @@
+---
+# SecurityPolicy for oauth2-proxy authentication
+# Apps can reference this by adding a SecurityPolicy that targets their HTTPRoute
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: oauth2-proxy-auth
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: oauth2-proxy
+  extAuth:
+    http:
+      backendRefs:
+        - name: oauth2-proxy
+          namespace: {{ .Release.Namespace }}
+          port: 80
+      path: /oauth2/auth
+      headersToBackend:
+        - header:
+            name: "X-Auth-Request-User"
+        - header:
+            name: "X-Auth-Request-Email"
+        - header:
+            name: "X-Auth-Request-Access-Token"
+
