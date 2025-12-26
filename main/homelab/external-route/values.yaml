@@ -2,7 +2,7 @@ enabled: true
 
 # Global TLS Proxy settings (applies to all apps with tlsProxy.enabled: true)
 tlsProxy:
-  image: "nginx:1.27-alpine"
+  image: "nginx:1.29-alpine"
   replicas: 2
   resources:
     requests:
