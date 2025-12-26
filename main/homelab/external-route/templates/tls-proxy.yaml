@@ -125,22 +125,18 @@ spec:
           readOnly: true
         {{- end }}
         livenessProbe:
-          httpGet:
-            path: /
+          tcpSocket:
             port: 8080
-            scheme: HTTPS
           initialDelaySeconds: 10
           periodSeconds: 10
-          timeoutSeconds: 5
+          timeoutSeconds: 3
           failureThreshold: 3
         readinessProbe:
-          httpGet:
-            path: /
+          tcpSocket:
             port: 8080
-            scheme: HTTPS
           initialDelaySeconds: 5
           periodSeconds: 5
-          timeoutSeconds: 3
+          timeoutSeconds: 2
           failureThreshold: 2
         resources:
           {{- if .Values.tlsProxy.resources }}
