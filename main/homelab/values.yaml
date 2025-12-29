@@ -229,3 +229,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: esphome
+    namespace: default
+    path: main/homelab/esphome
+    manifest-paths: /main/homelab/esphome
+    sync-wave: "-1"
+    helm:
+      enabled: true

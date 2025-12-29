@@ -1,0 +1,157 @@
+app-template:
+  defaultPodOptions:
+    securityContext:
+      fsGroup: 2000
+      fsGroupChangePolicy: OnRootMismatch
+      runAsGroup: 2000
+      runAsUser: 2000
+  controllers:
+    esphome:
+      annotations:
+        secret.reloader.stakater.com/reload: esphome-secrets
+      containers:
+        app:
+          image:
+            repository: ghcr.io/home-operations/esphome
+            tag: 2025.12.2@sha256:a493b6fc47426d65a206fc2d986e18f98a55f726f0f9a3024a13008fba13a837
+          probes:
+            liveness:
+              enabled: false
+            readiness:
+              enabled: false
+            startup:
+              enabled: false
+          resources:
+            requests:
+              cpu: 5m
+              memory: 512Mi
+            limits:
+              memory: 3072Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+    code-server:
+      annotations:
+        secret.reloader.stakater.com/reload: esphome-secrets,esphome-deploykey
+      containers:
+        code-server:
+          image:
+            repository: ghcr.io/coder/code-server
+            tag: 4.107.0@sha256:4b622c4cd1b0f559fec0df67fcf09042d63e9ce84c575102066afd9511695627
+          args:
+            - --auth
+            - none
+            - --disable-telemetry
+            - --disable-update-check
+            - --user-data-dir
+            - /mnt/code-server
+            - --extensions-dir
+            - /mnt/code-server
+            - --port
+            - "12321"
+            - /config
+          resources:
+            requests:
+              cpu: 10m
+            limits:
+              memory: 512Mi
+  service:
+    app:
+      forceRename: "{{.Release.Name}}"
+      controller: esphome
+      ports:
+        http:
+          port: &esphome-port 6052
+    code-server:
+      controller: code-server
+      ports:
+        http:
+          port: &code-server-port 12321
+  persistence:
+    config:
+      suffix: config
+      storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      size: "1Gi"
+      advancedMounts:
+        esphome:
+          app:
+            - path: /config
+              subPath: config
+        code-server:
+          code-server:
+            - path: /config
+              subPath: config
+            - path: /mnt/code-server
+              subPath: code-server
+#    secrets:
+#      type: secret
+#      name: esphome-secrets
+#      globalMounts:
+#        - path: /config/secrets.yaml
+#          subPath: secrets.yaml
+    buildcache:
+      suffix: buildcache
+      storageClass: "longhorn"
+      size: 10Gi
+      accessMode: ReadWriteOnce
+      advancedMounts:
+        esphome:
+          app:
+            - path: /cache
+    tmpfs:
+      type: emptyDir
+      advancedMounts:
+        esphome:
+          app:
+            - path: /tmp
+              subPath: esphome-tmp
+        code-server:
+          code-server:
+            - path: /tmp
+              subPath: code-server-tmp
+            - path: /nonexistent
+              subPath: nonexistent
+#    deploy-key:
+#      type: secret
+#      name: esphome-deploykey
+#      defaultMode: 256
+#      advancedMounts:
+#        code-server:
+#          code-server:
+#            - path: /home/coder/.ssh/id_ed25519
+#              subPath: id_ed25519
+  route:
+    app:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Tools
+        gethomepage.dev/icon: esp-home
+        gethomepage.dev/name: ESPHome
+      hostnames:
+        - esphome.rsr.net
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      rules:
+        - backendRefs:
+            - identifier: app
+              port: *esphome-port
+    code-server:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Tools
+        gethomepage.dev/icon: code-server
+        gethomepage.dev/name: ESPHome Code
+      hostnames:
+        - esphome-code.rsr.net
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      rules:
+        - backendRefs:
+            - identifier: code-server
+              port: *code-server-port
