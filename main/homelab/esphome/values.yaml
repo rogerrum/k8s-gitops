@@ -35,10 +35,7 @@ app-template:
             capabilities:
               drop:
                 - ALL
-    code-server:
-      annotations:
-        secret.reloader.stakater.com/reload: esphome-secrets,esphome-deploykey
-      containers:
+
         code-server:
           image:
             repository: ghcr.io/coder/code-server
@@ -68,10 +65,11 @@ app-template:
         http:
           port: &esphome-port 6052
     code-server:
-      controller: code-server
+      controller: esphome
       ports:
         http:
           port: &code-server-port 12321
+
   persistence:
     config:
       suffix: config
@@ -83,7 +81,6 @@ app-template:
           app:
             - path: /config
               subPath: config
-        code-server:
           code-server:
             - path: /config
               subPath: config
@@ -111,7 +108,6 @@ app-template:
           app:
             - path: /tmp
               subPath: esphome-tmp
-        code-server:
           code-server:
             - path: /tmp
               subPath: code-server-tmp
