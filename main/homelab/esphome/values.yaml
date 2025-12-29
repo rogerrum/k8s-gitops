@@ -74,7 +74,7 @@ app-template:
     config:
       suffix: config
       storageClass: "longhorn"
-      accessMode: ReadWriteOnce
+      accessMode: ReadWriteMany
       size: "1Gi"
       advancedMounts:
         esphome:
