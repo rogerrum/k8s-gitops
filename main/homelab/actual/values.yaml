@@ -11,7 +11,7 @@ app-template:
         main:
           image:
             repository: ghcr.io/actualbudget/actual-server
-            tag: 25.12.0
+            tag: 26.1.0
           env:
             TZ: "America/Chicago"
           probes:
