@@ -237,3 +237,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: manyfold
+    namespace: default
+    path: main/homelab/manyfold
+    manifest-paths: /main/homelab/manyfold
+    sync-wave: "-1"
+    helm:
+      enabled: true
