@@ -50,7 +50,7 @@ app-template:
                   path: /health
                   port: *httpPort
                 initialDelaySeconds: 0
-                periodSeconds: 90
+                periodSeconds: 190
                 timeoutSeconds: 30
                 failureThreshold: 3
             readiness: *probes
