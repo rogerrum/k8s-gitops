@@ -99,6 +99,14 @@ applications:
     helm:
       enabled: true
 
+  - name: headlamp
+    namespace: monitoring
+    path: main/monitoring/headlamp
+    manifest-paths: /main/monitoring/headlamp
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
 #  - name: trivy
 #    namespace: monitoring
 #    path: main/monitoring/trivy

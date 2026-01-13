@@ -1,0 +1,9 @@
+name: headlamp
+apiVersion: v2
+version: 1.0.0
+dependencies:
+  - name: headlamp
+    version: 0.39.0
+    repository: oci://ghcr.io/home-operations/charts-mirror
+
+
