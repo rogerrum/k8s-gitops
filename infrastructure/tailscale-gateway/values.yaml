@@ -20,7 +20,7 @@ app-template:
         main:
           image:
             repository: ghcr.io/tailscale/tailscale
-            tag: v1.92.4
+            tag: v1.92.5
           env:
             TZ: "America/Chicago"
             TS_KUBE_SECRET: "tailscale-auth"
