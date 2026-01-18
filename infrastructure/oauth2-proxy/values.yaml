@@ -2,7 +2,7 @@ oauth2-proxy:
   image:
     registry: "quay.io"
     repository: "oauth2-proxy/oauth2-proxy"
-    tag: "v7.12.0"
+    tag: "v7.14.2"
   replicaCount: 2
 
 
