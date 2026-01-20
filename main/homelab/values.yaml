@@ -245,3 +245,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: jellyfin
+    namespace: default
+    path: main/homelab/jellyfin
+    manifest-paths: /main/homelab/jellyfin
+    sync-wave: "-1"
+    helm:
+      enabled: true

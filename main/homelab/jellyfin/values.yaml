@@ -1,0 +1,65 @@
+app-template:
+  controllers:
+    jellyfin:
+      containers:
+        app:
+          image:
+            repository: ghcr.io/jellyfin/jellyfin
+            tag: 10.11.6
+          probes:
+            liveness:
+              enabled: true
+            readiness:
+              enabled: true
+#          resources:
+#            limits:
+#              cpu: 6
+#              memory: 5Gi
+#            requests:
+#              cpu: 500m
+#              memory: 5Gi
+          securityContext:
+            privileged: true
+            runAsGroup: 0
+            runAsUser: 0
+      statefulset:
+        podManagementPolicy: Parallel
+        volumeClaimTemplates:
+          - accessMode: ReadWriteOnce
+            globalMounts:
+              - path: /config
+            name: config
+            size: 1Mi
+      type: statefulset
+  defaultPodOptions:
+    nodeSelector:
+      kubernetes.io/arch: amd64
+  persistence:
+    cache:
+      type: emptyDir
+#    dri:
+#      hostPath: /dev/dri
+#      type: hostPath
+    media:
+      existingClaim: nas-media-pvc
+  route:
+    app:
+      annotations:
+        gethomepage.dev/description: Media Center
+        gethomepage.dev/enabled: 'true'
+        gethomepage.dev/group: Media
+        gethomepage.dev/icon: jellyfin
+        gethomepage.dev/name: Jellyfin
+      hostnames:
+        - jf.rsr.net
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+  service:
+    app:
+      controller: jellyfin
+      ports:
+        http:
+          port: 8096
+
+
