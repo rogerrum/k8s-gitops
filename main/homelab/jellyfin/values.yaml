@@ -22,21 +22,18 @@ app-template:
             privileged: true
             runAsGroup: 0
             runAsUser: 0
-      statefulset:
-        podManagementPolicy: Parallel
-        volumeClaimTemplates:
-          - accessMode: ReadWriteOnce
-            globalMounts:
-              - path: /config
-            name: config
-            size: 1Mi
-      type: statefulset
   defaultPodOptions:
     nodeSelector:
       kubernetes.io/arch: amd64
   persistence:
     cache:
       type: emptyDir
+    config:
+      enabled: true
+      suffix: config
+      storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      size: "3Gi"
 #    dri:
 #      hostPath: /dev/dri
 #      type: hostPath
