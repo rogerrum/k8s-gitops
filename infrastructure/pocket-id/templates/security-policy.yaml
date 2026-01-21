@@ -1,0 +1,37 @@
+# SecurityPolicy for OAuth2-Proxy authentication
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: {{ .Release.Name }}-auth
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+spec:
+  # Use label selector to match HTTPRoutes
+  targetSelectors:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      matchLabels:
+        security: "authenticated"  # Any HTTPRoute with this label will be protected
+  oidc:
+    provider:
+      issuer: "https://pi.rsr.net"
+      authorizationEndpoint: "https://pi.rsr.net/authorize"
+      tokenEndpoint: "https://pi.rsr.net/api/oidc/token"
+      clientID:
+        name: "oidc-secret"
+        key: "client-id"
+      clientSecret:
+        name: "oidc-secret"
+        key: "client-secret"
+    # This redirectURL is used as a template
+    # Each app's actual callback is at <app-hostname>/oauth2/callback
+    redirectURL: "https://app1.rsr.net/oauth2/callback"
+    logoutPath: "/logout"
+    scopes:
+      - openid
+      - email
+      - profile
+      - groups
+    cookieDomain: ".rsr.net"
