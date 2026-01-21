@@ -21,6 +21,9 @@ oauth2-proxy:
     whitelist-domain: "*.rsr.net"
     scope: "openid email profile groups"
     silence-ping-logging: "true"
+    code-challenge-method: S256
+    show-debug-on-error: "true"
+    insecure-oidc-skip-issuer-verification: "true"
 
 
   affinity:
