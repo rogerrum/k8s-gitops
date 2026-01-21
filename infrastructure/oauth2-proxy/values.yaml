@@ -34,3 +34,7 @@ oauth2-proxy:
 
   config:
     existingSecret: oauth2-proxy-secret
+
+  extraVolumeMounts:
+   - mountPath: /etc/ssl/certs/
+     name: rsr-crt-secret
