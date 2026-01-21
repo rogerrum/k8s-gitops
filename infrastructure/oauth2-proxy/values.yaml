@@ -35,9 +35,13 @@ oauth2-proxy:
   config:
     existingSecret: oauth2-proxy-secret
 
-  extraVolumeMounts:
-   - mountPath: /etc/ssl/certs/
-     name: rsr-crt-secret
+  extraVolumes:
+   - name: ca-bundle-cert
      secret:
       secretName: rsr-crt-secret
+
+  extraVolumeMounts:
+   - mountPath: /etc/ssl/certs/
+     name: ca-bundle-cert
+
 
