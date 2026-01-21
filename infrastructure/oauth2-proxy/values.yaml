@@ -18,8 +18,8 @@ oauth2-proxy:
     cookie-secure: "true"
     cookie-samesite: "lax"
     skip-provider-button: "true"
-    #ssl-insecure-skip-verify: "true"
     whitelist-domain: ".rsr.net"
+    scope: "openid email profile"
 
 
 
