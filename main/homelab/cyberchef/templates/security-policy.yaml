@@ -18,7 +18,7 @@ spec:
       backendRef:
         name: oauth2-proxy
         namespace: kube-system
-        port: 4180
+        port: 80
 
       path: /oauth2/auth
 
