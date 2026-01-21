@@ -15,7 +15,7 @@ spec:
 
   extAuth:
     http:
-      backendRef:
+      backendRefs:
         name: oauth2-proxy
         namespace: kube-system
         port: 80
