@@ -17,9 +17,9 @@ oauth2-proxy:
     cookie-domain: ".rsr.net"
     cookie-secure: "true"
     cookie-samesite: "lax"
-    whitelist-domain: ".rsr.net"
     skip-provider-button: "true"
     #ssl-insecure-skip-verify: "true"
+    whitelist-domain: ".rsr.net"
 
 
 
@@ -43,9 +43,7 @@ oauth2-proxy:
       secretName: auth-crt-secret
 
   extraVolumeMounts:
-   - mountPath: /etc/ssl/certs/custom-ca-bundle.crt
+   - mountPath: /etc/ssl/certs/
      name: ca-bundle-cert
-     subPath: ca-bundle.crt
-     readOnly: true
 
 
