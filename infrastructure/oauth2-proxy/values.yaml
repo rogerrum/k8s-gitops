@@ -19,10 +19,10 @@ oauth2-proxy:
     cookie-samesite: "lax"
     skip-provider-button: "true"
     whitelist-domain: "*.rsr.net"
-    scope: "openid email profile"
+    scope: "openid email profile groups"
     silence-ping-logging: "true"
     challenge-method: "S256"
-    proxy-login-url: "https://pi.rsr.net"
+#    proxy-login-url: "https://pi.rsr.net"
 
 
   affinity:
