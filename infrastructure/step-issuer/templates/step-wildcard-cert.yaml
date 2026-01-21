@@ -6,6 +6,8 @@ metadata:
   namespace: cert-manager
 spec:
   secretName: rsr-crt-secret
+  secretTemplate:
+    namespace: kube-system
   duration: 2160h        # 90 days
   renewBefore: 720h      # 30 days
   revisionHistoryLimit: 3
