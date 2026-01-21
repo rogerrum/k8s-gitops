@@ -1,39 +1,39 @@
-# SecurityPolicy for OAuth2-Proxy authentication
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: SecurityPolicy
-metadata:
-  name: {{ .Release.Name }}-auth
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/part-of: {{ .Release.Name }}
-spec:
-  targetRefs:
-    - group: gateway.networking.k8s.io
-      kind: HTTPRoute
-      name: {{ .Release.Name }}
+{{/*# SecurityPolicy for OAuth2-Proxy authentication*/}}
+{{/*apiVersion: gateway.envoyproxy.io/v1alpha1*/}}
+{{/*kind: SecurityPolicy*/}}
+{{/*metadata:*/}}
+{{/*  name: {{ .Release.Name }}-auth*/}}
+{{/*  namespace: {{ .Release.Namespace }}*/}}
+{{/*  labels:*/}}
+{{/*    app.kubernetes.io/instance: {{ .Release.Name }}*/}}
+{{/*    app.kubernetes.io/part-of: {{ .Release.Name }}*/}}
+{{/*spec:*/}}
+{{/*  targetRefs:*/}}
+{{/*    - group: gateway.networking.k8s.io*/}}
+{{/*      kind: HTTPRoute*/}}
+{{/*      name: {{ .Release.Name }}*/}}
 
-  extAuth:
-    http:
-      backendRefs:
-        - name: oauth2-proxy
-          namespace: kube-system
-          port: 80
+{{/*  extAuth:*/}}
+{{/*    http:*/}}
+{{/*      backendRefs:*/}}
+{{/*        - name: oauth2-proxy*/}}
+{{/*          namespace: kube-system*/}}
+{{/*          port: 80*/}}
 
-      path: /oauth2/auth
+{{/*      path: /oauth2/auth*/}}
 
-      # 👉 Sent FROM Envoy TO oauth2-proxy
-      headersToBackend:
-        - Cookie
-        - X-Forwarded-For
-        - X-Forwarded-Proto
-        - X-Forwarded-Host
-        - X-Forwarded-Uri
-        - X-Forwarded-Method
+{{/*      # 👉 Sent FROM Envoy TO oauth2-proxy*/}}
+{{/*      headersToBackend:*/}}
+{{/*        - Cookie*/}}
+{{/*        - X-Forwarded-For*/}}
+{{/*        - X-Forwarded-Proto*/}}
+{{/*        - X-Forwarded-Host*/}}
+{{/*        - X-Forwarded-Uri*/}}
+{{/*        - X-Forwarded-Method*/}}
 
-      # 👉 Sent FROM oauth2-proxy back TO the app
-      headersToUpstream:
-        - X-Auth-Request-User
-        - X-Auth-Request-Email
-        - X-Auth-Request-Access-Token
-        - Authorization
+{{/*      # 👉 Sent FROM oauth2-proxy back TO the app*/}}
+{{/*      headersToUpstream:*/}}
+{{/*        - X-Auth-Request-User*/}}
+{{/*        - X-Auth-Request-Email*/}}
+{{/*        - X-Auth-Request-Access-Token*/}}
+{{/*        - Authorization*/}}
