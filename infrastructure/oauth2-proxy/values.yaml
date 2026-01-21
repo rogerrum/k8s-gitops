@@ -10,7 +10,7 @@ oauth2-proxy:
     #oidc-issuer-url: "https://rogerrum.us.auth0.com/"
     provider: oidc
     oidc-issuer-url: "https://pi.rsr.net"
-    redirect-url: "https://auth.rsr.net/oauth2/callback"
+#    redirect-url: "https://auth.rsr.net/oauth2/callback"
     reverse-proxy: "true"
     set-xauthrequest: "true"
     email-domain: "*"
@@ -18,9 +18,11 @@ oauth2-proxy:
     cookie-secure: "true"
     cookie-samesite: "lax"
     skip-provider-button: "true"
-    whitelist-domain: ".rsr.net"
+    whitelist-domain: "*.rsr.net"
     scope: "openid email profile"
-
+    silence-ping-logging: "true"
+    challenge-method: "S256"
+    proxy-login-url: "https://pi.rsr.net"
 
 
   affinity:
