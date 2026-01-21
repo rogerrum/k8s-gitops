@@ -25,6 +25,15 @@ spec:
       # 👉 Sent FROM Envoy TO oauth2-proxy
       headersToBackend:
         - Cookie
+        - X-Forwarded-For
         - X-Forwarded-Proto
         - X-Forwarded-Host
         - X-Forwarded-Uri
+        - X-Forwarded-Method
+
+      # 👉 Sent FROM oauth2-proxy back TO the app
+      headersToUpstream:
+        - X-Auth-Request-User
+        - X-Auth-Request-Email
+        - X-Auth-Request-Access-Token
+        - Authorization
