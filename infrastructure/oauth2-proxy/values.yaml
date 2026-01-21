@@ -21,7 +21,7 @@ oauth2-proxy:
     whitelist-domain: "*.rsr.net"
     scope: "openid email profile groups"
     silence-ping-logging: "true"
-    challenge-method: "S256"
+    #challenge-method: "S256"
 #    proxy-login-url: "https://pi.rsr.net"
 
 
