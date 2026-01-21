@@ -3,7 +3,7 @@ apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
   name: {{ .Release.Name }}-auth
-  namespace: {{ .Release.Namespace }}
+  namespace: default
   labels:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/part-of: {{ .Release.Name }}
