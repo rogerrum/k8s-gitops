@@ -219,6 +219,13 @@ applications:
         jqPathExpressions:
           - .spec.listeners[].tls.certificateRefs[].group
 
+  - name: pocket-id
+    namespace: kube-system
+    path: infrastructure/pocket-id
+    manifest-paths: /infrastructure/pocket-id
+    sync-wave: "-3"
+    helm:
+      enabled: true
 
 #  - name: spegel
 #    namespace: kube-system

@@ -1,0 +1,69 @@
+app-template:
+  controllers:
+    pocket-id:
+      containers:
+        app:
+          envFrom:
+            - secretRef:
+                name: pocket-id-secret
+          env:
+            APP_URL: https://pi.rsr.net
+          image:
+            repository: ghcr.io/pocket-id/pocket-id
+            tag: v2.2.0-distroless
+          probes:
+            liveness:
+              enabled: true
+            readiness:
+              enabled: true
+          resources:
+            limits:
+              memory: 80Mi
+            requests:
+              cpu: 20m
+              memory: 80Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+
+  defaultPodOptions:
+    securityContext:
+      fsGroup: 1000
+      runAsGroup: 1000
+      runAsNonRoot: true
+      runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
+  route:
+    app:
+      annotations:
+        gethomepage.dev/description: OIDC Provider
+        gethomepage.dev/enabled: 'true'
+        gethomepage.dev/group: Cloud
+        gethomepage.dev/icon: pocket-id-light
+        gethomepage.dev/name: Pocket-ID
+      hostnames:
+        - pi.rsr.net
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+  service:
+    app:
+      controller: pocket-id
+      ports:
+        http:
+          port: 1411
+
+  persistence:
+    data:
+      enabled: true
+      suffix: data
+      globalMounts:
+        - path: /app/data
+      storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      size: "1Gi"
+
