@@ -22,6 +22,8 @@ app-template:
         gethomepage.dev/group: Tools
         gethomepage.dev/icon: cyberchef
         gethomepage.dev/name: Cyberchef
+      labels:
+        security: "authenticated"
       enabled: true
       parentRefs:
         - name: internal
