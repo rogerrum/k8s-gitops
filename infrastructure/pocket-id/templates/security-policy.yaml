@@ -22,6 +22,7 @@ spec:
       clientID: "3becf317-4e5e-4cf8-8c2c-e3500d411b27"
       clientSecret:
         name: "oidc-secret"
+        key: "client-secret"
     # This redirectURL is used as a template
     # Each app's actual callback is at <app-hostname>/oauth2/callback
     redirectURL: "https://app1.rsr.net/oauth2/callback"
