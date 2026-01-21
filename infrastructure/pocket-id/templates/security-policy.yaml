@@ -19,12 +19,9 @@ spec:
       issuer: "https://pi.rsr.net"
       authorizationEndpoint: "https://pi.rsr.net/authorize"
       tokenEndpoint: "https://pi.rsr.net/api/oidc/token"
-      clientID:
-        name: "oidc-secret"
-        key: "client-id"
+      clientID: "3becf317-4e5e-4cf8-8c2c-e3500d411b27"
       clientSecret:
-        name: "oidc-secret"
-        key: "client-secret"
+        name: "client-secret"
     # This redirectURL is used as a template
     # Each app's actual callback is at <app-hostname>/oauth2/callback
     redirectURL: "https://app1.rsr.net/oauth2/callback"
@@ -34,4 +31,4 @@ spec:
       - email
       - profile
       - groups
-    cookieDomain: ".rsr.net"
+    cookieDomain: "rsr.net"
