@@ -18,7 +18,7 @@ oauth2-proxy:
     cookie-secure: "true"
     cookie-samesite: "lax"
     whitelist-domain: ".rsr.net"
-    skip-tls-verify: "true"
+    ssl-insecure-skip-verify: "true"
 
 
 
