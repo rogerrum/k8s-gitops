@@ -14,6 +14,7 @@ spec:
       kind: HTTPRoute
       matchLabels:
         security: "authenticated"  # Any HTTPRoute with this label will be protected
+          # Add namespace selector to match routes in any namespace
   oidc:
     provider:
       issuer: "https://pi.rsr.net"
