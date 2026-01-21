@@ -19,10 +19,10 @@ spec:
       issuer: "https://pi.rsr.net"
       authorizationEndpoint: "https://pi.rsr.net/authorize"
       tokenEndpoint: "https://pi.rsr.net/api/oidc/token"
-      clientID: "3becf317-4e5e-4cf8-8c2c-e3500d411b27"
+    clientID: "3becf317-4e5e-4cf8-8c2c-e3500d411b27"
     clientSecret:
       name: "oidc-secret"
-      namespace: "kube-system"
+      #namespace: "kube-system"
     # This redirectURL is used as a template
     # Each app's actual callback is at <app-hostname>/oauth2/callback
     redirectURL: "https://app1.rsr.net/oauth2/callback"
