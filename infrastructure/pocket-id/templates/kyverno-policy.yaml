@@ -24,7 +24,7 @@ spec:
         apiVersion: gateway.envoyproxy.io/v1alpha1
         kind: SecurityPolicy
         name: "{{ `{{ request.object.metadata.name }}` }}-auth"
-        namespace: kube-system
+        namespace: "{{ `{{ request.object.metadata.namespace }}` }}"
         synchronize: true
         data:
           spec:
