@@ -1,0 +1,60 @@
+kyverno:
+
+  grafana:
+    enabled: true
+    annotations:
+      grafana_folder: Kyverno
+
+  backgroundController:
+    serviceMonitor:
+      enabled: true
+
+    rbac:
+      clusterRole:
+        extraResources:
+          - apiGroups:
+              - ""
+            resources:
+              - pods
+            verbs:
+              - create
+              - update
+              - patch
+              - delete
+              - get
+              - list
+
+  cleanupController:
+    serviceMonitor:
+      enabled: true
+
+  reportsController:
+    serviceMonitor:
+      enabled: true
+
+  admissionController:
+    replicas: 3
+
+    rbac:
+      clusterRole:
+        extraResources:
+          - apiGroups:
+              - ""
+            resources:
+              - pods
+            verbs:
+              - create
+              - update
+              - delete
+
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/instance: kyverno
+            app.kubernetes.io/component: kyverno
+
+    serviceMonitor:
+      enabled: true
