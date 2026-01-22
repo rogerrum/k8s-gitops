@@ -143,14 +143,6 @@ applications:
     helm:
       enabled: true
 
-  - name: oauth2-proxy
-    namespace: kube-system
-    path: infrastructure/oauth2-proxy
-    manifest-paths: /infrastructure/oauth2-proxy
-    sync-wave: "-2"
-    helm:
-      enabled: true
-
   - name: onepassword
     namespace: kube-system
     path: infrastructure/onepassword
