@@ -1,0 +1,21 @@
+# ReferenceGrant to allow SecurityPolicies from multiple namespaces to reference oidc-secret
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: oidc-secret-reference-grant
+  namespace: kube-system
+spec:
+  from:
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: kube-system
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: default
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: monitoring
+  to:
+    - group: ""
+      kind: Secret
+      name: oidc-secret
