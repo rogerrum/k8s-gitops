@@ -5,6 +5,7 @@ oauth2-proxy:
     tag: "v7.12.0"
   replicaCount: 2
 
+
   config:
     existingSecret: oauth2-proxy-secret
     configFile: |-
@@ -13,23 +14,48 @@ oauth2-proxy:
     
 
   extraArgs:
-    #oidc-issuer-url: "https://rogerrum.us.auth0.com/"
-    provider: oidc
+    # Provider
+    provider: "oidc"
     oidc-issuer-url: "https://pi.rsr.net"
+
+    # URLs
     redirect-url: "https://auth.rsr.net/oauth2/callback"
+
+    # Proxy settings
     reverse-proxy: "true"
+
+    # Headers for external auth mode
     set-xauthrequest: "true"
-    email-domain: "*"
+    set-authorization-header: "true"
+    pass-authorization-header: "true"
+    pass-access-token: "true"
+    pass-user-headers: "true"
+
+    # Cookie settings
     cookie-domain: ".rsr.net"
     cookie-secure: "true"
     cookie-samesite: "lax"
+    cookie-name: "_oauth2_proxy"
+
+    # Authentication
+    email-domain: "*"
     skip-provider-button: "true"
     whitelist-domain: "*.rsr.net"
     scope: "openid email profile groups"
-    silence-ping-logging: "true"
-    code-challenge-method: S256
+
+    # PKCE
+    code-challenge-method: "S256"
+
+    # Logging
+    standard-logging: "true"
+    auth-logging: "true"
+    request-logging: "true"
+
+    # For debugging
     show-debug-on-error: "true"
     insecure-oidc-skip-issuer-verification: "true"
+
+    silence-ping-logging: "true"
 
 
   affinity:
