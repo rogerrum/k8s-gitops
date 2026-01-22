@@ -5,6 +5,36 @@ metadata:
   name: generate-oidc-security-policy
 spec:
   rules:
+    - name: clone-oidc-secret-to-namespace
+      match:
+        any:
+          - resources:
+              kinds:
+                - HTTPRoute
+              selector:
+                matchLabels:
+                  security: authenticated
+      context:
+        - name: clientID
+          apiCall:
+            urlPath: "/api/v1/namespaces/kube-system/secrets/oidc-secret"
+            jmesPath: "data.\"client-id\""
+        - name: clientSecret
+          apiCall:
+            urlPath: "/api/v1/namespaces/kube-system/secrets/oidc-secret"
+            jmesPath: "data.\"client-secret\""
+      generate:
+        generateExisting: true
+        apiVersion: v1
+        kind: Secret
+        name: "oidc-secret"
+        namespace: "{{ `{{ request.object.metadata.namespace }}` }}"
+        synchronize: true
+        data:
+          type: Opaque
+          data:
+            client-id: "{{ `{{ clientID }}` }}"
+            client-secret: "{{ `{{ clientSecret }}` }}"
     - name: generate-security-policy-for-httproute
       match:
         any:
