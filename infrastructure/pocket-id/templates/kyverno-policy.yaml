@@ -37,10 +37,10 @@ spec:
                 issuer: "https://pi.rsr.net"
                 authorizationEndpoint: "https://pi.rsr.net/authorize"
                 tokenEndpoint: "https://pi.rsr.net/api/oidc/token"
-                clientID: "{{ `{{ clientID }}` }}"
-                clientSecret:
-                  name: "oidc-secret"
-                  key: "client-secret"
+              clientID: "{{ `{{ clientID }}` }}"
+              clientSecret:
+                name: "oidc-secret"
+                key: "client-secret"
               redirectURL: "https://{{ `{{ request.object.spec.hostnames[0] }}` }}/oauth2/callback"
               logoutPath: "/logout"
               scopes:
