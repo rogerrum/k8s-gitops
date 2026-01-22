@@ -44,11 +44,6 @@ spec:
               selector:
                 matchLabels:
                   security: authenticated
-      context:
-        - name: clientID
-          apiCall:
-            urlPath: "/api/v1/namespaces/kube-system/secrets/oidc-secret"
-            jmesPath: "data.\"client-id\" | base64_decode(@)"
       generate:
         generateExisting: true
         apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -66,8 +61,9 @@ spec:
               provider:
                 issuer: "https://pi.rsr.net"
                 authorizationEndpoint: "https://pi.rsr.net/authorize"
-                tokenEndpoint: "https://pi.rsr.net/api/oidc/token"
-              clientID: "{{ `{{ clientID }}` }}"
+                tokenEndpoint: "http://pocket-id.kube-system.svc.cluster.local:1411/api/oidc/token"
+              clientIDRef:
+                name: "oidc-secret"
               clientSecret:
                 name: "oidc-secret"
               redirectURL: "https://{{ `{{ request.object.spec.hostnames[0] }}` }}/oauth2/callback"
