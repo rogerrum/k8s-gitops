@@ -29,6 +29,16 @@ applications:
     syncOptions:
       - CreateNamespace=true
 
+  - name: kyverno
+    namespace: kyverno
+    path: infrastructure/kyverno
+    manifest-paths: /infrastructure/kyverno
+    sync-wave: "-4"
+    helm:
+      enabled: true
+    syncOptions:
+      - CreateNamespace=true
+
   - name: cloudnative-pg
     namespace: kube-system
     path: infrastructure/cloudnative-pg
