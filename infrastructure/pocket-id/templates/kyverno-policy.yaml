@@ -1,0 +1,53 @@
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: generate-oidc-security-policy
+spec:
+  rules:
+    - name: generate-security-policy-for-httproute
+      match:
+        any:
+          - resources:
+              kinds:
+                - HTTPRoute
+              selector:
+                matchLabels:
+                  security: authenticated
+      context:
+        - name: clientID
+          apiCall:
+            urlPath: "/api/v1/namespaces/kube-system/secrets/oidc-secret"
+            jmesPath: "data.\"client-id\" | base64_decode(@)"
+        - name: clientSecret
+          apiCall:
+            urlPath: "/api/v1/namespaces/kube-system/secrets/oidc-secret"
+            jmesPath: "data.\"client-secret\" | base64_decode(@)"
+      generate:
+        apiVersion: gateway.envoyproxy.io/v1alpha1
+        kind: SecurityPolicy
+        name: "{{ `{{ request.object.metadata.name }}` }}-auth"
+        namespace: kube-system
+        synchronize: true
+        data:
+          spec:
+            targetRefs:
+              - group: gateway.networking.k8s.io
+                kind: HTTPRoute
+                name: "{{ `{{ request.object.metadata.name }}` }}"
+                namespace: "{{ `{{ request.object.metadata.namespace }}` }}"
+            oidc:
+              provider:
+                issuer: "https://pi.rsr.net"
+                authorizationEndpoint: "https://pi.rsr.net/authorize"
+                tokenEndpoint: "https://pi.rsr.net/api/oidc/token"
+                clientID: "{{ `{{ clientID }}` }}"
+                clientSecret: "{{ `{{ clientSecret }}` }}"
+              redirectURL: "https://{{ `{{ request.object.spec.hostnames[0] }}` }}/oauth2/callback"
+              logoutPath: "/logout"
+              scopes:
+                - openid
+                - email
+                - profile
+                - groups
+              cookieDomain: "rsr.net"
