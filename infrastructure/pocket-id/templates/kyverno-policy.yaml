@@ -19,10 +19,6 @@ spec:
           apiCall:
             urlPath: "/api/v1/namespaces/kube-system/secrets/oidc-secret"
             jmesPath: "data.\"client-id\" | base64_decode(@)"
-        - name: clientSecret
-          apiCall:
-            urlPath: "/api/v1/namespaces/kube-system/secrets/oidc-secret"
-            jmesPath: "data.\"client-secret\" | base64_decode(@)"
       generate:
         apiVersion: gateway.envoyproxy.io/v1alpha1
         kind: SecurityPolicy
@@ -35,14 +31,14 @@ spec:
               - group: gateway.networking.k8s.io
                 kind: HTTPRoute
                 name: "{{ `{{ request.object.metadata.name }}` }}"
-                namespace: "{{ `{{ request.object.metadata.namespace }}` }}"
             oidc:
               provider:
                 issuer: "https://pi.rsr.net"
                 authorizationEndpoint: "https://pi.rsr.net/authorize"
                 tokenEndpoint: "https://pi.rsr.net/api/oidc/token"
                 clientID: "{{ `{{ clientID }}` }}"
-                clientSecret: "{{ `{{ clientSecret }}` }}"
+                clientSecret:
+                  name: "oidc-secret"
               redirectURL: "https://{{ `{{ request.object.spec.hostnames[0] }}` }}/oauth2/callback"
               logoutPath: "/logout"
               scopes:
