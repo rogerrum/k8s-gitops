@@ -23,6 +23,25 @@ kyverno:
               - delete
               - get
               - list
+          - apiGroups:
+              - ""
+            resources:
+              - secrets
+            verbs:
+              - get
+              - list
+          - apiGroups:
+              - gateway.envoyproxy.io
+            resources:
+              - securitypolicies
+            verbs:
+              - get
+              - list
+              - watch
+              - create
+              - update
+              - patch
+              - delete
 
   cleanupController:
     serviceMonitor:
@@ -45,6 +64,25 @@ kyverno:
             verbs:
               - create
               - update
+              - delete
+          - apiGroups:
+              - ""
+            resources:
+              - secrets
+            verbs:
+              - get
+              - list
+          - apiGroups:
+              - gateway.envoyproxy.io
+            resources:
+              - securitypolicies
+            verbs:
+              - get
+              - list
+              - watch
+              - create
+              - update
+              - patch
               - delete
 
     topologySpreadConstraints:
