@@ -30,6 +30,10 @@ kyverno:
             verbs:
               - get
               - list
+              - create
+              - update
+              - patch
+              - delete
           - apiGroups:
               - gateway.envoyproxy.io
             resources:
@@ -80,6 +84,10 @@ kyverno:
             verbs:
               - get
               - list
+              - create
+              - update
+              - patch
+              - delete
           - apiGroups:
               - gateway.envoyproxy.io
             resources:
