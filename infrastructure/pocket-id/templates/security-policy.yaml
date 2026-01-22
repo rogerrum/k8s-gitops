@@ -18,8 +18,10 @@ spec:
   oidc:
     provider:
       issuer: "https://pi.rsr.net"
+      # Browser-facing endpoint - must be HTTPS external URL
       authorizationEndpoint: "https://pi.rsr.net/authorize"
-      tokenEndpoint: "https://pi.rsr.net/api/oidc/token"
+      # Internal cluster endpoint - use HTTP to avoid TLS cert verification issues
+      tokenEndpoint: "http://pocket-id.kube-system.svc.cluster.local:1411/api/oidc/token"
     clientIDRef:
       name: "oidc-secret"
     clientSecret:
