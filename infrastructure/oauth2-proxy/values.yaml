@@ -19,7 +19,7 @@ oauth2-proxy:
     oidc-issuer-url: "https://pi.rsr.net"
 
     # URLs
-    redirect-url: "https://auth.rsr.net/oauth2/callback"
+    #redirect-url: "https://auth.rsr.net/oauth2/callback"
 
     # Proxy settings
     reverse-proxy: "true"
