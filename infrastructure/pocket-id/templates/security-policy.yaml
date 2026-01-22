@@ -20,7 +20,8 @@ spec:
       issuer: "https://pi.rsr.net"
       authorizationEndpoint: "https://pi.rsr.net/authorize"
       tokenEndpoint: "https://pi.rsr.net/api/oidc/token"
-    clientIDRef: oidc-secret
+    clientIDRef:
+      name: "oidc-secret"
     clientSecret:
       name: "oidc-secret"
       #namespace: "kube-system"
