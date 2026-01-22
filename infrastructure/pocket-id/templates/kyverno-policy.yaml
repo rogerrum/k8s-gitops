@@ -20,6 +20,7 @@ spec:
             urlPath: "/api/v1/namespaces/kube-system/secrets/oidc-secret"
             jmesPath: "data.\"client-id\" | base64_decode(@)"
       generate:
+        generateExisting: true
         apiVersion: gateway.envoyproxy.io/v1alpha1
         kind: SecurityPolicy
         name: "{{ `{{ request.object.metadata.name }}` }}-auth"
