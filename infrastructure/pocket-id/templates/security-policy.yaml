@@ -24,9 +24,10 @@ spec:
       tokenEndpoint: "http://pocket-id.kube-system.svc.cluster.local:1411/api/oidc/token"
     clientIDRef:
       name: "oidc-secret"
+      namespace: "kube-system"
     clientSecret:
       name: "oidc-secret"
-      #namespace: "kube-system"
+      namespace: "kube-system"
     # This redirectURL is used as a template
     # Each app's actual callback is at <app-hostname>/oauth2/callback
     redirectURL: "https://tools.rsr.net/oauth2/callback"
