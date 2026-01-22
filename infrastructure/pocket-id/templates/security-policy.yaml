@@ -1,36 +1,36 @@
-{{/*# SecurityPolicy for OAuth2-Proxy authentication*/}}
-{{/*apiVersion: gateway.envoyproxy.io/v1alpha1*/}}
-{{/*kind: SecurityPolicy*/}}
-{{/*metadata:*/}}
-{{/*  name: {{ .Release.Name }}-auth*/}}
-{{/*  namespace: default*/}}
-{{/*  labels:*/}}
-{{/*    app.kubernetes.io/instance: {{ .Release.Name }}*/}}
-{{/*    app.kubernetes.io/part-of: {{ .Release.Name }}*/}}
-{{/*spec:*/}}
-{{/*  # Use label selector to match HTTPRoutes*/}}
-{{/*  targetSelectors:*/}}
-{{/*    - group: gateway.networking.k8s.io*/}}
-{{/*      kind: HTTPRoute*/}}
-{{/*      matchLabels:*/}}
-{{/*        security: "authenticated"  # Any HTTPRoute with this label will be protected*/}}
-{{/*          # Add namespace selector to match routes in any namespace*/}}
-{{/*  oidc:*/}}
-{{/*    provider:*/}}
-{{/*      issuer: "https://pi.rsr.net"*/}}
-{{/*      authorizationEndpoint: "https://pi.rsr.net/authorize"*/}}
-{{/*      tokenEndpoint: "https://pi.rsr.net/api/oidc/token"*/}}
-{{/*    clientID: "3becf317-4e5e-4cf8-8c2c-e3500d411b27"*/}}
-{{/*    clientSecret:*/}}
-{{/*      name: "oidc-secret"*/}}
-{{/*      #namespace: "kube-system"*/}}
-{{/*    # This redirectURL is used as a template*/}}
-{{/*    # Each app's actual callback is at <app-hostname>/oauth2/callback*/}}
-{{/*    redirectURL: "https://app1.rsr.net/oauth2/callback"*/}}
-{{/*    logoutPath: "/logout"*/}}
-{{/*    scopes:*/}}
-{{/*      - openid*/}}
-{{/*      - email*/}}
-{{/*      - profile*/}}
-{{/*      - groups*/}}
-{{/*    cookieDomain: "rsr.net"*/}}
+# SecurityPolicy for OAuth2-Proxy authentication
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: {{ .Release.Name }}-auth
+  namespace: default
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+spec:
+  # Use label selector to match HTTPRoutes
+  targetSelectors:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      matchLabels:
+        security: "authenticated1"  # Any HTTPRoute with this label will be protected
+          # Add namespace selector to match routes in any namespace
+  oidc:
+    provider:
+      issuer: "https://pi.rsr.net"
+      authorizationEndpoint: "https://pi.rsr.net/authorize"
+      tokenEndpoint: "https://pi.rsr.net/api/oidc/token"
+    clientID: "3becf317-4e5e-4cf8-8c2c-e3500d411b27"
+    clientSecret:
+      name: "oidc-secret"
+      #namespace: "kube-system"
+    # This redirectURL is used as a template
+    # Each app's actual callback is at <app-hostname>/oauth2/callback
+    redirectURL: "https://tools.rsr.net/oauth2/callback"
+    logoutPath: "/logout"
+    scopes:
+      - openid
+      - email
+      - profile
+      - groups
+    cookieDomain: "rsr.net"
