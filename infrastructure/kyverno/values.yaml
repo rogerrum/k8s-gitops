@@ -42,6 +42,14 @@ kyverno:
               - update
               - patch
               - delete
+          - apiGroups:
+              - gateway.networking.k8s.io
+            resources:
+              - httproutes
+            verbs:
+              - get
+              - list
+              - watch
 
   cleanupController:
     serviceMonitor:
@@ -84,6 +92,14 @@ kyverno:
               - update
               - patch
               - delete
+          - apiGroups:
+              - gateway.networking.k8s.io
+            resources:
+              - httproutes
+            verbs:
+              - get
+              - list
+              - watch
 
     topologySpreadConstraints:
       - maxSkew: 1
