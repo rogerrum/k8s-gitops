@@ -1,36 +1,36 @@
-# SecurityPolicy for OAuth2-Proxy authentication
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: SecurityPolicy
-metadata:
-  name: {{ .Release.Name }}-auth
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/part-of: {{ .Release.Name }}
-spec:
-  targetRefs:
-    - group: gateway.networking.k8s.io
-      kind: HTTPRoute
-      name: {{ .Release.Name }}
+{{/*# SecurityPolicy for OAuth2-Proxy authentication*/}}
+{{/*apiVersion: gateway.envoyproxy.io/v1alpha1*/}}
+{{/*kind: SecurityPolicy*/}}
+{{/*metadata:*/}}
+{{/*  name: {{ .Release.Name }}-auth*/}}
+{{/*  namespace: {{ .Release.Namespace }}*/}}
+{{/*  labels:*/}}
+{{/*    app.kubernetes.io/instance: {{ .Release.Name }}*/}}
+{{/*    app.kubernetes.io/part-of: {{ .Release.Name }}*/}}
+{{/*spec:*/}}
+{{/*  targetRefs:*/}}
+{{/*    - group: gateway.networking.k8s.io*/}}
+{{/*      kind: HTTPRoute*/}}
+{{/*      name: {{ .Release.Name }}*/}}
 
-  extAuth:
-    # ✅ headersToExtAuth is at the extAuth level (not under http)
-    headersToExtAuth:
-      - Cookie
-      - X-Forwarded-For
-      - X-Forwarded-Proto
-      - X-Forwarded-Host
-      - X-Forwarded-Uri
-      - X-Forwarded-Method
-    http:
-      backendRefs:
-        - name: oauth2-proxy
-          namespace: kube-system
-          port: 80
-      path: /oauth2/auth
-      # ✅ headersToBackend is under http
-      headersToBackend:
-        - X-Auth-Request-User
-        - X-Auth-Request-Email
-        - X-Auth-Request-Access-Token
-        - Authorization
+{{/*  extAuth:*/}}
+{{/*    # ✅ headersToExtAuth is at the extAuth level (not under http)*/}}
+{{/*    headersToExtAuth:*/}}
+{{/*      - Cookie*/}}
+{{/*      - X-Forwarded-For*/}}
+{{/*      - X-Forwarded-Proto*/}}
+{{/*      - X-Forwarded-Host*/}}
+{{/*      - X-Forwarded-Uri*/}}
+{{/*      - X-Forwarded-Method*/}}
+{{/*    http:*/}}
+{{/*      backendRefs:*/}}
+{{/*        - name: oauth2-proxy*/}}
+{{/*          namespace: kube-system*/}}
+{{/*          port: 80*/}}
+{{/*      path: /oauth2/auth*/}}
+{{/*      # ✅ headersToBackend is under http*/}}
+{{/*      headersToBackend:*/}}
+{{/*        - X-Auth-Request-User*/}}
+{{/*        - X-Auth-Request-Email*/}}
+{{/*        - X-Auth-Request-Access-Token*/}}
+{{/*        - Authorization*/}}
