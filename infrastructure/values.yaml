@@ -31,6 +31,7 @@ applications:
 
   - name: kyverno
     namespace: kyverno
+    create-namespace: true
     path: infrastructure/kyverno
     manifest-paths: /infrastructure/kyverno
     sync-wave: "-4"
