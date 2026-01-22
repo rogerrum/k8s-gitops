@@ -23,7 +23,7 @@ app-template:
         gethomepage.dev/icon: cyberchef
         gethomepage.dev/name: Cyberchef
       labels:
-        security: "authenticated"
+        security: "authenticated1"
       enabled: true
       parentRefs:
         - name: internal
