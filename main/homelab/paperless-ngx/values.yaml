@@ -15,7 +15,7 @@ app-template:
             PAPERLESS_SECRET_KEY:
               valueFrom:
                 secretKeyRef:
-                  name: paperless-secret
+                  name: paperless-ngx-secret
                   key: PAPERLESS_SECRET_KEY
             PAPERLESS_URL: https://paperless.rsr.net
             PAPERLESS_PORT: "8000"
