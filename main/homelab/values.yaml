@@ -253,3 +253,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: paperless-ngx
+    namespace: default
+    path: main/homelab/paperless-ngx
+    manifest-paths: /main/homelab/paperless-ngx
+    sync-wave: "-1"
+    helm:
+      enabled: true

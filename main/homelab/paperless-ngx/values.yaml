@@ -1,0 +1,131 @@
+app-template:
+  controllers:
+    paperless:
+      forceRename: paperless
+      annotations:
+        reloader.stakater.com/auto: "true"
+      
+      containers:
+        app:
+          image:
+            repository: ghcr.io/paperless-ngx/paperless-ngx
+            tag: 2.20.5
+          env:
+            # Configure application
+            PAPERLESS_SECRET_KEY:
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secret
+                  key: PAPERLESS_SECRET_KEY
+            PAPERLESS_URL: https://paperless.rsr.net
+            PAPERLESS_PORT: "8000"
+            PAPERLESS_TIME_ZONE: "America/Chicago"
+            PAPERLESS_WEBSERVER_WORKERS: "2"
+            PAPERLESS_TASK_WORKERS: "2"
+            # Configure folders
+            PAPERLESS_CONSUMPTION_DIR: /data/nas/incoming
+            PAPERLESS_DATA_DIR: /data/local/data
+            PAPERLESS_EXPORT_DIR: /data/nas/export
+            PAPERLESS_MEDIA_ROOT: /data/local/media
+            # Configure folder importer
+            PAPERLESS_CONSUMER_POLLING: "60"
+            PAPERLESS_CONSUMER_RECURSIVE: "true"
+            PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
+            # Configure OCR
+            PAPERLESS_OCR_LANGUAGES: nld
+            PAPERLESS_OCR_LANGUAGE: nld
+            # Configure redis integration
+            PAPERLESS_REDIS: redis://paperless-redis.default.svc.cluster.local:6379
+            # Configure user permissions
+            USERMAP_GID: "100" # gladius:users
+            # Configure admin user
+            PAPERLESS_ADMIN_USER:
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-secret
+                  key: PAPERLESS_ADMIN_USER
+            PAPERLESS_ADMIN_PASSWORD:
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-secret
+                  key: PAPERLESS_ADMIN_PASSWORD
+          probes:
+            liveness:
+              enabled: true
+            readiness:
+              enabled: true
+            startup:
+              enabled: true
+              spec:
+                failureThreshold: 30
+                periodSeconds: 5
+          resources:
+            requests:
+              cpu: 25m
+              memory: 2Gi
+            limits:
+              memory: 6Gi
+    
+    redis:
+      containers:
+        redis:
+          image:
+            repository: ghcr.io/valkey-io/valkey
+            tag: 9.0.1
+          resources:
+            requests:
+              cpu: 5m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+  
+  service:
+    app:
+      forceRename: paperless
+      primary: true
+      controller: paperless
+      ports:
+        http:
+          port: 8000
+    redis:
+      controller: redis
+      ports:
+        http:
+          port: 6379
+  
+  persistence:
+    data:
+      suffix: data
+      storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      size: "5Gi"
+      advancedMounts:
+        paperless:
+          app:
+            - path: /data/local
+    nas:
+      type: nfs
+      path: /Paperless
+      server: 192.168.1.115
+      advancedMounts:
+        paperless:
+          app:
+            - path: /data/nas
+  
+  route:
+    app:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Home
+        gethomepage.dev/icon: paperless
+        gethomepage.dev/name: Paperless
+      hostnames:
+        - paperless.rsr.net
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      rules:
+        - backendRefs:
+            - identifier: app
+              port: http
+
