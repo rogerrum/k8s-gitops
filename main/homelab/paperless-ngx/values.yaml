@@ -35,7 +35,7 @@ app-template:
             PAPERLESS_OCR_LANGUAGES: nld
             PAPERLESS_OCR_LANGUAGE: nld
             # Configure redis integration
-            PAPERLESS_REDIS: redis://paperless-redis.default.svc.cluster.local:6379
+            PAPERLESS_REDIS: redis://paperless-ngx-redis.default.svc.cluster.local:6379
             # Configure user permissions
             USERMAP_GID: "100" # gladius:users
             # Configure admin user
