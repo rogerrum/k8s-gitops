@@ -1,0 +1,18 @@
+volsync-perfectra1n:
+  fullnameOverride: volsync # Required for volsync-perfectra1n fork
+  image: &image
+    repository: ghcr.io/perfectra1n/volsync
+    tag: 0.17.6
+  kopia: *image
+  rclone: *image
+  restic: *image
+  rsync: *image
+  rsync-tls: *image
+  syncthing: *image
+  manageCRDs: true
+  metrics:
+    disableAuth: true
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 1001

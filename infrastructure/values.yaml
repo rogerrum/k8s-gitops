@@ -230,6 +230,14 @@ applications:
     helm:
       enabled: true
 
+  - name: volsync
+    namespace: kube-system
+    path: infrastructure/volsync
+    manifest-paths: /infrastructure/volsync
+    sync-wave: "-3"
+    helm:
+      enabled: true
+
 #  - name: spegel
 #    namespace: kube-system
 #    path: infrastructure/spegel
