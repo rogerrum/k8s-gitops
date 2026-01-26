@@ -16,3 +16,5 @@ volsync-perfectra1n:
     runAsNonRoot: true
     runAsUser: 1001
     runAsGroup: 1001
+  nodeSelector:
+    google.feature.node.kubernetes.io/coral: "true"
