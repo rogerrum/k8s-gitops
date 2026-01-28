@@ -13,7 +13,7 @@ app-template:
         main:
           image:
             repository: nodered/node-red
-            tag: 4.1.3-18-minimal
+            tag: 4.1.4-18-minimal
           env:
             TZ: "America/Chicago"
             FLOWS: "flows.json"
