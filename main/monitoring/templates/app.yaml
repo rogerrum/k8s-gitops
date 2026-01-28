@@ -58,6 +58,7 @@ spec:
       prune: {{ default true $app.prune }}
       selfHeal: {{ default true $app.selfHeal }}
     syncOptions:
+      - SkipDryRunOnMissingResource=true
       - ApplyOutOfSyncOnly=true
     {{- if $app.syncOptions }}
     {{- range $indx, $opt := $app.syncOptions }}
