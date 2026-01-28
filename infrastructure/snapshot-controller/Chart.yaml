@@ -1,0 +1,8 @@
+name: snapshot-controller
+apiVersion: v2
+version: 1.0.0
+dependencies:
+  - name: snapshot-controller
+    version: 5.0.2
+    repository: oci://ghcr.io/piraeusdatastore/helm-charts
+

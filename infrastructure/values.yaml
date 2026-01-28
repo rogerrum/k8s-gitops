@@ -230,6 +230,14 @@ applications:
     helm:
       enabled: true
 
+  - name: snapshot-controller
+    namespace: kube-system
+    path: infrastructure/snapshot-controller
+    manifest-paths: /infrastructure/snapshot-controller
+    sync-wave: "-4"
+    helm:
+      enabled: true
+
   - name: kopia
     namespace: kube-system
     path: infrastructure/kopia
