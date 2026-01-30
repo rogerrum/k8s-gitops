@@ -1,3 +1,96 @@
+# VolSync backup configuration options
+# Set createPVCs to false if you want to keep existing PVCs and only create backups
+# Set to true to enable automatic PVC creation with restore capability
+createPVCs: false  # Change to true once backups are established
+
+# Default values for all apps (can be overridden per app)
+defaults:
+  pvcSuffix: config
+  runAsUser: "1001"
+  capacity: 1Gi
+  schedule: "0 7 * * *"
+  namespace: default
+
+# Apps to backup with VolSync (based on actual PVCs in cluster)
+apps:
+  # Default namespace apps
+#  - app: home-assistant
+#    runAsUser: "1000"
+#    capacity: 10Gi
+#    schedule: "0 2 * * *"
+#
+#  - app: node-red
+#    pvcSuffix: data
+#    runAsUser: "1000"
+#    capacity: 5Gi
+#    schedule: "0 2 10 * * *"
+
+#  - app: frigate
+#    runAsUser: "1000"
+#    capacity: 10Gi
+#    schedule: "0 2 20 * * *"
+
+#  - app: esphome
+#    capacity: 1Gi
+#    schedule: "0 2 30 * * *"
+
+#  - app: zigbee2mqtt
+#    runAsUser: "1000"
+#    capacity: 1Gi
+#    schedule: "0 2 40 * * *"
+#
+#  - app: zwavejs2mqtt
+#    runAsUser: "1000"
+#    capacity: 1Gi
+#    schedule: "0 2 50 * * *"
+
+#  - app: matter-server
+#    pvcSuffix: data
+#    capacity: 1Gi
+#    schedule: "0 3 * * *"
+
+#  - app: paperless-ngx
+#    pvcSuffix: data
+#    capacity: 5Gi
+#    schedule: "0 3 10 * * *"
+
+#  - app: mealie
+#    pvcSuffix: api-data
+#    capacity: 1Gi
+#    schedule: "0 3 20 * * *"
+
+#  - app: planka
+#    capacity: 10Gi
+#    schedule: "0 3 30 * * *"
+#
+#  - app: webtrees
+#    capacity: 1Gi
+#    schedule: "0 3 40 * * *"
+
+#  - app: manyfold
+#    pvcSuffix: data
+#    capacity: 5Gi
+#    schedule: "0 3 50 * * *"
+
+  - app: actual
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "0 4 * * *"
+
+#  - app: openttd
+#    capacity: 1Gi
+#    schedule: "0 4 10 * * *"
+
+#  - app: jellyfin
+#    capacity: 3Gi
+#    schedule: "0 4 20 * * *"
+
+#  - app: uptime-kuma
+#    pvcSuffix: data
+#    capacity: 5Gi
+#    namespace: monitoring
+#    schedule: "0 4 30 * * *"
+
 volsync-perfectra1n:
   fullnameOverride: volsync # Required for volsync-perfectra1n fork
   image: &image
