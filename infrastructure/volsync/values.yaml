@@ -74,7 +74,7 @@ apps:
 
   - app: actual
     pvcSuffix: data
-    capacity: 3Gi
+    capacity: 5Gi
     schedule: "0 4 * * *"
 
 #  - app: openttd
