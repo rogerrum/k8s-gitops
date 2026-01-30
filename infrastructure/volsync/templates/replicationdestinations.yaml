@@ -1,0 +1,73 @@
+{{- $apps := include "volsync.parseApps" . | fromJsonArray -}}
+{{- range $apps }}
+---
+# ReplicationDestination for bootstrap restore for {{ .app }}
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: {{ .app }}-bootstrap
+  namespace: {{ .namespace }}
+  labels:
+    app.kubernetes.io/name: volsync
+    app.kubernetes.io/component: restore
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    volsync.backube/app: {{ .app }}
+spec:
+  trigger:
+    manual: restore-once
+  kopia:
+    repository: {{ .app }}-kopia-secret
+    copyMethod: Snapshot
+    storageClassName: longhorn
+    volumeSnapshotClassName: longhorn-snapshot-vsc
+    accessModes: [ReadWriteOnce]
+    capacity: {{ .capacity }}
+    {{- if .cacheCapacity }}
+    cacheCapacity: {{ .cacheCapacity }}
+    cacheStorageClassName: longhorn
+    cacheAccessModes: [ReadWriteOnce]
+    {{- end }}
+    moverSecurityContext:
+      runAsUser: {{ .runAsUser }}
+      runAsGroup: {{ .runAsUser }}
+      fsGroup: {{ .runAsUser }}
+    moverAffinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: google.feature.node.kubernetes.io/coral
+                  operator: In
+                  values:
+                    - "true"
+    sourceIdentity:
+      sourceName: {{ .app }}
+    cleanupTempPVC: true
+    cleanupCachePVC: true
+    enableFileDeletion: true
+{{- if $.Values.createPVCs }}
+---
+# PVC with conditional dataSourceRef for automatic bootstrap for {{ .app }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .app }}-{{ .pvcSuffix }}
+  namespace: {{ .namespace }}
+  labels:
+    app.kubernetes.io/name: volsync
+    app.kubernetes.io/component: restore
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    volsync.backube/app: {{ .app }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  dataSourceRef:
+    apiGroup: volsync.backube
+    kind: ReplicationDestination
+    name: {{ .app }}-bootstrap
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: {{ .capacity }}
+{{- end }}
+{{- end }}
