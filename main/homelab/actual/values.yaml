@@ -61,11 +61,7 @@ app-template:
 
   persistence:
     data:
-      enabled: true
-      suffix: data
-      storageClass: "longhorn"
-      size: 5Gi
-      accessMode: ReadWriteOnce
+      existingClaim: actual-data
       advancedMounts:
         main:
           main:
