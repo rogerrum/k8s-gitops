@@ -48,11 +48,15 @@ spec:
 {{- if $.Values.createPVCs }}
 ---
 # PVC with conditional dataSourceRef for automatic bootstrap for {{ .app }}
+# Note: Both annotations prevent deletion - helm.sh for Helm/ArgoCD 2.7+, argocd for older versions
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ .app }}-{{ .pvcSuffix }}
   namespace: {{ .namespace }}
+  annotations:
+    helm.sh/resource-policy: keep
+    argocd.argoproj.io/sync-options: Prune=false
   labels:
     app.kubernetes.io/name: volsync
     app.kubernetes.io/component: restore
