@@ -1,7 +1,7 @@
 # VolSync backup configuration options
 # Set createPVCs to false if you want to keep existing PVCs and only create backups
 # Set to true to enable automatic PVC creation with restore capability
-createPVCs: false  # Change to true once backups are established
+createPVCs: true  # Change to true once backups are established
 
 # Default values for all apps (can be overridden per app)
 defaults:
@@ -74,7 +74,7 @@ apps:
 
   - app: actual
     pvcSuffix: data
-    capacity: 5Gi
+    capacity: 3Gi
     schedule: "0 4 * * *"
 
 #  - app: openttd
