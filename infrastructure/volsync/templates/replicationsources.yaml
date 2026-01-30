@@ -1,0 +1,64 @@
+{{- $apps := include "volsync.parseApps" . | fromJsonArray -}}
+{{- range $apps }}
+---
+# ExternalSecret for Kopia repository credentials for {{ .app }}
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: {{ .app }}-kopia
+  namespace: {{ .namespace }}
+  labels:
+    app.kubernetes.io/name: volsync
+    app.kubernetes.io/component: backup
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    volsync.backube/app: {{ .app }}
+spec:
+  refreshInterval: 12h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: {{ .app }}-kopia-secret
+    creationPolicy: Owner
+    template:
+      data:
+        KOPIA_FS_PATH: /repository
+        KOPIA_PASSWORD: '{{ printf "{{ .KOPIA_PASSWORD }}" }}'
+        KOPIA_REPOSITORY: filesystem:///repository
+  dataFrom:
+    - extract:
+        key: kopia-config
+---
+# ReplicationSource for backup configuration for {{ .app }}
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: {{ .app }}
+  namespace: {{ .namespace }}
+  labels:
+    app.kubernetes.io/name: volsync
+    app.kubernetes.io/component: backup
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    volsync.backube/app: {{ .app }}
+spec:
+  sourcePVC: {{ .app }}-{{ .pvcSuffix }}
+  trigger:
+    schedule: "{{ .schedule }}"
+  kopia:
+    repository: {{ .app }}-kopia-secret
+    copyMethod: Snapshot
+    compression: zstd-fastest
+    parallelism: 2
+    accessModes: ["ReadWriteOnce"]
+    volumeSnapshotClassName: longhorn-snapshot-vsc
+    storageClassName: longhorn
+    moverSecurityContext:
+      runAsUser: {{ .runAsUser }}
+      runAsGroup: {{ .runAsUser }}
+      fsGroup: {{ .runAsUser }}
+      fsGroupChangePolicy: "OnRootMismatch"
+    retain:
+      hourly: 24
+      daily: 10
+      weekly: 4
+{{- end }}
