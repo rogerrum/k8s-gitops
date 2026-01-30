@@ -57,6 +57,15 @@ spec:
       runAsGroup: {{ .runAsUser }}
       fsGroup: {{ .runAsUser }}
       fsGroupChangePolicy: "OnRootMismatch"
+    moverAffinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: google.feature.node.kubernetes.io/coral
+                  operator: In
+                  values:
+                    - "true"
     retain:
       hourly: 24
       daily: 10
