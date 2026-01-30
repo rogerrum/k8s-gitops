@@ -1,0 +1,13 @@
+---
+# VolumeSnapshotClass for Longhorn CSI driver
+# Required by VolSync for snapshot-based backups
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: longhorn-snapshot-vsc
+  labels:
+    app.kubernetes.io/name: volsync
+    app.kubernetes.io/component: snapshot
+    app.kubernetes.io/instance: {{ .Release.Name }}
+driver: driver.longhorn.io
+deletionPolicy: Delete
