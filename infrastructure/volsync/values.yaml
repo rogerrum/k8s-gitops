@@ -81,9 +81,9 @@ apps:
 #    capacity: 1Gi
 #    schedule: "0 4 10 * * *"
 
-#  - app: jellyfin
-#    capacity: 3Gi
-#    schedule: "0 4 20 * * *"
+  - app: jellyfin
+    capacity: 3Gi
+    schedule: "0 4 20 * * *"
 
 #  - app: uptime-kuma
 #    pvcSuffix: data
