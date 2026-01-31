@@ -12,6 +12,7 @@ Helper function to parse apps with defaults from values.yaml
   {{- $_ = set $app "schedule" (default $defaults.schedule .schedule) -}}
   {{- $_ = set $app "namespace" (default $defaults.namespace .namespace) -}}
   {{- $_ = set $app "cacheCapacity" .cacheCapacity -}}
+  {{- $_ = set $app "createPVC" .createPVC -}}
   {{- $apps = append $apps $app -}}
 {{- end -}}
 {{- toJson $apps -}}
