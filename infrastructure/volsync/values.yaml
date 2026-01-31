@@ -85,7 +85,6 @@ apps:
     pvcSuffix: data
     capacity: 5Gi
     schedule: "50 3 * * *"
-    createPVC: false
 
   - app: actual
     pvcSuffix: data
