@@ -112,10 +112,7 @@ app-template:
 
   persistence:
     data:
-      suffix: data
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-      size: "5Gi"
+      existingClaim: manyfold-data
       advancedMounts:
         manyfold:
           main:
