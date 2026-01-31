@@ -29,11 +29,7 @@ app-template:
     cache:
       type: emptyDir
     config:
-      enabled: true
-      suffix: config
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-      size: "3Gi"
+      existingClaim: jellyfin-config
 #    dri:
 #      hostPath: /dev/dri
 #      type: hostPath
