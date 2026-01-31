@@ -23,26 +23,26 @@ apps:
 #    pvcSuffix: data
 #    runAsUser: "1000"
 #    capacity: 5Gi
-#    schedule: "0 2 10 * * *"
+#    schedule: "10 2 * * *"
 
 #  - app: frigate
 #    runAsUser: "1000"
 #    capacity: 10Gi
-#    schedule: "0 2 20 * * *"
+#    schedule: "20 2 * * *"
 
 #  - app: esphome
 #    capacity: 1Gi
-#    schedule: "0 2 30 * * *"
+#    schedule: "30 2 * * *"
 
 #  - app: zigbee2mqtt
 #    runAsUser: "1000"
 #    capacity: 1Gi
-#    schedule: "0 2 40 * * *"
+#    schedule: "40 2 * * *"
 #
 #  - app: zwavejs2mqtt
 #    runAsUser: "1000"
 #    capacity: 1Gi
-#    schedule: "0 2 50 * * *"
+#    schedule: "50 2 * * *"
 
 #  - app: matter-server
 #    pvcSuffix: data
@@ -52,25 +52,25 @@ apps:
 #  - app: paperless-ngx
 #    pvcSuffix: data
 #    capacity: 5Gi
-#    schedule: "0 3 10 * * *"
+#    schedule: "10 3 * * *"
 
 #  - app: mealie
 #    pvcSuffix: api-data
 #    capacity: 1Gi
-#    schedule: "0 3 20 * * *"
+#    schedule: "20 3 * * *"
 
 #  - app: planka
 #    capacity: 10Gi
-#    schedule: "0 3 30 * * *"
+#    schedule: "30 3 * * *"
 #
 #  - app: webtrees
 #    capacity: 1Gi
-#    schedule: "0 3 40 * * *"
+#    schedule: "40 3 * * *"
 
 #  - app: manyfold
 #    pvcSuffix: data
 #    capacity: 5Gi
-#    schedule: "0 3 50 * * *"
+#    schedule: "50 3 * * *"
 
   - app: actual
     pvcSuffix: data
@@ -79,17 +79,17 @@ apps:
 
 #  - app: openttd
 #    capacity: 1Gi
-#    schedule: "0 4 10 * * *"
+#    schedule: "10 4 * * *"
 
   - app: jellyfin
     capacity: 3Gi
-    schedule: "0 4 20 * * *"
+    schedule: "20 4 * * *"
 
 #  - app: uptime-kuma
 #    pvcSuffix: data
 #    capacity: 5Gi
 #    namespace: monitoring
-#    schedule: "0 4 30 * * *"
+#    schedule: "30 4 * * *"
 
 volsync-perfectra1n:
   fullnameOverride: volsync # Required for volsync-perfectra1n fork
