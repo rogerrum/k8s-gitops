@@ -12,18 +12,30 @@ defaults:
   namespace: default
 
 # Apps to backup with VolSync (based on actual PVCs in cluster)
+# Per-app createPVC field overrides global createPVCs setting:
+#   - createPVC: false = Never create PVC for this app (useful for existing apps during migration)
+#   - createPVC: true = Always create PVC for this app (even if global is false)
+#   - No createPVC field = Use global createPVCs setting
+#
+# Migration workflow for existing apps:
+#   1. Add app with createPVC: false (backups from existing PVC)
+#   2. Wait for first backup to complete
+#   3. Change to createPVC: true and delete old PVC
+#   4. PVC recreated with restore from backup
 apps:
   # Default namespace apps
 #  - app: home-assistant
 #    runAsUser: "1000"
 #    capacity: 10Gi
 #    schedule: "0 2 * * *"
+#    createPVC: false  # Don't create PVC - backup from existing PVC managed by app chart
 #
 #  - app: node-red
 #    pvcSuffix: data
 #    runAsUser: "1000"
 #    capacity: 5Gi
 #    schedule: "10 2 * * *"
+#    createPVC: false  # Don't create PVC - backup from existing PVC managed by app chart
 
 #  - app: frigate
 #    runAsUser: "1000"
@@ -49,10 +61,11 @@ apps:
 #    capacity: 1Gi
 #    schedule: "0 3 * * *"
 
-#  - app: paperless-ngx
-#    pvcSuffix: data
-#    capacity: 5Gi
-#    schedule: "10 3 * * *"
+  - app: paperless-ngx
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "10 3 * * *"
+    createPVC: false
 
 #  - app: mealie
 #    pvcSuffix: api-data
@@ -63,14 +76,16 @@ apps:
 #    capacity: 10Gi
 #    schedule: "30 3 * * *"
 #
-#  - app: webtrees
-#    capacity: 1Gi
-#    schedule: "40 3 * * *"
+  - app: webtrees
+    capacity: 1Gi
+    schedule: "40 3 * * *"
+    createPVC: false
 
-#  - app: manyfold
-#    pvcSuffix: data
-#    capacity: 5Gi
-#    schedule: "50 3 * * *"
+  - app: manyfold
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "50 3 * * *"
+    createPVC: false
 
   - app: actual
     pvcSuffix: data
