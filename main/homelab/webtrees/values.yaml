@@ -104,11 +104,6 @@ app-template:
 
   persistence:
     config:
-      enabled: true
-      suffix: config
+      existingClaim: webtrees-config
       globalMounts:
         - path: /var/www/webtrees/data/
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-      size: "1Gi"
-
