@@ -72,10 +72,7 @@ app-template:
 
   persistence:
     config:
-      suffix: config
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-      size: "1Gi"
+      existingClaim: esphome-config
       advancedMounts:
         esphome:
           app:
