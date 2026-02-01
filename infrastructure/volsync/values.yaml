@@ -46,7 +46,6 @@ apps:
   - app: esphome
     capacity: 1Gi
     schedule: "30 2 * * *"
-    createPVC: false
 
 #  - app: zigbee2mqtt
 #    runAsUser: "1000"
