@@ -37,11 +37,11 @@ apps:
 #    schedule: "10 2 * * *"
 #    createPVC: false  # Don't create PVC - backup from existing PVC managed by app chart
 
-  - app: frigate
-    runAsUser: "1000"
-    capacity: 10Gi
-    schedule: "20 2 * * *"
-    createPVC: false
+#  - app: frigate
+#    runAsUser: "1000"
+#    capacity: 10Gi
+#    schedule: "20 2 * * *"
+#    createPVC: false
 
   - app: esphome
     capacity: 1Gi
