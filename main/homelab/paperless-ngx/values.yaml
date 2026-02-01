@@ -95,10 +95,7 @@ app-template:
   
   persistence:
     data:
-      suffix: data
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-      size: "5Gi"
+      existingClaim: paperless-ngx-data
       advancedMounts:
         paperless:
           app:
