@@ -79,7 +79,7 @@ apps:
   - app: webtrees
     capacity: 1Gi
     schedule: "40 3 * * *"
-    createPVC: false
+    
 
   - app: manyfold
     pvcSuffix: data
