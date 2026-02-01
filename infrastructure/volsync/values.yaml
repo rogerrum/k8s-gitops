@@ -61,7 +61,7 @@ apps:
     pvcSuffix: data
     capacity: 1Gi
     schedule: "0 3 * * *"
-    createPVC: false
+
 
   - app: paperless-ngx
     pvcSuffix: data
@@ -72,12 +72,12 @@ apps:
     pvcSuffix: api-data
     capacity: 1Gi
     schedule: "20 3 * * *"
-    createPVC: false
+
 
   - app: planka
     capacity: 10Gi
     schedule: "30 3 * * *"
-    createPVC: false
+
 
   - app: webtrees
     capacity: 1Gi
