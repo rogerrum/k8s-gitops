@@ -64,12 +64,7 @@ app-template:
 
   persistence:
     data:
-      enabled: true
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-      suffix: data
-      size: "1Gi"
-      retain: true
+      existingClaim: matter-server-data
       advancedMounts:
         main:
           main:
