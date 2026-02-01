@@ -25,6 +25,7 @@ defaults:
 apps:
   # Default namespace apps
   - app: home-assistant
+    runAsUser: "1000"
     capacity: 10Gi
     schedule: "0 2 * * *"
     createPVC: false
