@@ -74,10 +74,10 @@ apps:
     schedule: "20 3 * * *"
 
 
-  - app: planka
-    pvcSuffix: data
-    capacity: 1Gi
-    schedule: "30 3 * * *"
+#  - app: planka
+#    pvcSuffix: data
+#    capacity: 1Gi
+#    schedule: "30 3 * * *"
 
 
   - app: webtrees
