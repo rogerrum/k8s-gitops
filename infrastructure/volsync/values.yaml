@@ -98,11 +98,12 @@ apps:
     capacity: 3Gi
     schedule: "20 4 * * *"
 
-#  - app: uptime-kuma
-#    pvcSuffix: data
-#    capacity: 5Gi
-#    namespace: monitoring
-#    schedule: "30 4 * * *"
+  - app: uptime-kuma
+    pvcSuffix: data
+    capacity: 5Gi
+    namespace: monitoring
+    schedule: "30 4 * * *"
+    createPVC: false
 
 volsync-perfectra1n:
   fullnameOverride: volsync # Required for volsync-perfectra1n fork
