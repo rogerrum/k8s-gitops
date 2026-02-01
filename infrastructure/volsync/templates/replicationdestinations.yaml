@@ -1,7 +1,25 @@
 {{- $apps := include "volsync.parseApps" . | fromJsonArray -}}
 {{- range $apps }}
+{{- /*
+  PVC creation logic:
+  - If global createPVCs is false: Don't create ReplicationDestination or PVC
+  - If global createPVCs is true AND app-level createPVC is not explicitly false: Create both
+  - If app-level createPVC is explicitly false: Don't create (override global setting)
+*/ -}}
+{{- $shouldCreatePVC := false -}}
+{{- if $.Values.createPVCs -}}
+  {{- if hasKey . "createPVC" -}}
+    {{- if ne .createPVC false -}}
+      {{- $shouldCreatePVC = true -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $shouldCreatePVC = true -}}
+  {{- end -}}
+{{- end -}}
+{{- if $shouldCreatePVC }}
 ---
 # ReplicationDestination for bootstrap restore for {{ .app }}
+# Note: Only created when PVC is being created to avoid premature restore attempts
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
@@ -45,23 +63,6 @@ spec:
     cleanupTempPVC: true
     cleanupCachePVC: true
     enableFileDeletion: true
-{{- /*
-  PVC creation logic:
-  - If global createPVCs is false: Don't create
-  - If global createPVCs is true AND app-level createPVC is not explicitly false: Create
-  - If app-level createPVC is explicitly false: Don't create (override global setting)
-*/ -}}
-{{- $shouldCreatePVC := false -}}
-{{- if $.Values.createPVCs -}}
-  {{- if hasKey . "createPVC" -}}
-    {{- if ne .createPVC false -}}
-      {{- $shouldCreatePVC = true -}}
-    {{- end -}}
-  {{- else -}}
-    {{- $shouldCreatePVC = true -}}
-  {{- end -}}
-{{- end -}}
-{{- if $shouldCreatePVC }}
 ---
 # PVC with conditional dataSourceRef for automatic bootstrap for {{ .app }}
 # Note: Both annotations prevent deletion - helm.sh for Helm/ArgoCD 2.7+, argocd for older versions
