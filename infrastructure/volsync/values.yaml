@@ -103,7 +103,7 @@ apps:
     capacity: 5Gi
     namespace: monitoring
     schedule: "30 4 * * *"
-    createPVC: false
+
 
 volsync-perfectra1n:
   fullnameOverride: volsync # Required for volsync-perfectra1n fork
