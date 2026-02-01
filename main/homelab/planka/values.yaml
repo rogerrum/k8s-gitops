@@ -91,11 +91,7 @@ app-template:
 
   persistence:
     config:
-      enabled: true
-      suffix: "config"
-      accessMode: ReadWriteOnce
-      storageClass: "longhorn"
-      size: 10Gi
+      existingClaim: planka-data
       advancedMounts:
         main:
           main:
