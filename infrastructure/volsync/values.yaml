@@ -65,7 +65,6 @@ apps:
     pvcSuffix: data
     capacity: 5Gi
     schedule: "10 3 * * *"
-    createPVC: false
 
 #  - app: mealie
 #    pvcSuffix: api-data
@@ -79,7 +78,7 @@ apps:
   - app: webtrees
     capacity: 1Gi
     schedule: "40 3 * * *"
-    
+
 
   - app: manyfold
     pvcSuffix: data
