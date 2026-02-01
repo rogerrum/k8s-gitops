@@ -24,11 +24,11 @@ defaults:
 #   4. PVC recreated with restore from backup
 apps:
   # Default namespace apps
-#  - app: home-assistant
-#    runAsUser: "1000"
-#    capacity: 10Gi
-#    schedule: "0 2 * * *"
-#    createPVC: false
+  - app: home-assistant
+    runAsUser: "1000"
+    capacity: 10Gi
+    schedule: "0 2 * * *"
+    createPVC: false
 
 #  - app: node-red
 #    pvcSuffix: data
