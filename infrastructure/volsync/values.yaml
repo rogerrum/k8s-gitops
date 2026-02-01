@@ -40,7 +40,7 @@ apps:
   - app: frigate
     capacity: 10Gi
     schedule: "20 2 * * *"
-    
+
 
   - app: esphome
     capacity: 1Gi
