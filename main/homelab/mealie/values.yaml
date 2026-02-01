@@ -85,11 +85,7 @@ app-template:
 
   persistence:
     api-data:
-      enabled: true
-      storageClass: "longhorn"
-      suffix: "api-data"
-      accessMode: ReadWriteOnce
-      size: "1Gi"
+      existingClaim: mealie-api-data
       globalMounts:
         - path: /app/data/
 
