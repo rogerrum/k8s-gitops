@@ -75,7 +75,8 @@ apps:
 
 
   - app: planka
-    capacity: 10Gi
+    pvcSuffix: data
+    capacity: 1Gi
     schedule: "30 3 * * *"
 
 
