@@ -59,11 +59,7 @@ app-template:
 
   persistence:
     data:
-      enabled: true
-      suffix: data
-      storageClass: "longhorn"
-      size: 5Gi
-      accessMode: ReadWriteOnce
+      existingClaim: uptime-kuma-data
       advancedMounts:
         main:
           main:
