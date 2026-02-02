@@ -48,7 +48,6 @@ apps:
     schedule: "30 2 * * *"
 
   - app: zigbee2mqtt
-    runAsUser: "1000"
     capacity: 1Gi
     schedule: "40 2 * * *"
     createPVC: false
