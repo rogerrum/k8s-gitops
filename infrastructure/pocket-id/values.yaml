@@ -59,11 +59,6 @@ app-template:
 
   persistence:
     data:
-      enabled: true
-      suffix: data
+      existingClaim: pocket-id-data
       globalMounts:
         - path: /app/data
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-      size: "1Gi"
-
