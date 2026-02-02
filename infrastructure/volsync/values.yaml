@@ -105,7 +105,6 @@ apps:
     pvcSuffix: data
     namespace: kube-system
     schedule: "40 4 * * *"
-    createPVC: false  # Existing app, do not create PVC yet
 
 
 volsync-perfectra1n:
