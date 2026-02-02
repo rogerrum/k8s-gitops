@@ -111,9 +111,6 @@ grafana:
       argo-cd:
         url: https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.6/examples/dashboard.json
         datasource: Prometheus
-      frigate:
-        url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/frigate.json
-        datasource: influxdb
       home-assistant:
         url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/home_assistant.json
         datasource: home_assistant
@@ -337,21 +334,6 @@ grafana:
           jsonData:
             implementation: prometheus
             handleGrafanaManagedAlerts: true
-        - name: influxdb
-          type: influxdb
-          access: proxy
-          url: http://influxdb:8086
-          database: telegraf
-        - name: home_assistant
-          type: influxdb
-          access: proxy
-          url: http://influxdb:8086
-          database: home_assistant
-        - name: speedtests
-          type: influxdb
-          access: proxy
-          url: http://influxdb:8086
-          database: speedtests
         - name: TeslaMate
           type: postgres
           access: proxy
