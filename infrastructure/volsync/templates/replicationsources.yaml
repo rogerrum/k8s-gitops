@@ -55,7 +55,7 @@ spec:
     moverSecurityContext:
       runAsUser: {{ .runAsUser }}
       runAsGroup: {{ .runAsUser }}
-      fsGroup: {{ .runAsUser }}
+      fsGroup: 1001
       fsGroupChangePolicy: "OnRootMismatch"
     moverAffinity:
       nodeAffinity:
