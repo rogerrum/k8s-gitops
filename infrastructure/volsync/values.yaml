@@ -25,11 +25,10 @@ defaults:
 apps:
   # Default namespace apps
   # TEMPORARILY DISABLED - Longhorn lock issue, will re-enable after lock clears
-#  - app: home-assistant
-#    runAsUser: "1000"
-#    capacity: 10Gi
-#    schedule: "0 2 * * *"
-#    createPVC: false
+  - app: home-assistant
+    capacity: 10Gi
+    schedule: "0 2 * * *"
+    createPVC: false
 
 #  - app: node-red
 #    pvcSuffix: data
