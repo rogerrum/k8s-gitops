@@ -28,7 +28,6 @@ apps:
   - app: home-assistant
     capacity: 10Gi
     schedule: "0 2 * * *"
-    createPVC: false
 
   - app: node-red
     pvcSuffix: data
