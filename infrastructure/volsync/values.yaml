@@ -100,6 +100,13 @@ apps:
     namespace: monitoring
     schedule: "30 4 * * *"
 
+  - app: pocket-id
+    capacity: 1Gi
+    pvcSuffix: data
+    namespace: kube-system
+    schedule: "40 4 * * *"
+    createPVC: false  # Existing app, do not create PVC yet
+
 
 volsync-perfectra1n:
   fullnameOverride: volsync # Required for volsync-perfectra1n fork
