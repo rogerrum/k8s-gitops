@@ -102,10 +102,7 @@ app-template:
 
   persistence:
     config:
-      suffix: config
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-      size: "10Gi"
+      existingClaim: home-assistant-config
       advancedMounts:
         home-assistant:
           app:
