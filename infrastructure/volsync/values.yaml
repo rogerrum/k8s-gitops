@@ -51,11 +51,11 @@ apps:
     capacity: 1Gi
     schedule: "40 2 * * *"
     createPVC: false
-#
-#  - app: zwavejs2mqtt
-#    runAsUser: "1000"
-#    capacity: 1Gi
-#    schedule: "50 2 * * *"
+
+  - app: zwavejs2mqtt
+    capacity: 1Gi
+    schedule: "50 2 * * *"
+    createPVC: false
 
   - app: matter-server
     pvcSuffix: data
