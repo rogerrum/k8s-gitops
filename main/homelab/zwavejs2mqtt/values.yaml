@@ -78,10 +78,7 @@ app-template:
 
   persistence:
     config:
-      suffix: config
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-      size: "1Gi"
+      existingClaim: zwavejs2mqtt-config
       globalMounts:
         - path: /usr/src/app/store
     tmp:
