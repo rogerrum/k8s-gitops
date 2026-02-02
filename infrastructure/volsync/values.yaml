@@ -52,7 +52,6 @@ apps:
   - app: zwavejs2mqtt
     capacity: 1Gi
     schedule: "50 2 * * *"
-    createPVC: false
 
   - app: matter-server
     pvcSuffix: data
