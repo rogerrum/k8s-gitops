@@ -48,7 +48,6 @@ apps:
   - app: zigbee2mqtt
     capacity: 1Gi
     schedule: "40 2 * * *"
-    createPVC: false
 
   - app: zwavejs2mqtt
     capacity: 1Gi
