@@ -83,13 +83,9 @@ app-template:
 
   persistence:
     config:
-      enabled: true
-      suffix: config
+      existingClaim: zigbee2mqtt-config
       globalMounts:
         - path: /config
-      storageClass: "longhorn"
-      accessMode: ReadWriteOnce
-      size: "1Gi"
 
     zigbee-usb:
       enabled: true
