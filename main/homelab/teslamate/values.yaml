@@ -32,7 +32,7 @@ app-template:
         main:
           image:
             repository: teslamate/teslamate
-            tag: "2.1.1"
+            tag: "2.2.0"
           env:
             TZ: "America/Chicago"
             DISABLE_MQTT: "false"
