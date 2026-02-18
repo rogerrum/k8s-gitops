@@ -48,10 +48,9 @@ apps:
     capacity: 1Gi
     schedule: "40 2 * * *"
 
-  # TEMPORARILY REMOVED - Will re-add to restore from Kopia backup
-  # - app: zwavejs2mqtt
-  #   capacity: 1Gi
-  #   schedule: "50 2 * * *"
+  - app: zwavejs2mqtt
+    capacity: 1Gi
+    schedule: "50 2 * * *"
 
   - app: matter-server
     pvcSuffix: data
