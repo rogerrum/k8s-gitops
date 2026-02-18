@@ -50,16 +50,10 @@ argo-cd:
         projected:
           sources:
             - secret:
-                name: botkube-helm-values
-                optional: true
-            - secret:
                 name: step-issuer-helm-values
                 optional: true
             - secret:
                 name: argocd-patch-helm-values
-                optional: true
-            - secret:
-                name: kube-prometheus-stack-helm-values
                 optional: true
 
             - secret:
@@ -81,12 +75,7 @@ argo-cd:
             - secret:
                 name: kured-helm-values
                 optional: true
-            - secret:
-                name: loki-helm-values
-                optional: true
-            - secret:
-                name: thanos-helm-values
-                optional: true
+
 
 
     resources:
