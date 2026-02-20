@@ -10,12 +10,12 @@ superuserSecret: postgres-superuser-secret
 
 cluster:
   name: postgres-v17
-  image: ghcr.io/cloudnative-pg/postgresql:17.4
+  image: ghcr.io/cloudnative-pg/postgresql:17.8
 
 previousCluster:
   enabled: false
   name: postgres-v17
-  image: ghcr.io/cloudnative-pg/postgresql:17.4
+  image: ghcr.io/cloudnative-pg/postgresql:17.8
 
 activeDatabases:
   - mealie
@@ -28,7 +28,7 @@ activeDatabases:
 clusterUpgrade:
   enabled: false
   newClusterName: postgres-vXX
-  newClusterImage: ghcr.io/cloudnative-pg/postgresql:17.4
+  newClusterImage: ghcr.io/cloudnative-pg/postgresql:17.8
   currentClusterName: postgres-v17
 
 ##  3 step upgrade process:
