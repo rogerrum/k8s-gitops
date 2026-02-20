@@ -46,11 +46,11 @@ spec:
     schedule: "{{ .schedule }}"
   kopia:
     repository: {{ .app }}-kopia-secret
-    copyMethod: Snapshot
+    copyMethod: Clone
     compression: zstd-fastest
     parallelism: 2
     accessModes: ["ReadWriteOnce"]
-    volumeSnapshotClassName: longhorn-snapshot-vsc
+    #volumeSnapshotClassName: longhorn-snapshot-vsc
     storageClassName: longhorn
     moverSecurityContext:
       runAsUser: {{ .runAsUser }}
