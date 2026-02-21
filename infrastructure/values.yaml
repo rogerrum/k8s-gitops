@@ -219,8 +219,11 @@ applications:
     ignoreDifferences:
       - group: gateway.networking.k8s.io
         kind: Gateway
+        managedFieldsManagers:
+          - envoy-gateway
         jqPathExpressions:
           - .spec.listeners[].tls.certificateRefs[].group
+
 
   - name: pocket-id
     namespace: kube-system
