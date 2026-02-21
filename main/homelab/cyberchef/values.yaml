@@ -5,7 +5,7 @@ app-template:
         main:
           image:
             repository: docker.io/mpepping/cyberchef
-            tag: v10.20.0
+            tag: v10.22.1
           env:
             TZ: America/Chicago
   service:
