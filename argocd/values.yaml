@@ -170,6 +170,12 @@ argo-cd:
           ignoreDifferences: |
             jsonPointers:
             - /webhooks/0/clientConfig/caBundle
+        external-secrets.io/ExternalSecret:
+          ignoreDifferences: |
+            jqPathExpressions:
+            - .spec.dataFrom[].extract.conversionStrategy
+            - .spec.dataFrom[].extract.decodingStrategy
+            - .spec.dataFrom[].extract.metadataPolicy
 
     metrics:
       enabled: true
