@@ -10,6 +10,8 @@ applications:
     path: argocd
     manifest-paths: /argocd
     sync-wave: "-5"
+    syncOptions:
+      - ServerSideApply=true
 
   - name: infrastructure
     namespace: argocd
