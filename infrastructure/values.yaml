@@ -74,6 +74,8 @@ applications:
     path: infrastructure/external-secrets
     manifest-paths: /infrastructure/external-secrets
     sync-wave: "-4"
+    syncOptions:
+      - ServerSideApply=true
     helm:
       enabled: true
 
