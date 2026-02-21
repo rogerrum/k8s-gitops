@@ -220,7 +220,7 @@ applications:
       - group: gateway.networking.k8s.io
         kind: Gateway
         managedFieldsManagers:
-          - envoy-gateway
+          - argocd-controller
         jqPathExpressions:
           - .spec.listeners[].tls.certificateRefs[].group
 
