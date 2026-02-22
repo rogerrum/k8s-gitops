@@ -24,10 +24,18 @@ app-template:
           env:
             TZ: "America/Chicago"
             TS_KUBE_SECRET: "tailscale-auth"
-            SA_NAME: tailscale
+            SA_NAME: tailscale-gateway
             TS_USERSPACE: "true"
             TS_ROUTES: "192.168.1.0/24"
             TS_EXTRA_ARGS: "--advertise-exit-node"
+            POD_NAME:
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            POD_UID:
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
           envFrom:
             - secretRef:
                 name: tailscale-auth
