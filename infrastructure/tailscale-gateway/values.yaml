@@ -1,13 +1,13 @@
 app-template:
 
   serviceAccount:
-    tailscale:
+    tailscale-gateway:
       staticToken: true
 
   controllers:
     main:
       serviceAccount:
-        identifier: tailscale
+        identifier: tailscale-gateway
 
 
       pod:
