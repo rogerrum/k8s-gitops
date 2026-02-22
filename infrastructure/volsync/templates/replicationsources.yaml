@@ -46,26 +46,26 @@ spec:
     schedule: "{{ .schedule }}"
   kopia:
     repository: {{ .app }}-kopia-secret
-    copyMethod: Clone
+    copyMethod: Snapshot
     compression: zstd-fastest
     parallelism: 2
     accessModes: ["ReadWriteOnce"]
-    #volumeSnapshotClassName: longhorn-snapshot-vsc
+    volumeSnapshotClassName: longhorn-snapshot-vsc
     storageClassName: longhorn
     moverSecurityContext:
       runAsUser: {{ .runAsUser }}
       runAsGroup: {{ .runAsUser }}
       fsGroup: {{ .runAsUser }}
       fsGroupChangePolicy: "OnRootMismatch"
-{{/*    moverAffinity:*/}}
-{{/*      nodeAffinity:*/}}
-{{/*        requiredDuringSchedulingIgnoredDuringExecution:*/}}
-{{/*          nodeSelectorTerms:*/}}
-{{/*            - matchExpressions:*/}}
-{{/*                - key: google.feature.node.kubernetes.io/coral*/}}
-{{/*                  operator: In*/}}
-{{/*                  values:*/}}
-{{/*                    - "true"*/}}
+    moverAffinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: google.feature.node.kubernetes.io/coral
+                  operator: In
+                  values:
+                    - "true"
     retain:
       hourly: 24
       daily: 10
