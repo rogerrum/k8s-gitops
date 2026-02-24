@@ -18,7 +18,7 @@ error-pages:
         app:
           image:
             repository: ghcr.io/tarampampam/error-pages
-            tag: 3.8.0
+            tag: 3.8.1
           env:
             TEMPLATE_NAME: orient
             SHOW_DETAILS: "false"
