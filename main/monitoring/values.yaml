@@ -22,7 +22,7 @@ applications:
         kind: "ServiceMonitor"
         jqPathExpressions:
           - .spec.endpoints[].metricRelabelings
-          - .spec.endpoints[].honorTimestamps      
+          - .spec.endpoints[].honorTimestamps
     helm:
       enabled: true
     syncOptions:
@@ -104,6 +104,14 @@ applications:
     namespace: monitoring
     path: main/monitoring/headlamp
     manifest-paths: /main/monitoring/headlamp
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: silence-operator
+    namespace: monitoring
+    path: main/monitoring/silence-operator
+    manifest-paths: /main/monitoring/silence-operator
     sync-wave: "-1"
     helm:
       enabled: true

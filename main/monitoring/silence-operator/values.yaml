@@ -1,0 +1,6 @@
+silence-operator:
+  image:
+    tag: "0.20.0"
+  alertmanagerAddress: http://vmalertmanager-stack.monitoring.svc.cluster.local:9093
+  networkPolicy:
+    enabled: false
