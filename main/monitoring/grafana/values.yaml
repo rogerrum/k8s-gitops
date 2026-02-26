@@ -410,18 +410,18 @@ grafana:
       disable_login_form: true
     auth.generic_oauth:
       enabled: true
-      allow_sign_up: true
+      allow_sign_up: false
       team_ids:
       allowed_organizations:
-      name: Auth0
+      name: pocket-id
       scopes: openid profile email
-      auth_url: https://rogerrum.us.auth0.com/authorize
-      token_url: https://rogerrum.us.auth0.com/oauth/token
-      api_url: https://rogerrum.us.auth0.com/userinfo
+      auth_url: https://pi.rsr.net/authorize
+      token_url: http://pocket-id.kube-system.svc.cluster.local:1411/api/oidc/token
+      #api_url: https://rogerrum.us.auth0.com/userinfo
     # ref: https://blog.dahanne.net/2020/04/15/integrating-auth0-oidc-oauth-2-with-authorization-groups-and-roles/
     auth.generic_oauth.group_mapping:
       role_attribute_path: |
-        contains("https://rsr.net/groups"[*], 'Admin') && 'Admin' || contains("https://rsr.net/groups"[*], 'Editor') && 'Editor' || 'Viewer'
+        contains(groups[*], 'Admin') && 'Admin' || contains(groups[*], 'Editor') && 'Editor' || 'Viewer' 
 
   route:
     main:
