@@ -405,12 +405,15 @@ grafana:
             database: teslamate
   grafana.ini:
     auth:
-      oauth_skip_org_role_update_sync: false
+      oauth_auto_login: false
+      oauth_skip_org_role_update_sync: true
+      disable_login_form: false
     auth.basic:
-      disable_login_form: true
+      enabled: true
     auth.generic_oauth:
       enabled: true
       allow_sign_up: true
+      skip_org_role_sync: true
       team_ids:
       allowed_organizations:
       name: pocket-id
@@ -422,6 +425,8 @@ grafana:
       login_attribute_path: preferred_username
       name_attribute_path: name
       role_attribute_strict: false
+      role_attribute_path: role
+      use_pkce: true
       auto_login: false
     # ref: https://blog.dahanne.net/2020/04/15/integrating-auth0-oidc-oauth-2-with-authorization-groups-and-roles/
     auth.generic_oauth.group_mapping:
