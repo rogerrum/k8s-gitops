@@ -416,7 +416,7 @@ grafana:
       team_ids:
       allowed_organizations:
       name: pocket-id
-      scopes: openid profile email
+      scopes: openid email profile groups
       auth_url: https://pi.rsr.net/authorize
       token_url: http://pocket-id.kube-system.svc.cluster.local:1411/api/oidc/token
       api_url: http://pocket-id.kube-system.svc.cluster.local:1411/api/oidc/userinfo
