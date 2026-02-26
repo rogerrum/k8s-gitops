@@ -422,7 +422,7 @@ grafana:
       api_url: http://pocket-id.kube-system.svc.cluster.local:1411/api/oidc/userinfo
     auth.generic_oauth.group_mapping:
       role_attribute_path: |
-        contains(groups[*], 'Admin') && 'Admin' || contains(groups[*], 'Editor') && 'Editor' || 'Viewer' 
+        contains(groups[*], 'admin') && 'Admin' || contains(groups[*], 'editor') && 'Editor' || 'Viewer' 
 
   route:
     main:
