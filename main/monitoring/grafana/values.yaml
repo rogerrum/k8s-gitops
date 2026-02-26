@@ -1,6 +1,4 @@
 grafana:
-  admin:
-    existingSecret: grafana-secret
 
   extraInitContainers:
     - name: init-db
