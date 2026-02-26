@@ -1,0 +1,13 @@
+apiVersion: observability.giantswarm.io/v1alpha2
+kind: Silence
+metadata:
+  name: metalb-bgp-session-down
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
+spec:
+  matchers:
+    - name: alertname
+      value: MetalLBBGPSessionDown
+    - name: alertgroup
+      value: metallb.rules
