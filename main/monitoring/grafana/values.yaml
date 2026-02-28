@@ -195,7 +195,7 @@ grafana:
       envoy-upstream:
         # renovate: dashboardName="Envoy Proxy Upstream"
         gnetId: 24457
-        revision: 1
+        revision: 2
         datasource: Prometheus
       envoy-downstream:
         # renovate: dashboardName="Envoy Proxy Downstream"
