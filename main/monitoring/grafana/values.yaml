@@ -190,7 +190,7 @@ grafana:
       envoy-overview:
         # renovate: dashboardName="Envoy Proxy Overview"
         gnetId: 24459
-        revision: 1
+        revision: 2
         datasource: Prometheus
       envoy-upstream:
         # renovate: dashboardName="Envoy Proxy Upstream"
