@@ -135,6 +135,10 @@ app-template:
             - path: /app/log
               subPath: app-log
           chown-tmpdirs: *tmpdirs
+        redis:
+          redis:
+            - path: /data
+              subPath: data
 
   route:
     app:
