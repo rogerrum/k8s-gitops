@@ -5,7 +5,7 @@ app-template:
       containers:
         main:
           image:
-            repository: rogerrum/docker-oscar
+            repository: ghcr.io/rogerrum/docker-oscar
             tag: main
             pullPolicy: Always
 
@@ -49,7 +49,7 @@ app-template:
 
 cron:
   image:
-    repository: rogerrum/docker-oscar-cron
+    repository: ghcr.io/rogerrum/docker-oscar-cron
     tag: main
 
   schedule: "0 13 * * *"
