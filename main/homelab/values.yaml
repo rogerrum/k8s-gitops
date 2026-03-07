@@ -110,13 +110,13 @@ applications:
     helm:
       enabled: true
 
-  - name: openttd
-    namespace: default
-    path: main/homelab/openttd
-    manifest-paths: /main/homelab/openttd
-    sync-wave: "-1"
-    helm:
-      enabled: true
+#  - name: openttd
+#    namespace: default
+#    path: main/homelab/openttd
+#    manifest-paths: /main/homelab/openttd
+#    sync-wave: "-1"
+#    helm:
+#      enabled: true
 
   - name: oscar
     namespace: default
