@@ -32,79 +32,79 @@ apps:
   - app: node-red
     pvcSuffix: data
     capacity: 5Gi
-    schedule: "10 2 * * *"
+    schedule: "30 4 * * 1"
 
 
   - app: frigate
     capacity: 10Gi
-    schedule: "20 2 * * *"
+    schedule: "0 5 * * 4"
 
 
   - app: esphome
     capacity: 1Gi
-    schedule: "30 2 * * *"
+    schedule: "0 5 * * 1"
 
   - app: zigbee2mqtt
     capacity: 1Gi
-    schedule: "40 2 * * *"
+    schedule: "30 5 * * 4"
 
   - app: zwavejs2mqtt
     capacity: 1Gi
-    schedule: "50 2 * * *"
+    schedule: "0 5 * * 7"
 
   - app: matter-server
     pvcSuffix: data
     capacity: 1Gi
-    schedule: "0 3 * * *"
+    schedule: "30 4 * * 5"
 
 
   - app: paperless-ngx
     pvcSuffix: data
     capacity: 5Gi
-    schedule: "10 3 * * *"
+    schedule: "0 5 * * 2"
 
   - app: mealie
     pvcSuffix: api-data
     capacity: 1Gi
-    schedule: "20 3 * * *"
+    schedule: "30 5 * * 5"
 
 
   - app: planka
     pvcSuffix: data
     capacity: 1Gi
-    schedule: "30 3 * * *"
+    schedule: "0 6 * * 2"
 
 
   - app: webtrees
     capacity: 1Gi
-    schedule: "40 3 * * *"
+    schedule: "30 4 * * 6"
 
 
   - app: manyfold
     pvcSuffix: data
     capacity: 5Gi
-    schedule: "50 3 * * *"
+    schedule: "30 5 * * 3"
 
   - app: actual
     pvcSuffix: data
     capacity: 5Gi
-    schedule: "0 4 * * *"
+    schedule: "30 4 * * 2"
 
   - app: jellyfin
     capacity: 3Gi
-    schedule: "20 4 * * *"
+    schedule: "0 6 * * 5"
 
   - app: uptime-kuma
     pvcSuffix: data
     capacity: 5Gi
     namespace: monitoring
-    schedule: "30 4 * * *"
+    schedule: "0 6 * * 3"
 
   - app: pocket-id
     capacity: 1Gi
     pvcSuffix: data
     namespace: kube-system
-    schedule: "40 4 * * *"
+    schedule: "0 6 * * 6"
 
 
 volsync-perfectra1n:
