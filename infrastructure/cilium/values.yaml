@@ -120,7 +120,7 @@ cilium:
 
   # Tolerations for ARM nodes (from your config)
   tolerations:
-    - key: "arm"
-      operator: "Exists"
+#    - key: "arm"
+#      operator: "Exists"
     - key: "arm64"
       operator: "Exists"
