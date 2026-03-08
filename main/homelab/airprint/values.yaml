@@ -37,6 +37,7 @@ app-template:
       type: LoadBalancer
       annotations:
         metallb.universe.tf/loadBalancerIPs: 192.168.100.52
+        lbipam.cilium.io/ips: "192.168.100.52"
       ports:
         http:
           port: &port 631
