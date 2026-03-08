@@ -1,0 +1,13 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: pool
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
+spec:
+  allowFirstLastIPs: "No"
+  blocks:
+    - start: "192.168.100.2"
+      stop: "192.168.100.254"
