@@ -44,21 +44,21 @@ applications:
     helm:
       enabled: true
 
-  - name: victoria-metrics
-    namespace: monitoring
-    path: main/monitoring/victoria-metrics
-    manifest-paths: /main/monitoring/victoria-metrics
-    sync-wave: "-1"
-    helm:
-      enabled: true
-      secrets:
-        enabled: true
-        keys:
-          - prom-config
-      additionalValues:
-        - http://localhost/victoria-metrics.yml
-    syncOptions:
-      - Replace=true
+#  - name: victoria-metrics
+#    namespace: monitoring
+#    path: main/monitoring/victoria-metrics
+#    manifest-paths: /main/monitoring/victoria-metrics
+#    sync-wave: "-1"
+#    helm:
+#      enabled: true
+#      secrets:
+#        enabled: true
+#        keys:
+#          - prom-config
+#      additionalValues:
+#        - http://localhost/victoria-metrics.yml
+#    syncOptions:
+#      - Replace=true
 
   - name: speedtest-exporter
     namespace: monitoring
