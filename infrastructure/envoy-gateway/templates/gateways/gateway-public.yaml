@@ -11,7 +11,7 @@ spec:
   gatewayClassName: eg-standard
   infrastructure:
     annotations:
-      #lbipam.cilium.io/ips: "192.168.100.152"
+      lbipam.cilium.io/ips: "192.168.100.152"
       metallb.universe.tf/loadBalancerIPs: "192.168.100.152"
   listeners:
     - name: http
