@@ -34,6 +34,9 @@ cilium:
       enabled: true
       serviceMonitor:
         enabled: true
+    tolerations:
+      - key: "arm64"
+        operator: "Exists"
   gatewayAPI:
     enabled: false
   hubble:
