@@ -4,11 +4,11 @@ cilium:
     enabled: true
     bbr: true
   bpf:
-    datapathMode: netkit
+    datapathMode: veth
     masquerade: true
     preallocateMaps: true
     # Reduce memory pressure and improve packet processing
-    monitorAggregation: maximum
+    monitorAggregation: medium
     monitorInterval: 5s
     monitorFlags: all
   bgpControlPlane:
