@@ -2,7 +2,7 @@ cilium:
   autoDirectNodeRoutes: true
   bandwidthManager:
     enabled: true
-    bbr: true
+    bbr: false #to be enbled later - Roger
   bpf:
     datapathMode: veth
     masquerade: true
