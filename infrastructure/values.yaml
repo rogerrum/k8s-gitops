@@ -129,15 +129,15 @@ applications:
     helm:
       enabled: true
 
-#  - name: cilium
-#    namespace: kube-system
-#    path: infrastructure/cilium
-#    manifest-paths: /infrastructure/cilium
-#    syncOptions:
-#      - ServerSideApply=true
-#    sync-wave: "-4"
-#    helm:
-#      enabled: true
+  - name: cilium
+    namespace: kube-system
+    path: infrastructure/cilium
+    manifest-paths: /infrastructure/cilium
+    syncOptions:
+      - ServerSideApply=true
+    sync-wave: "-4"
+    helm:
+      enabled: true
 
 #  - name: cilium-bgp
 #    namespace: kube-system
