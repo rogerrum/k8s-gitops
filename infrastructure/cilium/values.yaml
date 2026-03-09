@@ -88,6 +88,7 @@ cilium:
         enabled: true
     replicas: 2
     rollOutPods: true
+    setNodeTaints: false
   prometheus:
     enabled: true
     serviceMonitor:
