@@ -139,13 +139,13 @@ applications:
     helm:
       enabled: true
 
-#  - name: cilium-bgp
-#    namespace: kube-system
-#    path: infrastructure/cilium-bgp
-#    manifest-paths: /infrastructure/cilium-bgp
-#    sync-wave: "-3"
-#    helm:
-#      enabled: true
+  - name: cilium-bgp
+    namespace: kube-system
+    path: infrastructure/cilium-bgp
+    manifest-paths: /infrastructure/cilium-bgp
+    sync-wave: "-3"
+    helm:
+      enabled: true
 
 
   - name: node-feature-discovery
