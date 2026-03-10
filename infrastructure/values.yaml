@@ -270,10 +270,3 @@ applications:
     helm:
       enabled: true
 
-#  - name: spegel
-#    namespace: kube-system
-#    path: infrastructure/spegel
-#    manifest-paths: /infrastructure/spegel
-#    sync-wave: "-1"
-#    helm:
-#      enabled: true
