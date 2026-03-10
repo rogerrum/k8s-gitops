@@ -126,4 +126,11 @@ kyverno:
       argocd.argoproj.io/sync-options: "Replace=true"
 
     customLabels:
-      kyverno: kyverno-custom-label
+      kyverno-custom: kyverno-custom-label
+
+  kyverno-api:
+    annotations:
+      argocd.argoproj.io/sync-options: "Replace=true"
+
+    labels:
+      kyverno-custom: kyverno-custom-api
