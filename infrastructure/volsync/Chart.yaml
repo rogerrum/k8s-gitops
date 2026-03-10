@@ -3,5 +3,5 @@ apiVersion: v2
 version: 1.0.0
 dependencies:
   - name: volsync-perfectra1n
-    version: 0.18.3
+    version: 0.18.4
     repository: oci://ghcr.io/home-operations/charts-mirror
