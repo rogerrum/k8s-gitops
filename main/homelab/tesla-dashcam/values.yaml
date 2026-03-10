@@ -16,8 +16,6 @@ app-template:
             readiness: *probes
             startup:
               enabled: false
-          securityContext:
-            fsGroup: 1001
       pod:
         nodeSelector:
           google.feature.node.kubernetes.io/coral: "true"
