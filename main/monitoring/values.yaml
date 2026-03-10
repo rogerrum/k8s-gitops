@@ -58,7 +58,7 @@ applications:
       additionalValues:
         - http://localhost/victoria-metrics.yml
     syncOptions:
-      - serverSideApply=true
+      - ServerSideApply=true
       - Replace=true
 
   - name: speedtest-exporter
