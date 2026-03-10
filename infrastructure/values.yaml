@@ -284,4 +284,11 @@ applications:
       - ServerSideApply=true
     helm:
       enabled: true
+    ignoreDifferences:
+      - group: external-secrets.io
+        kind: ExternalSecret
+        jqPathExpressions:
+          - '.spec.dataFrom[].extract.conversionStrategy'
+          - '.spec.dataFrom[].extract.decodingStrategy'
+          - '.spec.dataFrom[].extract.metadataPolicy'
 
