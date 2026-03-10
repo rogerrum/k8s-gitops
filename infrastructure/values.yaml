@@ -121,14 +121,6 @@ applications:
     syncOptions:
       - CreateNamespace=true
 
-#  - name: metallb
-#    namespace: kube-system
-#    path: infrastructure/metallb
-#    manifest-paths: /infrastructure/metallb
-#    sync-wave: "-4"
-#    helm:
-#      enabled: true
-
   - name: cilium
     namespace: kube-system
     path: infrastructure/cilium
