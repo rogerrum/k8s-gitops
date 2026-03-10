@@ -39,6 +39,7 @@ applications:
       enabled: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
 
   - name: cloudnative-pg
     namespace: kube-system
