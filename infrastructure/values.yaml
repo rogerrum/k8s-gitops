@@ -130,6 +130,12 @@ applications:
     sync-wave: "-4"
     helm:
       enabled: true
+    ignoreDifferences:
+      - group: gateway.networking.k8s.io
+        kind: HTTPRoute
+        jqPathExpressions:
+          - '.spec.parentRefs[] | .group, .kind'
+          - '.spec.rules[].backendRefs[] | .group, .kind, .weight'
 
   - name: cilium-bgp
     namespace: kube-system
