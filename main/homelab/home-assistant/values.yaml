@@ -16,11 +16,11 @@ app-template:
 
       initContainers:
         fix-tts:
-          enabled: false
+          enabled: true
           image:
             repository: ghcr.io/home-operations/home-assistant
             tag: 2026.3.1
-          command: [ 'sh', '-c', 'sed  "s/base_url = get_url(hass)/base_url = get_url(hass,prefer_external=True)/g" /usr/local/lib/python3.13/site-packages/homeassistant/components/media_player/browse_media.py > /ttsFix/tts.py' ]
+          command: [ 'sh', '-c', 'sed  "s/base_url = get_url(hass)/base_url = get_url(hass,prefer_external=True)/g" /usr/local/lib/python3.14/site-packages/homeassistant/components/media_player/browse_media.py > /ttsFix/tts.py' ]
 
 
       containers:
