@@ -16,6 +16,7 @@ app-template:
 
       initContainers:
         fix-tts:
+          enabled: false
           image:
             repository: ghcr.io/home-operations/home-assistant
             tag: 2026.3.1
