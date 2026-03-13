@@ -175,7 +175,7 @@ app-template:
       advancedMounts:
         home-assistant:
           app:
-            - path: /usr/local/lib/python3.13/site-packages/homeassistant/components/media_player/browse_media.py
+            - path: /usr/local/lib/python3.14/site-packages/homeassistant/components/media_player/browse_media.py
               subPath: tts.py
           fix-tts:
             - path: /ttsFix
