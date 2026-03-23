@@ -8,9 +8,81 @@ spec:
   groups:
     - name: dockerhub
       rules:
+
+        # ── Running container count (exposure indicator) ────────────────────
+        # Fires when 150+ Docker Hub containers are actively running.
+        # With 150+ images you are always close to the unauthenticated limit
+        # on any node restart / rollout that pulls them all fresh.
         - alert: DockerhubRateLimitRisk
           annotations:
-            summary: Kubernetes cluster Dockerhub rate limit risk
-          expr: count(time() - container_last_seen{image=~"(docker.io).*",container!=""} < 30) > 100
+            summary: >-
+              High number of Docker Hub containers running
+              ({{ `{{ $value }}` }} active) – risk of hitting pull rate limits
+              on next rollout or node restart.
+            description: >-
+              There are {{ `{{ $value }}` }} containers using Docker Hub images
+              currently running. Unauthenticated accounts are limited to
+              100 pulls / 6 h per IP; free authenticated accounts to 200 pulls
+              / 6 h. A full restart or rollout could exhaust the quota.
+          expr: >-
+            count(
+              time() - container_last_seen{image=~"docker\\.io/.+", container!=""} < 30
+            ) > 150
+          for: 5m
           labels:
             severity: warning
+
+        # ── Actual image-pull rate (real pull signal) ───────────────────────
+        # Counts pods in ContainerCreating that have at least one docker.io
+        # image known to cAdvisor (container_last_seen). The join is on
+        # namespace+pod which both metrics share.
+        # NOTE: brand-new pods not yet in cAdvisor will be missed, but any
+        # pod that was recently running and is re-pulling will be caught.
+        - alert: DockerhubActivePullsHigh
+          annotations:
+            summary: >-
+              {{ `{{ $value }}` }} Docker Hub image pulls in progress –
+              rate-limit window may be consumed rapidly.
+            description: >-
+              More than 20 pods are simultaneously in ContainerCreating with
+              known docker.io images. Unauthenticated pull quota is
+              100 / 6 h per IP; this burst could exhaust it quickly.
+          expr: >-
+            count by(namespace, pod) (
+              kube_pod_container_status_waiting_reason{reason="ContainerCreating"} == 1
+            )
+            * on(namespace, pod) group_left()
+            count by(namespace, pod) (
+              container_last_seen{image=~"docker\\.io/.+", container!=""}
+            )
+            > 20
+          for: 2m
+          labels:
+            severity: warning
+
+        # ── ImagePullBackOff on Docker Hub images (rate-limited signal) ──────
+        # When Docker Hub returns 429 Too Many Requests the kubelet transitions
+        # the container to ImagePullBackOff. Joining with container_last_seen
+        # confirms the image is from docker.io.
+        - alert: DockerhubRateLimitHit
+          annotations:
+            summary: >-
+              Docker Hub rate limit likely hit –
+              {{ `{{ $value }}` }} pod(s) in ImagePullBackOff on docker.io images.
+            description: >-
+              One or more pods are in ImagePullBackOff for a docker.io image.
+              This typically means Docker Hub returned HTTP 429 (rate limited).
+              Authenticate with a Docker Hub account or mirror images to an
+              internal registry to resolve.
+          expr: >-
+            count by(namespace, pod) (
+              kube_pod_container_status_waiting_reason{reason="ImagePullBackOff"} == 1
+            )
+            * on(namespace, pod) group_left()
+            count by(namespace, pod) (
+              container_last_seen{image=~"docker\\.io/.+", container!=""}
+            )
+          for: 5m
+          labels:
+            severity: critical
+
