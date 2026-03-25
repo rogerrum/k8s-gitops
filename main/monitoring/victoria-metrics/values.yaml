@@ -102,10 +102,10 @@ victoria-metrics-k8s-stack:
           - matchers:
               - alertname=~"WatchDog|InfoInhibitor|KubeMemoryOvercommit"
             receiver: 'blackhole'
-          - receiver: pagerduty
-            matchers:
-              - severity=~"critical"
-            continue: true
+#          - receiver: pagerduty
+#            matchers:
+#              - severity=~"critical"
+#            continue: true
           - receiver: discord-notifications
             matchers:
               - severity=~"warning|critical"
@@ -204,7 +204,7 @@ victoria-metrics-k8s-stack:
         requests:
           cpu: 500m
           memory: 300Mi
-  
+
   grafana:
     enabled: false
   
