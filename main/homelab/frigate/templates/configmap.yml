@@ -64,9 +64,6 @@ data:
 
     record:
       enabled: true
-      #retain:
-      #  days: 1
-      #  mode: motion
       alerts:
         retain:
           days: 3
