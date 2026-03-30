@@ -10,6 +10,15 @@ data:
   config.yml: |
     auth:
       enabled: False
+    
+    detect:
+      enabled: true
+    
+    motion:
+      threshold: 25
+      improve_contrast: True
+      contour_area: 10
+    
     mqtt:
       host: emqx.default.svc
       topic_prefix: frigate
@@ -55,9 +64,9 @@ data:
 
     record:
       enabled: true
-      retain:
-        days: 1
-        mode: motion
+      #retain:
+      #  days: 1
+      #  mode: motion
       alerts:
         retain:
           days: 3
@@ -88,7 +97,6 @@ data:
         default: 7
     
     genai:
-      enabled: True
       provider: ollama
       base_url: http://192.168.1.16:11434
       model: llava:7b
