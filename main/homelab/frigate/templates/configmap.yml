@@ -11,8 +11,6 @@ data:
     auth:
       enabled: False
     
-    detect:
-      enabled: true
     
     motion:
       threshold: 25
