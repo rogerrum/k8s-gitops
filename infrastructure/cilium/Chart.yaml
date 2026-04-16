@@ -3,5 +3,5 @@ name: cilium
 version: 1.0.0
 dependencies:
   - name: cilium
-    version: "1.19.1"  # Use latest stable
+    version: "1.19.3"  # Use latest stable
     repository: oci://quay.io/cilium/charts
