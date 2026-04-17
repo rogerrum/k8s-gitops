@@ -9,3 +9,10 @@ kube-cleanup-operator:
     - --delete-evicted-pods-after=10m
     - --delete-orphaned-pods-after=10m
     - --legacy-mode=false
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: null
+      memory: 64Mi
