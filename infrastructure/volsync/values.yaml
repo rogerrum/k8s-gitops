@@ -50,7 +50,7 @@ apps:
 
   - app: zwavejs2mqtt
     capacity: 1Gi
-    schedule: "0 5 * * 7"
+    schedule: "0 5 * * 0"
 
   - app: matter-server
     pvcSuffix: data
