@@ -6,8 +6,8 @@ kured:
     lockTtl: 30m
     drainTimeout: 90m
   tolerations:
-    - key: "arm"
-      operator: "Exists"
+#    - key: "arm"
+#      operator: "Exists"
     - key: "arm64"
       operator: "Exists"
     - key: "node-role.kubernetes.io/master"
