@@ -3,6 +3,7 @@ node-feature-discovery:
   worker:
     config:
       core:
+        sleepInterval: 300s
         sources:
           - custom
           - pci
@@ -35,6 +36,16 @@ node-feature-discovery:
 #        operator: "Exists"
       - effect: "NoSchedule"
         operator: "Exists"
+    livenessProbe:
+      initialDelaySeconds: 30
+      periodSeconds: 30
+      timeoutSeconds: 5
+      failureThreshold: 5
+    readinessProbe:
+      initialDelaySeconds: 15
+      periodSeconds: 30
+      timeoutSeconds: 5
+      failureThreshold: 10
   master:
     replicaCount: 1
     tolerations:
@@ -42,4 +53,3 @@ node-feature-discovery:
 #        operator: Exists
       - key: arm64
         operator: Exists
-
