@@ -10,15 +10,15 @@ longhorn:
     taintToleration: arm64=true:NoExecute
 
   #Temp fix
-  preUpgradeChecker:
-    upgradeVersionCheck: false
-  image:
-    longhorn:
-      instanceManager:
-        repository: longhornio/longhorn-instance-manager
-        tag: v1.11.0-hotfix-1
-#
-      manager:
-        repository: longhornio/longhorn-manager
-        tag: v1.11.0-hotfix-1
+#  preUpgradeChecker:
+#    upgradeVersionCheck: false
+#  image:
+#    longhorn:
+#      instanceManager:
+#        repository: longhornio/longhorn-instance-manager
+#        tag: v1.11.0-hotfix-1
+##
+#      manager:
+#        repository: longhornio/longhorn-manager
+#        tag: v1.11.0-hotfix-1
 
