@@ -10,3 +10,5 @@ external-secrets:
   certController:
     serviceMonitor:
       enabled: true
+  grafanaDashboard:
+    enabled: true
