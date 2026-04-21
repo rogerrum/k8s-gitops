@@ -10,7 +10,7 @@ app-template:
             APP_URL: https://pi.rsr.net
           image:
             repository: ghcr.io/pocket-id/pocket-id
-            tag: v2.5.0-distroless
+            tag: v2.6.2-distroless
           probes:
             liveness:
               enabled: true
