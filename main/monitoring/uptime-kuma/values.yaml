@@ -7,7 +7,7 @@ app-template:
         main:
           image:
             repository: louislam/uptime-kuma
-            tag: 2.2.1
+            tag: 2.3.2
           env:
             TZ: "America/Chicago"
             #NODE_EXTRA_CA_CERTS: /rootcert/ca.crt
