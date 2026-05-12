@@ -183,6 +183,15 @@ victoria-metrics-k8s-stack:
               port: 8429
 
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
+                  - key: node-role.kubernetes.io/master
+                    operator: DoesNotExist
       additionalScrapeConfigs:
         name: victoria-metrics-secret
         key: additionalScrapeConfigs
