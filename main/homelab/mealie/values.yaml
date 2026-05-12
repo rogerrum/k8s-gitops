@@ -29,7 +29,7 @@ app-template:
         main:
           image:
             repository: ghcr.io/mealie-recipes/mealie
-            tag: v3.16.0
+            tag: v3.17.0
             pullPolicy: IfNotPresent
           env:
             - name: API_URL
