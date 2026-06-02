@@ -5,5 +5,5 @@ dragonfly-operator:
   grafanaDashboard:
     enabled: true
     grafanaOperator:
-      enabled: true
+      enabled: false
     folder: Dragonfly
