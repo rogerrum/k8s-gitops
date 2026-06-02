@@ -292,3 +292,10 @@ applications:
           - '.spec.dataFrom[].extract.decodingStrategy'
           - '.spec.dataFrom[].extract.metadataPolicy'
 
+  - name: dragonfly-operator
+    namespace: kube-system
+    path: infrastructure/dragonfly-operator
+    manifest-paths: /infrastructure/dragonfly-operator
+    sync-wave: "-1"
+    helm:
+      enabled: true
