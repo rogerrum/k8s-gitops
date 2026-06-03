@@ -253,3 +253,11 @@ applications:
 #    sync-wave: "-1"
 #    helm:
 #      enabled: true
+
+  - name: forgejo
+    namespace: default
+    path: main/homelab/forgejo
+    manifest-paths: /main/homelab/forgejo
+    sync-wave: "-1"
+    helm:
+      enabled: true
