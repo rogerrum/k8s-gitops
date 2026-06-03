@@ -1,0 +1,130 @@
+forgejo:
+  gitea:
+    admin:
+      username: ""
+    config:
+      cache:
+        ENABLED: true
+        ADAPTER: redis
+        HOST: redis://forgejo-dragonfly:6379?pool_size=100&idle_timeout=180s
+      cron.archive_cleanup:
+        ENABLED: true
+        RUN_AT_START: true
+        SCHEDULE: "@every 1h"
+        OLDER_THAN: 2h
+      indexer:
+        ISSUE_INDEXER_TYPE: bleve
+        REPO_INDEXER_ENABLED: true
+      lfs:
+        PATH: /data/git/lfs
+      mailer:
+        ENABLED: false
+      openid:
+        ENABLE_OPENID_SIGNIN: false
+        ENABLE_OPENID_SIGNUP: false
+      queue:
+        TYPE: redis
+        CONN_STR: redis://forgejo-dragonfly:6379?pool_size=100&idle_timeout=180s
+      repository:
+        DEFAULT_REPO_UNITS: repo.code,repo.releases,repo.issues,repo.pulls,repo.actions
+        DISABLED_REPO_UNITS: repo.ext_wiki,repo.ext_issues
+        ROOT: /data/git/repositories
+      repository.pull-request:
+        DEFAULT_MERGE_STYLE: squash
+      repository.signing:
+        FORMAT: ssh
+        SIGNING_KEY: /data/signing/ed25519.pub
+        SIGNING_NAME: git.rsr.net Instance
+        SIGNING_EMAIL: noreply@git.rsr.net
+        INITIAL_COMMIT: pubkey
+        CRUD_ACTIONS: pubkey, parentsigned
+        WIKI: never
+        MERGES: pubkey
+        #security:
+        #REVERSE_PROXY_TRUSTED_PROXIES: 10.42.0.0/16
+      server:
+        APP_DATA_PATH: /data/gitea
+        ROOT_URL: https://git.rsr.net
+        SSH_DOMAIN: git.rsr.net
+        SSH_PORT: &sshPort 22
+        SSH_SERVER_HOST_KEYS: ssh/ssh_host_ed25519_key
+      service:
+        ALLOW_ONLY_EXTERNAL_REGISTRATION: true
+        DEFAULT_ENABLE_TIMETRACKING: false
+        ENABLE_INTERNAL_SIGNIN: false
+        ENABLE_PASSWORD_SIGNIN_FORM: false
+        SHOW_REGISTRATION_BUTTON: false
+      service.explore:
+        DISABLE_CODE_PAGE: false
+        DISABLE_ORGANIZATIONS_PAGE: true
+        DISABLE_USERS_PAGE: true
+        REQUIRE_SIGNIN_VIEW: false
+      session:
+        PROVIDER: redis
+        PROVIDER_CONFIG: redis://forgejo-dragonfly:6379?pool_size=100&idle_timeout=180s
+        SESSION_LIFE_TIME: "1209600"
+      webhook:
+        ALLOWED_HOST_LIST: "*"
+    oauth:
+      - name: PocketID
+        autoDiscoverUrl: https://pi.rsr.net/.well-known/openid-configuration
+        existingSecret: forgejo-oidc
+        provider: openidConnect
+        scopes: openid email profile
+  extraContainerVolumeMounts:
+    - name: signing-key
+      mountPath: /data/signing
+      readOnly: true
+  extraInitVolumeMounts:
+    - name: signing-key
+      mountPath: /data/signing
+      readOnly: true
+  extraVolumes:
+    - name: signing-key
+      secret:
+        secretName: forgejo-signing-key
+        defaultMode: 0400
+
+  image:
+    rootless: true
+    registry: code.forgejo.org
+    repository: forgejo/forgejo
+    tag: 15.0.2-rootless
+
+  persistence:
+    create: false
+    claimName: forgejo
+
+  service:
+    ssh:
+      port: *sshPort
+
+  tcpRoute:
+    enabled: true
+    parentRefs:
+      - name: internal
+        namespace: kube-system
+        sectionName: ssh
+
+
+  httpRoute:
+    enabled: true
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Tools
+      gethomepage.dev/icon: forgejo
+      gethomepage.dev/name: Git
+    hostnames:
+      - git.rsr.net
+    parentRefs:
+      - name: internal
+        namespace: kube-system
+    filters:
+      - type: RequestHeaderModifier
+        requestHeaderModifier:
+          set:
+            - name: X-Real-Ip
+              value: "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
+    matches:
+      timeouts:
+        request: 300s
