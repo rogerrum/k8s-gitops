@@ -22,6 +22,8 @@ forgejo:
       openid:
         ENABLE_OPENID_SIGNIN: false
         ENABLE_OPENID_SIGNUP: false
+      oauth2_client:
+        SKIP_VERIFY: true
       queue:
         TYPE: redis
         CONN_STR: redis://forgejo-dragonfly.kube-system.svc.cluster.local:6379?pool_size=100&idle_timeout=180s
