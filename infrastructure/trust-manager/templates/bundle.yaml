@@ -9,7 +9,6 @@ spec:
   sources:
     - configMap:
         name: step-certificates-certs
-        namespace: kube-system
         key: root_ca.crt
   target:
     configMap:
