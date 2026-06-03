@@ -93,7 +93,7 @@ forgejo:
 
   persistence:
     create: false
-    claimName: forgejo
+    claimName: forgejo-config
 
   service:
     ssh:
