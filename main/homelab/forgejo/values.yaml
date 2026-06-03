@@ -65,15 +65,15 @@ forgejo:
         SESSION_LIFE_TIME: "1209600"
       webhook:
         ALLOWED_HOST_LIST: "*"
-    oauth:
-      - name: PocketID
-        useCustomUrls: true
-        customAuthUrl: https://pi.rsr.net/authorize
-        customTokenUrl: http://pocket-id.kube-system.svc.cluster.local:1411/api/oidc/token
-        customProfileUrl: http://pocket-id.kube-system.svc.cluster.local:1411/api/oidc/userinfo
-        existingSecret: forgejo-oidc
-        provider: openidConnect
-        scopes: openid email profile
+#    oauth:
+#      - name: PocketID
+#        useCustomUrls: true
+#        customAuthUrl: https://pi.rsr.net/authorize
+#        customTokenUrl: http://pocket-id.kube-system.svc.cluster.local:1411/api/oidc/token
+#        customProfileUrl: http://pocket-id.kube-system.svc.cluster.local:1411/api/oidc/userinfo
+#        existingSecret: forgejo-oidc
+#        provider: openidConnect
+#        scopes: openid email profile
   extraContainerVolumeMounts:
     - name: signing-key
       mountPath: /data/signing
