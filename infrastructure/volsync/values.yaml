@@ -108,7 +108,7 @@ apps:
 
   - app: forgejo
     capacity: 10Gi
-    namespace: kube-system
+    namespace: default
     schedule: "30 7 * * 6"
 
 
