@@ -67,7 +67,9 @@ forgejo:
         ALLOWED_HOST_LIST: "*"
     oauth:
       - name: PocketID
-        autoDiscoverUrl: https://pi.rsr.net/.well-known/openid-configuration
+        customAuthUrl: https://pi.rsr.net/authorize
+        customTokenUrl: http://pocket-id.kube-system.svc.cluster.local:1411/api/oidc/token
+        customProfileUrl: http://pocket-id.kube-system.svc.cluster.local:1411/api/oidc/userinfo
         existingSecret: forgejo-oidc
         provider: openidConnect
         scopes: openid email profile
