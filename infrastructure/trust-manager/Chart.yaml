@@ -1,0 +1,7 @@
+name: trust-manager
+apiVersion: v2
+version: 1.0.0
+dependencies:
+  - name: trust-manager
+    version: "v0.22.1"
+    repository: oci://quay.io/jetstack/charts

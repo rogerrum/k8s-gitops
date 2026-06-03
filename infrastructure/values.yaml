@@ -29,6 +29,14 @@ applications:
     syncOptions:
       - CreateNamespace=true
 
+  - name: trust-manager
+    namespace: cert-manager
+    path: infrastructure/trust-manager
+    manifest-paths: /infrastructure/trust-manager
+    sync-wave: "-3"
+    helm:
+      enabled: true
+
   - name: kyverno
     namespace: kyverno
     create-namespace: true
