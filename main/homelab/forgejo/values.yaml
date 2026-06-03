@@ -77,10 +77,18 @@ forgejo:
     - name: signing-key
       mountPath: /data/signing
       readOnly: true
+    - name: step-ca-bundle
+      mountPath: /etc/ssl/certs/step-ca.crt
+      subPath: ca.crt
+
   extraInitVolumeMounts:
     - name: signing-key
       mountPath: /data/signing
       readOnly: true
+    - name: step-ca-bundle
+      mountPath: /etc/ssl/certs/step-ca.crt
+      subPath: ca.crt
+
   extraVolumes:
     - name: signing-key
       secret:
@@ -90,10 +98,6 @@ forgejo:
       configMap:
         name: step-ca-bundle
 
-  extraVolumeMounts:
-    - name: step-ca-bundle
-      mountPath: /etc/ssl/certs/step-ca.crt
-      subPath: ca.crt
 
   image:
     rootless: true
