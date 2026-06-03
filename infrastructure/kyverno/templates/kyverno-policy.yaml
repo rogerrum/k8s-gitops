@@ -17,6 +17,7 @@ spec:
           namespaces:
             - kube-system
       generate:
+        apiVersion: v1
         kind: ConfigMap
         name: step-certificates-certs
         namespace: cert-manager
