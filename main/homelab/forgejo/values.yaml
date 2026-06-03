@@ -86,6 +86,14 @@ forgejo:
       secret:
         secretName: forgejo-signing-key
         defaultMode: 0400
+    - name: step-ca-bundle
+      configMap:
+        name: step-ca-bundle
+
+  extraVolumeMounts:
+    - name: step-ca-bundle
+      mountPath: /etc/ssl/certs/step-ca.crt
+      subPath: ca.crt
 
   image:
     rootless: true
