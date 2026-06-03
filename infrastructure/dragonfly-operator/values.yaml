@@ -7,3 +7,8 @@ dragonfly-operator:
     grafanaOperator:
       enabled: false
     folder: Dragonfly
+
+
+apps:
+  - app: forgejo
+    replicas: 1
