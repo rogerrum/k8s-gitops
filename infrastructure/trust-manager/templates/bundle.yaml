@@ -7,9 +7,10 @@ metadata:
     app.kubernetes.io/part-of: {{ $.Release.Name }}
 spec:
   sources:
-    - configMap:
-        name: step-certificates-certs
-        key: root_ca.crt
+    - secret:
+        name: step-ca-root-cert
+        key: ca.crt
+
   target:
     configMap:
       key: ca.crt
