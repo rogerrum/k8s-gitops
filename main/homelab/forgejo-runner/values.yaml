@@ -13,7 +13,7 @@ app-template:
           host:
             workdir_parent: /data/act
           kubernetes:
-            namespace: dev
+            namespace: default
             poll_timeout: 10m
           log:
             level: info
@@ -21,7 +21,7 @@ app-template:
             k8s:
               address: unix:///plugin/forgejo-runner-k8s.sock
               options:
-                namespace: dev
+                namespace: default
                 poll_timeout: 10m
                 labels: "app.kubernetes.io/name=forgejo-runner-instance,app.kubernetes.io/instance=env-${ENV_ID}"
           runner:
