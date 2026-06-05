@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: forgejo-runner
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/managed-by: forgejo-runner
+  enableDefaultDeny:
+    ingress: true
+  egress:
+    - # Forgejo server
+      toEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: forgejo
+      toPorts:
+        - ports:
+            - protocol: TCP
+              port: "3000"
+    - # Forgejo (External URL)
+      toFQDNs:
+        - matchName: git.rsr.net
+    - # Internet egress
+      toCIDRSet:
+        # Internet egress
+        - cidrGroupRef: internet
+      toPorts:
+        - ports:
+            - protocol: TCP
+              port: "80"
+            - protocol: TCP
+              port: "443"
