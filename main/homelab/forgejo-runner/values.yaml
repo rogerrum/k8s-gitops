@@ -72,6 +72,9 @@ app-template:
                 - name: step-ca
                   mountPath: /etc/docker/certs.d/git.rsr.net
                   readOnly: true
+                - name: step-ca
+                  mountPath: /etc/ssl/certs/step-ca.crt               # ← ADD: so buildkit container inherits it
+                  subPath: ca.crt
               startupProbe:
                 exec:
                   command:
