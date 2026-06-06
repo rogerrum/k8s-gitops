@@ -69,6 +69,9 @@ app-template:
                   mountPath: /var/lib/docker
                 - name: docker-certs
                   mountPath: /certs
+                - name: step-ca
+                  mountPath: /etc/docker/certs.d/git.rsr.net
+                  readOnly: true
               startupProbe:
                 exec:
                   command:
@@ -88,6 +91,9 @@ app-template:
                   value: "1"
                 - name: DOCKER_CERT_PATH
                   value: /certs/client
+                - name: step-ca
+                  mountPath: /etc/ssl/certs/step-ca.crt
+                  subPath: ca.crt
               image: ghcr.io/bjw-s-labs/forgejo-runner:ubuntu-24.04@sha256:5ce5929d037652519f45eae18d217213f6952395a7acb18cbc2504697deb863e
               imagePullPolicy: IfNotPresent
               name: main
@@ -106,6 +112,9 @@ app-template:
               emptyDir: {}
             - name: docker-certs
               emptyDir: {}
+            - name: step-ca
+              configMap:
+                name: step-ca-bundle
           restartPolicy: Never
   controllers:
     forgejo-runner:
