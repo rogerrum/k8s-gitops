@@ -37,7 +37,7 @@ applications:
 
   - name: local
     namespace: argocd
-    repoURL: http://forgejo-http.default.svc.cluster.loca:3000/roger/k8s-gitops-local.git
+    repoURL: http://forgejo-http.default.svc.cluster.local:3000/roger/k8s-gitops-local.git
     targetRevision: main
     path: local
     manifest-paths: /local/templates;/local/Chart.yaml;/local/values.yaml
