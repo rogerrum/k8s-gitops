@@ -41,8 +41,8 @@ spec:
   {{- end }}
   source:
     path: {{ $app.path }}
-    repoURL: {{ $repo.url }}
-    targetRevision: {{ $repo.revision }}
+    repoURL: {{ default $repo.url $app.repoURL }}
+    targetRevision: {{ default $repo.revision $app.targetRevision }}
   {{- if $app.helm }}
     helm:
       valueFiles:

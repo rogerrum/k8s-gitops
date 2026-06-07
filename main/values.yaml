@@ -34,3 +34,13 @@ applications:
     sync-wave: "-2"
     helm:
       enabled: true
+
+  - name: local
+    namespace: argocd
+    repoURL: https://git.rsr.net/roger/k8s-gitops-local.git
+    targetRevision: main
+    path: local
+    manifest-paths: /local/templates;/local/Chart.yaml;/local/values.yaml
+    sync-wave: "1"
+    helm:
+      enabled: true
