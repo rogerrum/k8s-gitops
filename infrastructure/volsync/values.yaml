@@ -111,6 +111,11 @@ apps:
     namespace: default
     schedule: "30 7 * * 6"
 
+  - app: ss-models
+    pvcSuffix: data
+    capacity: 10Gi
+    namespace: default
+    schedule: "30 8 * * 6"
 
 volsync-perfectra1n:
   fullnameOverride: volsync # Required for volsync-perfectra1n fork
