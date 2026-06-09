@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
     app.kubernetes.io/part-of: {{ $.Release.Name }}
 spec:
-  image: ghcr.io/dragonflydb/dragonfly:v1.38.1
+  image: ghcr.io/dragonflydb/dragonfly:v1.39.0
   replicas: {{ default 1 .replicas }}
   env:
     - name: MAX_MEMORY
