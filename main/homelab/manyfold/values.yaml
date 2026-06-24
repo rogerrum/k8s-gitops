@@ -29,7 +29,7 @@ app-template:
         main:
           image:
             repository: ghcr.io/bjw-s-labs/manyfold
-            tag: 0.139.3@sha256:b4079373a193222da12eeb1fbd4493038b69f4dc3ef7f8596199fdbc67f460e1
+            tag: 0.145.1@sha256:a93ada734a5974e927c4917fc49cea97bb01e5ccf40fb072c6359c7fd056fa99
           env:
             DATABASE_URL: sqlite3:/data/database/manyfold.sqlite3
             MULTIUSER: false
