@@ -117,6 +117,12 @@ apps:
     namespace: default
     schedule: "30 8 * * 6"
 
+  - app: streambox
+    pvcSuffix: data
+    capacity: 1Gi
+    namespace: default
+    schedule: "30 9 * * 6"
+
 volsync-perfectra1n:
   fullnameOverride: volsync # Required for volsync-perfectra1n fork
   image: &image
