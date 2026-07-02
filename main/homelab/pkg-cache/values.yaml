@@ -46,8 +46,8 @@ app-template:
       containers:
         main:
           image:
-            repository: ghcr.io/muccg/devpi
-            tag: latest
+            repository: jonasal/devpi-server
+            tag: 6.20.1-alpine
           command:
             - devpi-server
             - --host=0.0.0.0
