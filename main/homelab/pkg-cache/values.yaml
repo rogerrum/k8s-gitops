@@ -43,6 +43,18 @@ app-template:
               memory: 256Mi
 
     devpi:
+      initContainers:
+        init:
+          image:
+            repository: jonasal/devpi-server
+            tag: 6.20.1-alpine
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -f /data/.serverversion ]; then
+                devpi-init --serverdir=/data
+              fi
       containers:
         main:
           image:
