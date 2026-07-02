@@ -108,6 +108,8 @@ app-template:
       size: 10Gi
       advancedMounts:
         devpi:
+          init:
+            - path: /data
           main:
             - path: /data
 
