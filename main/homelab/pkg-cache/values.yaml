@@ -98,3 +98,44 @@ app-template:
         devpi:
           main:
             - path: /data
+
+  route:
+    verdaccio:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Apps
+        gethomepage.dev/icon: npm
+        gethomepage.dev/name: verdaccio
+      hostnames:
+        - verdaccio.rsr.net
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: pkg-cache-verdaccio
+              port: 4873
+
+    devpi:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Apps
+        gethomepage.dev/icon: python
+        gethomepage.dev/name: devpi
+      hostnames:
+        - devpi.rsr.net
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: pkg-cache-devpi
+              port: 3141
