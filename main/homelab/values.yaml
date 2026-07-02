@@ -118,6 +118,14 @@ applications:
 #    helm:
 #      enabled: true
 
+  - name: pkg-cache
+    namespace: default
+    path: main/homelab/pkg-cache
+    manifest-paths: /main/homelab/pkg-cache
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
   - name: oscar
     namespace: default
     path: main/homelab/oscar
