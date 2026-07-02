@@ -20,6 +20,8 @@ descheduler:
               evictLocalStoragePods: true
               evictSystemCriticalPods: true
               #nodeFit: true
+              excludeOwnerKinds:
+                - Job
           - name: RemoveDuplicates
           - name: RemovePodsHavingTooManyRestarts
             args:

@@ -48,6 +48,13 @@ app-template:
       runAsGroup: 1001
       fsGroup: 1001
       fsGroupChangePolicy: OnRootMismatch
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-role.kubernetes.io/control-plane
+                  operator: DoesNotExist
 
   service:
     app:
