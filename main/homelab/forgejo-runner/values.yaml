@@ -197,7 +197,6 @@ app-template:
   service:
     cache:
       controller: forgejo-runner
-      nameOverride: cache
       ports:
         cache:
           port: 8088
