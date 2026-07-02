@@ -157,6 +157,12 @@ app-template:
           image:
             repository: registry.erwanleboucher.dev/erwanleboucher.dev/eleboucher/runner
             tag: 12.10.2@sha256:d5eeafda573012c229b730f5a18437b464d946473478e1f6bd56fd537b881609
+          env:
+            ACTIONS_CACHE_SERVER_TOKEN:
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-runner-secret
+                  key: cache_token
           command:
             - sh
             - -ec
