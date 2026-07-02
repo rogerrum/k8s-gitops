@@ -34,6 +34,13 @@ app-template:
               - docker:k8s:/config/podspec-dind.yaml
             timeout: 3h
         podspec-default.yaml: |-
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: node-role.kubernetes.io/control-plane
+                        operator: DoesNotExist
           containers:
             - env:
                 - name: DEBIAN_FRONTEND
@@ -49,6 +56,13 @@ app-template:
                   memory: 256Mi
           restartPolicy: Never
         podspec-dind.yaml: |-
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: node-role.kubernetes.io/control-plane
+                        operator: DoesNotExist
           initContainers:
             - name: dind
               image: docker:29-dind
