@@ -7,6 +7,9 @@ app-template:
           cache:
             enabled: true
             dir: /data/cache
+            host: "0.0.0.0"
+            port: 8088
+            external_server: "http://forgejo-runner-cache.default.svc.cluster.local:8088"
           container:
             docker_host: "-"
             workdir_parent: shared/workdir
@@ -191,6 +194,15 @@ app-template:
             capabilities:
               drop:
                 - ALL
+  service:
+    cache:
+      controller: forgejo-runner
+      nameOverride: cache
+      ports:
+        cache:
+          port: 8088
+          targetPort: 8088
+          protocol: TCP
   persistence:
     config:
       type: configMap
