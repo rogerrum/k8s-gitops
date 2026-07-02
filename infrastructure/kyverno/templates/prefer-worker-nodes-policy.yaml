@@ -1,0 +1,39 @@
+---
+# Mutating policy: adds a preferred (soft) node affinity to all pods cluster-wide
+# so the scheduler fills worker nodes before using control-plane nodes.
+# CP nodes remain available as overflow — nothing is blocked.
+# Excludes only namespaces that have legitimate reasons to run on CP/all nodes.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: prefer-worker-nodes
+spec:
+  admission: true
+  background: false
+  rules:
+    - name: add-worker-node-preference
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      exclude:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - kube-system      # system components, daemonsets, etcd
+                - kyverno          # admission webhook controllers must be highly available
+                - longhorn-system  # storage system manages its own scheduling
+      mutate:
+        patchStrategicMerge:
+          spec:
+            affinity:
+              nodeAffinity:
+                preferredDuringSchedulingIgnoredDuringExecution:
+                  - weight: 100
+                    preference:
+                      matchExpressions:
+                        - key: node-role.kubernetes.io/control-plane
+                          operator: DoesNotExist
