@@ -10,6 +10,7 @@ app-template:
             host: "0.0.0.0"
             port: 8088
             external_server: "http://forgejo-runner-cache.default.svc.cluster.local:8088"
+            secret_url: "file:///etc/forgejo-runner-secret/cache_token"
           container:
             docker_host: "-"
             workdir_parent: shared/workdir
@@ -157,12 +158,6 @@ app-template:
           image:
             repository: registry.erwanleboucher.dev/erwanleboucher.dev/eleboucher/runner
             tag: 12.10.2@sha256:d5eeafda573012c229b730f5a18437b464d946473478e1f6bd56fd537b881609
-          env:
-            ACTIONS_CACHE_SERVER_TOKEN:
-              valueFrom:
-                secretKeyRef:
-                  name: forgejo-runner-secret
-                  key: cache_token
           command:
             - sh
             - -ec
