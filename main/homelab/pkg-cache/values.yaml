@@ -38,9 +38,9 @@ app-template:
           resources:
             requests:
               cpu: 10m
-              memory: 64Mi
-            limits:
               memory: 256Mi
+            limits:
+              memory: 1Gi
 
     devpi:
       initContainers:
