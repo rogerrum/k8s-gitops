@@ -50,7 +50,7 @@ app-template:
             - --extensions-dir
             - /mnt/code-server
             - --port
-            - "12321"
+            - "12322"
             - /config
           resources:
             requests:
@@ -68,7 +68,7 @@ app-template:
       controller: esphome
       ports:
         http:
-          port: &code-server-port 12321
+          port: &code-server-port 12322
 
   persistence:
     config:
