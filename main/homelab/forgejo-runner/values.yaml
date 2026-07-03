@@ -42,6 +42,19 @@ app-template:
                   - matchExpressions:
                       - key: node-role.kubernetes.io/control-plane
                         operator: DoesNotExist
+                      - key: kubernetes.io/arch
+                        operator: In
+                        values: [amd64]
+                      - key: kubernetes.io/hostname
+                        operator: NotIn
+                        values: [k8s-8-server]
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: ScheduleAnyway
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: forgejo-runner-instance
           containers:
             - env:
                 - name: DEBIAN_FRONTEND
@@ -64,6 +77,19 @@ app-template:
                   - matchExpressions:
                       - key: node-role.kubernetes.io/control-plane
                         operator: DoesNotExist
+                      - key: kubernetes.io/arch
+                        operator: In
+                        values: [amd64]
+                      - key: kubernetes.io/hostname
+                        operator: NotIn
+                        values: [k8s-8-server]
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: ScheduleAnyway
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: forgejo-runner-instance
           initContainers:
             - name: dind
               image: docker:29-dind
