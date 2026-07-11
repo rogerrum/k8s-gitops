@@ -54,7 +54,7 @@ app-template:
         init:
           image:
             repository: jonasal/devpi-server
-            tag: 6.20.1-alpine
+            tag: 6.20.3-alpine
           command:
             - sh
             - -c
@@ -66,7 +66,7 @@ app-template:
         main:
           image:
             repository: jonasal/devpi-server
-            tag: 6.20.1-alpine
+            tag: 6.20.3-alpine
           command:
             - devpi-server
             - --host=0.0.0.0
