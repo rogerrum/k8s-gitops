@@ -1,0 +1,112 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/app-template-5.0.1/charts/other/app-template/values.schema.json
+
+app-template:
+  controllers:
+    cert-portal:
+      containers:
+        app:
+          image:
+            repository: docker.io/nginxinc/nginx-unprivileged
+            tag: 1.27-alpine
+          probes:
+            liveness:
+              enabled: true
+              custom: true
+              spec:
+                httpGet:
+                  path: /
+                  port: &port 8080
+                initialDelaySeconds: 0
+                periodSeconds: 10
+                timeoutSeconds: 1
+                failureThreshold: 3
+            readiness:
+              enabled: true
+              custom: true
+              spec:
+                httpGet:
+                  path: /
+                  port: *port
+                initialDelaySeconds: 0
+                periodSeconds: 10
+                timeoutSeconds: 1
+                failureThreshold: 3
+          resources:
+            requests:
+              cpu: 5m
+              memory: 16Mi
+            limits:
+              memory: 32Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+
+  defaultPodOptions:
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 101
+      runAsGroup: 101
+      fsGroup: 101
+      fsGroupChangePolicy: OnRootMismatch
+
+  service:
+    app:
+      controller: cert-portal
+      ports:
+        http:
+          port: *port
+
+  route:
+    app:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Tools
+        gethomepage.dev/icon: mdi-certificate
+        gethomepage.dev/name: CA Certificate
+        gethomepage.dev/description: Install RSR Root CA
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - ca.rsr.net
+      rules:
+        - backendRefs:
+            - identifier: app
+              port: *port
+
+  persistence:
+    nginx-config:
+      type: configMap
+      name: cert-portal-nginx-config
+      advancedMounts:
+        cert-portal:
+          app:
+            - path: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+              readOnly: true
+            - path: /usr/share/nginx/html/index.html
+              subPath: index.html
+              readOnly: true
+
+    root-cert:
+      type: secret
+      name: step-ca-root-cert
+      advancedMounts:
+        cert-portal:
+          app:
+            - path: /usr/share/nginx/html/rsr-root-ca.crt
+              subPath: ca.crt
+              readOnly: true
+            - path: /usr/share/nginx/html/rsr-root-ca.pem
+              subPath: ca.crt
+              readOnly: true
+
+    tmp:
+      type: emptyDir
+      advancedMounts:
+        cert-portal:
+          app:
+            - path: /tmp
+            - path: /var/cache/nginx

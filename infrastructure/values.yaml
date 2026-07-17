@@ -275,6 +275,14 @@ applications:
     helm:
       enabled: true
 
+  - name: cert-portal
+    namespace: kube-system
+    path: infrastructure/cert-portal
+    manifest-paths: /infrastructure/cert-portal
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
   - name: kopia
     namespace: kube-system
     path: infrastructure/kopia

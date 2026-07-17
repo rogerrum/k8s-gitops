@@ -1,0 +1,179 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cert-portal-nginx-config
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
+data:
+  default.conf: |
+    server {
+        listen 8080;
+        server_name _;
+
+        root /usr/share/nginx/html;
+        index index.html;
+
+        location ~* \.crt$ {
+            default_type application/x-x509-ca-cert;
+            add_header Content-Disposition 'attachment; filename="rsr-root-ca.crt"';
+        }
+
+        location ~* \.pem$ {
+            default_type application/x-pem-file;
+            add_header Content-Disposition 'attachment; filename="rsr-root-ca.pem"';
+        }
+
+        location / {
+            try_files $uri $uri/ =404;
+        }
+    }
+
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>RSR Root CA Certificate</title>
+      <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          background: #0d1117;
+          color: #e6edf3;
+          min-height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+          padding: 2rem 1rem;
+        }
+        .card {
+          background: #161b22;
+          border: 1px solid #30363d;
+          border-radius: 12px;
+          padding: 2rem;
+          max-width: 540px;
+          width: 100%;
+        }
+        h1 { font-size: 1.5rem; margin-bottom: 0.4rem; }
+        .subtitle { color: #8b949e; margin-bottom: 2rem; font-size: 0.9rem; }
+        h2 {
+          font-size: 0.75rem;
+          color: #8b949e;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          margin-bottom: 0.85rem;
+        }
+        .section { margin-bottom: 2rem; }
+        .buttons { display: flex; flex-direction: column; gap: 0.65rem; }
+        .btn {
+          display: block;
+          padding: 0.85rem 1.1rem;
+          background: #21262d;
+          border: 1px solid #30363d;
+          border-radius: 8px;
+          color: #e6edf3;
+          text-decoration: none;
+          font-size: 0.95rem;
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .btn:hover { background: #2d333b; border-color: #58a6ff; }
+        .btn .hint { font-size: 0.75rem; color: #8b949e; display: block; margin-top: 3px; }
+        .qr-wrap { text-align: center; }
+        #qrcode { display: inline-block; background: #fff; padding: 10px; border-radius: 8px; margin: 0.75rem 0 0.5rem; }
+        .url { font-size: 0.78rem; color: #8b949e; font-family: monospace; }
+        .divider { border: none; border-top: 1px solid #30363d; margin: 2rem 0; }
+        .platform { margin-bottom: 1.25rem; }
+        .platform:last-child { margin-bottom: 0; }
+        .platform h3 { font-size: 0.85rem; color: #58a6ff; margin-bottom: 0.5rem; }
+        .platform ol { padding-left: 1.2rem; }
+        .platform li { margin-bottom: 0.3rem; font-size: 0.85rem; color: #8b949e; line-height: 1.5; }
+        .platform li strong { color: #e6edf3; }
+      </style>
+    </head>
+    <body>
+      <div class="card">
+        <h1>🔐 RSR Root CA Certificate</h1>
+        <p class="subtitle">Install to trust all internal homelab services over HTTPS.</p>
+
+        <div class="section">
+          <h2>Download</h2>
+          <div class="buttons">
+            <a href="/rsr-root-ca.crt" class="btn">
+              📱 iPhone &amp; iPad
+              <span class="hint">Tap link — opens system certificate install dialog</span>
+            </a>
+            <a href="/rsr-root-ca.crt" class="btn">
+              🍎 macOS &nbsp;&nbsp; 🪟 Windows
+              <span class="hint">Download .crt — double-click to install</span>
+            </a>
+            <a href="/rsr-root-ca.pem" class="btn">
+              🐧 Linux
+              <span class="hint">Download .pem — add to system trust store</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="section qr-wrap">
+          <h2>Scan to install on mobile</h2>
+          <div id="qrcode"></div>
+          <p class="url">https://ca.rsr.net/rsr-root-ca.crt</p>
+        </div>
+
+        <hr class="divider">
+
+        <div class="section">
+          <h2>Installation steps</h2>
+          <div class="platform">
+            <h3>iPhone / iPad</h3>
+            <ol>
+              <li>Tap the download link above <em>or</em> scan the QR code</li>
+              <li>Go to <strong>Settings → General → VPN &amp; Device Management</strong></li>
+              <li>Tap the downloaded profile → <strong>Install</strong></li>
+              <li>Go to <strong>Settings → General → About → Certificate Trust Settings</strong></li>
+              <li>Enable full trust for <strong>RSR Root CA</strong></li>
+            </ol>
+          </div>
+          <div class="platform">
+            <h3>macOS</h3>
+            <ol>
+              <li>Download the <code>.crt</code> file and double-click it</li>
+              <li>Keychain Access opens — add to the <strong>System</strong> keychain</li>
+              <li>Double-click the cert → <strong>Trust → Always Trust</strong></li>
+            </ol>
+          </div>
+          <div class="platform">
+            <h3>Windows</h3>
+            <ol>
+              <li>Download the <code>.crt</code> file and double-click it</li>
+              <li>Click <strong>Install Certificate</strong> → <strong>Local Machine</strong></li>
+              <li>Place in <strong>Trusted Root Certification Authorities</strong></li>
+            </ol>
+          </div>
+          <div class="platform">
+            <h3>Linux</h3>
+            <ol>
+              <li>Download <code>rsr-root-ca.pem</code></li>
+              <li><code>sudo cp rsr-root-ca.pem /usr/local/share/ca-certificates/rsr-root-ca.crt</code></li>
+              <li><code>sudo update-ca-certificates</code></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+              integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSuX4s0IDOWR2zpQ/cRBEE5fXeeFgFKBJEWJQ=="
+              crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script>
+        new QRCode(document.getElementById("qrcode"), {
+          text: "https://ca.rsr.net/rsr-root-ca.crt",
+          width: 160,
+          height: 160,
+          colorDark: "#000000",
+          colorLight: "#ffffff"
+        });
+      </script>
+    </body>
+    </html>
