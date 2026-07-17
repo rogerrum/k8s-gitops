@@ -276,7 +276,7 @@ applications:
       enabled: true
 
   - name: cert-portal
-    namespace: kube-system
+    namespace: cert-manager
     path: infrastructure/cert-portal
     manifest-paths: /infrastructure/cert-portal
     sync-wave: "-1"
