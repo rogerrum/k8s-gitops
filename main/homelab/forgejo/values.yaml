@@ -27,7 +27,8 @@ forgejo:
         SKIP_VERIFY: true
       queue:
         TYPE: redis
-        CONN_STR: redis://forgejo-dragonfly.kube-system.svc.cluster.local:6379?pool_size=100&idle_timeout=180s
+        #lCONN_STR: redis://forgejo-dragonfly.kube-system.svc.cluster.local:6379?pool_size=100&idle_timeout=180s
+        CONN_STR: redis://forgejo-dragonfly.kube-system.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s
       repository:
         DEFAULT_REPO_UNITS: repo.code,repo.releases,repo.issues,repo.pulls,repo.actions
         DISABLED_REPO_UNITS: repo.ext_wiki,repo.ext_issues
