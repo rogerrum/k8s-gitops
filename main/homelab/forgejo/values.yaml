@@ -6,7 +6,8 @@ forgejo:
       cache:
         ENABLED: true
         ADAPTER: redis
-        HOST: redis://forgejo-dragonfly.kube-system.svc.cluster.local:6379?pool_size=100&idle_timeout=180s
+        #HOST: redis://forgejo-dragonfly.kube-system.svc.cluster.local:6379?pool_size=100&idle_timeout=180s
+        HOST: network=tcp,addr=forgejo-dragonfly.kube-system.svc.cluster.local:6379,pool_size=100,idle_timeout=180s
       cron.archive_cleanup:
         ENABLED: true
         RUN_AT_START: true
