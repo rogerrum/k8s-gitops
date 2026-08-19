@@ -6,8 +6,8 @@ forgejo:
       cache:
         ENABLED: true
         ADAPTER: redis
-        #HOST: redis://forgejo-dragonfly.kube-system.svc.cluster.local:6379?pool_size=100&idle_timeout=180s
-        HOST: network=tcp,addr=forgejo-dragonfly.kube-system.svc.cluster.local:6379,pool_size=100,idle_timeout=180s
+        HOST: redis://forgejo-dragonfly.kube-system.svc.cluster.local:6379?pool_size=100&idle_timeout=180s
+        #HOST: network=tcp,addr=forgejo-dragonfly.kube-system.svc.cluster.local:6379,pool_size=100,idle_timeout=180s
       cron.archive_cleanup:
         ENABLED: true
         RUN_AT_START: true
@@ -27,8 +27,8 @@ forgejo:
         SKIP_VERIFY: true
       queue:
         TYPE: redis
-        #lCONN_STR: redis://forgejo-dragonfly.kube-system.svc.cluster.local:6379?pool_size=100&idle_timeout=180s
-        CONN_STR: redis://forgejo-dragonfly.kube-system.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s
+        CONN_STR: redis://forgejo-dragonfly.kube-system.svc.cluster.local:6379?pool_size=100&idle_timeout=180s
+        #CONN_STR: redis://forgejo-dragonfly.kube-system.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s
       repository:
         DEFAULT_REPO_UNITS: repo.code,repo.releases,repo.issues,repo.pulls,repo.actions
         DISABLED_REPO_UNITS: repo.ext_wiki,repo.ext_issues
@@ -105,7 +105,7 @@ forgejo:
     rootless: true
     registry: code.forgejo.org
     repository: forgejo/forgejo
-    tag: 16.0.2-rootless
+    tag: 15.0.3-rootless
 
   persistence:
     create: false
