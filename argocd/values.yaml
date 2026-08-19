@@ -1,8 +1,13 @@
 argo-cd:
 
-#  global:
+  global:
 #    image:
 #      repository: argoproj/argocd
+    # Chart 10.4.0 changed default to true, but Cilium enforces these policies
+    # strictly and blocks kubelet health probes — manage network policies separately
+    networkPolicy:
+      create: false
+
   dex:
     enabled: false
 
