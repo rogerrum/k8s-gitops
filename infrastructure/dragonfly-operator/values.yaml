@@ -12,3 +12,4 @@ dragonfly-operator:
 apps:
   - app: forgejo
     replicas: 1
+    clientNamespace: default
