@@ -1,6 +1,7 @@
 longhorn:
   networkPolicies:
     enabled: false
+    restrictInternalTraffic: false
   persistence:
     defaultClassReplicaCount: "3"
   defaultSettings:
