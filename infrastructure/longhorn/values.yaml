@@ -1,4 +1,6 @@
 longhorn:
+  networkPolicies:
+    enabled: false
   persistence:
     defaultClassReplicaCount: "3"
   defaultSettings:
