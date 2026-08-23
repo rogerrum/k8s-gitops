@@ -206,13 +206,14 @@ applications:
     helm:
       enabled: true
 
-  - name: planka
-    namespace: default
-    path: main/homelab/planka
-    manifest-paths: /main/homelab/planka
-    sync-wave: "-1"
-    helm:
-      enabled: true
+  # Temporarily disabled for v1->v2 migration - re-enable after ArgoCD removes old deployment
+  # - name: planka
+  #   namespace: default
+  #   path: main/homelab/planka
+  #   manifest-paths: /main/homelab/planka
+  #   sync-wave: "-1"
+  #   helm:
+  #     enabled: true
 
   - name: gethomepage
     namespace: default
