@@ -31,8 +31,10 @@ app-template:
             requiredDuringSchedulingIgnoredDuringExecution:
               nodeSelectorTerms:
                 - matchExpressions:
-                    - key: storage
-                      operator: DoesNotExist
+                    - key: kubernetes.io/hostname
+                      operator: In
+                      values:
+                        - k8s-8-server
 
       containers:
         main:

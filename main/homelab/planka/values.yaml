@@ -60,6 +60,15 @@ app-template:
           runAsNonRoot: true
           fsGroup: 1000
           fsGroupChangePolicy: OnRootMismatch
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: kubernetes.io/hostname
+                      operator: In
+                      values:
+                        - k8s-8-server
   service:
     main:
       controller: main
