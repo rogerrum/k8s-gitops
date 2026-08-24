@@ -9,11 +9,11 @@ storage:
 superuserSecret: postgres-superuser-secret
 
 cluster:
-  name: postgres-v17
-  image: ghcr.io/cloudnative-pg/postgresql:17.4
+  name: postgres-v18
+  image: ghcr.io/cloudnative-pg/postgresql:18.6
 
 previousCluster:
-  enabled: false
+  enabled: true
   name: postgres-v17
   image: ghcr.io/cloudnative-pg/postgresql:17.4
 
@@ -26,10 +26,10 @@ activeDatabases:
   - planka
 
 clusterUpgrade:
-  enabled: true
+  enabled: false
   newClusterName: postgres-v18
   newClusterImage: ghcr.io/cloudnative-pg/postgresql:18.6
-  currentClusterName: postgres-v17
+  currentClusterName: postgres-v18
 
 ##  3 step upgrade process:
 ## 1. Initial setup - Create new cluster and copy data
