@@ -25,6 +25,15 @@ app-template:
                   name: mealie-secret
                   key: POSTGRES_PASSWORD
 
+      pod:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: storage
+                      operator: DoesNotExist
+
       containers:
         main:
           image:
