@@ -15,7 +15,7 @@ cluster:
 previousCluster:
   enabled: true
   name: postgres-v17
-  image: ghcr.io/cloudnative-pg/postgresql:17.4
+  image: ghcr.io/cloudnative-pg/postgresql:17.11
 
 activeDatabases:
   - mealie
