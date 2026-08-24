@@ -4,6 +4,8 @@ kind: PrometheusRule
 metadata:
   name: cloudnative-pg-rules
   labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
     prometheus: k8s
     role: alert-rules
 spec:

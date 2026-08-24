@@ -3,6 +3,9 @@ kind: ScheduledBackup
 metadata:
   name: {{ .Values.cluster.name }}
   namespace: kube-system
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
 spec:
   #schedule: "@weekly"
   # daily, 2am UCT
@@ -18,6 +21,9 @@ kind: ScheduledBackup
 metadata:
   name: {{ .Values.previousCluster.name }}
   namespace: kube-system
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
 spec:
   #schedule: "@weekly"
   # daily, 2am UCT

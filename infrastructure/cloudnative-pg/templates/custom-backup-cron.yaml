@@ -3,6 +3,9 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ .Values.cluster.name }}-backup
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
 spec:
   schedule: "0 4 * * *"
   concurrencyPolicy: Forbid
