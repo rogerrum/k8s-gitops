@@ -88,6 +88,14 @@ applications:
 #    helm:
 #      enabled: true
 
+  - name: garage
+    namespace: default
+    path: main/homelab/garage
+    manifest-paths: /main/homelab/garage
+    sync-wave: "0"
+    helm:
+      enabled: true
+
   - name: minio
     namespace: default
     path: main/homelab/minio

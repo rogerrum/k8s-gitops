@@ -1,0 +1,159 @@
+app-template:
+  controllers:
+    garage:
+      annotations:
+        reloader.stakater.com/auto: "true"
+      containers:
+        main:
+          image:
+            repository: dxflrs/garage
+            tag: v2.3.0@sha256:866bd13ed2038ba7e7190e840482bc27234c4afaf77be8cfa439ae088c1e4690
+          envFrom:
+            - secretRef:
+                name: garage-secret
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+
+    garage-webui:
+      annotations:
+        secret.reloader.stakater.com/reload: garage-secret
+      containers:
+        main:
+          image:
+            repository: khairul169/garage-webui
+            tag: 1.1.0@sha256:17c793551873155065bf9a022dabcde874de808a1f26e648d4b82e168806439c
+          env:
+            API_BASE_URL: http://garage.default.svc.cluster.local:3903
+            S3_ENDPOINT_URL: http://garage.default.svc.cluster.local:3900
+            API_ADMIN_KEY:
+              valueFrom:
+                secretKeyRef:
+                  name: garage-secret
+                  key: GARAGE_ADMIN_TOKEN
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: 10m
+            limits:
+              memory: 128Mi
+
+  defaultPodOptions:
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: storage
+                  operator: DoesNotExist
+
+  service:
+    garage:
+      controller: garage
+      ports:
+        s3:
+          port: 3900
+        rpc:
+          port: 3901
+        admin:
+          port: 3903
+    garage-webui:
+      controller: garage-webui
+      ports:
+        http:
+          port: &webuiPort 3909
+
+  route:
+    garage-webui:
+      controller: garage-webui
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Infrastructure
+        gethomepage.dev/icon: si-garage
+        gethomepage.dev/name: Garage S3
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - garage.rsr.net
+      rules:
+        - backendRefs:
+            - name: garage-webui
+              port: *webuiPort
+    garage-s3:
+      controller: garage
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+      hostnames:
+        - s3-garage.rsr.net
+      rules:
+        - backendRefs:
+            - name: garage-garage
+              port: 3900
+
+  configMaps:
+    config:
+      data:
+        garage.toml: |
+          metadata_dir = "/meta"
+          data_dir = "/data"
+          db_engine = "lmdb"
+          metadata_auto_snapshot_interval = "6h"
+
+          replication_factor = 1
+          compression_level = 2
+
+          rpc_bind_addr = "[::]:3901"
+          rpc_public_addr = "127.0.0.1:3901"
+
+          [s3_api]
+          s3_region = "us-east-1"
+          api_bind_addr = "[::]:3900"
+
+          [admin]
+          api_bind_addr = "[::]:3903"
+
+  persistence:
+    config:
+      type: configMap
+      name: garage-config
+      advancedMounts:
+        garage:
+          main:
+            - path: /etc/garage.toml
+              subPath: garage.toml
+    data:
+      type: nfs
+      server: 192.168.1.115
+      path: /kube-nfs/garage/data
+      advancedMounts:
+        garage:
+          main:
+            - path: /data
+    meta:
+      type: nfs
+      server: 192.168.1.115
+      path: /kube-nfs/garage/meta
+      advancedMounts:
+        garage:
+          main:
+            - path: /meta
