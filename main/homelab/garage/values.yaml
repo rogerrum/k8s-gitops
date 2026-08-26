@@ -83,7 +83,6 @@ app-template:
 
   route:
     garage-webui:
-      controller: garage-webui
       annotations:
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Infrastructure
@@ -99,7 +98,6 @@ app-template:
             - name: garage-webui
               port: *webuiPort
     garage-s3:
-      controller: garage
       parentRefs:
         - name: internal
           namespace: kube-system
