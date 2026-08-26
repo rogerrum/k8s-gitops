@@ -95,7 +95,7 @@ app-template:
         - garage.rsr.net
       rules:
         - backendRefs:
-            - name: garage-webui
+            - name: garage-garage-webui
               port: *webuiPort
     garage-s3:
       parentRefs:
