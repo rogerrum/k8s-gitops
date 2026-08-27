@@ -183,6 +183,12 @@ argo-cd:
             - .spec.dataFrom[].extract.conversionStrategy
             - .spec.dataFrom[].extract.decodingStrategy
             - .spec.dataFrom[].extract.metadataPolicy
+        apiextensions.k8s.io/CustomResourceDefinition:
+          health.lua: |
+            hs = {}
+            hs.status = "Healthy"
+            hs.message = "CRD is healthy"
+            return hs
 
     metrics:
       enabled: true
