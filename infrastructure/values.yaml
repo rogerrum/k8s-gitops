@@ -51,9 +51,8 @@ applications:
     ignoreDifferences:
       - group: kyverno.io
         kind: ClusterPolicy
-        jqPathExpressions:
-          - .spec.emitWarning
-          - .spec.validationFailureAction
+        managedFieldsManagers:
+          - kyverno
 
   - name: cloudnative-pg
     namespace: kube-system
