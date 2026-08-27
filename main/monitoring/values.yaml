@@ -52,6 +52,7 @@ applications:
     syncOptions:
       - ServerSideApply=true
       - Replace=true
+      - RespectIgnoreDifferences=true
     ignoreDifferences:
       - group: external-secrets.io
         kind: ExternalSecret

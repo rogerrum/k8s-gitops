@@ -10,6 +10,8 @@ metadata:
 spec:
   admission: true
   background: false
+  emitWarning: false
+  validationFailureAction: Audit
   rules:
     - name: add-worker-node-preference
       match:

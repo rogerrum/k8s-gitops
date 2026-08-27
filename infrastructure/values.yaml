@@ -48,11 +48,6 @@ applications:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-    ignoreDifferences:
-      - group: kyverno.io
-        kind: ClusterPolicy
-        managedFieldsManagers:
-          - kyverno
 
   - name: cloudnative-pg
     namespace: kube-system
