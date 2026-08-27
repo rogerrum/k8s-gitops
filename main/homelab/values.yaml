@@ -96,20 +96,6 @@ applications:
     helm:
       enabled: true
 
-  - name: minio
-    namespace: default
-    path: main/homelab/minio
-    manifest-paths: /main/homelab/minio
-    sync-wave: "0"
-    helm:
-      enabled: true
-      secrets:
-        enabled: true
-        keys:
-          - minio-config
-      additionalValues:
-        - http://localhost/minio.yml
-
   - name: node-red
     namespace: default
     path: main/homelab/node-red
