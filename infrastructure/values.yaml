@@ -48,6 +48,12 @@ applications:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+    ignoreDifferences:
+      - group: kyverno.io
+        kind: ClusterPolicy
+        jqPathExpressions:
+          - .spec.emitWarning
+          - .spec.validationFailureAction
 
   - name: cloudnative-pg
     namespace: kube-system

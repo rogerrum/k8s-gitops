@@ -59,6 +59,15 @@ applications:
           - '.spec.dataFrom[].extract.conversionStrategy'
           - '.spec.dataFrom[].extract.decodingStrategy'
           - '.spec.dataFrom[].extract.metadataPolicy'
+      - group: gateway.networking.k8s.io
+        kind: HTTPRoute
+        jqPathExpressions:
+          - .spec.parentRefs[].group
+          - .spec.parentRefs[].kind
+      - group: operator.victoriametrics.com
+        kind: VMAgent
+        jqPathExpressions:
+          - .status
 
   - name: speedtest-exporter
     namespace: monitoring
