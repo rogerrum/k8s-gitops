@@ -54,6 +54,8 @@ victoria-metrics-k8s-stack:
       parentRefs:
         - name: internal
           namespace: kube-system
+          group: gateway.networking.k8s.io
+          kind: Gateway
       hostnames:
         - vm.rsr.net
       rules:
@@ -80,6 +82,8 @@ victoria-metrics-k8s-stack:
       parentRefs:
         - name: internal
           namespace: kube-system
+          group: gateway.networking.k8s.io
+          kind: Gateway
       hostnames:
         - vm-alert.rsr.net
       rules:
@@ -148,6 +152,8 @@ victoria-metrics-k8s-stack:
       parentRefs:
         - name: internal
           namespace: kube-system
+          group: gateway.networking.k8s.io
+          kind: Gateway
       hostnames:
         - vmalert.rsr.net
       rules:
@@ -171,6 +177,8 @@ victoria-metrics-k8s-stack:
       parentRefs:
         - name: internal
           namespace: kube-system
+          group: gateway.networking.k8s.io
+          kind: Gateway
       hostnames:
         - vmagent.rsr.net
       rules:
@@ -208,7 +216,7 @@ victoria-metrics-k8s-stack:
 
       resources:
         limits:
-          cpu: null
+          #cpu: null
           memory: 750Mi
         requests:
           cpu: 500m
