@@ -189,12 +189,6 @@ argo-cd:
             hs.status = "Healthy"
             hs.message = "CRD is healthy"
             return hs
-        apiextensions.k8s.io/CustomResourceDefinition:
-          health.lua: |
-            hs = {}
-            hs.status = "Healthy"
-            hs.message = "CRD is healthy"
-            return hs
 
     metrics:
       enabled: true
