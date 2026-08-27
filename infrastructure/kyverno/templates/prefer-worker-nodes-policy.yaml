@@ -14,6 +14,7 @@ spec:
   validationFailureAction: Audit
   rules:
     - name: add-worker-node-preference
+      skipBackgroundRequests: true
       match:
         any:
           - resources:
