@@ -55,6 +55,8 @@ app-template:
             - matchExpressions:
                 - key: node-role.kubernetes.io/control-plane
                   operator: DoesNotExist
+                - key: storage
+                  operator: DoesNotExist
 
   service:
     app:
