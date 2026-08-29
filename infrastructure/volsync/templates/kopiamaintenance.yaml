@@ -10,6 +10,12 @@ metadata:
     app.kubernetes.io/component: maintenance
     app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
+  moverVolumes:
+    - mountPath: repository
+      volumeSource:
+        nfs:
+          server: 192.168.1.115
+          path: /Kopia
   repository:
     repository: kopia-maintenance-secret
   schedule: "0 3 * * 0"  # Weekly Sunday at 3 AM
