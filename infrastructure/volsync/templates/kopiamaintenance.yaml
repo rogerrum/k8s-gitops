@@ -38,10 +38,10 @@ spec:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
           - matchExpressions:
-              - key: node-role.kubernetes.io/control-plane
-                operator: DoesNotExist
-              - key: storage
-                operator: DoesNotExist
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                  - k8s-8-server
   cacheCapacity: 10Gi
   cacheAccessModes: ["ReadWriteOnce"]
   cacheStorageClassName: longhorn
