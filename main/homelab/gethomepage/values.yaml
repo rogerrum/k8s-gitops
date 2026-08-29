@@ -43,13 +43,13 @@ homepage:
       # show the kubernetes widget, with the cluster summary and individual nodes
       - kubernetes:
           cluster:
-            show: true
+            show: false
             cpu: true
             memory: true
             showLabel: true
             label: "cluster"
           nodes:
-            show: true
+            show: false
             cpu: true
             memory: true
             showLabel: true
