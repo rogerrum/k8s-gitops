@@ -25,16 +25,16 @@ app-template:
                 httpGet:
                   path: /
                   port: *port
-                initialDelaySeconds: 0
+                initialDelaySeconds: 30
                 periodSeconds: 10
                 timeoutSeconds: 1
-                failureThreshold: 3
+                failureThreshold: 6
             readiness: *probes
           resources:
             requests:
               cpu: 10m
             limits:
-              memory: 1Gi
+              memory: 2Gi
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
