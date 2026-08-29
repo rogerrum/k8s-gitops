@@ -32,10 +32,10 @@ spec:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
           - matchExpressions:
-              - key: google.feature.node.kubernetes.io/coral
-                operator: In
-                values:
-                  - "true"
+              - key: node-role.kubernetes.io/control-plane
+                operator: DoesNotExist
+              - key: storage
+                operator: DoesNotExist
   cacheCapacity: 10Gi
   cacheAccessModes: ["ReadWriteOnce"]
   cacheStorageClassName: longhorn
