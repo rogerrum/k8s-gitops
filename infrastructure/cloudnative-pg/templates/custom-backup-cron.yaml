@@ -15,12 +15,15 @@ spec:
         spec:
           automountServiceAccountToken: false
           enableServiceLinks: false
-{{/*          securityContext:*/}}
-{{/*            runAsUser: 1031*/}}
-{{/*            runAsGroup: 1031*/}}
-{{/*            fsGroup: 1031*/}}
-{{/*            supplementalGroups:*/}}
-{{/*              - 65541*/}}
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: node-role.kubernetes.io/control-plane
+                        operator: DoesNotExist
+                      - key: storage
+                        operator: DoesNotExist
 
           containers:
             - name: postgres-backup
