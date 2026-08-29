@@ -28,7 +28,7 @@ app-template:
                 initialDelaySeconds: 30
                 periodSeconds: 10
                 timeoutSeconds: 1
-                failureThreshold: 6
+                failureThreshold: 30
             readiness: *probes
           resources:
             requests:
