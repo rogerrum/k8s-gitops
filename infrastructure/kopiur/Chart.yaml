@@ -1,0 +1,10 @@
+apiVersion: v2
+name: kopiur
+description: Kopiur backup operator and ClusterRepository
+type: application
+version: 1.0.0
+dependencies:
+  - name: kopiur
+    version: 0.10.5
+    repository: oci://ghcr.io/home-operations/charts
+    alias: kopiur

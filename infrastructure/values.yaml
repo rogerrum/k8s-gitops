@@ -291,6 +291,26 @@ applications:
     helm:
       enabled: true
 
+  - name: kopiur
+    namespace: kube-system
+    path: infrastructure/kopiur
+    manifest-paths: /infrastructure/kopiur
+    sync-wave: "-2"
+    helm:
+      enabled: true
+
+  # kopiur-apps: enabled after kopiur operator is verified running
+  # and ClusterRepository/nas confirms adoption of existing repo
+  # - name: kopiur-apps
+  #   namespace: kube-system
+  #   path: infrastructure/kopiur-apps
+  #   manifest-paths: /infrastructure/kopiur-apps
+  #   sync-wave: "-1"
+  #   syncOptions:
+  #     - ServerSideApply=true
+  #   helm:
+  #     enabled: true
+
   - name: volsync
     namespace: kube-system
     path: infrastructure/volsync

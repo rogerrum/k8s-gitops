@@ -1,0 +1,98 @@
+---
+# ClusterRepository targeting the existing NFS Kopia repo at 192.168.1.115:/Kopia
+# No `create` block — adopt the existing repo in place, never risk reinitializing.
+#
+# Identity expressions reproduce the fork's recorded identity exactly:
+#   hostnameExpr: "namespace" + usernameExpr: "policyName"
+#   + sourcePathOverride: /data on every SnapshotPolicy source
+# = <app>@<namespace>:/data — same as current VolSync snapshots
+# This means existing backup history is preserved and continues as one series.
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: ClusterRepository
+metadata:
+  name: nas
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  allowedNamespaces:
+    all: true
+  backend:
+    filesystem:
+      path: /repository
+      volume:
+        nfs:
+          server: 192.168.1.115
+          path: /Kopia
+  encryption:
+    passwordSecretRef:
+      name: kopiur-nas-secret
+      namespace: kube-system
+      key: KOPIA_PASSWORD
+  identityDefaults:
+    # Reproduces the perfectra1n fork's recorded identity exactly:
+    # <app>@<namespace>:/data = hostname=policyName, username=namespace
+    # e.g. actual@default:/data, home-assistant@default:/data
+    hostnameExpr: "policyName"
+    usernameExpr: "namespace"
+  credentialProjection:
+    allowed: true
+  scheduleDefaults:
+    timezone: America/Chicago
+  catalog:
+    fallbackNamespace: kube-system
+    retain:
+      perIdentity: 30
+  parameters:
+    epoch:
+      # 1h epoch closes fast enough to compact blobs between hourly backup runs
+      # across all apps. Without this, index blobs accumulate faster than
+      # maintenance can compact them (we saw 6500+ blobs over 211 days).
+      minDuration: 1h
+  maintenance:
+    schedule:
+      quick:
+        cron: "0 */3 * * *"
+        jitter: 30m
+      full:
+        cron: "0 3 * * *"
+        jitter: 1h
+    mover:
+      cache:
+        capacity: 20Gi
+        storageClassName: longhorn
+        metadataCacheSizeMb: 5120
+        contentCacheSizeMb: 2048
+      resources:
+        requests:
+          cpu: 200m
+          memory: 1Gi
+  moverDefaults:
+    securityContext:
+      runAsUser: 1001
+      runAsGroup: 1001
+    podSecurityContext:
+      runAsNonRoot: true
+      fsGroup: 1001
+      fsGroupChangePolicy: OnRootMismatch
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: storage
+                operator: DoesNotExist
+              - key: node-role.kubernetes.io/control-plane
+                operator: DoesNotExist
+    cache:
+      capacity: 3Gi
+      storageClassName: longhorn
+      mode: Persistent
+      metadataCacheSizeMb: 400
+      contentCacheSizeMb: 200
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+    ttlSecondsAfterFinished: 300
