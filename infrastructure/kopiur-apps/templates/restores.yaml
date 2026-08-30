@@ -1,0 +1,77 @@
+{{- $apps := include "kopiur.parseApps" . | fromJsonArray -}}
+{{- range $apps }}
+{{- /*
+  PVC creation logic mirrors volsync chart:
+  - global createPVCs true + no app-level override = create
+  - app-level createPVC: false = skip
+  - app-level createPVC: true = always create (even if global false)
+*/ -}}
+{{- $shouldCreatePVC := false -}}
+{{- if $.Values.createPVCs -}}
+  {{- if hasKey . "createPVC" -}}
+    {{- if ne .createPVC false -}}
+      {{- $shouldCreatePVC = true -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $shouldCreatePVC = true -}}
+  {{- end -}}
+{{- end -}}
+{{- if $shouldCreatePVC }}
+---
+# Restore (passive populator) for bootstrap restore of {{ .app }}
+# On bootstrap: PVC auto-restores from latest snapshot.
+# On fresh install with no snapshot: provisions empty volume (onMissingSnapshot: Continue).
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: Restore
+metadata:
+  name: {{ .app }}-bootstrap
+  namespace: {{ .namespace }}
+  labels:
+    app.kubernetes.io/name: kopiur
+    app.kubernetes.io/component: restore
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+spec:
+  source:
+    fromPolicy:
+      name: {{ .app }}
+      namespace: {{ .namespace }}
+  target:
+    populator: {}
+  policy:
+    onMissingSnapshot: Continue
+  # Repository Secret lives in kube-system; restores run in the app's namespace
+  credentialProjection:
+    enabled: true
+  mover:
+    cache:
+      capacity: {{ .cacheCapacity }}
+      storageClassName: longhorn
+      mode: Ephemeral
+---
+# PVC for {{ .app }} — dataSourceRef points to Restore for bootstrap
+# Annotations prevent accidental deletion by Helm/ArgoCD
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .app }}-{{ .pvcSuffix }}
+  namespace: {{ .namespace }}
+  annotations:
+    helm.sh/resource-policy: keep
+    argocd.argoproj.io/sync-options: Prune=false
+  labels:
+    app.kubernetes.io/name: kopiur
+    app.kubernetes.io/component: restore
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  dataSourceRef:
+    apiGroup: kopiur.home-operations.com
+    kind: Restore
+    name: {{ .app }}-bootstrap
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: {{ .capacity }}
+{{- end }}
+{{- end }}

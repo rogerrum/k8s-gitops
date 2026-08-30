@@ -1,0 +1,72 @@
+{{- $apps := include "kopiur.parseApps" . | fromJsonArray -}}
+{{- range $apps }}
+---
+# SnapshotPolicy for {{ .app }}
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: {{ .app }}
+  namespace: {{ .namespace }}
+  labels:
+    app.kubernetes.io/name: kopiur
+    app.kubernetes.io/component: backup
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+spec:
+  repository:
+    kind: ClusterRepository
+    name: nas
+  sources:
+    - pvc:
+        name: {{ .app }}-{{ .pvcSuffix }}
+      # Matches the fork's recorded source path so adoption continues the
+      # existing <app>@<namespace>:/data history instead of starting fresh.
+      sourcePathOverride: /data
+  copyMethod: Snapshot
+  volumeSnapshotClassName: longhorn-snapshot-vsc
+  compression:
+    compressor: zstd
+  retention:
+    keepHourly: 24
+    keepDaily: 14
+    keepWeekly: 8
+    keepMonthly: 6
+  # Daily quick verification proves backups are actually restorable
+  verification:
+    quick:
+      schedule:
+        cron: "H 3 * * *"
+  # Repository Secret lives in kube-system; movers run in the app's namespace
+  credentialProjection:
+    enabled: true
+  mover:
+    securityContext:
+      runAsUser: {{ .runAsUser }}
+      runAsGroup: {{ .runAsUser }}
+    podSecurityContext:
+      fsGroup: {{ .runAsUser }}
+      fsGroupChangePolicy: OnRootMismatch
+    cache:
+      capacity: {{ .cacheCapacity }}
+      storageClassName: longhorn
+      mode: Persistent
+      metadataCacheSizeMb: 400
+      contentCacheSizeMb: 200
+---
+# SnapshotSchedule for {{ .app }}
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: {{ .app }}-scheduled
+  namespace: {{ .namespace }}
+  labels:
+    app.kubernetes.io/name: kopiur
+    app.kubernetes.io/component: backup
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+spec:
+  policyRef:
+    name: {{ .app }}
+  schedule:
+    # H-style cron: kopiur hashes a stable per-app minute slot for load distribution
+    cron: "{{ .schedule }}"
+    runOnCreate: false
+{{- end }}

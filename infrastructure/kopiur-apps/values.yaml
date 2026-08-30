@@ -1,0 +1,86 @@
+# Kopiur backup configuration
+# createPVCs: false = only SnapshotPolicy/Schedule (existing VolSync PVCs untouched)
+# createPVCs: true  = also manage PVC bootstrap via Restore populator
+createPVCs: false
+
+defaults:
+  pvcSuffix: config
+  runAsUser: "1001"
+  capacity: 1Gi
+  cacheCapacity: "3Gi"
+  # H = Jenkins-style cron: kopiur hashes a stable per-app minute for load distribution
+  schedule: "H * * * *"
+  namespace: default
+
+# PHASE 1 PILOT — single low-risk app
+# Verify identity adoption (actual@default:/data) before enabling all apps
+# After pilot success: remove actual from volsync values.yaml, then uncomment all apps below
+apps:
+  - app: actual
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "H */4 * * *"
+
+# PHASE 2 — uncomment all apps after pilot verified:
+# apps:
+#   - app: home-assistant
+#     capacity: 10Gi
+#     schedule: "H * * * *"
+#   - app: node-red
+#     pvcSuffix: data
+#     capacity: 5Gi
+#     schedule: "H */4 * * *"
+#   - app: frigate
+#     capacity: 10Gi
+#     schedule: "H */4 * * *"
+#   - app: esphome
+#     schedule: "H */4 * * *"
+#   - app: zigbee2mqtt
+#     schedule: "H */4 * * *"
+#   - app: zwavejs2mqtt
+#     schedule: "H */4 * * *"
+#   - app: matter-server
+#     pvcSuffix: data
+#     schedule: "H */4 * * *"
+#   - app: paperless-ngx
+#     pvcSuffix: data
+#     capacity: 5Gi
+#     schedule: "H * * * *"
+#   - app: mealie
+#     pvcSuffix: api-data
+#     schedule: "H */4 * * *"
+#   - app: planka
+#     pvcSuffix: data
+#     schedule: "H * * * *"
+#   - app: webtrees
+#     schedule: "H */4 * * *"
+#   - app: manyfold
+#     pvcSuffix: data
+#     capacity: 5Gi
+#     schedule: "H * * * *"
+#   - app: actual
+#     pvcSuffix: data
+#     capacity: 5Gi
+#     schedule: "H */4 * * *"
+#   - app: jellyfin
+#     capacity: 3Gi
+#     schedule: "H */4 * * *"
+#   - app: uptime-kuma
+#     pvcSuffix: data
+#     capacity: 5Gi
+#     namespace: monitoring
+#     schedule: "H */4 * * *"
+#   - app: pocket-id
+#     pvcSuffix: data
+#     namespace: kube-system
+#     schedule: "H */4 * * *"
+#   - app: forgejo
+#     capacity: 10Gi
+#     schedule: "H */4 * * *"
+#   - app: ss-models
+#     pvcSuffix: data
+#     capacity: 10Gi
+#     schedule: "H */4 * * *"
+#   - app: streambox
+#     pvcSuffix: data
+#     schedule: "H */4 * * *"
