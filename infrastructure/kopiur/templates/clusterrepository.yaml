@@ -38,10 +38,10 @@ spec:
       key: KOPIA_PASSWORD
   identityDefaults:
     # Reproduces the perfectra1n fork's recorded identity exactly:
-    # <app>@<namespace>:/data = hostname=policyName, username=namespace
-    # e.g. actual@default:/data, home-assistant@default:/data
-    hostnameExpr: "policyName"
-    usernameExpr: "namespace"
+    # <app>@<namespace>:/data = username=policyName, hostname=namespace
+    # e.g. actual@default:/data → username=actual, hostname=default
+    hostnameExpr: "namespace"
+    usernameExpr: "policyName"
   credentialProjection:
     allowed: true
   scheduleDefaults:
