@@ -80,14 +80,15 @@ spec:
       runAsNonRoot: true
       fsGroup: 1001
       fsGroupChangePolicy: OnRootMismatch
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: storage
-                operator: DoesNotExist
-              - key: node-role.kubernetes.io/control-plane
-                operator: DoesNotExist
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: storage
+                  operator: DoesNotExist
+                - key: node-role.kubernetes.io/control-plane
+                  operator: DoesNotExist
     cache:
       capacity: 3Gi
       storageClassName: longhorn
