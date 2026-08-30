@@ -52,6 +52,9 @@ spec:
       # maintenance can compact them (we saw 6500+ blobs over 211 days).
       minDuration: 1h
   maintenance:
+    # Force takeover from old KopiaMaintenance lease owner (volsync perfectra1n fork).
+    # Remove after first successful Kopiur maintenance run.
+    takeoverPolicy: Force
     schedule:
       quick:
         cron: "0 */3 * * *"
