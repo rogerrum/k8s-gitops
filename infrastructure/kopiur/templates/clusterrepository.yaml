@@ -52,10 +52,10 @@ spec:
       perIdentity: 30
   parameters:
     epoch:
-      # 1h epoch closes fast enough to compact blobs between hourly backup runs
-      # across all apps. Without this, index blobs accumulate faster than
-      # maintenance can compact them (we saw 6500+ blobs over 211 days).
-      minDuration: 1h
+      # Lowered to 10m to force epoch advancement and compact the 6500+ legacy blobs
+      # accumulated from 211 days of no maintenance. Raise back to 1h once blob
+      # count drops below 100.
+      minDuration: 10m
   maintenance:
     # Force takeover from old KopiaMaintenance lease owner (volsync perfectra1n fork).
     # Remove after first successful Kopiur maintenance run.
