@@ -85,10 +85,7 @@ apps:
     capacity: 5Gi
     schedule: "30 5 * * 3"
 
-  - app: actual
-    pvcSuffix: data
-    capacity: 5Gi
-    schedule: "30 4 * * 2"
+  # actual migrated to Kopiur
 
   - app: jellyfin
     capacity: 3Gi

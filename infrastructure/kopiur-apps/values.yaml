@@ -12,75 +12,99 @@ defaults:
   schedule: "H * * * *"
   namespace: default
 
-# PHASE 1 PILOT — single low-risk app
-# Verify identity adoption (actual@default:/data) before enabling all apps
-# After pilot success: remove actual from volsync values.yaml, then uncomment all apps below
+# Schedule strategy:
+#   LARGE apps (home-assistant, forgejo, ss-models ~5-10Gi): every 6h, staggered by hour
+#     so they never overlap: HA=H 0/6, forgejo=H 2/6, ss-models=H 4/6
+#   MEDIUM apps (actual, frigate, node-red, paperless, manyfold ~3-5Gi): every 4h
+#   SMALL apps (<1Gi): every 1-2h — fast, low NFS impact
+#   All movers land on k8s-8-server; H jitter spreads the exact minute per-app
+
 apps:
+  # --- PILOT (verified working) ---
   - app: actual
     pvcSuffix: data
     capacity: 5Gi
     schedule: "H */4 * * *"
 
-# PHASE 2 — uncomment all apps after pilot verified:
-# apps:
+# PHASE 2 — uncomment after removing apps from volsync values.yaml
+#
+#   # --- LARGE (every 6h, staggered by 2h so they never run concurrently) ---
 #   - app: home-assistant
 #     capacity: 10Gi
-#     schedule: "H * * * *"
+#     cacheCapacity: "5Gi"
+#     schedule: "H 0/6 * * *"    # runs at hour 0, 6, 12, 18
+#
+#   - app: forgejo
+#     capacity: 10Gi
+#     cacheCapacity: "5Gi"
+#     schedule: "H 2/6 * * *"    # runs at hour 2, 8, 14, 20 — 2h after HA
+#
+#   - app: ss-models
+#     pvcSuffix: data
+#     capacity: 10Gi
+#     cacheCapacity: "5Gi"
+#     schedule: "H 4/6 * * *"    # runs at hour 4, 10, 16, 22 — 2h after forgejo
+#
+#   # --- MEDIUM (every 4h) ---
+#   - app: frigate
+#     capacity: 10Gi
+#     schedule: "H */4 * * *"
+#
 #   - app: node-red
 #     pvcSuffix: data
 #     capacity: 5Gi
 #     schedule: "H */4 * * *"
-#   - app: frigate
-#     capacity: 10Gi
-#     schedule: "H */4 * * *"
-#   - app: esphome
-#     schedule: "H */4 * * *"
-#   - app: zigbee2mqtt
-#     schedule: "H */4 * * *"
-#   - app: zwavejs2mqtt
-#     schedule: "H */4 * * *"
-#   - app: matter-server
-#     pvcSuffix: data
-#     schedule: "H */4 * * *"
+#
 #   - app: paperless-ngx
 #     pvcSuffix: data
 #     capacity: 5Gi
-#     schedule: "H * * * *"
-#   - app: mealie
-#     pvcSuffix: api-data
 #     schedule: "H */4 * * *"
-#   - app: planka
-#     pvcSuffix: data
-#     schedule: "H * * * *"
-#   - app: webtrees
-#     schedule: "H */4 * * *"
+#
 #   - app: manyfold
 #     pvcSuffix: data
 #     capacity: 5Gi
-#     schedule: "H * * * *"
-#   - app: actual
-#     pvcSuffix: data
-#     capacity: 5Gi
 #     schedule: "H */4 * * *"
+#
 #   - app: jellyfin
 #     capacity: 3Gi
 #     schedule: "H */4 * * *"
+#
+#   - app: streambox
+#     pvcSuffix: data
+#     schedule: "H */4 * * *"
+#
+#   # --- SMALL (every 1-2h) ---
+#   - app: esphome
+#     schedule: "H * * * *"
+#
+#   - app: zigbee2mqtt
+#     schedule: "H * * * *"
+#
+#   - app: zwavejs2mqtt
+#     schedule: "H * * * *"
+#
+#   - app: matter-server
+#     pvcSuffix: data
+#     schedule: "H * * * *"
+#
+#   - app: mealie
+#     pvcSuffix: api-data
+#     schedule: "H * * * *"
+#
+#   - app: planka
+#     pvcSuffix: data
+#     schedule: "H * * * *"
+#
+#   - app: webtrees
+#     schedule: "H * * * *"
+#
 #   - app: uptime-kuma
 #     pvcSuffix: data
 #     capacity: 5Gi
 #     namespace: monitoring
-#     schedule: "H */4 * * *"
+#     schedule: "H * * * *"
+#
 #   - app: pocket-id
 #     pvcSuffix: data
 #     namespace: kube-system
-#     schedule: "H */4 * * *"
-#   - app: forgejo
-#     capacity: 10Gi
-#     schedule: "H */4 * * *"
-#   - app: ss-models
-#     pvcSuffix: data
-#     capacity: 10Gi
-#     schedule: "H */4 * * *"
-#   - app: streambox
-#     pvcSuffix: data
-#     schedule: "H */4 * * *"
+#     schedule: "H * * * *"
