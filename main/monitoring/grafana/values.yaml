@@ -356,7 +356,32 @@ grafana:
         disableDelete: true
         foldersFromFilesStructure: true
   persistence:
-    enabled: false
+    enabled: true
+    type: pvc
+    storageClassName: longhorn
+    accessModes:
+      - ReadWriteOnce
+    size: 2Gi
+  # Plugins (esp. the panodata-map-panel zip download) can take longer than the
+  # default 160s liveness window to (re)install. Without persistence the
+  # plugins directory lived in an emptyDir and was reinstalled on every
+  # restart, causing a permanent CrashLoopBackOff. Persistence above fixes the
+  # root cause; the extended probe below is a safety net for first install /
+  # plugin list changes.
+  livenessProbe:
+    httpGet:
+      path: /api/health
+      port: grafana
+    initialDelaySeconds: 60
+    timeoutSeconds: 30
+    failureThreshold: 20
+  readinessProbe:
+    httpGet:
+      path: /api/health
+      port: grafana
+    initialDelaySeconds: 60
+    timeoutSeconds: 10
+    failureThreshold: 20
   testFramework:
     enabled: false
 
