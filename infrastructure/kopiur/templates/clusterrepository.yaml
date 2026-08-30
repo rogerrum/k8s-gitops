@@ -21,7 +21,7 @@ spec:
   # After maintenance compacts blobs this can be lowered. Remove once blob count < 1000.
   bootstrap:
     failurePolicy:
-      activeDeadlineSeconds: 600
+      activeDeadlineSeconds: 900
   allowedNamespaces:
     all: true
   backend:
@@ -90,10 +90,10 @@ spec:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - key: storage
-                  operator: DoesNotExist
-                - key: node-role.kubernetes.io/control-plane
-                  operator: DoesNotExist
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - k8s-8-server
     cache:
       capacity: 3Gi
       storageClassName: longhorn
