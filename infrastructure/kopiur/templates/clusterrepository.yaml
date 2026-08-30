@@ -17,6 +17,11 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
 spec:
+  # Bootstrap timeout — default 120s is too short for this repo with 6500+ index blobs.
+  # After maintenance compacts blobs this can be lowered. Remove once blob count < 1000.
+  bootstrap:
+    failurePolicy:
+      activeDeadlineSeconds: 600
   allowedNamespaces:
     all: true
   backend:
