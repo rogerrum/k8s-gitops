@@ -35,15 +35,17 @@ grafana:
   envFromSecrets:
     - name: grafana-secret
 
+  # Angular-based plugins (grafana-worldmap-panel, natel-discrete-panel,
+  # natel-plotly-panel) were removed: Grafana 12 refuses to load them
+  # ("angular plugins are not supported"), so they were only wasted
+  # download time on every cold start. grafana-worldmap-panel-ng
+  # (panodata-map-panel) is the supported replacement for the worldmap panel.
   plugins:
     - pr0ps-trackmap-panel
-    - natel-plotly-panel
     - victoriametrics-logs-datasource
     - grafana-piechart-panel
     - https://github.com/panodata/panodata-map-panel/releases/download/0.16.0/panodata-map-panel-0.16.0.zip;grafana-worldmap-panel-ng
     - grafana-clock-panel
-    - grafana-worldmap-panel
-    - natel-discrete-panel
   serviceMonitor:
     enabled: true
   serviceAccount:
@@ -362,26 +364,28 @@ grafana:
     accessModes:
       - ReadWriteOnce
     size: 2Gi
-  # Plugins (esp. the panodata-map-panel zip download) can take longer than the
-  # default 160s liveness window to (re)install. Without persistence the
-  # plugins directory lived in an emptyDir and was reinstalled on every
-  # restart, causing a permanent CrashLoopBackOff. Persistence above fixes the
-  # root cause; the extended probe below is a safety net for first install /
-  # plugin list changes.
+  # victoriametrics-logs-datasource is a ~76MB plugin download and this
+  # network only sustains ~600KB/s to grafana.com, so a cold/first-time
+  # install alone takes 2+ minutes. If the liveness probe kills the pod
+  # mid-download the partial file is discarded and the next boot has to
+  # redownload from scratch - a self-perpetuating CrashLoopBackOff. This
+  # chart's main container has no startupProbe support, so the liveness
+  # window below is widened enough (~13min) to survive one clean cold
+  # install; once plugins are cached on the PVC subsequent boots are fast.
   livenessProbe:
     httpGet:
       path: /api/health
       port: grafana
     initialDelaySeconds: 60
     timeoutSeconds: 30
-    failureThreshold: 20
+    failureThreshold: 75
   readinessProbe:
     httpGet:
       path: /api/health
       port: grafana
     initialDelaySeconds: 60
     timeoutSeconds: 10
-    failureThreshold: 20
+    failureThreshold: 75
   testFramework:
     enabled: false
 
