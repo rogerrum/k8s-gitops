@@ -43,6 +43,20 @@ victoria-metrics-k8s-stack:
         requests:
           cpu: 530m
           memory: 2Gi
+      # Keep vmsingle off control-plane and storage nodes: it can burst well
+      # above its CPU request (no CPU limit set) and was starving the
+      # Longhorn engine + other pods co-located on k8s-3/4/5-storage.
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
+                  - key: node-role.kubernetes.io/master
+                    operator: DoesNotExist
+                  - key: storage
+                    operator: DoesNotExist
 
     route:
       enabled: true
@@ -72,6 +86,17 @@ victoria-metrics-k8s-stack:
     enabled: true
     spec:
       externalURL: "https://vm-alert.rsr.net"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
+                  - key: node-role.kubernetes.io/master
+                    operator: DoesNotExist
+                  - key: storage
+                    operator: DoesNotExist
     route:
       enabled: true
       annotations:
@@ -142,6 +167,17 @@ victoria-metrics-k8s-stack:
     spec:
       extraArgs:
         external.url: "https://vmalert.rsr.net"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
+                  - key: node-role.kubernetes.io/master
+                    operator: DoesNotExist
+                  - key: storage
+                    operator: DoesNotExist
     route:
       enabled: true
       annotations:
@@ -191,6 +227,11 @@ victoria-metrics-k8s-stack:
               port: 8429
 
     spec:
+      # kube-apiserver's /metrics response exceeds vmagent's default 16MB
+      # promscrape.maxScrapeSize, causing that target to permanently fail
+      # (TargetDown). Raise the limit cluster-wide to accommodate it.
+      extraArgs:
+        promscrape.maxScrapeSize: 64MB
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -199,6 +240,8 @@ victoria-metrics-k8s-stack:
                   - key: node-role.kubernetes.io/control-plane
                     operator: DoesNotExist
                   - key: node-role.kubernetes.io/master
+                    operator: DoesNotExist
+                  - key: storage
                     operator: DoesNotExist
       additionalScrapeConfigs:
         name: victoria-metrics-secret
