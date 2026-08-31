@@ -47,6 +47,9 @@ spec:
     podSecurityContext:
       fsGroup: {{ .runAsUser }}
       fsGroupChangePolicy: OnRootMismatch
+      {{- if .supplementalGroups }}
+      supplementalGroups: {{ .supplementalGroups | toJson }}
+      {{- end }}
     cache:
       capacity: {{ .cacheCapacity }}
       storageClassName: longhorn

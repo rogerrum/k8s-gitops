@@ -102,7 +102,7 @@ apps:
   - app: forgejo
     capacity: 10Gi
     cacheCapacity: "5Gi"
-    ignoreFileErrors: true  # /data/gitea is drwx------ git:git (1000:1000), some files unreadable by uid=1001
+    supplementalGroups: [1000]  # adds git gid=1000 so mover (uid=1001) can enter drwxr-x--- gitea dir
     schedule: "H 2/6 * * *"
 
   - app: ss-models
