@@ -51,6 +51,7 @@ apps:
 
   - app: webtrees
     schedule: "H * * * *"
+    ignoreFileErrors: true  # config.ini.php owned by different uid, not readable by mover uid 1001
 
   - app: uptime-kuma
     pvcSuffix: data
