@@ -73,7 +73,10 @@ spec:
               kubernetes.io/metadata.name: monitoring
           podSelector:
             matchLabels:
-              app.kubernetes.io/name: prometheus
+              # vmagent (VictoriaMetrics stack) scrapes metrics here, not
+              # Prometheus - matched by its actual pod label so scrapes
+              # aren't silently dropped by the network policy.
+              app.kubernetes.io/name: vmagent
       ports:
         - protocol: TCP
           port: 9999
