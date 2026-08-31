@@ -40,6 +40,7 @@ apps:
   - app: matter-server
     pvcSuffix: data
     schedule: "H * * * *"
+    ignoreFileErrors: true  # chip_counters.ini and json files owned by different uid
 
   - app: mealie
     pvcSuffix: api-data
