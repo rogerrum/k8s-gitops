@@ -29,15 +29,9 @@ apps:
     capacity: 10Gi
     schedule: "0 2 * * *"
 
-  - app: node-red
-    pvcSuffix: data
-    capacity: 5Gi
-    schedule: "30 4 * * 1"
+  # node-red migrated to Kopiur
 
-
-  - app: frigate
-    capacity: 10Gi
-    schedule: "0 5 * * 4"
+  # frigate migrated to Kopiur
 
 
   # esphome migrated to Kopiur
@@ -49,10 +43,7 @@ apps:
   # matter-server migrated to Kopiur
 
 
-  - app: paperless-ngx
-    pvcSuffix: data
-    capacity: 5Gi
-    schedule: "0 5 * * 2"
+  # paperless-ngx migrated to Kopiur
 
   # mealie migrated to Kopiur
 
@@ -63,16 +54,11 @@ apps:
   # webtrees migrated to Kopiur
 
 
-  - app: manyfold
-    pvcSuffix: data
-    capacity: 5Gi
-    schedule: "30 5 * * 3"
+  # manyfold migrated to Kopiur
 
   # actual migrated to Kopiur
 
-  - app: jellyfin
-    capacity: 3Gi
-    schedule: "0 6 * * 5"
+  # jellyfin migrated to Kopiur
 
   # uptime-kuma migrated to Kopiur
 
@@ -89,11 +75,7 @@ apps:
     namespace: default
     schedule: "30 8 * * 6"
 
-  - app: streambox
-    pvcSuffix: data
-    capacity: 1Gi
-    namespace: default
-    schedule: "30 9 * * 6"
+  # streambox migrated to Kopiur
 
 volsync-perfectra1n:
   fullnameOverride: volsync # Required for volsync-perfectra1n fork

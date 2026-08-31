@@ -66,32 +66,32 @@ apps:
     schedule: "H * * * *"
 
 # PHASE 2b — MEDIUM (every 4h) — uncomment after 2a verified:
-#   - app: frigate
-#     capacity: 10Gi
-#     schedule: "H */4 * * *"
-#
-#   - app: node-red
-#     pvcSuffix: data
-#     capacity: 5Gi
-#     schedule: "H */4 * * *"
-#
-#   - app: paperless-ngx
-#     pvcSuffix: data
-#     capacity: 5Gi
-#     schedule: "H */4 * * *"
-#
-#   - app: manyfold
-#     pvcSuffix: data
-#     capacity: 5Gi
-#     schedule: "H */4 * * *"
-#
-#   - app: jellyfin
-#     capacity: 3Gi
-#     schedule: "H */4 * * *"
-#
-#   - app: streambox
-#     pvcSuffix: data
-#     schedule: "H */4 * * *"
+  - app: frigate
+    capacity: 10Gi
+    schedule: "H */4 * * *"
+
+  - app: node-red
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "H */4 * * *"
+
+  - app: paperless-ngx
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "H */4 * * *"
+
+  - app: manyfold
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "H */4 * * *"
+
+  - app: jellyfin
+    capacity: 3Gi
+    schedule: "H */4 * * *"
+
+  - app: streambox
+    pvcSuffix: data
+    schedule: "H */4 * * *"
 
 # PHASE 2c — LARGE (every 6h, staggered) — uncomment after 2b verified:
 #   - app: home-assistant
