@@ -25,6 +25,8 @@ spec:
   volumeSnapshotClassName: longhorn-snapshot-vsc
   compression:
     compressor: zstd
+  errorHandling:
+    ignoreFileErrors: {{ .ignoreFileErrors | default false }}
   retention:
     keepHourly: 24
     keepDaily: 14
