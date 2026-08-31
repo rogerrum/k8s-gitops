@@ -43,6 +43,15 @@ victoria-metrics-k8s-stack:
         requests:
           cpu: 530m
           memory: 2Gi
+      # kube-apiserver SLO burn-rate/availability recording rules run heavy
+      # 30d-range queries (vmalert -> vmsingle) that routinely take 5-20s.
+      # This tripped both the default 5s slow-query logging threshold
+      # (flooding logs -> TooManyLogs alert) and occasionally the 30s query
+      # timeout. Raise both so legitimate-but-slow queries don't generate
+      # log noise or fail outright.
+      extraArgs:
+        search.logSlowQueryDuration: 20s
+        search.maxQueryDuration: 60s
       # Keep vmsingle off control-plane and storage nodes: it can burst well
       # above its CPU request (no CPU limit set) and was starving the
       # Longhorn engine + other pods co-located on k8s-3/4/5-storage.
