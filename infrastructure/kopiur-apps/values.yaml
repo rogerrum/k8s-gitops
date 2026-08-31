@@ -26,26 +26,43 @@ apps:
     capacity: 5Gi
     schedule: "H */4 * * *"
 
-# PHASE 2 — uncomment after removing apps from volsync values.yaml
-#
-#   # --- LARGE (every 6h, staggered by 2h so they never run concurrently) ---
-#   - app: home-assistant
-#     capacity: 10Gi
-#     cacheCapacity: "5Gi"
-#     schedule: "H 0/6 * * *"    # runs at hour 0, 6, 12, 18
-#
-#   - app: forgejo
-#     capacity: 10Gi
-#     cacheCapacity: "5Gi"
-#     schedule: "H 2/6 * * *"    # runs at hour 2, 8, 14, 20 — 2h after HA
-#
-#   - app: ss-models
-#     pvcSuffix: data
-#     capacity: 10Gi
-#     cacheCapacity: "5Gi"
-#     schedule: "H 4/6 * * *"    # runs at hour 4, 10, 16, 22 — 2h after forgejo
-#
-#   # --- MEDIUM (every 4h) ---
+  # --- PHASE 2a — SMALL apps (<1Gi, hourly) ---
+  - app: esphome
+    schedule: "H * * * *"
+
+  - app: zigbee2mqtt
+    schedule: "H * * * *"
+
+  - app: zwavejs2mqtt
+    schedule: "H * * * *"
+
+  - app: matter-server
+    pvcSuffix: data
+    schedule: "H * * * *"
+
+  - app: mealie
+    pvcSuffix: api-data
+    schedule: "H * * * *"
+
+  - app: planka
+    pvcSuffix: data
+    schedule: "H * * * *"
+
+  - app: webtrees
+    schedule: "H * * * *"
+
+  - app: uptime-kuma
+    pvcSuffix: data
+    capacity: 5Gi
+    namespace: monitoring
+    schedule: "H * * * *"
+
+  - app: pocket-id
+    pvcSuffix: data
+    namespace: kube-system
+    schedule: "H * * * *"
+
+# PHASE 2b — MEDIUM (every 4h) — uncomment after 2a verified:
 #   - app: frigate
 #     capacity: 10Gi
 #     schedule: "H */4 * * *"
@@ -72,39 +89,20 @@ apps:
 #   - app: streambox
 #     pvcSuffix: data
 #     schedule: "H */4 * * *"
+
+# PHASE 2c — LARGE (every 6h, staggered) — uncomment after 2b verified:
+#   - app: home-assistant
+#     capacity: 10Gi
+#     cacheCapacity: "5Gi"
+#     schedule: "H 0/6 * * *"
 #
-#   # --- SMALL (every 1-2h) ---
-#   - app: esphome
-#     schedule: "H * * * *"
+#   - app: forgejo
+#     capacity: 10Gi
+#     cacheCapacity: "5Gi"
+#     schedule: "H 2/6 * * *"
 #
-#   - app: zigbee2mqtt
-#     schedule: "H * * * *"
-#
-#   - app: zwavejs2mqtt
-#     schedule: "H * * * *"
-#
-#   - app: matter-server
+#   - app: ss-models
 #     pvcSuffix: data
-#     schedule: "H * * * *"
-#
-#   - app: mealie
-#     pvcSuffix: api-data
-#     schedule: "H * * * *"
-#
-#   - app: planka
-#     pvcSuffix: data
-#     schedule: "H * * * *"
-#
-#   - app: webtrees
-#     schedule: "H * * * *"
-#
-#   - app: uptime-kuma
-#     pvcSuffix: data
-#     capacity: 5Gi
-#     namespace: monitoring
-#     schedule: "H * * * *"
-#
-#   - app: pocket-id
-#     pvcSuffix: data
-#     namespace: kube-system
-#     schedule: "H * * * *"
+#     capacity: 10Gi
+#     cacheCapacity: "5Gi"
+#     schedule: "H 4/6 * * *"

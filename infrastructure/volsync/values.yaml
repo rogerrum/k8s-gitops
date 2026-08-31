@@ -40,22 +40,13 @@ apps:
     schedule: "0 5 * * 4"
 
 
-  - app: esphome
-    capacity: 1Gi
-    schedule: "0 5 * * 1"
+  # esphome migrated to Kopiur
 
-  - app: zigbee2mqtt
-    capacity: 1Gi
-    schedule: "30 5 * * 4"
+  # zigbee2mqtt migrated to Kopiur
 
-  - app: zwavejs2mqtt
-    capacity: 1Gi
-    schedule: "0 5 * * 0"
+  # zwavejs2mqtt migrated to Kopiur
 
-  - app: matter-server
-    pvcSuffix: data
-    capacity: 1Gi
-    schedule: "30 4 * * 5"
+  # matter-server migrated to Kopiur
 
 
   - app: paperless-ngx
@@ -63,21 +54,13 @@ apps:
     capacity: 5Gi
     schedule: "0 5 * * 2"
 
-  - app: mealie
-    pvcSuffix: api-data
-    capacity: 1Gi
-    schedule: "30 5 * * 5"
+  # mealie migrated to Kopiur
 
 
-  - app: planka
-    pvcSuffix: data
-    capacity: 1Gi
-    schedule: "0 6 * * 2"
+  # planka migrated to Kopiur
 
 
-  - app: webtrees
-    capacity: 1Gi
-    schedule: "30 4 * * 6"
+  # webtrees migrated to Kopiur
 
 
   - app: manyfold
@@ -91,17 +74,9 @@ apps:
     capacity: 3Gi
     schedule: "0 6 * * 5"
 
-  - app: uptime-kuma
-    pvcSuffix: data
-    capacity: 5Gi
-    namespace: monitoring
-    schedule: "0 6 * * 3"
+  # uptime-kuma migrated to Kopiur
 
-  - app: pocket-id
-    capacity: 1Gi
-    pvcSuffix: data
-    namespace: kube-system
-    schedule: "0 6 * * 6"
+  # pocket-id migrated to Kopiur
 
   - app: forgejo
     capacity: 10Gi
