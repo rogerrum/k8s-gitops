@@ -102,7 +102,7 @@ apps:
   - app: forgejo
     capacity: 10Gi
     cacheCapacity: "5Gi"
-    runAsUser: "1000"    # forgejo git user uid=1000; /data/gitea is drwx------ 1000:1000
+    ignoreFileErrors: true  # /data/gitea is drwx------ git:git (1000:1000), some files unreadable by uid=1001
     schedule: "H 2/6 * * *"
 
   - app: ss-models
