@@ -24,10 +24,7 @@ defaults:
 #   4. PVC recreated with restore from backup
 apps:
   # Default namespace apps
-  # TEMPORARILY DISABLED - Longhorn lock issue, will re-enable after lock clears
-  - app: home-assistant
-    capacity: 10Gi
-    schedule: "0 2 * * *"
+  # home-assistant migrated to Kopiur
 
   # node-red migrated to Kopiur
 
@@ -64,16 +61,9 @@ apps:
 
   # pocket-id migrated to Kopiur
 
-  - app: forgejo
-    capacity: 10Gi
-    namespace: default
-    schedule: "30 7 * * 6"
+  # forgejo migrated to Kopiur
 
-  - app: ss-models
-    pvcSuffix: data
-    capacity: 10Gi
-    namespace: default
-    schedule: "30 8 * * 6"
+  # ss-models migrated to Kopiur
 
   # streambox migrated to Kopiur
 

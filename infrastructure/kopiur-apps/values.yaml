@@ -94,18 +94,19 @@ apps:
     schedule: "H */4 * * *"
 
 # PHASE 2c — LARGE (every 6h, staggered) — uncomment after 2b verified:
-#   - app: home-assistant
-#     capacity: 10Gi
-#     cacheCapacity: "5Gi"
-#     schedule: "H 0/6 * * *"
-#
-#   - app: forgejo
-#     capacity: 10Gi
-#     cacheCapacity: "5Gi"
-#     schedule: "H 2/6 * * *"
-#
-#   - app: ss-models
-#     pvcSuffix: data
-#     capacity: 10Gi
-#     cacheCapacity: "5Gi"
-#     schedule: "H 4/6 * * *"
+  - app: home-assistant
+    capacity: 10Gi
+    cacheCapacity: "5Gi"
+    schedule: "H 0/6 * * *"
+
+  - app: forgejo
+    capacity: 10Gi
+    cacheCapacity: "5Gi"
+    runAsUser: "1000"    # forgejo git user uid=1000; /data/gitea is drwx------ 1000:1000
+    schedule: "H 2/6 * * *"
+
+  - app: ss-models
+    pvcSuffix: data
+    capacity: 10Gi
+    cacheCapacity: "5Gi"
+    schedule: "H 4/6 * * *"
