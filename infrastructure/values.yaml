@@ -309,6 +309,19 @@ applications:
       - ServerSideApply=true
     helm:
       enabled: true
+    ignoreDifferences:
+      # kopiur reconciles/mutates fields on its own CRs (and the PVCs it
+      # populates during restores) after ArgoCD applies them. Ignore any
+      # field owned by the "kopiur" field manager so those reconciles
+      # don't show up as perpetual OutOfSync diffs.
+      - group: kopiur.home-operations.com
+        kind: "*"
+        managedFieldsManagers:
+          - kopiur
+      - group: ""
+        kind: PersistentVolumeClaim
+        managedFieldsManagers:
+          - kopiur
 
   - name: volsync
     namespace: kube-system
