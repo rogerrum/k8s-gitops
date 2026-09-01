@@ -94,6 +94,8 @@ spec:
                   operator: In
                   values:
                     - k8s-8-server
+                    - k8s-11-worker
+                    - k8s-12-worker
     cache:
       capacity: 3Gi
       storageClassName: longhorn
