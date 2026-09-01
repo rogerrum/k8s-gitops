@@ -23,6 +23,9 @@ spec:
       sourcePathOverride: /data
   copyMethod: Snapshot
   volumeSnapshotClassName: longhorn-snapshot-vsc
+  # Raise staging timeout — Longhorn Garage S3 backup can take >10min for larger PVCs
+  staging:
+    timeout: 90m
   compression:
     compressor: zstd
   errorHandling:
