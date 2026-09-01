@@ -93,7 +93,24 @@ spec:
                 - key: kubernetes.io/hostname
                   operator: In
                   values:
-                    - k8s-8-server
+                    - k8s-12-worker
+                    # Single-node pin avoids the Longhorn Immediate-binding race entirely
+                    # (only one candidate node, so the staging PVC always lands where the
+                    # mover pod does). k8s-12 chosen over k8s-8 (Frigate + Longhorn CPU
+                    # contention, load avg 13+/4 cores) and k8s-11 (Longhorn engine-image
+                    # crash-looping). Revisit if k8s-12 CPU/Longhorn health degrades.
+      # Only one kopiur pod (mover/discovery/maintenance) at a time — since we're
+      # pinned to a single node, this effectively serializes all kopiur activity,
+      # preventing multiple movers from stacking and starving the node's CPU.
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/managed-by
+                  operator: In
+                  values:
+                    - kopiur
+            topologyKey: kubernetes.io/hostname
     cache:
       capacity: 3Gi
       storageClassName: longhorn
