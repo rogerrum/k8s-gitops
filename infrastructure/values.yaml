@@ -310,12 +310,22 @@ applications:
     helm:
       enabled: true
     ignoreDifferences:
-      # kopiur reconciles/mutates fields on its own CRs (and the PVCs it
-      # populates during restores) after ArgoCD applies them. The actual
-      # field manager name (confirmed via `kubectl get ... --show-managed-fields`)
-      # is "kopiur.home-operations.com/controller", not "kopiur" - ignore
-      # that manager so those reconciles don't show up as perpetual
-      # OutOfSync diffs.
+      # SnapshotPolicy: readOnly/sourcePathStrategy (per-source) and
+      # groupBy/defaultDeletionPolicy (top-level) are CRD schema defaults
+      # applied by the apiserver, not values our git manifest sets. Per
+      # `kubectl get snapshotpolicy ... --show-managed-fields`, these paths
+      # aren't attributed to any specific manager (so managedFieldsManagers
+      # can't match them) - they must be ignored by jq path instead, same
+      # pattern as the ExternalSecret conversionStrategy/etc entry above.
+      - group: kopiur.home-operations.com
+        kind: SnapshotPolicy
+        jqPathExpressions:
+          - .spec.groupBy
+          - .spec.defaultDeletionPolicy
+          - .spec.sources[].readOnly
+          - .spec.sources[].sourcePathStrategy
+      # kopiur's controller does legitimately own/mutate these paths after
+      # ArgoCD applies them (confirmed manager name via --show-managed-fields).
       - group: kopiur.home-operations.com
         kind: "*"
         managedFieldsManagers:
