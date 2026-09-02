@@ -73,7 +73,8 @@ spec:
   policyRef:
     name: {{ .app }}
   schedule:
-    # H-style cron: kopiur hashes a stable per-app minute slot for load distribution
+    # Cron expression from values.yaml — explicit minute+hour per app, see
+    # the schedule strategy comment there for how collisions are avoided.
     cron: "{{ .schedule }}"
     runOnCreate: false
 {{- end }}

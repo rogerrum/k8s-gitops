@@ -14,101 +14,111 @@ defaults:
   namespace: default
 
 # Schedule strategy (NFS + Garage S3 + single k8s-8-server node):
-#   CRITICAL / frequently changing (HA, forgejo, actual): every 6h, staggered by hour
-#   MEDIUM change rate (node-red, paperless, mealie, planka, zigbee, zwave, matter, webtrees): every 12h
-#   SLOW / large / rarely changes (frigate, jellyfin, ss-models, streambox, manyfold, esphome): daily
-#   LOW / monitoring/infra (uptime-kuma, pocket-id): daily
-#   Stagger hours so large apps never overlap; H jitter spreads exact minute per-app
+#   CRITICAL / frequently changing (HA, forgejo, actual): every 6h, hour-offset by app
+#   MEDIUM change rate (node-red, paperless, mealie, planka, zigbee, zwave, matter, webtrees): every 12h, hour-offset by app
+#   SLOW / large / rarely changes (frigate, jellyfin, ss-models, streambox, manyfold, esphome): daily, hour-offset by app
+#   LOW / monitoring/infra (uptime-kuma, pocket-id): daily, hour-offset by app
+#
+# IMPORTANT: kopiur's Jenkins-style `H` substitution only hashes bare `H`
+# tokens per-field, and does NOT support `H/N` step syntax (rejected by the
+# admission webhook). A literal step/list (e.g. `*/12`, `0,12`) is NOT hashed
+# — every app sharing the same step/list fires at the *identical* hour(s). To
+# get a fully deterministic, collision-free schedule (readable at a glance,
+# not dependent on a hash you can't predict without rendering the chart),
+# every app below uses an explicit literal minute *and* hour/hour-list — no
+# `H` at all. Hours are spread so at most 2 apps ever share an hour, and when
+# they do, their minutes are offset (typically 20-30+ min apart) so no two
+# apps ever fire at the exact same wall-clock time.
 
 apps:
   # --- PILOT (verified working) ---
   - app: actual
     pvcSuffix: data
     capacity: 5Gi
-    schedule: "H */6 * * *"        # every 6h — financial data, frequently updated
+    schedule: "10 4,10,16,22 * * *"  # every 6h at hours 4,10,16,22:10 — offset from HA/forgejo
 
   # --- PHASE 2a — SMALL/MEDIUM apps ---
   - app: esphome
-    schedule: "H H * * *"          # daily — device configs rarely change
+    schedule: "0 9 * * *"           # daily at hour 9 — device configs rarely change
     runAsUser: "2000"               # esphome device-builder files owned by uid 2000; other-owned files are world-readable (o+r)
 
   - app: zigbee2mqtt
-    schedule: "H */12 * * *"       # every 12h — device state changes regularly
+    schedule: "30 0,12 * * *"       # every 12h at hours 0,12 — device state changes regularly
 
   - app: zwavejs2mqtt
-    schedule: "H */12 * * *"       # every 12h — device state changes regularly
+    schedule: "0 1,13 * * *"       # every 12h at hours 1,13 — device state changes regularly
 
   - app: matter-server
     pvcSuffix: data
-    schedule: "H */12 * * *"       # every 12h
+    schedule: "35 2,14 * * *"       # every 12h at hours 2,14
     runAsUser: "0"                   # matter-server itself runs as root (see main/homelab/matter-server); mover must match
 
   - app: mealie
     pvcSuffix: api-data
-    schedule: "H */12 * * *"       # every 12h — recipes added occasionally
+    schedule: "0 3,15 * * *"       # every 12h at hours 3,15 — recipes added occasionally
 
   - app: planka
     pvcSuffix: data
-    schedule: "H */12 * * *"       # every 12h — project board updates
+    schedule: "40 4,16 * * *"       # every 12h at hours 4,16 — project board updates
 
   - app: webtrees
-    schedule: "H */12 * * *"       # every 12h — genealogy data changes
+    schedule: "15 5,17 * * *"       # every 12h at hours 5,17 — genealogy data changes
     runAsUser: "33"                  # webtrees data owned by www-data (uid 33); config.ini.php is 0700
 
   - app: uptime-kuma
     pvcSuffix: data
     capacity: 5Gi
     namespace: monitoring
-    schedule: "H H * * *"          # daily — monitoring config rarely changes
+    schedule: "0 11 * * *"          # daily at hour 11 — monitoring config rarely changes
 
   - app: pocket-id
     pvcSuffix: data
     namespace: kube-system
-    schedule: "H H * * *"          # daily — identity provider config rarely changes
+    schedule: "0 21 * * *"          # daily at hour 21 — identity provider config rarely changes
 
   # --- PHASE 2b — MEDIUM apps ---
   - app: frigate
     capacity: 10Gi
-    schedule: "H H * * *"          # daily — NVR config rarely changes, clips not backed up
+    schedule: "0 23 * * *"          # daily at hour 23 — NVR config rarely changes, clips not backed up
 
   - app: node-red
     pvcSuffix: data
     capacity: 5Gi
-    schedule: "H */12 * * *"       # every 12h — automation flows change regularly
+    schedule: "20 6,18 * * *"       # every 12h at hours 6,18 — automation flows change regularly
 
   - app: paperless-ngx
     pvcSuffix: data
     capacity: 5Gi
-    schedule: "H */12 * * *"       # every 12h — documents ingested regularly
+    schedule: "50 7,19 * * *"       # every 12h at hours 7,19 — documents ingested regularly
 
   - app: manyfold
     pvcSuffix: data
     capacity: 5Gi
-    schedule: "H H * * *"          # daily — 3D model library rarely changes
+    schedule: "30 1 * * *"           # daily at hour 1 — 3D model library rarely changes
 
   - app: jellyfin
     capacity: 3Gi
-    schedule: "H H * * *"          # daily — media server config/metadata
+    schedule: "30 3 * * *"           # daily at hour 3 — media server config/metadata
 
   - app: streambox
     pvcSuffix: data
-    schedule: "H H * * *"          # daily
+    schedule: "45 5 * * *"           # daily at hour 5
 
   # --- PHASE 2c — LARGE apps (staggered 6h, never overlap) ---
   - app: home-assistant
     capacity: 10Gi
     cacheCapacity: "5Gi"
     runAsUser: "1000"               # HA container runs as uid=1000; mover must match to read .storage/* files
-    schedule: "H 0/6 * * *"        # every 6h at hours 0,6,12,18 — automation state critical
+    schedule: "0 0,6,12,18 * * *"  # every 6h at hours 0,6,12,18 — automation state critical
 
   - app: forgejo
     capacity: 10Gi
     cacheCapacity: "5Gi"
     runAsUser: "1000"               # forgejo /data owned by uid=1000 (git); matches so mover can read git/.ssh (0700) too
-    schedule: "H 2/6 * * *"        # every 6h at hours 2,8,14,20 — git repos, offset from HA
+    schedule: "5 2,8,14,20 * * *"  # every 6h at hours 2,8,14,20 — git repos, offset from HA/actual
 
   - app: ss-models
     pvcSuffix: data
     capacity: 10Gi
     cacheCapacity: "5Gi"
-    schedule: "H H * * *"          # daily — AI models rarely change
+    schedule: "25 7 * * *"           # daily at hour 7 — AI models rarely change
