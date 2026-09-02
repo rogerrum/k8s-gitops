@@ -30,7 +30,7 @@ apps:
   # --- PHASE 2a — SMALL/MEDIUM apps ---
   - app: esphome
     schedule: "H H * * *"          # daily — device configs rarely change
-    ignoreFileErrors: true          # some files owned by uid 2000 (device-builder), not readable by mover uid 1001
+    runAsUser: "2000"               # esphome device-builder files owned by uid 2000; other-owned files are world-readable (o+r)
 
   - app: zigbee2mqtt
     schedule: "H */12 * * *"       # every 12h — device state changes regularly
@@ -41,7 +41,7 @@ apps:
   - app: matter-server
     pvcSuffix: data
     schedule: "H */12 * * *"       # every 12h
-    ignoreFileErrors: true          # chip_counters.ini and json files owned by different uid
+    runAsUser: "0"                   # matter-server itself runs as root (see main/homelab/matter-server); mover must match
 
   - app: mealie
     pvcSuffix: api-data
@@ -53,7 +53,7 @@ apps:
 
   - app: webtrees
     schedule: "H */12 * * *"       # every 12h — genealogy data changes
-    ignoreFileErrors: true          # config.ini.php owned by different uid, not readable by mover uid 1001
+    runAsUser: "33"                  # webtrees data owned by www-data (uid 33); config.ini.php is 0700
 
   - app: uptime-kuma
     pvcSuffix: data
@@ -98,12 +98,13 @@ apps:
   - app: home-assistant
     capacity: 10Gi
     cacheCapacity: "5Gi"
+    runAsUser: "1000"               # HA container runs as uid=1000; mover must match to read .storage/* files
     schedule: "H 0/6 * * *"        # every 6h at hours 0,6,12,18 — automation state critical
 
   - app: forgejo
     capacity: 10Gi
     cacheCapacity: "5Gi"
-    supplementalGroups: [1000]      # adds git gid=1000 so mover (uid=1001) can enter drwxr-x--- gitea dir
+    runAsUser: "1000"               # forgejo /data owned by uid=1000 (git); matches so mover can read git/.ssh (0700) too
     schedule: "H 2/6 * * *"        # every 6h at hours 2,8,14,20 — git repos, offset from HA
 
   - app: ss-models
