@@ -79,4 +79,11 @@ spec:
     # the schedule strategy comment there for how collisions are avoided.
     cron: "{{ .schedule }}"
     runOnCreate: false
+    # Without this, kopiur fires every missed slot as a catch-up run instead
+    # of skipping stale ones — editing the cron mid-day (or any prolonged
+    # controller/node outage) otherwise produces a backlog of stale-schedule
+    # Snapshots queued behind the single shared mover. 1h is generous enough
+    # to tolerate normal single-mover queueing delays but bounds how far back
+    # a catch-up can reach.
+    startingDeadlineSeconds: 3600
 {{- end }}
