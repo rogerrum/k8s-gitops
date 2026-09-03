@@ -12,6 +12,10 @@ defaults:
   # Default: daily at a stable hashed time (low frequency, NFS+single-node friendly)
   schedule: "H H * * *"
   namespace: default
+  # Verification is opt-in per app (set `verifyEnabled: true` on an app
+  # below to turn it on for just that one) — see the comment in
+  # templates/snapshots.yaml for why it defaults to off cluster-wide.
+  verifyEnabled: false
 
 # Schedule strategy — REVERTED to VolSync's original, proven-stable cadence.
 #

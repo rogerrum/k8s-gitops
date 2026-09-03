@@ -33,18 +33,29 @@ spec:
     keepDaily: 14
     keepWeekly: 8
     keepMonthly: 6
-  # Verification TEMPORARILY DISABLED (2026-09-03): concurrent verify jobs'
-  # Longhorn-backed kopia-cache PVCs (mode: Persistent, below) were churning
-  # Longhorn hard enough to destabilize it cluster-wide (replica rebuilds,
-  # manager readiness timeouts, volumes flapping detached/unknown), which in
-  # turn starved the API server enough to crash-loop kopiur's own controller.
-  # Re-enable once Longhorn is confirmed stable and cache is Ephemeral has
-  # been running cleanly for a while. See scripts/UNWEDGE-NFS-NODE.md and
-  # this session's checkpoint for the full incident writeup.
-  # verification:
-  #   quick:
-  #     schedule:
-  #       cron: "{{ .schedule }}"
+  # Verification is opt-in PER APP (set `verifyEnabled: true` on the app in
+  # values.yaml) since 2026-09-03: a global always-on verify previously
+  # piled up concurrent Longhorn-backed kopia-cache PVCs hard enough to
+  # destabilize Longhorn cluster-wide (replica rebuilds, manager readiness
+  # timeouts, volumes flapping detached/unknown), which starved the API
+  # server enough to crash-loop kopiur's own controller — and separately,
+  # "quick" verify itself has taken over an hour, or outright hung for 8h+,
+  # on the largest repos (home-assistant, forgejo) with no CRD-level timeout
+  # knob to bound it. Enable per app one at a time and watch it complete
+  # before enabling the next; leave known-large/risky repos off until
+  # proven. Reuses the app's own backup `schedule` by default (no extra NFS
+  # mount/unmount cycle) — see the schedule strategy comment in values.yaml.
+  {{- if .verifyEnabled }}
+  verification:
+    quick:
+      schedule:
+        cron: "{{ .verifySchedule }}"
+      parallel: 8
+      fileParallelism: 4
+      fileQueueLength: 20000
+      maxErrors: 0
+    successExpr: "stats.files > 0 && stats.errors == 0"
+  {{- end }}
   # Repository Secret lives in kube-system; movers run in the app's namespace
   credentialProjection:
     enabled: true

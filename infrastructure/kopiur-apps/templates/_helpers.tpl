@@ -15,6 +15,14 @@ Helper function to parse apps with defaults from values.yaml
   {{- $_ = set $app "namespace" (default $defaults.namespace .namespace) -}}
   {{- $_ = set $app "createPVC" .createPVC -}}
   {{- $_ = set $app "supplementalGroups" (default list .supplementalGroups) -}}
+  {{- /* Per-app opt-in verification (default off; see values.yaml comment).
+        Using `or` (not `default`) because sprig's `default` treats an
+        explicit `false` as "empty" and would silently flip it back to a
+        truthy default — `or` only needs "true wins if set anywhere",
+        which is all this ever needs since the baseline default is false. */ -}}
+  {{- $_ = set $app "verifyEnabled" (or .verifyEnabled $defaults.verifyEnabled false) -}}
+  {{- /* Verification rides the app's own backup schedule by default, so it never adds an extra NFS mount/unmount cycle */ -}}
+  {{- $_ = set $app "verifySchedule" (default $app.schedule .verifySchedule) -}}
   {{- $apps = append $apps $app -}}
 {{- end -}}
 {{- toJson $apps -}}
