@@ -1,0 +1,3 @@
+grafana-operator:
+  serviceMonitor:
+    enabled: true

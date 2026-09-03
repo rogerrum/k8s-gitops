@@ -36,6 +36,14 @@ applications:
     helm:
       enabled: true
 
+  - name: grafana-operator
+    namespace: monitoring
+    path: main/monitoring/grafana-operator
+    manifest-paths: /main/monitoring/grafana-operator
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
   - name: victoria-metrics
     namespace: monitoring
     path: main/monitoring/victoria-metrics

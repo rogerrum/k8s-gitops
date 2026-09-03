@@ -1,0 +1,7 @@
+name: grafana
+apiVersion: v2
+version: 1.0.0
+dependencies:
+  - name: grafana-operator
+    version: 5.25.0
+    repository: oci://ghcr.io/grafana/helm-charts
