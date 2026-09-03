@@ -81,10 +81,10 @@ apps:
     pvcSuffix: data
     schedule: "0 12 * * 2"           # Tuesday 12:00
 
-  - app: paperless-ngx
-    pvcSuffix: data
-    capacity: 5Gi
-    schedule: "0 18 * * 2"           # Tuesday 18:00
+#  - app: paperless-ngx
+#    pvcSuffix: data
+#    capacity: 5Gi
+#    schedule: "0 18 * * 2"           # Tuesday 18:00
 
   # --- Wednesday (3 apps incl. forgejo, 6h-spaced across full day) ---
   - app: uptime-kuma
@@ -111,11 +111,11 @@ apps:
     runAsUser: "33"                  # webtrees data owned by www-data (uid 33); config.ini.php is 0700
     supplementalGroups: [1001]      # repo's own control/index files are group-owned 1001 (0600); non-1001 movers need this to read them
 
-  # --- Friday (3 apps incl. forgejo, 6h-spaced across full day) ---
-  - app: matter-server
-    pvcSuffix: data
-    schedule: "0 6 * * 5"            # Friday 06:00
-    runAsUser: "0"                   # matter-server itself runs as root (see main/homelab/matter-server); mover must match
+#  # --- Friday (3 apps incl. forgejo, 6h-spaced across full day) ---
+#  - app: matter-server
+#    pvcSuffix: data
+#    schedule: "0 6 * * 5"            # Friday 06:00
+#    runAsUser: "0"                   # matter-server itself runs as root (see main/homelab/matter-server); mover must match
 
   - app: mealie
     pvcSuffix: api-data
