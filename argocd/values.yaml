@@ -225,6 +225,11 @@ argo-cd:
   controller:
     replicas: 1
 
+    readinessProbe:
+      failureThreshold: 5
+      periodSeconds: 15
+      timeoutSeconds: 5
+
     #image:
     #  repository: "ghcr.io/rogerrum/argocd"
     #  tag: "latest"
