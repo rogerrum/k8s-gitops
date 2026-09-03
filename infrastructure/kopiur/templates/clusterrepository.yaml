@@ -105,18 +105,17 @@ spec:
                     # mover pod does). k8s-12 chosen over k8s-8 (Frigate + Longhorn CPU
                     # contention, load avg 13+/4 cores) and k8s-11 (Longhorn engine-image
                     # crash-looping). Revisit if k8s-12 CPU/Longhorn health degrades.
-      # Only one kopiur pod (mover/discovery/maintenance) at a time — since we're
-      # pinned to a single node, this effectively serializes all kopiur activity,
-      # preventing multiple movers from stacking and starving the node's CPU.
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-                - key: app.kubernetes.io/managed-by
-                  operator: In
-                  values:
-                    - kopiur
-            topologyKey: kubernetes.io/hostname
+      # podAntiAffinity (one kopiur pod at a time on this node) intentionally
+      # removed: the CRD applies this same rule uniformly to every kopiur pod
+      # type (mover/verify/discovery/snapdel/maintenance), so housekeeping
+      # jobs that never stage an app PVC (discovery, snapdel) were queuing
+      # behind unrelated, slow verify/mover pods with no way to exempt them.
+      # Now that the schedule is spread across the full 24h (see
+      # kopiur-apps/values.yaml) simultaneous heavy jobs should be rare. If
+      # the node does get overloaded/wedged from real concurrent stacking,
+      # see scripts/UNWEDGE-NFS-NODE.md / scripts/unwedge-nfs-node.sh for
+      # manual recovery (no reboot needed in the cases seen so far).
+      # Revisit (re-add a required podAntiAffinity) if this proves unstable.
     cache:
       capacity: 3Gi
       storageClassName: longhorn
