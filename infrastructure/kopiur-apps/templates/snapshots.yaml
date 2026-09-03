@@ -33,13 +33,18 @@ spec:
     keepDaily: 14
     keepWeekly: 8
     keepMonthly: 6
-  # Verification reuses the app's own backup schedule (not a separate daily
-  # job) so it only ever runs alongside a backup, not as extra independent
-  # NFS mount/unmount churn on the single pinned mover node.
-  verification:
-    quick:
-      schedule:
-        cron: "{{ .schedule }}"
+  # Verification TEMPORARILY DISABLED (2026-09-03): concurrent verify jobs'
+  # Longhorn-backed kopia-cache PVCs (mode: Persistent, below) were churning
+  # Longhorn hard enough to destabilize it cluster-wide (replica rebuilds,
+  # manager readiness timeouts, volumes flapping detached/unknown), which in
+  # turn starved the API server enough to crash-loop kopiur's own controller.
+  # Re-enable once Longhorn is confirmed stable and cache is Ephemeral has
+  # been running cleanly for a while. See scripts/UNWEDGE-NFS-NODE.md and
+  # this session's checkpoint for the full incident writeup.
+  # verification:
+  #   quick:
+  #     schedule:
+  #       cron: "{{ .schedule }}"
   # Repository Secret lives in kube-system; movers run in the app's namespace
   credentialProjection:
     enabled: true
@@ -57,7 +62,12 @@ spec:
     cache:
       capacity: {{ .cacheCapacity }}
       storageClassName: longhorn
-      mode: Persistent
+      # Changed Persistent -> Ephemeral (2026-09-03): a Persistent cache PVC
+      # sticks around across mover runs; Ephemeral (a Kubernetes generic
+      # ephemeral volume, still Longhorn-backed via storageClassName above)
+      # is created fresh and deleted when each mover pod finishes, reducing
+      # standing Longhorn volume count during tonight's Longhorn instability.
+      mode: Ephemeral
       metadataCacheSizeMb: 400
       contentCacheSizeMb: 200
 ---
