@@ -33,11 +33,13 @@ spec:
     keepDaily: 14
     keepWeekly: 8
     keepMonthly: 6
-  # Daily quick verification proves backups are actually restorable
+  # Verification reuses the app's own backup schedule (not a separate daily
+  # job) so it only ever runs alongside a backup, not as extra independent
+  # NFS mount/unmount churn on the single pinned mover node.
   verification:
     quick:
       schedule:
-        cron: "H 3 * * *"
+        cron: "{{ .schedule }}"
   # Repository Secret lives in kube-system; movers run in the app's namespace
   credentialProjection:
     enabled: true

@@ -13,112 +13,127 @@ defaults:
   schedule: "H H * * *"
   namespace: default
 
-# Schedule strategy (NFS + Garage S3 + single k8s-8-server node):
-#   CRITICAL / frequently changing (HA, forgejo, actual): every 6h, hour-offset by app
-#   MEDIUM change rate (node-red, paperless, mealie, planka, zigbee, zwave, matter, webtrees): every 12h, hour-offset by app
-#   SLOW / large / rarely changes (frigate, jellyfin, ss-models, streambox, manyfold, esphome): daily, hour-offset by app
-#   LOW / monitoring/infra (uptime-kuma, pocket-id): daily, hour-offset by app
+# Schedule strategy — REVERTED to VolSync's original, proven-stable cadence.
 #
-# IMPORTANT: kopiur's Jenkins-style `H` substitution only hashes bare `H`
-# tokens per-field, and does NOT support `H/N` step syntax (rejected by the
-# admission webhook). A literal step/list (e.g. `*/12`, `0,12`) is NOT hashed
-# — every app sharing the same step/list fires at the *identical* hour(s). To
-# get a fully deterministic, collision-free schedule (readable at a glance,
-# not dependent on a hash you can't predict without rendering the chart),
-# every app below uses an explicit literal minute *and* hour/hour-list — no
-# `H` at all. Hours are spread so at most 2 apps ever share an hour, and when
-# they do, their minutes are offset (typically 20-30+ min apart) so no two
-# apps ever fire at the exact same wall-clock time.
+# Root cause (2026-09-02): pinning all kopiur movers to one node (to avoid a
+# Longhorn multi-attach race) concentrates every app's NFS mount/unmount onto
+# that single node's kernel NFS client. The earlier 6h/12h-everywhere
+# schedule plus a separate daily per-app verification job pushed that one
+# node to 40-70+ NFS mount/unmount cycles/day — vs VolSync's ~2-4/day
+# (mostly weekly, home-assistant daily) that ran fine for a long time. That
+# much higher churn rate appears to eventually wedge the kernel's per-server
+# NFS "manager" thread (visible as permanently D-state `mount.nfs` processes
+# that only clear on node reboot) — almost certainly a NAS/kernel NFS-client
+# edge case that low-frequency VolSync traffic essentially never triggered.
+#
+# Fix: restore each app's original VolSync-era schedule (below), and instead
+# of a separate always-daily verification.quick job, verification now reuses
+# each app's own backup `schedule` (see templates/snapshots.yaml) so it only
+# ever runs alongside a backup — not as an independent extra mount/unmount.
+#
+# Schedules are per-app cron pulled 1:1 from the last-working VolSync
+# values.yaml (git commit 6a1ff71d) — home-assistant is daily, everything
+# else is weekly on a specific day/time, verified to have zero collisions.
 
 apps:
-  # --- PILOT (verified working) ---
-  - app: actual
-    pvcSuffix: data
-    capacity: 5Gi
-    schedule: "10 4,10,16,22 * * *"  # every 6h at hours 4,10,16,22:10 — offset from HA/forgejo
-
-  # --- PHASE 2a — SMALL/MEDIUM apps ---
-  - app: esphome
-    schedule: "0 9 * * *"           # daily at hour 9 — device configs rarely change
-    runAsUser: "2000"               # esphome device-builder files owned by uid 2000; other-owned files are world-readable (o+r)
-
-  - app: zigbee2mqtt
-    schedule: "30 0,12 * * *"       # every 12h at hours 0,12 — device state changes regularly
-
-  - app: zwavejs2mqtt
-    schedule: "0 1,13 * * *"       # every 12h at hours 1,13 — device state changes regularly
-
-  - app: matter-server
-    pvcSuffix: data
-    schedule: "35 2,14 * * *"       # every 12h at hours 2,14
-    runAsUser: "0"                   # matter-server itself runs as root (see main/homelab/matter-server); mover must match
-
-  - app: mealie
-    pvcSuffix: api-data
-    schedule: "0 3,15 * * *"       # every 12h at hours 3,15 — recipes added occasionally
-
-  - app: planka
-    pvcSuffix: data
-    schedule: "40 4,16 * * *"       # every 12h at hours 4,16 — project board updates
-
-  - app: webtrees
-    schedule: "15 5,17 * * *"       # every 12h at hours 5,17 — genealogy data changes
-    runAsUser: "33"                  # webtrees data owned by www-data (uid 33); config.ini.php is 0700
-
-  - app: uptime-kuma
-    pvcSuffix: data
-    capacity: 5Gi
-    namespace: monitoring
-    schedule: "0 11 * * *"          # daily at hour 11 — monitoring config rarely changes
-
-  - app: pocket-id
-    pvcSuffix: data
-    namespace: kube-system
-    schedule: "0 21 * * *"          # daily at hour 21 — identity provider config rarely changes
-
-  # --- PHASE 2b — MEDIUM apps ---
-  - app: frigate
-    capacity: 10Gi
-    schedule: "0 23 * * *"          # daily at hour 23 — NVR config rarely changes, clips not backed up
-
-  - app: node-red
-    pvcSuffix: data
-    capacity: 5Gi
-    schedule: "20 6,18 * * *"       # every 12h at hours 6,18 — automation flows change regularly
-
-  - app: paperless-ngx
-    pvcSuffix: data
-    capacity: 5Gi
-    schedule: "50 7,19 * * *"       # every 12h at hours 7,19 — documents ingested regularly
-
-  - app: manyfold
-    pvcSuffix: data
-    capacity: 5Gi
-    schedule: "30 1 * * *"           # daily at hour 1 — 3D model library rarely changes
-
-  - app: jellyfin
-    capacity: 3Gi
-    schedule: "30 3 * * *"           # daily at hour 3 — media server config/metadata
-
-  - app: streambox
-    pvcSuffix: data
-    schedule: "45 5 * * *"           # daily at hour 5
-
-  # --- PHASE 2c — LARGE apps (staggered 6h, never overlap) ---
+  # --- Daily — home-assistant (big PVC, backup can run well over an hour).
+  # Isolated at 00:00 with a full 6h gap before the first weekly job of the
+  # day (06:00), using a 24h quarter-day grid (00/06/12/18) for maximum
+  # separation between every job on the single shared mover node. ---
   - app: home-assistant
     capacity: 10Gi
     cacheCapacity: "5Gi"
     runAsUser: "1000"               # HA container runs as uid=1000; mover must match to read .storage/* files
-    schedule: "0 0,6,12,18 * * *"  # every 6h at hours 0,6,12,18 — automation state critical
+    schedule: "0 0 * * *"            # every day 00:00 — isolated, 6h clear before any other job
 
-  - app: forgejo
+  # --- Sunday (3 apps, 6h-spaced across full day) ---
+  - app: zwavejs2mqtt
+    schedule: "0 6 * * 0"            # Sunday 06:00
+
+  - app: streambox
+    pvcSuffix: data
+    schedule: "0 12 * * 0"           # Sunday 12:00
+
+  # --- Monday (3 apps, 6h-spaced across full day) ---
+  - app: node-red
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "0 6 * * 1"            # Monday 06:00
+
+  - app: esphome
+    schedule: "0 12 * * 1"           # Monday 12:00
+    runAsUser: "2000"               # esphome device-builder files owned by uid 2000; other-owned files are world-readable (o+r)
+
+  - app: manyfold
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "0 18 * * 1"           # Monday 18:00
+
+  # --- Tuesday (3 apps, 6h-spaced across full day) ---
+  - app: actual
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "0 6 * * 2"            # Tuesday 06:00
+
+  - app: planka
+    pvcSuffix: data
+    schedule: "0 12 * * 2"           # Tuesday 12:00
+
+  - app: paperless-ngx
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "0 18 * * 2"           # Tuesday 18:00
+
+  # --- Wednesday (3 apps incl. forgejo, 6h-spaced across full day) ---
+  - app: uptime-kuma
+    pvcSuffix: data
+    capacity: 5Gi
+    namespace: monitoring
+    schedule: "0 6 * * 3"            # Wednesday 06:00
+
+  - app: pocket-id
+    pvcSuffix: data
+    namespace: kube-system
+    schedule: "0 12 * * 3"           # Wednesday 12:00
+
+  # --- Thursday (3 apps, 6h-spaced across full day) ---
+  - app: zigbee2mqtt
+    schedule: "0 6 * * 4"            # Thursday 06:00
+
+  - app: frigate
     capacity: 10Gi
-    cacheCapacity: "5Gi"
-    runAsUser: "1000"               # forgejo /data owned by uid=1000 (git); matches so mover can read git/.ssh (0700) too
-    schedule: "5 2,8,14,20 * * *"  # every 6h at hours 2,8,14,20 — git repos, offset from HA/actual
+    schedule: "0 12 * * 4"           # Thursday 12:00
 
+  - app: webtrees
+    schedule: "0 18 * * 4"           # Thursday 18:00
+    runAsUser: "33"                  # webtrees data owned by www-data (uid 33); config.ini.php is 0700
+
+  # --- Friday (3 apps incl. forgejo, 6h-spaced across full day) ---
+  - app: matter-server
+    pvcSuffix: data
+    schedule: "0 6 * * 5"            # Friday 06:00
+    runAsUser: "0"                   # matter-server itself runs as root (see main/homelab/matter-server); mover must match
+
+  - app: mealie
+    pvcSuffix: api-data
+    schedule: "0 12 * * 5"           # Friday 12:00
+
+  # --- Saturday (2 apps, 6h-spaced across full day) ---
   - app: ss-models
     pvcSuffix: data
     capacity: 10Gi
     cacheCapacity: "5Gi"
-    schedule: "25 7 * * *"           # daily at hour 7 — AI models rarely change
+    schedule: "0 6 * * 6"            # Saturday 06:00
+
+  - app: jellyfin
+    capacity: 3Gi
+    schedule: "0 12 * * 6"           # Saturday 12:00 (moved off Friday so forgejo fits the 3-slot grid there)
+
+  # --- Forgejo (3x/week, big PVC — backup can run well over an hour, so it
+  # gets the last slot of the day (18:00) on Sun/Wed/Fri, with a 6h gap
+  # before it and 6h before the next day's home-assistant run. ---
+  - app: forgejo
+    capacity: 10Gi
+    cacheCapacity: "5Gi"
+    runAsUser: "1000"               # forgejo /data owned by uid=1000 (git); matches so mover can read git/.ssh (0700) too
+    schedule: "0 18 * * 0,3,5"       # Sunday, Wednesday, Friday at 18:00 (last job of the day)

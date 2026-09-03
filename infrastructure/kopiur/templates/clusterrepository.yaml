@@ -52,20 +52,26 @@ spec:
       perIdentity: 30
   parameters:
     epoch:
-      # Lowered to 10m to force epoch advancement and compact the 6500+ legacy blobs
-      # accumulated from 211 days of no maintenance. Raise back to 1h once blob
-      # count drops below 100.
-      minDuration: 10m
+      # Backlog compacted (indexBlobCount now 46, well under the 100 threshold
+      # that justified the temporary 10m setting) — raised back to the normal 1h.
+      minDuration: 1h
   maintenance:
     # Force takeover from old KopiaMaintenance lease owner (volsync perfectra1n fork).
     # Remove after first successful Kopiur maintenance run.
     takeoverPolicy: Force
+    # Schedule reduced from every-3h quick + daily full (8-9 NFS mount/unmount
+    # cycles/day) down to VolSync's original cadence (was a single weekly job) —
+    # same NFS-wedge root cause as the per-app schedules (see values.yaml comment
+    # in kopiur-apps). Placed in dedicated slots that stay clear of every app's
+    # backup/verification window (see kopiur-apps/values.yaml's 00/06/12/18 grid):
+    #   quick — daily 21:00, the one hour free on every day of the week
+    #   full  — weekly Saturday 18:00, the only day with a wide-open evening
     schedule:
       quick:
-        cron: "0 */3 * * *"
+        cron: "0 21 * * *"
         jitter: 30m
       full:
-        cron: "0 3 * * *"
+        cron: "0 18 * * 6"
         jitter: 1h
     mover:
       cache:
