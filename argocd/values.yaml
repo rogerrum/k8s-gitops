@@ -237,6 +237,23 @@ argo-cd:
     args:
       repoServerTimeoutSeconds: 300
 
+    # Keep the application-controller off storage/control-plane nodes:
+    # Longhorn replica rebuild I/O on storage nodes (and general control-plane
+    # load) can starve this pod's CPU enough to time out its own resource
+    # health-check Lua evaluations, which ArgoCD then reports as a
+    # ComparisonError/SyncError on the argocd self-management Application
+    # itself (observed 2026-09-03). repoServer already excludes storage
+    # nodes the same way; this mirrors that + also excludes control-plane.
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: storage
+                  operator: DoesNotExist
+                - key: node-role.kubernetes.io/control-plane
+                  operator: DoesNotExist
+
 #  redis:
 #    image:
 #      repository: redis
