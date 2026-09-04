@@ -15,6 +15,14 @@ app-template:
 
 
       initContainers:
+        init-chmod-fix:
+          image:
+            repository: busybox
+            tag: latest
+          command: [ 'sh', '-c', 'chown -R 1000:1000 /config && chmod -R u+rwX,g+rwX /config' ]
+          securityContext:
+            runAsUser: 0 # Temporary root privileges to override the 1001 ownership
+
         fix-tts:
           enabled: true
           image:
@@ -109,6 +117,8 @@ app-template:
           app:
             - path: /config
           code-server:
+            - path: /config
+          init-chmod-fix:
             - path: /config
 
     hass-cache:
