@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: workload-rightsizing
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  folder: infrastructure
+  configMapRef:
+    name: grafana-dashboard-workload-rightsizing
+    key: workload-rightsizing.json
