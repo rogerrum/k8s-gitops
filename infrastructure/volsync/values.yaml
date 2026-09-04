@@ -146,3 +146,14 @@ volsync-perfectra1n:
     runAsGroup: 1001
   nodeSelector:
     google.feature.node.kubernetes.io/coral: "true"
+
+grafanaDashboards:
+  - name: volsync
+    namespace: kube-system
+    allowCrossNamespaceImport: true
+    folder: infrastructure
+    # renovate: depName=21356
+    url: https://grafana.com/api/dashboards/21356/revisions/3/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
