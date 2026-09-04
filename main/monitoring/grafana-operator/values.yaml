@@ -76,6 +76,8 @@ customDashboards:
     folder: storage
   - name: cluster-logs
     folder: infrastructure
+  - name: server-tracker
+    folder: infrastructure
 
 # Dashboards fetched live by grafana-operator from a remote url (no local JSON).
 # Add an entry here once a dashboard's link is ready/committed to git.
