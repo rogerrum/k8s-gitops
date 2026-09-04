@@ -1,0 +1,34 @@
+{{- range .Values.grafanaDashboards }}
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: {{ .name }}
+  namespace: {{ .namespace }}
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  {{- if .allowCrossNamespaceImport }}
+  allowCrossNamespaceImport: true
+  {{- end }}
+  folder: {{ .folder }}
+  {{- if .configMapRef }}
+  configMapRef:
+    name: {{ .configMapRef.name }}
+    key: {{ .configMapRef.key }}
+  {{- else }}
+  url: {{ .url }}
+  {{- end }}
+  {{- if .datasources }}
+  datasources:
+    {{- range .datasources }}
+    - inputName: {{ .inputName }}
+      datasourceName: {{ .datasourceName }}
+    {{- end }}
+  {{- end }}
+{{- end }}

@@ -49,3 +49,15 @@ clusterUpgrade:
 ## 3. Clean up old cluster
 ##    - Once confident the new cluster is stable, set previousCluster.enabled: false
 ##    - This will remove the old cluster's resources
+
+# GrafanaDashboard CRs for this app, rendered via templates/grafanadashboard.yaml
+grafanaDashboards:
+  - name: cloudnative-pg
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: infrastructure
+    # renovate: depName=20417
+    url: https://grafana.com/api/dashboards/20417/revisions/4/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
