@@ -55,3 +55,32 @@ error-pages:
       ports:
         http:
           port: 8080
+
+grafanaDashboards:
+  - name: envoy-overview
+    namespace: kube-system
+    allowCrossNamespaceImport: true
+    folder: networking
+    # renovate: depName=24459
+    url: https://grafana.com/api/dashboards/24459/revisions/3/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
+  - name: envoy-upstream
+    namespace: kube-system
+    allowCrossNamespaceImport: true
+    folder: networking
+    # renovate: depName=24457
+    url: https://grafana.com/api/dashboards/24457/revisions/4/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
+  - name: envoy-downstream
+    namespace: kube-system
+    allowCrossNamespaceImport: true
+    folder: networking
+    # renovate: depName=24458
+    url: https://grafana.com/api/dashboards/24458/revisions/3/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
