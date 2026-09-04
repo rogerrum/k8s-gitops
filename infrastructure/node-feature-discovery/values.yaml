@@ -53,3 +53,15 @@ node-feature-discovery:
 #        operator: Exists
       - key: arm64
         operator: Exists
+
+# GrafanaDashboard CRs for this app, rendered via templates/grafanadashboard.yaml
+grafanaDashboards:
+  - name: node-feature-discovery
+    namespace: kube-system
+    allowCrossNamespaceImport: true
+    folder: node-metrics
+    # renovate: depName=kubernetes-sigs/node-feature-discovery
+    url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
