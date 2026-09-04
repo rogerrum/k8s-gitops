@@ -128,3 +128,20 @@ cilium:
 #      operator: "Exists"
     - key: "arm64"
       operator: "Exists"
+
+# GrafanaDashboard CRs for this app, rendered via templates/grafanadashboard.yaml
+grafanaDashboards:
+  - name: cilium
+    namespace: kube-system
+    allowCrossNamespaceImport: true
+    folder: networking
+    configMapRef:
+      name: cilium-dashboard
+      key: cilium-dashboard.json
+  - name: cilium-operator
+    namespace: kube-system
+    allowCrossNamespaceImport: true
+    folder: networking
+    configMapRef:
+      name: cilium-operator-dashboard
+      key: cilium-operator-dashboard.json
