@@ -50,6 +50,7 @@ app-template:
               cpu: 50m
             limits:
               memory: 500Mi
+
   service:
     main:
       type: ClusterIP
@@ -85,3 +86,116 @@ app-template:
       cpu: 50m
     limits:
       memory: 500Mi
+
+# GrafanaDashboard CRs for this app, rendered via templates/grafanadashboard.yaml
+grafanaDashboards:
+  - name: teslamate-battery-health
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/battery-health.json
+  - name: teslamate-charge-level
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charge-level.json
+  - name: teslamate-charges
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charges.json
+  - name: teslamate-charging-stats
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charging-stats.json
+  - name: teslamate-database-info
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/database-info.json
+  - name: teslamate-drive-stats
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/drive-stats.json
+  - name: teslamate-drives
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/drives.json
+  - name: teslamate-efficiency
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/efficiency.json
+  - name: teslamate-locations
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/locations.json
+  - name: teslamate-mileage
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/mileage.json
+  - name: teslamate-overview
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/overview.json
+  - name: teslamate-projected-range
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/projected-range.json
+  - name: teslamate-states
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/states.json
+  - name: teslamate-statistics
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/statistics.json
+  - name: teslamate-timeline
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/timeline.json
+  - name: teslamate-trip
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/trip.json
+  - name: teslamate-updates
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/updates.json
+  - name: teslamate-vampire-drain
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/vampire-drain.json
+  - name: teslamate-visited
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/visited.json
+  - name: teslamate-charge-details
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/internal/charge-details.json
+  - name: teslamate-drive-details
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/internal/drive-details.json
+  - name: teslamate-home-assistant
+    namespace: default
+    allowCrossNamespaceImport: true
+    folder: teslamate
+    url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/internal/home.json
