@@ -9,6 +9,14 @@ app-template:
           runAsNonRoot: true
           fsGroup: 1000
           fsGroupChangePolicy: "OnRootMismatch"
+      initContainers:
+        init-chmod-fix:
+          image:
+            repository: busybox
+            tag: latest
+          command: [ 'sh', '-c', 'chown -R 1000:1000 /data' ]
+          securityContext:
+            runAsUser: 0 # Temporary root privileges to fix ownership left over from pre-migration
       containers:
         main:
           image:
@@ -60,6 +68,12 @@ app-template:
   persistence:
     data:
       existingClaim: node-red-data
+      advancedMounts:
+        main:
+          main:
+            - path: /data
+          init-chmod-fix:
+            - path: /data
 
   defaultPodOptions:
     tolerations:
