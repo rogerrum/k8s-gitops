@@ -3,6 +3,9 @@ kind: ExternalSecret
 metadata:
   name: cloudflare-api-key
   namespace: cert-manager
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
 spec:
   secretStoreRef:
     kind: ClusterSecretStore

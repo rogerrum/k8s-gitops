@@ -5,6 +5,9 @@ kind: PrometheusRule
 metadata:
   name: cert-manager-rules
   namespace: cert-manager
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
 spec:
   groups:
     - name: cert-manager
