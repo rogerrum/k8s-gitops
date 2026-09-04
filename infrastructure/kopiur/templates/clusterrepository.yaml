@@ -17,6 +17,8 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
 spec:
+  # Master pause switch — see the comment on `repositorySuspended` in values.yaml.
+  suspend: {{ .Values.repositorySuspended }}
   # Bootstrap timeout — raised to 3600s (1h) because circuit breaker opened after 1800s.
   # 294 index blobs still too slow to connect overnight. Lower once blob count < 100.
   bootstrap:

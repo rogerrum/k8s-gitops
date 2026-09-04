@@ -16,6 +16,11 @@ defaults:
   # below to turn it on for just that one) — see the comment in
   # templates/snapshots.yaml for why it defaults to off cluster-wide.
   verifyEnabled: false
+  # Security-context/permission-mess cleanup (2026-09-03): paused cluster-wide.
+  # Add `suspend: false` to an individual app below once its pod securityContext
+  # and PVC ownership are confirmed correct and a manual snapshot has
+  # succeeded — re-enable one app at a time, never all at once.
+  suspend: true
 
 # Schedule strategy — REVERTED to VolSync's original, proven-stable cadence.
 #

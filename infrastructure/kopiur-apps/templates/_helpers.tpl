@@ -23,6 +23,13 @@ Helper function to parse apps with defaults from values.yaml
   {{- $_ = set $app "verifyEnabled" (or .verifyEnabled $defaults.verifyEnabled false) -}}
   {{- /* Verification rides the app's own backup schedule by default, so it never adds an extra NFS mount/unmount cycle */ -}}
   {{- $_ = set $app "verifySchedule" (default $app.schedule .verifySchedule) -}}
+  {{- /* Per-app suspend for the gradual re-enable migration (2026-09-03).
+        Defaults to true (paused) cluster-wide; add `suspend: false` to an
+        app once its securityContext/PVC ownership is confirmed correct and
+        a manual snapshot has succeeded end-to-end. Uses `hasKey`+`ternary`
+        (not `or`/`default`) so an explicit `suspend: false` isn't treated
+        as empty and silently reverted to the true default. */ -}}
+  {{- $_ = set $app "suspend" (ternary .suspend $defaults.suspend (hasKey . "suspend")) -}}
   {{- $apps = append $apps $app -}}
 {{- end -}}
 {{- toJson $apps -}}

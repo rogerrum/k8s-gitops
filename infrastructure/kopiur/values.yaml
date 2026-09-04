@@ -1,3 +1,12 @@
+# Master pause switch for the shared NAS repository (2026-09-03 permission-mess
+# cleanup). true = ClusterRepository skips connect/bootstrap/maintenance
+# entirely — no mover can even connect to the repo, so nothing runs cluster-
+# wide, regardless of any per-app SnapshotSchedule. Flip back to false only
+# once the repo-permission-sweep CronJob has run clean and the shared shard
+# tree is confirmed healthy; re-enable apps one at a time after that via
+# kopiur-apps/values.yaml's per-app `suspend: false` override.
+repositorySuspended: true
+
 kopiur:
   installScope: cluster
   streamingLists: true

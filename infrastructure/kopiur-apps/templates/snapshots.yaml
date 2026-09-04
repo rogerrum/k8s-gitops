@@ -12,6 +12,8 @@ metadata:
     app.kubernetes.io/component: backup
     app.kubernetes.io/instance: {{ $.Release.Name }}
 spec:
+  # Per-app pause for the gradual re-enable migration — see values.yaml.
+  suspend: {{ .suspend }}
   repository:
     kind: ClusterRepository
     name: nas
