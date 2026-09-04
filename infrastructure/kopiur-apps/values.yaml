@@ -68,6 +68,9 @@ apps:
   - app: node-red
     pvcSuffix: data
     capacity: 5Gi
+    suspend: false                  # re-enabled 2026-09-04: first app in the gradual re-enable, lowest risk
+    runAsUser: "1000"               # node-red container runs as uid=1000; mover must match to read data files
+    supplementalGroups: [1001]      # repo's own control/index files are group-owned 1001 (0600); non-1001 movers need this to read them
     schedule: "0 6 * * 1"            # Monday 06:00
 
   - app: esphome
@@ -78,6 +81,8 @@ apps:
   - app: manyfold
     pvcSuffix: data
     capacity: 5Gi
+    runAsUser: "2000"               # manyfold container runs as uid=2000 (not currently deployed, but pinned to avoid a landmine if reactivated)
+    supplementalGroups: [1001]      # repo's own control/index files are group-owned 1001 (0600); non-1001 movers need this to read them
     schedule: "0 18 * * 1"           # Monday 18:00
 
   # --- Tuesday (3 apps, 6h-spaced across full day) ---
@@ -88,6 +93,8 @@ apps:
 
   - app: planka
     pvcSuffix: data
+    runAsUser: "1000"               # planka container runs as uid=1000; mover must match to read data files
+    supplementalGroups: [1001]      # repo's own control/index files are group-owned 1001 (0600); non-1001 movers need this to read them
     schedule: "0 12 * * 2"           # Tuesday 12:00
 
 #  - app: paperless-ngx

@@ -1,11 +1,13 @@
 # Master pause switch for the shared NAS repository (2026-09-03 permission-mess
 # cleanup). true = ClusterRepository skips connect/bootstrap/maintenance
 # entirely — no mover can even connect to the repo, so nothing runs cluster-
-# wide, regardless of any per-app SnapshotSchedule. Flip back to false only
-# once the repo-permission-sweep CronJob has run clean and the shared shard
-# tree is confirmed healthy; re-enable apps one at a time after that via
-# kopiur-apps/values.yaml's per-app `suspend: false` override.
-repositorySuspended: true
+# wide, regardless of any per-app SnapshotSchedule.
+# Re-enabled 2026-09-04: one-time repo permission repair ran clean (101
+# dirs/files fixed), node-red/planka/manyfold mover identities corrected in
+# kopiur-apps. Repo itself is open again; apps still individually stay
+# suspended via kopiur-apps/values.yaml's per-app `suspend` default and are
+# re-enabled one at a time with `suspend: false`.
+repositorySuspended: false
 
 kopiur:
   installScope: cluster
