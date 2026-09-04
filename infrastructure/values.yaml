@@ -291,49 +291,48 @@ applications:
     helm:
       enabled: true
 
-  - name: kopiur
-    namespace: kube-system
-    path: infrastructure/kopiur
-    manifest-paths: /infrastructure/kopiur
-    sync-wave: "-2"
-    helm:
-      enabled: true
+  # kopiur: Disabled 2026-09-04: rolled back to VolSync after repeated
+  # indefinite/opaque backup stalls (repo permission bug, then a 25+min
+  # silent stall on a 450MB app even after fixing it) — see
+  # infrastructure/volsync. Chart/config kept in git in case we revisit
+  # kopiur later. NOTE: `helm.enabled: false` alone does NOT stop ArgoCD
+  # from managing this Application (apps/templates/app.yaml never reads
+  # that field) — the block must be fully commented out, matching the
+  # matter-server/paperless-ngx precedent in main/homelab/values.yaml.
+  # - name: kopiur
+  #   namespace: kube-system
+  #   path: infrastructure/kopiur
+  #   manifest-paths: /infrastructure/kopiur
+  #   sync-wave: "-2"
+  #   helm:
+  #     enabled: true
 
-  # kopiur-apps: pilot app (actual) enabled after kopiur operator verified
-  - name: kopiur-apps
-    namespace: kube-system
-    path: infrastructure/kopiur-apps
-    manifest-paths: /infrastructure/kopiur-apps
-    sync-wave: "-1"
-    syncOptions:
-      - ServerSideApply=true
-    helm:
-      enabled: true
-    ignoreDifferences:
-      # SnapshotPolicy: readOnly/sourcePathStrategy (per-source) and
-      # groupBy/defaultDeletionPolicy (top-level) are CRD schema defaults
-      # applied by the apiserver, not values our git manifest sets. Per
-      # `kubectl get snapshotpolicy ... --show-managed-fields`, these paths
-      # aren't attributed to any specific manager (so managedFieldsManagers
-      # can't match them) - they must be ignored by jq path instead, same
-      # pattern as the ExternalSecret conversionStrategy/etc entry above.
-      - group: kopiur.home-operations.com
-        kind: SnapshotPolicy
-        jqPathExpressions:
-          - .spec.groupBy
-          - .spec.defaultDeletionPolicy
-          - .spec.sources[].readOnly
-          - .spec.sources[].sourcePathStrategy
-      # kopiur's controller does legitimately own/mutate these paths after
-      # ArgoCD applies them (confirmed manager name via --show-managed-fields).
-      - group: kopiur.home-operations.com
-        kind: "*"
-        managedFieldsManagers:
-          - kopiur.home-operations.com/controller
-      - group: ""
-        kind: PersistentVolumeClaim
-        managedFieldsManagers:
-          - kopiur.home-operations.com/controller
+  # kopiur-apps: Disabled 2026-09-04, see kopiur entry above.
+  # - name: kopiur-apps
+  #   namespace: kube-system
+  #   path: infrastructure/kopiur-apps
+  #   manifest-paths: /infrastructure/kopiur-apps
+  #   sync-wave: "-1"
+  #   syncOptions:
+  #     - ServerSideApply=true
+  #   helm:
+  #     enabled: true
+  #   ignoreDifferences:
+  #     - group: kopiur.home-operations.com
+  #       kind: SnapshotPolicy
+  #       jqPathExpressions:
+  #         - .spec.groupBy
+  #         - .spec.defaultDeletionPolicy
+  #         - .spec.sources[].readOnly
+  #         - .spec.sources[].sourcePathStrategy
+  #     - group: kopiur.home-operations.com
+  #       kind: "*"
+  #       managedFieldsManagers:
+  #         - kopiur.home-operations.com/controller
+  #     - group: ""
+  #       kind: PersistentVolumeClaim
+  #       managedFieldsManagers:
+  #         - kopiur.home-operations.com/controller
 
   - name: volsync
     namespace: kube-system
