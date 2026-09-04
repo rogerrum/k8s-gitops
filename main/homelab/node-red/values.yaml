@@ -17,6 +17,7 @@ app-template:
           command: [ 'sh', '-c', 'chown -R 1000:1000 /data' ]
           securityContext:
             runAsUser: 0 # Temporary root privileges to fix ownership left over from pre-migration
+            runAsNonRoot: false
       containers:
         main:
           image:
