@@ -1,9 +1,10 @@
+{{- range .Values.datasources }}
 ---
 # yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: prometheus
+  name: {{ .name }}
   namespace: monitoring
   labels:
     app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
@@ -12,13 +13,10 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
+  {{- if .valuesFrom }}
+  valuesFrom:
+{{ toYaml .valuesFrom | indent 4 }}
+  {{- end }}
   datasource:
-    name: Prometheus
-    type: prometheus
-    access: proxy
-    url: http://vmsingle-stack.monitoring.svc.cluster.local:8428
-    isDefault: true
-    jsonData:
-      timeInterval: "15s"
-      queryTimeout: "60s"
-      httpMethod: POST
+{{ toYaml .datasource | indent 4 }}
+{{- end }}

@@ -1,9 +1,10 @@
+{{- range .Values.folders }}
 ---
 # yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/grafana.integreatly.org/grafanafolder_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaFolder
 metadata:
-  name: node-metrics
+  name: {{ . }}
   namespace: monitoring
   labels:
     app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
@@ -12,4 +13,5 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  title: node-metrics
+  title: {{ . }}
+{{- end }}

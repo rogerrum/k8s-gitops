@@ -1,12 +1,14 @@
+{{- range .Values.customDashboards }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-dashboard-workload-rightsizing
+  name: grafana-dashboard-{{ .name }}
   namespace: monitoring
   labels:
     app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
     app.kubernetes.io/part-of: {{ $.Release.Name }}
 data:
-  workload-rightsizing.json: |
-{{ $.Files.Get "files/dashboards/workload-rightsizing.json" | indent 4 }}
+  {{ .name }}.json: |
+{{ $.Files.Get (printf "files/dashboards/%s.json" .name) | indent 4 }}
+{{- end }}

@@ -1,3 +1,121 @@
 grafana-operator:
   serviceMonitor:
     enabled: true
+
+# Grafana folders, one per dashboard category.
+folders:
+  - infrastructure
+  - kubernetes
+  - networking
+  - node-metrics
+  - storage
+  - teslamate
+
+# Grafana datasources. `datasource` is passed through as-is to spec.datasource,
+# `valuesFrom` (optional) is passed through as-is to spec.valuesFrom.
+datasources:
+  - name: alertmanager
+    datasource:
+      name: Alertmanager
+      type: alertmanager
+      access: proxy
+      url: http://vmalertmanager-stack.monitoring.svc.cluster.local:9093
+      jsonData:
+        implementation: prometheus
+        handleGrafanaManagedAlerts: true
+  - name: prometheus
+    datasource:
+      name: Prometheus
+      type: prometheus
+      access: proxy
+      url: http://vmsingle-stack.monitoring.svc.cluster.local:8428
+      isDefault: true
+      jsonData:
+        timeInterval: "15s"
+        queryTimeout: "60s"
+        httpMethod: POST
+  - name: teslamate
+    valuesFrom:
+      - targetPath: secureJsonData.password
+        valueFrom:
+          secretKeyRef:
+            name: grafana-secret
+            key: TESLAMATE_DB_PASSWORD
+    datasource:
+      name: TeslaMate
+      uid: TeslaMate
+      type: postgres
+      access: proxy
+      url: postgres-lb.kube-system.svc.cluster.local:5432
+      database: teslamate
+      user: teslamate
+      secureJsonData:
+        password: "${TESLAMATE_DB_PASSWORD}"
+      jsonData:
+        postgresVersion: 1000
+        sslmode: disable
+        database: teslamate
+  - name: victorialogs
+    datasource:
+      name: VictoriaLogs
+      type: victoriametrics-logs-datasource
+      access: proxy
+      url: http://victoria-logs.logs.svc.cluster.local:9428
+
+# Dashboards whose JSON is committed to this chart (files/dashboards/<name>.json)
+# and rendered as a ConfigMap + GrafanaDashboard (configMapRef) pair.
+# Add an entry here once a dashboard's JSON file is actually committed to git.
+customDashboards:
+  - name: ups
+    folder: node-metrics
+  - name: workload-rightsizing
+    folder: infrastructure
+  - name: prometheus-exporter-summary
+    folder: node-metrics
+  - name: nfs-server
+    folder: storage
+  - name: cluster-logs
+    folder: infrastructure
+
+# Dashboards fetched live by grafana-operator from a remote url (no local JSON).
+# Add an entry here once a dashboard's link is ready/committed to git.
+linkDashboards:
+  - name: node-exporter
+    folder: node-metrics
+    # renovate: depName=22413 (frozen at rev 6: rev 7+ use dashboard.grafana.app/v2 schema, which grafana-operator cannot import via spec.url)
+    url: https://grafana.com/api/dashboards/22413/revisions/6/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
+
+  - name: smartctl
+    folder: storage
+    # renovate: depName=22604
+    url: https://grafana.com/api/dashboards/22604/revisions/3/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
+
+  - name: zfs
+    folder: storage
+    # renovate: depName=3170
+    url: https://grafana.com/api/dashboards/3170/revisions/3/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
+
+  - name: k8s-volumes
+    folder: storage
+    # renovate: depName=11454
+    url: https://grafana.com/api/dashboards/11454/revisions/14/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
+
+  - name: k8s-pvc-stats
+    folder: storage
+    # renovate: depName=23233
+    url: https://grafana.com/api/dashboards/23233/revisions/6/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
