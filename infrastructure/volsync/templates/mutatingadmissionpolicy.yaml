@@ -76,6 +76,12 @@ spec:
 ---
 # MutatingAdmissionPolicy for volsync-mover-nfs
 # Auto-injects NFS mount into VolSync jobs for Kopia repository access
+# NOTE: repository path is /Kopia/v2, a fresh empty subdirectory created 2026-09-04.
+# The original /Kopia repo was left in an unclear state after kopiur's forced
+# maintenance-ownership takeover (repeated connect hangs even after kopiur was
+# fully removed). Rather than keep debugging the old repo, we rebuilt from
+# scratch here since VolSync restores all apps within ~2 hours. Old /Kopia data
+# is untouched on the NAS as a fallback until the new repo is fully validated.
 apiVersion: admissionregistration.k8s.io/v1beta1
 kind: MutatingAdmissionPolicy
 metadata:
@@ -120,7 +126,7 @@ spec:
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
                   server: "192.168.1.115",
-                  path: "/Kopia"
+                  path: "/Kopia/v2"
                 }
               }
             },

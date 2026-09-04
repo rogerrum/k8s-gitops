@@ -1,5 +1,8 @@
 ---
 # KopiaMaintenance CRD for weekly repository maintenance
+# NOTE: repository path is /Kopia/v2 (rebuilt fresh 2026-09-04) — see
+# mutatingadmissionpolicy.yaml for the full rationale (old /Kopia repo had
+# stuck maintenance-connect hangs after kopiur's forced ownership takeover).
 apiVersion: volsync.backube/v1alpha1
 kind: KopiaMaintenance
 metadata:
@@ -15,7 +18,7 @@ spec:
       volumeSource:
         nfs:
           server: 192.168.1.115
-          path: /Kopia
+          path: /Kopia/v2
   repository:
     repository: kopia-maintenance-secret
   schedule: "0 3 * * 0"  # Weekly Sunday at 3 AM
