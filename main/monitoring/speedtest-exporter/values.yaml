@@ -27,4 +27,30 @@ app-template:
         metrics:
           port: 9516
 
+# GrafanaDashboard CRs for this app, rendered via templates/grafanadashboard.yaml
+grafanaDashboards:
+  - name: speedtest-exporter
+    namespace: monitoring
+    folder: networking
+    # renovate: depName=22651
+    url: https://grafana.com/api/dashboards/22651/revisions/1/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
+  - name: speedtest-exporter-hub
+    namespace: monitoring
+    folder: networking
+    # renovate: depName=13665
+    url: https://grafana.com/api/dashboards/13665/revisions/4/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
+  - name: internet-speed
+    namespace: monitoring
+    folder: networking
+    # renovate: depName=13665
+    url: https://grafana.com/api/dashboards/13665/revisions/1/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
 
