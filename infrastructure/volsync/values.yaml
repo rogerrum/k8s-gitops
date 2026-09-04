@@ -23,49 +23,108 @@ defaults:
 #   3. Change to createPVC: true and delete old PVC
 #   4. PVC recreated with restore from backup
 apps:
+  # Restored 2026-09-04: rolled back from Kopiur (repeated indefinite/opaque
+  # stalls even after fixing the repo permission bug + per-app securityContext
+  # alignment — the shared-repo-index-rebuild-per-new-identity cost made even
+  # tiny 450MB backups take 25+ minutes with zero progress visibility).
+  # This is the exact config that ran reliably for years prior to the Kopiur
+  # migration attempt — same repository, same historical snapshot history
+  # (source identity <app>@<namespace>:/<path> is unchanged, so VolSync
+  # resumes each app's existing kopia source rather than starting fresh).
   # Default namespace apps
-  # home-assistant migrated to Kopiur
+  - app: home-assistant
+    capacity: 10Gi
+    schedule: "0 2 * * *"
 
-  # node-red migrated to Kopiur
+  - app: node-red
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "30 4 * * 1"
 
-  # frigate migrated to Kopiur
+  - app: frigate
+    capacity: 10Gi
+    schedule: "0 5 * * 4"
+
+  - app: esphome
+    capacity: 1Gi
+    schedule: "0 5 * * 1"
+
+  - app: zigbee2mqtt
+    capacity: 1Gi
+    schedule: "30 5 * * 4"
+
+  - app: zwavejs2mqtt
+    capacity: 1Gi
+    schedule: "0 5 * * 0"
+
+  - app: matter-server
+    pvcSuffix: data
+    capacity: 1Gi
+    schedule: "30 4 * * 5"
 
 
-  # esphome migrated to Kopiur
+  - app: paperless-ngx
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "0 5 * * 2"
 
-  # zigbee2mqtt migrated to Kopiur
+  - app: mealie
+    pvcSuffix: api-data
+    capacity: 1Gi
+    schedule: "30 5 * * 5"
 
-  # zwavejs2mqtt migrated to Kopiur
+  - app: planka
+    pvcSuffix: data
+    capacity: 1Gi
+    schedule: "0 6 * * 2"
 
-  # matter-server migrated to Kopiur
-
-
-  # paperless-ngx migrated to Kopiur
-
-  # mealie migrated to Kopiur
-
-
-  # planka migrated to Kopiur
-
-
-  # webtrees migrated to Kopiur
+  - app: webtrees
+    capacity: 1Gi
+    schedule: "30 4 * * 6"
 
 
-  # manyfold migrated to Kopiur
+  - app: manyfold
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "30 5 * * 3"
 
-  # actual migrated to Kopiur
+  - app: actual
+    pvcSuffix: data
+    capacity: 5Gi
+    schedule: "30 4 * * 2"
 
-  # jellyfin migrated to Kopiur
+  - app: jellyfin
+    capacity: 3Gi
+    schedule: "0 6 * * 5"
 
-  # uptime-kuma migrated to Kopiur
+  - app: uptime-kuma
+    pvcSuffix: data
+    capacity: 5Gi
+    namespace: monitoring
+    schedule: "0 6 * * 3"
 
-  # pocket-id migrated to Kopiur
+  - app: pocket-id
+    capacity: 1Gi
+    pvcSuffix: data
+    namespace: kube-system
+    schedule: "0 6 * * 6"
 
-  # forgejo migrated to Kopiur
+  - app: forgejo
+    capacity: 10Gi
+    namespace: default
+    schedule: "30 7 * * 6"
 
-  # ss-models migrated to Kopiur
+  - app: ss-models
+    pvcSuffix: data
+    capacity: 10Gi
+    namespace: default
+    schedule: "30 8 * * 6"
 
-  # streambox migrated to Kopiur
+  - app: streambox
+    pvcSuffix: data
+    capacity: 1Gi
+    namespace: default
+    schedule: "30 9 * * 6"
 
 volsync-perfectra1n:
   fullnameOverride: volsync # Required for volsync-perfectra1n fork
