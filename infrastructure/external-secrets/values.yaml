@@ -12,3 +12,13 @@ external-secrets:
       enabled: true
   grafanaDashboard:
     enabled: true
+
+grafanaDashboards:
+  - name: external-secrets
+    namespace: kube-system
+    allowCrossNamespaceImport: true
+    folder: node-metrics
+    url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
