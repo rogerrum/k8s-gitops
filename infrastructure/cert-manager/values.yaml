@@ -27,3 +27,15 @@ cert-manager:
     servicemonitor:
       enabled: true
       prometheusInstance: monitoring
+
+# GrafanaDashboard CRs for this app, rendered via templates/grafanadashboard.yaml
+grafanaDashboards:
+  - name: cert-manager
+    namespace: cert-manager
+    allowCrossNamespaceImport: true
+    folder: infrastructure
+    # renovate: depName=20842
+    url: https://grafana.com/api/dashboards/20842/revisions/3/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus

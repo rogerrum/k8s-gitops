@@ -608,4 +608,14 @@ argo-cd:
         serviceAccount:
           create: false
 
+# GrafanaDashboard CRs for this app, rendered via templates/grafanadashboard.yaml
+grafanaDashboards:
+  - name: argo-cd
+    namespace: argocd
+    allowCrossNamespaceImport: true
+    folder: infrastructure
+    url: https://raw.githubusercontent.com/argoproj/argo-cd/v3.5.2/examples/dashboard.json
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus
 
