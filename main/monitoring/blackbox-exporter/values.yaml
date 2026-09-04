@@ -78,3 +78,13 @@ prometheus-blackbox-exporter:
         labels:
           severity: warning
 
+# GrafanaDashboard CRs for this app, rendered via templates/grafanadashboard.yaml
+grafanaDashboards:
+  - name: blackbox-exporter
+    namespace: monitoring
+    folder: networking
+    # renovate: depName=7587
+    url: https://grafana.com/api/dashboards/7587/revisions/3/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus

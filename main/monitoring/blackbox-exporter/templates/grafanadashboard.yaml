@@ -1,20 +1,34 @@
+{{- range .Values.grafanaDashboards }}
 ---
 # yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: blackbox-exporter
-  namespace: monitoring
+  name: {{ .name }}
+  namespace: {{ .namespace }}
   labels:
-    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/instance: {{ $.Release.Name }}
     app.kubernetes.io/part-of: {{ $.Release.Name }}
 spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  folder: networking
-  # renovate: depName=7587
-  url: https://grafana.com/api/dashboards/7587/revisions/3/download
+  {{- if .allowCrossNamespaceImport }}
+  allowCrossNamespaceImport: true
+  {{- end }}
+  folder: {{ .folder }}
+  {{- if .configMapRef }}
+  configMapRef:
+    name: {{ .configMapRef.name }}
+    key: {{ .configMapRef.key }}
+  {{- else }}
+  url: {{ .url }}
+  {{- end }}
+  {{- if .datasources }}
   datasources:
-    - inputName: DS_PROMETHEUS
-      datasourceName: Prometheus
+    {{- range .datasources }}
+    - inputName: {{ .inputName }}
+      datasourceName: {{ .datasourceName }}
+    {{- end }}
+  {{- end }}
+{{- end }}
