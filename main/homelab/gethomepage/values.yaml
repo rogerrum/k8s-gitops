@@ -37,7 +37,7 @@ homepage:
     services:
       - Infrastructure:
           - HomeDashboard:
-              href: https://grafana.rsr.net/goto/ub9IH-GNR?orgId=1
+              href: https://grafana.rsr.net/goto/afxi30zqp9ts0d
               icon: https://raw.githubusercontent.com/rogerrum/icons/refs/heads/main/images/rsr-logo.png
     widgets:
       # show the kubernetes widget, with the cluster summary and individual nodes
