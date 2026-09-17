@@ -9,11 +9,12 @@ descheduler:
   deschedulerPolicyAPIVersion: descheduler/v1alpha2
   deschedulerPolicy:
     profiles:
+      # Profile 1: Standard Cluster Rebalancing with strict safety rules
       - name: Default
         pluginConfig:
           - name: DefaultEvictor
             args:
-              nodeFit: true
+              nodeFit: true # Protects pods unless they can safely fit onto an underutilized node
               podProtections:
                 defaultDisabled:
                   - FailedBarePods
@@ -60,16 +61,6 @@ descheduler:
                 cpu: 85
                 memory: 85
                 pods: 80
-          - name: PodLifeTime
-            args:
-              maxPodLifeTimeSeconds: 86400
-              labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values:
-                      - frigate
-
         plugins:
           balance:
             enabled:
@@ -83,6 +74,30 @@ descheduler:
               - RemovePodsViolatingNodeAffinity
               - RemovePodsViolatingInterPodAntiAffinity
               - RemoveFailedPods
+
+      # Profile 2: Dedicated workflow to force restart Frigate regardless of destination nodes
+      - name: ForceFrigateRestart
+        pluginConfig:
+          - name: DefaultEvictor
+            args:
+              nodeFit: false # Forces eviction even if Frigate has nowhere else to land
+              podProtections:
+                defaultDisabled:
+                  - FailedBarePods
+                  - PodsWithLocalStorage
+                  - SystemCriticalPods
+          - name: PodLifeTime
+            args:
+              maxPodLifeTimeSeconds: 86400
+              labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - frigate
+        plugins:
+          deschedule:
+            enabled:
               - PodLifeTime
 
   service:
