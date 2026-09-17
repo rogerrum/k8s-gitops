@@ -4,3 +4,8 @@ silence-operator:
   alertmanagerAddress: http://vmalertmanager-stack.monitoring.svc.cluster.local:9093
   networkPolicy:
     enabled: false
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 200Mi
