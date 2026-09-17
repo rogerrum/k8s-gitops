@@ -16,13 +16,38 @@ victoria-metrics-k8s-stack:
   defaultDashboards:
     enabled: true
     grafanaOperator:
-      # -- Create dashboards as CRDs (requires grafana-operator to be installed)
-      enabled: false
+      enabled: true
+      spec:
+        instanceSelector:
+          matchLabels:
+            dashboards: grafana
+        folder: monitoring   # explicit; previously implied by CR namespace
+
 
   defaultRules:
     create: true
+    rules:
+      # Disabled because NFS zero-scalers intentionally run at maxReplicas=1
+      KubeHpaMaxedOut:
+        create: false
+      # Disabled: upstream expr (count(up == 0) without(...)) returns empty
+      # (not zero) when nothing is down, which RecordingRulesNoData reads as
+      # NoData and alerts on. Replaced by a fixed version in prometheus-rules/
+      # (adds "or vector(0)" so it always returns data).
+      "count:up0":
+        create: false
+      # Disabled; replaced by prometheus-rules/vmalert-meta.yaml
+      AlertingRulesError:
+        create: false
+      RecordingRulesError:
+        create: false
     groups:
-      k8sContainerMemorySwap:
+      # renamed from k8sContainerMemorySwap (upstream key change in chart 0.85.0)
+      k8s.rules.container_memory_swap:
+        create: false
+      # Disabled because kube-scheduler metrics produce no useful data
+      # (scheduler is mostly idle, histogram_quantile returns empty results)
+      kube-scheduler.rules:
         create: false
 
   vmsingle:
@@ -39,9 +64,9 @@ victoria-metrics-k8s-stack:
             storage: 60Gi
       resources:
         limits:
-          memory: 3Gi
+          memory: 4Gi
         requests:
-          cpu: 530m
+          cpu: 1000m
           memory: 2Gi
       # kube-apiserver SLO burn-rate/availability recording rules run heavy
       # 30d-range queries (vmalert -> vmsingle) that routinely take 5-20s.
@@ -50,6 +75,11 @@ victoria-metrics-k8s-stack:
       # timeout. Raise both so legitimate-but-slow queries don't generate
       # log noise or fail outright.
       extraArgs:
+        memory.allowedPercent: "75"
+        # default (2x node CPUs = 16) gets exceeded when vmalert's ~90+ rule
+        # groups tick at once, causing bursts of 429s that flap
+        # AlertingRulesError/RecordingRulesError
+        search.maxConcurrentRequests: "32"
         search.logSlowQueryDuration: 20s
         search.maxQueryDuration: 60s
       # Keep vmsingle off control-plane and storage nodes: it can burst well
@@ -151,8 +181,21 @@ victoria-metrics-k8s-stack:
         - source_matchers:
             - severity = "critical"
           target_matchers:
+            - severity =~ "warning|info"
+          equal: [ 'namespace', 'alertname' ]
+        - source_matchers:
             - severity = "warning"
-          equal: ["alertname", "namespace"]
+          target_matchers:
+            - severity = "info"
+          equal: [ 'namespace', 'alertname' ]
+        - source_matchers:
+            - alertname = "InfoInhibitor"
+          target_matchers:
+            - severity = "info"
+          equal: [ 'namespace' ]
+        - target_matchers:
+            - alertname = "InfoInhibitor"
+            -
       receivers:
         - name: 'blackhole'
         - name: 'discord-notifications'
@@ -176,6 +219,7 @@ victoria-metrics-k8s-stack:
     spec:
       extraArgs:
         external.url: "https://vmalert.rsr.net"
+      evaluationInterval: 15s
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -240,7 +284,10 @@ victoria-metrics-k8s-stack:
       # promscrape.maxScrapeSize, causing that target to permanently fail
       # (TargetDown). Raise the limit cluster-wide to accommodate it.
       extraArgs:
-        promscrape.maxScrapeSize: 64MB
+        promscrape.dropOriginalLabels: "true"
+        promscrape.streamParse: "true"
+        promscrape.maxScrapeSize: 50MiB
+      scrapeInterval: 20s
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -264,10 +311,10 @@ victoria-metrics-k8s-stack:
       resources:
         limits:
           #cpu: null
-          memory: 750Mi
+          memory: 500Mi
         requests:
           cpu: 500m
-          memory: 300Mi
+          memory: 100Mi
 
   grafana:
     enabled: false
