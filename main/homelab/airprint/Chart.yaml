@@ -14,5 +14,5 @@ maintainers:
     email: rogerrum@gmail.com
 dependencies:
   - name: app-template
-    version: 5.1.0
+    version: 5.2.1
     repository: oci://ghcr.io/bjw-s-labs/helm
