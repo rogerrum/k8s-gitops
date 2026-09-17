@@ -315,10 +315,10 @@ victoria-metrics-k8s-stack:
       resources:
         limits:
           #cpu: null
-          memory: 500Mi
+          memory: 900Mi
         requests:
           cpu: 500m
-          memory: 300Mi
+          memory: 400Mi
 
   grafana:
     enabled: false
