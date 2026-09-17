@@ -232,6 +232,9 @@ victoria-metrics-k8s-stack:
                     operator: DoesNotExist
                   - key: storage
                     operator: DoesNotExist
+      resources:
+        limits:
+          cpu: 500m
     route:
       enabled: true
       annotations:
@@ -315,7 +318,7 @@ victoria-metrics-k8s-stack:
           memory: 500Mi
         requests:
           cpu: 500m
-          memory: 100Mi
+          memory: 300Mi
 
   grafana:
     enabled: false
