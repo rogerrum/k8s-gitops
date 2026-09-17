@@ -81,7 +81,7 @@ victoria-metrics-k8s-stack:
         # AlertingRulesError/RecordingRulesError
         search.maxConcurrentRequests: "32"
         search.logSlowQueryDuration: 30s
-        search.maxUniqueTimeseries: 300000
+        search.maxUniqueTimeseries: "300000"
         search.maxQueryDuration: 60s
       # Keep vmsingle off control-plane and storage nodes: it can burst well
       # above its CPU request (no CPU limit set) and was starving the
