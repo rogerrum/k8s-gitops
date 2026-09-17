@@ -1,54 +1,65 @@
 descheduler:
+  replicas: 2
   kind: Deployment
-  deschedulingInterval: 1m
-  cmdOptions:
-    v: 4
   tolerations:
     - key: "arm64"
       operator: "Exists"
     - key: "arm"
       operator: "Exists"
+  deschedulerPolicyAPIVersion: descheduler/v1alpha2
   deschedulerPolicy:
-    evictLocalStoragePods: true
     profiles:
-      - name: default
+      - name: Default
         pluginConfig:
           - name: DefaultEvictor
             args:
-              #ignorePvcPods: true
-              evictFailedBarePods: true
-              evictLocalStoragePods: true
-              evictSystemCriticalPods: true
-              #nodeFit: true
+              nodeFit: true
+              podProtections:
+                defaultDisabled:
+                  - FailedBarePods
+                  - PodsWithLocalStorage
+                  - SystemCriticalPods
+          - name: RemoveFailedPods
+            args:
+              reasons:
+                - ContainerStatusUnknown
+                - NodeAffinity
+                - NodeShutdown
+                - Terminated
+                - UnexpectedAdmissionError
+              includingInitContainers: true
+              excludeOwnerKinds:
+                - Job
+              minPodLifetimeSeconds: 1800
+          - name: RemovePodsViolatingInterPodAntiAffinity
+          - name: RemovePodsViolatingNodeAffinity
+            args:
+              nodeAffinityType:
+                - requiredDuringSchedulingIgnoredDuringExecution
+          - name: RemovePodsViolatingNodeTaints
+          - name: RemovePodsViolatingTopologySpreadConstraint
+            args:
+              constraints:
+                - DoNotSchedule
+                - ScheduleAnyway
           - name: RemoveDuplicates
           - name: RemovePodsHavingTooManyRestarts
             args:
               podRestartThreshold: 100
               includingInitContainers: true
-          - name: RemovePodsViolatingNodeTaints
-          - name: RemovePodsViolatingNodeAffinity
+          - name: LowNodeUtilization
             args:
-              nodeAffinityType:
-                - requiredDuringSchedulingIgnoredDuringExecution
-          - name: RemovePodsViolatingInterPodAntiAffinity
-          - name: RemovePodsViolatingTopologySpreadConstraint
-#            args:
-#              includeSoftConstraints: true
-#          - name: LowNodeUtilization
-#            args:
-#              thresholds:
-#                cpu: 20
-#                memory: 20
-#                pods: 20
-#              targetThresholds:
-#                cpu: 50
-#                memory: 50
-#                pods: 50
-          - name: RemoveFailedPods
-            args:
-              includingInitContainers: true
-              excludeOwnerKinds: [ "Job" ]
-              minPodLifetimeSeconds: 3600
+              numberOfNodes: 1
+              evictionLimits:
+                node: 5
+              thresholds:
+                cpu: 15
+                memory: 20
+                pods: 20
+              targetThresholds:
+                cpu: 85
+                memory: 85
+                pods: 80
           - name: PodLifeTime
             args:
               maxPodLifeTimeSeconds: 86400
@@ -64,7 +75,7 @@ descheduler:
             enabled:
               - RemoveDuplicates
               - RemovePodsViolatingTopologySpreadConstraint
-#              - LowNodeUtilization
+              - LowNodeUtilization
           deschedule:
             enabled:
               - RemovePodsHavingTooManyRestarts
@@ -77,4 +88,6 @@ descheduler:
   service:
     enabled: true
   serviceMonitor:
+    enabled: true
+  leaderElection:
     enabled: true
