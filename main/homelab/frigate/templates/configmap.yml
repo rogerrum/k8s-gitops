@@ -144,12 +144,12 @@ data:
         motion:
           mask:
             mask1:
-            # Optional: A friendly name for the mask
-            friendly_name: "Timestamp area"
-            # Optional: Whether this mask is active (default: true)
-            enabled: true
-            # Required: Coordinates polygon for the mask
-            coordinates: "0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035"
+              # Optional: A friendly name for the mask
+              friendly_name: "Timestamp area"
+              # Optional: Whether this mask is active (default: true)
+              enabled: true
+              # Required: Coordinates polygon for the mask
+              coordinates: "0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035"
         ffmpeg:
           inputs:
             - path: rtsp://127.0.0.1:8554/side_room_detect
@@ -237,16 +237,12 @@ data:
               coordinates: "0.547,0.035,0.547,0.085,0.948,0.085,0.948,0.035"
         objects:
           filters:
-            bird:
-              mask:
             car:
               mask:
                 mask1:
                   friendly_name: "Car area"
                   enabled: true
                   coordinates: "91,168,283,62,438,0,0,0,0,0,0,92,0,247"
-            person:
-              mask:
         ffmpeg:
           inputs:
             - path:  rtsp://127.0.0.1:8554/driveway_detect
@@ -297,8 +293,6 @@ data:
               coordinates: "0.739,0.257,0.744,0.329,0.746,0.39,0.75,0.449,0.748,0.493,0.749,0.536,0.749,0.578,0.749,0.592,0.775,0.592,0.793,0.594,0.809,0.595,0.825,0.596,0.84,0.596,0.863,0.597,0.883,0.599,0.9,0.598,0.912,0.6,1,0.591,1,0.563,1,0.543,1,0.499,0.918,0.461,0.915,0.44,0.879,0.412,0.851,0.367,0.855,0.329,0.862,0.32,0.87,0.311,0.875,0.293,0.905,0.28,0.875,0.276,0.856,0.271,0.827,0.267,0.805,0.265,0.787,0.262,0.768,0.261"
         objects:
           filters:
-            bird:
-              mask:
             car:
               mask:
                 mask1:
@@ -309,8 +303,6 @@ data:
                   friendly_name: "Car area 2"
                   enabled: true
                   coordinates: "0.739,0.257,0.744,0.329,0.746,0.39,0.75,0.449,0.748,0.493,0.749,0.536,0.749,0.578,0.749,0.592,0.775,0.592,0.793,0.594,0.809,0.595,0.825,0.596,0.84,0.596,0.863,0.597,0.883,0.599,0.9,0.598,0.912,0.6,1,0.591,1,0.563,1,0.543,1,0.499,0.918,0.461,0.915,0.44,0.879,0.412,0.851,0.367,0.855,0.329,0.862,0.32,0.87,0.311,0.875,0.293,0.905,0.28,0.875,0.276,0.856,0.271,0.827,0.267,0.805,0.265,0.787,0.262,0.768,0.261"
-            person:
-              mask:
         ffmpeg:
           inputs:
             - path:  rtsp://127.0.0.1:8554/front_door
