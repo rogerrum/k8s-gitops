@@ -34,6 +34,8 @@ data:
 {{/*      enabled: true*/}}
 {{/*      # restream: true*/}}
 {{/*      mode: continuous*/}}
+    face_recognition:
+      enabled: true
 
     ffmpeg:
       hwaccel_args: preset-intel-qsv-h264
@@ -61,6 +63,8 @@ data:
 
     record:
       enabled: true
+      motion:
+        days: 1
       alerts:
         retain:
           days: 3
@@ -71,6 +75,8 @@ data:
           mode: active_objects
     
     review:
+      genai:
+        enabled: true
       alerts:
         labels:
           - person
@@ -91,6 +97,7 @@ data:
         default: 7
 
     genai:
+      enabled: true
       ollama: # any name you like
         provider: ollama
         base_url: http://192.168.1.16:11434
