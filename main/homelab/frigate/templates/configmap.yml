@@ -9,14 +9,13 @@ metadata:
 data:
   config.yml: |
     auth:
-      enabled: False
-    
-    
+      enabled: false
+
     motion:
       threshold: 25
       improve_contrast: True
       contour_area: 10
-    
+
     mqtt:
       host: emqx.default.svc
       topic_prefix: frigate
@@ -31,10 +30,10 @@ data:
         type: edgetpu
         device: usb
 
-    birdseye:
-      enabled: true
-      # restream: true
-      mode: continuous
+{{/*    birdseye:*/}}
+{{/*      enabled: true*/}}
+{{/*      # restream: true*/}}
+{{/*      mode: continuous*/}}
 
     ffmpeg:
       hwaccel_args: preset-intel-qsv-h264
@@ -90,11 +89,16 @@ data:
       crop: false
       retain:
         default: 7
-    
+
     genai:
-      provider: ollama
-      base_url: http://192.168.1.16:11434
-      model: llava:7b
+      ollama: # any name you like
+        provider: ollama
+        base_url: http://192.168.1.16:11434
+        model: llava:7b
+        roles:
+          - descriptions
+          - embeddings
+          - chat
 
     go2rtc:
       streams:
@@ -139,7 +143,13 @@ data:
       side_room:
         motion:
           mask:
-            - 0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035
+            mask1:
+            # Optional: A friendly name for the mask
+            friendly_name: "Timestamp area"
+            # Optional: Whether this mask is active (default: true)
+            enabled: true
+            # Required: Coordinates polygon for the mask
+            coordinates: "0.668,0.035,0.668,0.082,0.967,0.087,0.967,0.035"
         ffmpeg:
           inputs:
             - path: rtsp://127.0.0.1:8554/side_room_detect
@@ -165,27 +175,13 @@ data:
               threshold: 0.80
               min_score: 0.60
 
-{{/*      basement_main:*/}}
-{{/*        motion:*/}}
-{{/*          mask:*/}}
-{{/*            - 0.549,0.033,0.549,0.082,0.95,0.087,0.95,0.033*/}}
-{{/*        ffmpeg:*/}}
-{{/*          inputs:*/}}
-{{/*            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=1'*/}}
-{{/*              #input_args: preset-rtsp-restream*/}}
-{{/*              roles:*/}}
-{{/*                - detect*/}}
-{{/*            - path: '{FRIGATE_LOREX_HOST}/cam/realmonitor?channel=2&subtype=0'*/}}
-{{/*              #input_args: preset-rtsp-restream*/}}
-{{/*              roles:*/}}
-{{/*                - record*/}}
-{{/*        live:*/}}
-{{/*          stream_name: basement_main_record*/}}
-
       deck:
         motion:
           mask:
-            - 0.497,0.05,0.497,0.106,0.948,0.106,0.948,0.05
+            mask1:
+              friendly_name: "Timestamp area"
+              enabled: true
+              coordinates: "0.497,0.05,0.497,0.106,0.948,0.106,0.948,0.05"
         ffmpeg:
           inputs:
             - path:  rtsp://127.0.0.1:8554/deck_detect
@@ -207,7 +203,10 @@ data:
           enabled: True
         motion:
           mask:
-            - 0.624,0.036,0.624,0.081,0.963,0.081,0.963,0.036
+            mask1:
+              friendly_name: "Timestamp area"
+              enabled: true
+              coordinates: "0.624,0.036,0.624,0.081,0.963,0.081,0.963,0.036"
         ffmpeg:
           inputs:
             - path:  rtsp://127.0.0.1:8554/porch_detect
@@ -228,15 +227,24 @@ data:
           enabled: True
         motion:
           mask:
-            - 91,168,283,62,438,0,0,0,0,0,0,92,0,247
-            - 0.547,0.035,0.547,0.085,0.948,0.085,0.948,0.035
+            mask1:
+              friendly_name: "Timestamp area"
+              enabled: true
+              coordinates: "91,168,283,62,438,0,0,0,0,0,0,92,0,247"
+            mask2:
+              friendly_name: "Timestamp area 2"
+              enabled: true
+              coordinates: "0.547,0.035,0.547,0.085,0.948,0.085,0.948,0.035"
         objects:
           filters:
             bird:
               mask:
             car:
               mask:
-                - 91,168,283,62,438,0,0,0,0,0,0,92,0,247
+                mask1:
+                  friendly_name: "Car area"
+                  enabled: true
+                  coordinates: "91,168,283,62,438,0,0,0,0,0,0,92,0,247"
             person:
               mask:
         ffmpeg:
@@ -257,7 +265,10 @@ data:
       server:
         motion:
           mask:
-            - 0.55,0.033,0.55,0.081,0.945,0.081,0.945,0.033
+            mask1:
+              friendly_name: "Timestamp area"
+              enabled: true
+              coordinates: "0.55,0.033,0.55,0.081,0.945,0.081,0.945,0.033"
         ffmpeg:
           inputs:
             - path:  rtsp://127.0.0.1:8554/server_detect
@@ -276,16 +287,28 @@ data:
       front_door:
         motion:
           mask:
-            - 0.425,0.272,0.511,0.389,0.422,0.402,0.418,0.576,0.543,0.584,0.6,0.587,0.637,0.59,0.641,0.498,0.642,0.438,0.64,0.396,0.64,0.365,0.639,0.326,0.635,0.254,0.538,0.255,0.488,0.262
-            - 0.739,0.257,0.744,0.329,0.746,0.39,0.75,0.449,0.748,0.493,0.749,0.536,0.749,0.578,0.749,0.592,0.775,0.592,0.793,0.594,0.809,0.595,0.825,0.596,0.84,0.596,0.863,0.597,0.883,0.599,0.9,0.598,0.912,0.6,1,0.591,1,0.563,1,0.543,1,0.499,0.918,0.461,0.915,0.44,0.879,0.412,0.851,0.367,0.855,0.329,0.862,0.32,0.87,0.311,0.875,0.293,0.905,0.28,0.875,0.276,0.856,0.271,0.827,0.267,0.805,0.265,0.787,0.262,0.768,0.261
+            mask1:
+              friendly_name: "Timestamp area"
+              enabled: true
+              coordinates: "0.425,0.272,0.511,0.389,0.422,0.402,0.418,0.576,0.543,0.584,0.6,0.587,0.637,0.59,0.641,0.498,0.642,0.438,0.64,0.396,0.64,0.365,0.639,0.326,0.635,0.254,0.538,0.255,0.488,0.262"
+            mask2:
+              friendly_name: "Timestamp area 2"
+              enabled: true
+              coordinates: "0.739,0.257,0.744,0.329,0.746,0.39,0.75,0.449,0.748,0.493,0.749,0.536,0.749,0.578,0.749,0.592,0.775,0.592,0.793,0.594,0.809,0.595,0.825,0.596,0.84,0.596,0.863,0.597,0.883,0.599,0.9,0.598,0.912,0.6,1,0.591,1,0.563,1,0.543,1,0.499,0.918,0.461,0.915,0.44,0.879,0.412,0.851,0.367,0.855,0.329,0.862,0.32,0.87,0.311,0.875,0.293,0.905,0.28,0.875,0.276,0.856,0.271,0.827,0.267,0.805,0.265,0.787,0.262,0.768,0.261"
         objects:
           filters:
             bird:
               mask:
             car:
               mask:
-                - 0.425,0.272,0.511,0.389,0.422,0.402,0.418,0.576,0.543,0.584,0.6,0.587,0.637,0.59,0.641,0.498,0.642,0.438,0.64,0.396,0.64,0.365,0.639,0.326,0.635,0.254,0.538,0.255,0.488,0.262
-                - 0.739,0.257,0.744,0.329,0.746,0.39,0.75,0.449,0.748,0.493,0.749,0.536,0.749,0.578,0.749,0.592,0.775,0.592,0.793,0.594,0.809,0.595,0.825,0.596,0.84,0.596,0.863,0.597,0.883,0.599,0.9,0.598,0.912,0.6,1,0.591,1,0.563,1,0.543,1,0.499,0.918,0.461,0.915,0.44,0.879,0.412,0.851,0.367,0.855,0.329,0.862,0.32,0.87,0.311,0.875,0.293,0.905,0.28,0.875,0.276,0.856,0.271,0.827,0.267,0.805,0.265,0.787,0.262,0.768,0.261
+                mask1:
+                  friendly_name: "Car area"
+                  enabled: true
+                  coordinates: "0.425,0.272,0.511,0.389,0.422,0.402,0.418,0.576,0.543,0.584,0.6,0.587,0.637,0.59,0.641,0.498,0.642,0.438,0.64,0.396,0.64,0.365,0.639,0.326,0.635,0.254,0.538,0.255,0.488,0.262"
+                mask2:
+                  friendly_name: "Car area 2"
+                  enabled: true
+                  coordinates: "0.739,0.257,0.744,0.329,0.746,0.39,0.75,0.449,0.748,0.493,0.749,0.536,0.749,0.578,0.749,0.592,0.775,0.592,0.793,0.594,0.809,0.595,0.825,0.596,0.84,0.596,0.863,0.597,0.883,0.599,0.9,0.598,0.912,0.6,1,0.591,1,0.563,1,0.543,1,0.499,0.918,0.461,0.915,0.44,0.879,0.412,0.851,0.367,0.855,0.329,0.862,0.32,0.87,0.311,0.875,0.293,0.905,0.28,0.875,0.276,0.856,0.271,0.827,0.267,0.805,0.265,0.787,0.262,0.768,0.261"
             person:
               mask:
         ffmpeg:
