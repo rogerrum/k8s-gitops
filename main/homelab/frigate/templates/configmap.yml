@@ -97,7 +97,6 @@ data:
         default: 7
 
     genai:
-      enabled: true
       ollama: # any name you like
         provider: ollama
         base_url: http://192.168.1.16:11434
