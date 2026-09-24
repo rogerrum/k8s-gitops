@@ -51,7 +51,7 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "pi-hole"
     homepageName: "Pi-hole Secondary"
-    path: /admin
+    path: /
     service:
       externalName: home-nw-2.home
 
