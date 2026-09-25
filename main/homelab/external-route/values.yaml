@@ -31,7 +31,7 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "pi-hole"
     homepageName: "Pi-hole"
-    path: /admin
+    path: /
     service:
       externalName: pihole-vip.home
 
@@ -41,7 +41,7 @@ apps:
     homepageGroup: "Infrastructure"
     homepageIcon: "pi-hole"
     homepageName: "Pi-hole Primary"
-    path: /admin
+    path: /
     service:
       externalName: home-nw-1.home
 
