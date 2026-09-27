@@ -5,6 +5,6 @@ type: application
 version: 1.0.0
 dependencies:
   - name: kopiur
-    version: 0.10.8
+    version: 0.10.10
     repository: oci://ghcr.io/home-operations/charts
     alias: kopiur
