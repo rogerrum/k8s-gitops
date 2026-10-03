@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mogenius/renovate-operator/main/charts/renovate-operator/crd/renovate-operator.mogenius.com_renovatejobs.yaml
+apiVersion: renovate-operator.mogenius.com/v1alpha1
+kind: RenovateJob
+metadata:
+  name: k8s-gitops
+  namespace: default
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
+spec:
+  discoveryFilters:
+    - roger/k8s-gitops
+  # Native forgejo platform support landed in Renovate 41.41.0; must stay >= that.
+  image: ghcr.io/renovatebot/renovate:44.116.0@sha256:56f0ecefe7e3659e72bdb4ac6a07d3de107185370d0064434b37bba9f3656286
+  parallelism: 1
+  # Renovate's own SSH key for commit signing, separate from the instance's
+  # server-side signing key in main/homelab/forgejo/: one key can only be
+  # registered to one account.
+  extraEnv:
+    - name: RENOVATE_GIT_PRIVATE_KEY
+      valueFrom:
+        secretKeyRef:
+          name: renovate-secret
+          key: ssh_private_key
+    # git.rsr.net resolves to the internal Envoy gateway IP since Forgejo is
+    # internal-only. hostRules.allowInternal is a self-hosted-admin-only
+    # option (rejected if set in the repo's renovate.json5), so it must be
+    # set here as global config instead.
+    - name: RENOVATE_HOST_RULES
+      value: '[{"matchHost":"git.rsr.net","allowInternal":true}]'
+  provider:
+    name: forgejo
+    endpoint: https://git.rsr.net/api/v1
+  schedule: "0 * * * *"
+  secretRef: renovate-secret
+  webhook:
+    enabled: true
+    # In-cluster delivery via the chart's Service; no HTTPRoute/ingress required.
+    baseUrl: http://renovate-operator-renovate-operator.default.svc.cluster.local:8082
+    sync:
+      enabled: true

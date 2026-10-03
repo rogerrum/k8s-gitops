@@ -1,0 +1,19 @@
+renovate-operator:
+  # In-cluster only; Renovate PRs/issues are opened against the internal
+  # Forgejo instance (git.rsr.net), not exposed externally.
+  route:
+    enabled: false
+  webhook:
+    enabled: true
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+    dashboard:
+      enabled: true
+      grafanaDashboard:
+        allowCrossNamespaceImport: true
+        folder: apps
+        instanceSelector:
+          matchLabels:
+            dashboards: grafana
