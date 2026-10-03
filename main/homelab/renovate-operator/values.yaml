@@ -1,8 +1,21 @@
 renovate-operator:
-  # In-cluster only; Renovate PRs/issues are opened against the internal
-  # Forgejo instance (git.rsr.net), not exposed externally.
+  # Exposed internally only, behind the "internal" gateway's auth proxy
+  # (security: authenticated label) -- the renovate-operator UI has no
+  # built-in auth, so it must not be reachable without that layer.
   route:
-    enabled: false
+    enabled: true
+    labels:
+      security: "authenticated"
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Tools
+      gethomepage.dev/icon: renovate
+      gethomepage.dev/name: Renovate
+    parentRefs:
+      - name: internal
+        namespace: kube-system
+    hostnames:
+      - renovate.rsr.net
   webhook:
     enabled: true
   metrics:
