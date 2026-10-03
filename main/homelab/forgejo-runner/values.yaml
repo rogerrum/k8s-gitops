@@ -182,8 +182,8 @@ app-template:
       containers:
         runner:
           image:
-            repository: registry.erwanleboucher.dev/erwanleboucher.dev/eleboucher/runner
-            tag: 12.13.0@sha256:b71959782cea9cbc86eaeb47e5ba32bf8179fbd117dd849e001c9a13807b1a07
+            repository: data.forgejo.org/forgejo/runner
+            tag: 13.2.0@sha256:ca3d5eea46004789a175d1369eec6829d3ea9bfbe2011a06625b4bdaa55f7552
           command:
             - sh
             - -ec
@@ -206,8 +206,8 @@ app-template:
         k8s-plugin:
           image:
             pullPolicy: Always
-            repository: registry.erwanleboucher.dev/erwanleboucher.dev/eleboucher/runner-k8s-plugin
-            tag: 13.1.0@sha256:9ae8a21340cde415b828adc95bc4f1345bed67c21a0e3be26032d367a64b20db
+            repository: registry.erwanleboucher.dev/eleboucher/runner-k8s-plugin
+            tag: 13.2.1@sha256:d62811841a20fd1a311b2c90c6ffcec37d09e52ebb46834b0c04f3ad2a3bcbe7
           args:
             - --listen
             - unix:///plugin/forgejo-runner-k8s.sock
