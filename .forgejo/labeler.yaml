@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+area/argocd:
+  - changed-files:
+      - any-glob-to-any-file: "argocd/**/*"
+area/apps:
+  - changed-files:
+      - any-glob-to-any-file: "apps/**/*"
+area/infrastructure:
+  - changed-files:
+      - any-glob-to-any-file: "infrastructure/**/*"
+area/main:
+  - changed-files:
+      - any-glob-to-any-file: "main/**/*"
+area/system-upgrade:
+  - changed-files:
+      - any-glob-to-any-file: "system-upgrade/**/*"
+area/setup:
+  - changed-files:
+      - any-glob-to-any-file: "setup/**/*"
+area/docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "README.md"
+          - "docs/**/*"
+          - "mkdocs.yaml"
+area/ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".forgejo/**/*"
+          - ".github/**/*"
+area/renovate:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".renovate/**/*"
+          - "renovate.json5"

@@ -1,0 +1,146 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+#
+# Forgejo-native port of .github/workflows/diff-hr-on-pr.yaml, so PRs opened
+# on Forgejo (primarily Renovate, via renovate-operator) get the same Helm
+# Release diff check before merge. Comment posting uses a direct Forgejo API
+# call (see .forgejo/scripts/post-comment.sh) rather than peter-evans/*
+# actions, since those rely on GitHub's GraphQL API which Forgejo doesn't
+# implement. Auto-merge-on-no-changes was dropped for the same reason --
+# merge manually, or re-add once a Forgejo-native equivalent is confirmed.
+name: Helm Release Differ
+
+on: # yamllint disable-line rule:truthy
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "**.yaml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ forgejo.event.number || forgejo.ref }}
+  cancel-in-progress: true
+
+env:
+  conf_live_branch: main
+  conf_ignore_known_labels_containing_versions: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  detect-file-changes:
+    name: Detect File Changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: https://github.com/actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Filter Helm Applications
+        uses: https://github.com/dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
+        id: filter
+        with:
+          list-files: json
+          filters: |
+            changed:
+              - '**/Chart.yaml'
+              - '**/values.yaml'
+
+      - name: Extract yaml Files
+        id: extract
+        run: |
+          filtered=$( echo '${{ steps.filter.outputs.changed_files }}' \
+            |  jq -r '.=[.[] | split("/") | del(.[-1]) |  join("/")  ] | unique')
+          echo ${filtered}
+          echo "files<<EOF" >> "${GITHUB_OUTPUT}"
+          echo "${filtered}" >> "${GITHUB_OUTPUT}"
+          echo "EOF" >> "${GITHUB_OUTPUT}"
+
+    outputs:
+      yaml_files: ${{ steps.extract.outputs.files }}
+
+  helm-release-differ:
+    name: Helm Release Differ
+    runs-on: ubuntu-latest
+    if: ${{ needs.detect-file-changes.outputs.yaml_files != '' && needs.detect-file-changes.outputs.yaml_files != '[]' }}
+    needs: detect-file-changes
+    strategy:
+      matrix:
+        file: ${{ fromJSON(needs.detect-file-changes.outputs.yaml_files) }}
+    steps:
+      - name: Checkout
+        uses: https://github.com/actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Checkout default branch
+        uses: https://github.com/actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: "${{ env.conf_live_branch }}"
+          path: live
+          persist-credentials: false
+
+      - name: Setup Homebrew
+        uses: https://github.com/Homebrew/actions/setup-homebrew@e99025eb970cfa124b8284a35463d87426917478 # 2026.09.28.1
+
+      - name: Setup Tools
+        run: |
+          brew install helm kustomize yq
+
+      - name: Helm Release Differ
+        id: diff
+        run: |
+          # pin to 8.1.3 due to https://github.com/google/zx/issues/870
+          npm install zx@8.1.3
+          diff=$(npx zx@8.1.3 ./.github/scripts/helmReleaseDiff.mjs \
+            --source-chart "live/${{ matrix.file }}" \
+            --target-chart "${{ matrix.file }}" \
+            --diff-tool "diff")
+          echo "diff<<EOF" >> "${GITHUB_OUTPUT}"
+          echo "${diff}" >> "${GITHUB_OUTPUT}"
+          echo "EOF" >> "${GITHUB_OUTPUT}"
+
+      - name: Post or update comment
+        env:
+          FORGEJO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          API_BASE: ${{ forgejo.server_url }}/api/v1/repos/${{ forgejo.repository }}
+          ISSUE_NUMBER: ${{ forgejo.event.pull_request.number }}
+          MARKER: "<!-- helm-release-differ: ${{ matrix.file }} -->"
+          DIFF_BODY: ${{ steps.diff.outputs.diff }}
+        run: |
+          AUTH="Authorization: token ${FORGEJO_TOKEN}"
+          body=$(jq -n --arg marker "$MARKER" --arg diff "$DIFF_BODY" '$marker + "\n" + $diff')
+
+          existing_id=$(curl -fsSL -H "$AUTH" \
+            "${API_BASE}/issues/${ISSUE_NUMBER}/comments" \
+            | jq -r --arg marker "$MARKER" \
+              '[.[] | select(.body | startswith($marker))][0].id // empty')
+
+          if [ -n "$existing_id" ]; then
+            curl -fsSL -X PATCH -H "$AUTH" -H "Content-Type: application/json" \
+              "${API_BASE}/issues/comments/${existing_id}" \
+              --data-binary "$(jq -n --arg body "$body" '{body: $body}')"
+          else
+            curl -fsSL -X POST -H "$AUTH" -H "Content-Type: application/json" \
+              "${API_BASE}/issues/${ISSUE_NUMBER}/comments" \
+              --data-binary "$(jq -n --arg body "$body" '{body: $body}')"
+          fi
+
+  helm-release-differ-success:
+    needs:
+      - detect-file-changes
+      - helm-release-differ
+    if: ${{ !cancelled() }}
+    name: Helm Release Differ successful
+    runs-on: ubuntu-slim
+    steps:
+      - name: Any jobs failed?
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+      - name: All jobs passed or skipped?
+        if: ${{ !(contains(needs.*.result, 'failure')) }}
+        run: echo "All jobs passed or skipped" && echo "${{ toJSON(needs.*.result) }}"
