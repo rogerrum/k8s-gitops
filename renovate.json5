@@ -23,7 +23,12 @@
   enabled: true,
   timezone: 'America/Chicago',
   dependencyDashboard: true,
-  dependencyDashboardTitle: 'Renovate Dashboard',
+  // Deliberately distinct from the old GitHub-era "Renovate Dashboard"
+  // title: that issue (#8) was migrated over from GitHub and its stale
+  // checkbox/branch state confused self-hosted Renovate's edited-branch
+  // detection on Forgejo. Keeping a different title guarantees a clean
+  // issue instead of Renovate reusing/reopening the old one.
+  dependencyDashboardTitle: 'Renovate Dashboard (Forgejo)',
   suppressNotifications: [
     'prIgnoreNotification',
   ],
