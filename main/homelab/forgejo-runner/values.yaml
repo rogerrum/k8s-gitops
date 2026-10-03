@@ -31,7 +31,7 @@ app-template:
             labels:
               - ubuntu-latest:k8s:/config/podspec-default.yaml
               - ubuntu-slim:k8s:/config/podspec-default.yaml
-              - ubuntu-24.04:k8spod:/config/podspec-default.yaml
+              - ubuntu-24.04:k8s:/config/podspec-default.yaml
               - default:k8s:/config/podspec-default.yaml
               - docker:k8s:/config/podspec-dind.yaml
             timeout: 3h
