@@ -64,21 +64,9 @@ jobs:
               - '**/Chart.yaml'
               - '**/values.yaml'
 
-      - name: Setup Homebrew
-        if: ${{ steps.filter.outputs.changed_files != '' && steps.filter.outputs.changed_files != '[]' }}
-        # These job pods run as root (that's how the catthehacker/act-based
-        # runner image always operates), but Homebrew's installer refuses to
-        # run as root unless it detects a recognized CI/container context.
-        # GitHub-hosted runners set CI=true automatically; ours don't.
-        env:
-          DOCKER_CONTAINER: "true"
-        uses: https://github.com/Homebrew/actions/setup-homebrew@e99025eb970cfa124b8284a35463d87426917478 # 2026.09.28.1
-
-      - name: Setup Tools
-        if: ${{ steps.filter.outputs.changed_files != '' && steps.filter.outputs.changed_files != '[]' }}
-        run: |
-          brew install helm kustomize yq
-
+      # No Helm install step needed: ghcr.io/bjw-s-labs/forgejo-runner:ubuntu-24.04
+      # (the image backing every label above, see podspec-default.yaml) already
+      # bakes in `helm` on PATH -- same reason flate.yaml needs no setup step.
       - name: Diff each changed chart and post/update a comment
         if: ${{ steps.filter.outputs.changed_files != '' && steps.filter.outputs.changed_files != '[]' }}
         env:
