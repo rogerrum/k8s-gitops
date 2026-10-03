@@ -29,6 +29,21 @@ spec:
     # set here as global config instead.
     - name: RENOVATE_HOST_RULES
       value: '[{"matchHost":"git.rsr.net","allowInternal":true}]'
+    # git.rsr.net's TLS cert is issued by the internal step-ca CA. Without
+    # this, Node's TLS client rejects the handshake with
+    # UNABLE_TO_GET_ISSUER_CERT_LOCALLY, which Renovate's forgejo platform
+    # misreports as a generic "Authentication failure".
+    - name: NODE_EXTRA_CA_CERTS
+      value: /etc/ssl/certs/step-ca.crt
+  extraVolumes:
+    - name: step-ca
+      configMap:
+        name: step-ca-bundle
+  extraVolumeMounts:
+    - name: step-ca
+      mountPath: /etc/ssl/certs/step-ca.crt
+      subPath: ca.crt
+      readOnly: true
   provider:
     name: forgejo
     endpoint: https://git.rsr.net/api/v1
