@@ -61,7 +61,7 @@ jobs:
           path: live
 
       - name: Setup Homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@e99025eb970cfa124b8284a35463d87426917478 # 2026.09.28.1
 
       - name: Setup Tools
         run: |
@@ -97,7 +97,7 @@ jobs:
 
       - name: Auto Merge PR if no changes
         if: ${{ contains(steps.diff.outputs.diff, 'No changes in detected in resources') }}
-        uses: peter-evans/enable-pull-request-automerge@v3
+        uses: peter-evans/enable-pull-request-automerge@a660677d5469627102a1c1e11409dd063606628d # v3.0.0
         with:
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: squash
