@@ -271,3 +271,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: renovate-operator
+    namespace: default
+    path: main/homelab/renovate-operator
+    manifest-paths: /main/homelab/renovate-operator
+    sync-wave: "-1"
+    helm:
+      enabled: true
