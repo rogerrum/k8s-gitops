@@ -33,6 +33,9 @@ forgejo:
         DEFAULT_REPO_UNITS: repo.code,repo.releases,repo.issues,repo.pulls,repo.actions
         DISABLED_REPO_UNITS: repo.ext_wiki,repo.ext_issues
         ROOT: /data/git/repositories
+      actions:
+        # Points straight at github.com so .forgejo/workflows/* can reference arbitrary GitHub Actions.
+        DEFAULT_ACTIONS_URL: https://github.com
       repository.pull-request:
         DEFAULT_MERGE_STYLE: squash
       repository.signing:
