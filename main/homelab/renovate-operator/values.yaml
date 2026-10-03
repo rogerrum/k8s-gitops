@@ -1,4 +1,23 @@
 renovate-operator:
+  # The operator's own Go binary calls git.rsr.net directly (webhook-sync),
+  # whose TLS cert is issued by the internal step-ca CA -- without this it
+  # fails with "tls: failed to verify certificate: x509: certificate signed
+  # by unknown authority". Go's SSL_CERT_FILE replaces the whole trust store
+  # (unlike Node's NODE_EXTRA_CA_CERTS, which appends), so step-ca-bundle
+  # must contain the full set (see infrastructure/trust-manager's
+  # useDefaultCAs source), not just the step-ca cert alone.
+  extraEnv:
+    - name: SSL_CERT_FILE
+      value: /etc/ssl/certs/step-ca-bundle.crt
+  extraVolumes:
+    - name: step-ca
+      configMap:
+        name: step-ca-bundle
+  extraVolumeMounts:
+    - name: step-ca
+      mountPath: /etc/ssl/certs/step-ca-bundle.crt
+      subPath: ca.crt
+      readOnly: true
   # Exposed internally only, behind the "internal" gateway's auth proxy
   # (security: authenticated label) -- the renovate-operator UI has no
   # built-in auth, so it must not be reachable without that layer.

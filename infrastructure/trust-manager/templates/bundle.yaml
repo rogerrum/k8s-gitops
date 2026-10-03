@@ -10,6 +10,12 @@ spec:
     - secret:
         name: step-ca-root-cert
         key: ca.crt
+    # Needed so this bundle is a complete trust store (system/Mozilla roots +
+    # step-ca), not just the step-ca cert alone. Node's NODE_EXTRA_CA_CERTS
+    # only *appends* to its built-in bundle, so this didn't matter there, but
+    # Go's SSL_CERT_FILE *replaces* the whole trust store -- renovate-operator
+    # (a Go binary) needs the full set or it loses trust in every other host.
+    - useDefaultCAs: true
 
   target:
     configMap:

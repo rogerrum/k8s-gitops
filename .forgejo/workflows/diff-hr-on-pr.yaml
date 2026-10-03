@@ -93,7 +93,14 @@ jobs:
               --diff-tool "diff")
 
             marker="<!-- helm-release-differ: ${file} -->"
-            body=$(jq -n --arg marker "$marker" --arg diff "$diff" '$marker + "\n" + $diff')
+            # Write the raw comment text to a file and use `jq -Rs` (raw
+            # input, slurp) to wrap it as a JSON string exactly once. Piping
+            # through `jq -n '$a + $b'` (no -r) instead would have produced
+            # an already-JSON-quoted/escaped string, which then got
+            # re-escaped a second time by the final {body: $body} wrap --
+            # the comment showed up with literal "\n" and no rendered
+            # ```diff fence instead of real formatting.
+            printf '%s\n%s' "$marker" "$diff" > comment.md
 
             existing_id=$(curl -fsSL -H "$AUTH" \
               "${API_BASE}/issues/${ISSUE_NUMBER}/comments" \
@@ -103,10 +110,10 @@ jobs:
             if [ -n "$existing_id" ]; then
               curl -fsSL -X PATCH -H "$AUTH" -H "Content-Type: application/json" \
                 "${API_BASE}/issues/comments/${existing_id}" \
-                --data-binary "$(jq -n --arg body "$body" '{body: $body}')"
+                --data-binary @<(jq -Rs '{body: .}' comment.md)
             else
               curl -fsSL -X POST -H "$AUTH" -H "Content-Type: application/json" \
                 "${API_BASE}/issues/${ISSUE_NUMBER}/comments" \
-                --data-binary "$(jq -n --arg body "$body" '{body: $body}')"
+                --data-binary @<(jq -Rs '{body: .}' comment.md)
             fi
           done
