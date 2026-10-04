@@ -42,8 +42,12 @@ spec:
     # into many extra minutes of dead time per run (observed a 26-minute
     # gap between "extraction complete" and the first branch being
     # processed after bumping this to 60s) -- fail fast and move on instead.
+    # git.rsr.net's own PR-listing API call (state=all, limit=100) has grown
+    # slow (observed 14s+) as PR history has accumulated, and otherwise
+    # inherits the 10s global default below -- causing spurious ETIMEDOUT
+    # "Repository has unknown error" aborts. Give it its own longer budget.
     - name: RENOVATE_HOST_RULES
-      value: '[{"matchHost":"git.rsr.net","allowInternal":true},{"abortOnError":false,"timeout":10000}]'
+      value: '[{"matchHost":"git.rsr.net","allowInternal":true,"timeout":30000},{"abortOnError":false,"timeout":10000}]'
     # git.rsr.net's TLS cert is issued by the internal step-ca CA. Without
     # this, Node's TLS client rejects the handshake with
     # UNABLE_TO_GET_ISSUER_CERT_LOCALLY, which Renovate's forgejo platform
