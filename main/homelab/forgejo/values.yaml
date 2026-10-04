@@ -69,8 +69,8 @@ forgejo:
       service:
         ALLOW_ONLY_EXTERNAL_REGISTRATION: true
         DEFAULT_ENABLE_TIMETRACKING: false
-        ENABLE_INTERNAL_SIGNIN: false
-        ENABLE_PASSWORD_SIGNIN_FORM: false
+        ENABLE_INTERNAL_SIGNIN: true
+        ENABLE_PASSWORD_SIGNIN_FORM: true
         SHOW_REGISTRATION_BUTTON: false
       service.explore:
         DISABLE_CODE_PAGE: false
