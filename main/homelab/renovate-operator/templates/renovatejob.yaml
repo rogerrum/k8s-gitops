@@ -36,8 +36,14 @@ spec:
     # even though it's just one flaky lookup. A hostRules entry with no
     # matchHost applies abortOnError:false to ALL hosts globally, so any
     # one flaky host just gets skipped instead of killing the whole run.
+    # Keep timeout SHORT (10s, close to Renovate's own default): a long
+    # timeout here means every individual flaky lookup silently hangs that
+    # long before giving up, and across 250+ dependencies those stack up
+    # into many extra minutes of dead time per run (observed a 26-minute
+    # gap between "extraction complete" and the first branch being
+    # processed after bumping this to 60s) -- fail fast and move on instead.
     - name: RENOVATE_HOST_RULES
-      value: '[{"matchHost":"git.rsr.net","allowInternal":true},{"abortOnError":false,"timeout":60000}]'
+      value: '[{"matchHost":"git.rsr.net","allowInternal":true},{"abortOnError":false,"timeout":10000}]'
     # git.rsr.net's TLS cert is issued by the internal step-ca CA. Without
     # this, Node's TLS client rejects the handshake with
     # UNABLE_TO_GET_ISSUER_CERT_LOCALLY, which Renovate's forgejo platform
