@@ -1,4 +1,15 @@
 renovate-operator:
+  config:
+    # Default (1800s/30min) was getting hit: our hostRules fix
+    # (abortOnError:false + a 60s per-host timeout on any flaky external
+    # registry, see renovatejob.yaml) makes runs tolerate/retry flaky hosts
+    # instead of fast-aborting, so a full run across 254+ dependencies can
+    # legitimately take longer than 30 minutes now. Without enough headroom,
+    # Kubernetes' job-controller force-kills the pod on DeadlineExceeded,
+    # which deletes the pod outright -- that's why the UI then shows
+    # "Failed to load logs, the job may have been cleaned up already" (the
+    # pod is really gone, not just GC'd by JOB_TTL_SECONDS_AFTER_FINISHED).
+    defaultJobActiveDeadlineSeconds: 3600
   # The operator's own Go binary calls git.rsr.net directly (webhook-sync),
   # whose TLS cert is issued by the internal step-ca CA -- without this it
   # fails with "tls: failed to verify certificate: x509: certificate signed
