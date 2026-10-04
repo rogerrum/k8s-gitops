@@ -2,7 +2,14 @@ forgejo:
   gitea:
     admin:
       username: ""
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: false # replaced by our own ServiceMonitor (templates/servicemonitor.yaml), which relabels job to gitea-http
     config:
+      metrics:
+        ENABLED_ISSUE_BY_LABEL: true
+        ENABLED_ISSUE_BY_REPOSITORY: true
       cache:
         ENABLED: true
         ADAPTER: redis
@@ -33,11 +40,13 @@ forgejo:
         DEFAULT_REPO_UNITS: repo.code,repo.releases,repo.issues,repo.pulls,repo.actions
         DISABLED_REPO_UNITS: repo.ext_wiki,repo.ext_issues
         ROOT: /data/git/repositories
+        DISABLE_DOWNLOAD_SOURCE_ARCHIVES: true
       actions:
         # Points straight at github.com so .forgejo/workflows/* can reference arbitrary GitHub Actions.
         DEFAULT_ACTIONS_URL: https://github.com
       repository.pull-request:
         DEFAULT_MERGE_STYLE: squash
+        DEFAULT_DELETE_BRANCH_AFTER_MERGE: true
       repository.signing:
         FORMAT: ssh
         SIGNING_KEY: /data/signing/ed25519.pub
@@ -47,8 +56,10 @@ forgejo:
         CRUD_ACTIONS: pubkey, parentsigned
         WIKI: never
         MERGES: pubkey
-        #security:
-        #REVERSE_PROXY_TRUSTED_PROXIES: 10.42.0.0/16
+      security:
+        # Required for Forgejo to trust Envoy Gateway's X-Forwarded-* headers, so API 404s
+        # come back as JSON instead of a 302 redirect with an HTML body. Pod CIDR is 10.42.0.0/16 (k3s/flannel default).
+        REVERSE_PROXY_TRUSTED_PROXIES: 10.42.0.0/16
       server:
         APP_DATA_PATH: /data/gitea
         ROOT_URL: https://git.rsr.net
@@ -123,7 +134,7 @@ forgejo:
     parentRefs:
       - name: internal
         namespace: kube-system
-        sectionName: ssh
+        sectionName: forgejo-ssh
 
 
   httpRoute:
@@ -147,3 +158,14 @@ forgejo:
     matches:
       timeouts:
         request: 300s
+
+grafanaDashboards:
+  - name: forgejo
+    namespace: default
+    folder: apps
+    allowCrossNamespaceImport: true
+    # renovate: depName=17802
+    url: https://grafana.com/api/dashboards/17802/revisions/3/download
+    datasources:
+      - inputName: DS_PROMETHEUS
+        datasourceName: Prometheus

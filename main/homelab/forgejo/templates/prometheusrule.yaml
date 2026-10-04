@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: forgejo-rules
+  namespace: default
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
+spec:
+  groups:
+    - name: forgejo.rules
+      rules:
+        - alert: ForgejoDown
+          annotations:
+            description: Forgejo has not been scraped successfully for 10 minutes. The web UI, git HTTP, and SSH clone paths may all be unreachable.
+            summary: Forgejo is down.
+          expr: up{namespace="default", job="gitea-http"} == 0
+          for: 10m
+          labels:
+            severity: critical
+        - alert: ForgejoHighLatency
+          annotations:
+            description: p95 request latency on the internal route has been above 1s for 15 minutes. SQLite write contention is a likely cause under concurrent Actions/webhook load.
+            summary: Forgejo request latency is elevated.
+          expr: histogram_quantile(0.95, sum by (le) (rate(envoy_cluster_upstream_rq_time_bucket{envoy_cluster_name="httproute/default/forgejo/rule/0"}[10m]))) > 1000
+          for: 15m
+          labels:
+            severity: warning
+        - alert: ForgejoHighMemoryUsage
+          annotations:
+            # No memory limit is set on the forgejo container (values.yaml), so this uses an absolute
+            # threshold instead of refApp's "% of limit" version - adjust if usage patterns change.
+            description: Forgejo's container memory working set has been above 1Gi for 15 minutes.
+            summary: Forgejo memory usage is elevated.
+          expr: container_memory_working_set_bytes{namespace="default", container="forgejo"} / 1073741824 > 1
+          for: 15m
+          labels:
+            severity: warning
+        - alert: ForgejoRunnerUnavailable
+          annotations:
+            description: The forgejo-runner deployment has had 0 available replicas for 10 minutes. Actions workflows cannot run.
+            summary: Forgejo Actions runner is unavailable.
+          expr: kube_deployment_status_replicas_available{namespace="default", deployment="forgejo-runner"} == 0
+          for: 10m
+          labels:
+            severity: critical
+        - alert: ForgejoConfigPVCNearFull
+          annotations:
+            description: The forgejo-config PVC has been above 85% used for 15 minutes.
+            summary: Forgejo config PVC is nearly full.
+          expr: 1 - kubelet_volume_stats_available_bytes{namespace="default", persistentvolumeclaim="forgejo-config"} / kubelet_volume_stats_capacity_bytes{namespace="default", persistentvolumeclaim="forgejo-config"} > 0.85
+          for: 15m
+          labels:
+            severity: warning

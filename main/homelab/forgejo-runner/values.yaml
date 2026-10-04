@@ -171,6 +171,9 @@ app-template:
         reloader.stakater.com/auto: "true"
       pod:
         automountServiceAccountToken: true
+        # Lets in-flight CI/Renovate job pods finish draining before the runner pod is killed
+        # on restart/upgrade, instead of being cut off by k8s's default 30s grace period.
+        terminationGracePeriodSeconds: 300
         labels:
           app.kubernetes.io/component: forgejo-runner
         securityContext:

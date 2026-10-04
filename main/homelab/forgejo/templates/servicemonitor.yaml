@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/servicemonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  # named forgejo-metrics, not forgejo: avoids collision with the chart's own (disabled) ServiceMonitor name
+  name: forgejo-metrics
+  namespace: default
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: forgejo
+      app.kubernetes.io/instance: forgejo
+  endpoints:
+    - port: http
+      # dashboard 17802 hardcodes job="gitea-http"
+      relabelings:
+        - targetLabel: job
+          replacement: gitea-http
