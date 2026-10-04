@@ -27,8 +27,14 @@ spec:
     # internal-only. hostRules.allowInternal is a self-hosted-admin-only
     # option (rejected if set in the repo's renovate.json5), so it must be
     # set here as global config instead.
+    # index.docker.io has intermittent transient connection resets
+    # ("Cannot call end after a stream was destroyed") from this network.
+    # Renovate's default behavior on any ExternalHostError is to abort the
+    # *entire* repo run (0 PRs touched, dashboard never reached), even
+    # though it's just one flaky lookup. abortOnError:false downgrades
+    # that one host's errors to a skip instead of a fatal abort.
     - name: RENOVATE_HOST_RULES
-      value: '[{"matchHost":"git.rsr.net","allowInternal":true}]'
+      value: '[{"matchHost":"git.rsr.net","allowInternal":true},{"matchHost":"docker.io","abortOnError":false,"timeout":60000}]'
     # git.rsr.net's TLS cert is issued by the internal step-ca CA. Without
     # this, Node's TLS client rejects the handshake with
     # UNABLE_TO_GET_ISSUER_CERT_LOCALLY, which Renovate's forgejo platform
