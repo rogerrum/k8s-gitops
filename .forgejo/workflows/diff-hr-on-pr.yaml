@@ -61,8 +61,7 @@ jobs:
           list-files: json
           filters: |
             changed:
-              - '**/Chart.yaml'
-              - '**/values.yaml'
+              - '**.yaml'
 
       # No Helm install step needed: ghcr.io/bjw-s-labs/forgejo-runner:ubuntu-24.04
       # (the image backing every label above, see podspec-default.yaml) already
@@ -80,10 +79,28 @@ jobs:
 
           AUTH="Authorization: token ${FORGEJO_TOKEN}"
 
-          # Collapse the file list down to the unique chart directories, same
-          # as the old "Extract yaml Files" step did.
-          mapfile -t dirs < <(echo "${CHANGED_FILES}" \
-            | jq -r '[.[] | split("/") | del(.[-1]) | join("/")] | unique | .[]')
+          # Resolve each changed yaml file to its owning chart root: walk up from
+          # the file's directory until we find a Chart.yaml. This covers any
+          # chart layout uniformly (templates/, templates/**, files/, crds/,
+          # etc.) without having to enumerate subdirectory names. Files not
+          # under any chart (e.g. raw manifests with no Chart.yaml ancestor)
+          # are skipped - there's no Helm release to diff for those.
+          declare -A seen
+          dirs=()
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            dir=$(dirname "$f")
+            while [ "$dir" != "." ] && [ "$dir" != "/" ]; do
+              if [ -f "$dir/Chart.yaml" ]; then
+                if [ -z "${seen[$dir]:-}" ]; then
+                  dirs+=("$dir")
+                  seen[$dir]=1
+                fi
+                break
+              fi
+              dir=$(dirname "$dir")
+            done
+          done < <(echo "${CHANGED_FILES}" | jq -r '.[]')
 
           for file in "${dirs[@]}"; do
             echo "=== Diffing ${file} ==="

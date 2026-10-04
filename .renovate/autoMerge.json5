@@ -1,52 +1,88 @@
 {
-  "packageRules": [
-    // auto-updates - daily
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
     {
-      "datasources": ["docker"],
-      "automerge": true,
-      "automergeType": "branch",
-      "requiredStatusChecks": null,
-      "schedule": "after 3am and before 6am",
-      "updateTypes": ["minor", "patch"],
-      "packageNames": [
-        "homeassistant/home-assistant",
-        "ghcr.io/home-assistant/home-assistant",
-        "nodered/node-red",
+      description: "Auto-merge trusted containers - anytime",
+      matchDatasources: ["docker"],
+      automerge: true,
+      automergeType: "pr",
+      ignoreTests: false,
+      matchUpdateTypes: ["minor", "patch"],
+      matchPackageNames: [
+        "ghcr.io/tarampampam/error-pages",
+        "/grafana/"
+      ],
+    },
+    {
+      description: "Auto-merge trusted containers - daily",
+      matchDatasources: ["docker"],
+      automerge: true,
+      automergeType: "pr",
+      ignoreTests: false,
+      schedule: ["after 3am and before 6am"],
+      matchUpdateTypes: ["minor", "patch"],
+      matchPackageNames: [
+        "ghcr.io/coder/code-server",
+        "ghcr.io/itzg/minecraft-server",
         "ghcr.io/zwave-js/zwave-js-ui",
-        "codercom/code-server"
-      ]
+        "itzg/mc-router",
+        "nodered/node-red",
+      ],
     },
     {
-      "datasources": ["helm"],
-      "automerge": true,
-      "requiredStatusChecks": null,
-      "schedule": "after 3am and before 7am",
-      "updateTypes": ["minor", "patch"],
-      "packageNames": [
-       // "grafana",
-        "thanos",
-        "reloader",
-        "kube-prometheus-stack"
-      ]
+      description: "Auto-merge trusted containers - weekly",
+      matchDatasources: ["docker"],
+      automerge: true,
+      automergeType: "pr",
+      ignoreTests: false,
+      schedule: ["before 3am on Monday"],
+      matchUpdateTypes: ["minor", "patch"],
+      matchPackageNames: [
+        "ghcr.io/renovatebot/renovate"
+      ],
     },
     {
-      "description": "Auto merge GitHub Actions",
-      "matchManagers": ["github-actions"],
-      "matchDatasources": ["github-tags"],
-      "automerge": true,
-      "ignoreTests": true,
-      "automergeType": "branch",
-      "matchUpdateTypes": ["minor", "patch"]
+      description: "Auto-merge leaf-app patch releases only - daily",
+      matchDatasources: ["docker"],
+      automerge: true,
+      automergeType: "pr",
+      ignoreTests: false,
+      schedule: ["after 1am and before 5am"],
+      matchUpdateTypes: ["patch"],
+      matchPackageNames: [
+        "ghcr.io/mendhak/http-https-echo",
+        "ghcr.io/k8s-at-home/unpoller",
+      ],
     },
     {
-      "description": "Auto merge container digests",
-      "matchDatasources": ["docker"],
-      "automerge": false,
-      "automergeType": "branch",
-      "requiredStatusChecks": null,
-      "matchUpdateTypes": ["digest"],
-      "matchPackagePattern": ["ghcr.io/onedr0p"],
-    }
-  ]
+      description: "Auto-merge all container digest updates",
+      matchDatasources: ["docker"],
+      automerge: true,
+      automergeType: "pr",
+      ignoreTests: false,
+      schedule: ["after 2am and before 5am"],
+      matchUpdateTypes: ["digest"],
+    },
+    {
+      description: "Auto-merge home-assistant patch releases only - daily",
+      matchDatasources: ["docker"],
+      automerge: true,
+      automergeType: "pr",
+      ignoreTests: false,
+      schedule: ["after 3am and before 5am"],
+      matchUpdateTypes: ["patch"],
+      matchPackageNames: [
+        "ghcr.io/home-operations/home-assistant",
+      ],
+    },
+    {
+      description: "Auto-merge GitHub Actions",
+      matchManagers: ["github-actions"],
+      automerge: true,
+      automergeType: "pr",
+      matchUpdateTypes: ["minor", "patch", "digest"],
+      minimumReleaseAge: "3 days",
+      ignoreTests: true,
+    },
+  ],
 }
-

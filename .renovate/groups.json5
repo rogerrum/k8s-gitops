@@ -1,48 +1,100 @@
 {
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      "description": "1Password Group",
-      "groupName": "1Password",
-      "matchPackagePatterns": ["1password"],
-      "matchDatasources": ["docker"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
+      description: "K3s Upgrade Plan Group",
+      groupName: "k3s-upgrade-plan",
+      matchDatasources: ["github-releases"],
+      matchPackagePatterns: ["k3s-io/k3s"],
+      additionalBranchPrefix: "",
+      separateMinorPatch: true,
+      separateMultipleMajor: true,
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
       },
-      "separateMinorPatch": true
     },
     {
-      "matchDatasources": ["github-releases"],
-      "matchPackagePatterns": ["k3s-io/k3s"],
-      "groupName": "k3s-upgrade-plan",
-      "additionalBranchPrefix": "",
-      "separateMinorPatch": true,
-      "separateMultipleMajor": true
+      description: "System Upgrade Controller Group",
+      groupName: "system-upgrade-controller-suite",
+      matchDatasources: ["github-tags", "docker"],
+      matchPackagePatterns: ["rancher/system-upgrade-controller"],
+      additionalBranchPrefix: "",
+      separateMinorPatch: true,
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
     },
     {
-      "matchDatasources": ["github-tags", "docker"],
-      "matchPackagePatterns": ["rancher/system-upgrade-controller"],
-      "groupName": "system-upgrade-controller-suite",
-      "additionalBranchPrefix": "",
-      "separateMinorPatch": true
+      description: "Cert-Manager Group",
+      groupName: "Cert-Manager",
+      matchDatasources: ["docker", "helm"],
+      matchPackageNames: ["/cert-manager/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
     },
     {
-      description: "Thanos image and chart - versions do not match",
-      groupName: "Thanos",
-      matchDatasources: ["docker", "github-releases", "helm"],
-      matchPackagePatterns: ["quay.io/thanos/thanos", "thanos"],
-      matchUpdateTypes: ["minor", "patch"],
-      group: { commitMessageTopic: "{{{groupName}}} group" },
-      separateMinorPatch: false,
+      description: "Cilium Group",
+      groupName: "Cilium",
+      matchDatasources: ["docker", "github-releases", "helm", "git-tags"],
+      matchPackageNames: ["/cilium/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
     },
     {
-      description: "Vector image and chart - versions do not match",
-      groupName: "Vector",
-      matchDatasources: ["docker", "github-releases", "helm"],
-      matchPackagePatterns: ["vector"],
-      matchUpdateTypes: ["minor", "patch"],
-      group: { commitMessageTopic: "{{{groupName}}} group" },
-      separateMinorPatch: false,
-      stabilityDays: 2,
-    }
+      description: "CNPG Group",
+      groupName: "CNPG",
+      matchDatasources: ["docker", "github-releases", "helm", "git-tags"],
+      matchPackagePatterns: ["cloudnative-pg", "cloudnative-pg/cloudnative-pg"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Emqx Group",
+      groupName: "Emqx",
+      matchDatasources: ["docker", "github-releases", "helm", "git-tags"],
+      matchPackageNames: ["/emqx/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "External Secrets Operator Group",
+      groupName: "External Secrets Operator",
+      matchDatasources: ["docker", "github-releases", "helm", "git-tags"],
+      matchPackagePatterns: ["external-secrets"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Intel Device Plugins Group",
+      groupName: "Intel-Device-Plugins",
+      matchDatasources: ["docker", "helm"],
+      matchPackageNames: ["/intel-device-plugins-operator/", "/intel-device-plugins-gpu/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "node-feature-discovery Group",
+      groupName: "node feature discovery",
+      matchDatasources: ["docker", "github-releases", "helm", "git-tags"],
+      matchPackagePatterns: ["node-feature-discovery"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Silence Operator Group",
+      groupName: "Silence Operator",
+      matchDatasources: ["docker", "github-releases", "helm", "git-tags"],
+      matchPackagePatterns: ["silence-operator", "giantswarm/silence-operator"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
   ],
 }

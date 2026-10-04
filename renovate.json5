@@ -1,53 +1,66 @@
 {
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
     'config:recommended',
     'docker:enableMajor',
+    'helpers:pinGitHubActionDigests',
+    'local>roger/k8s-gitops//.renovate/allowedVersions.json5',
+    'local>roger/k8s-gitops//.renovate/autoMerge.json5',
+    'local>roger/k8s-gitops//.renovate/customManagers.json5',
+    'local>roger/k8s-gitops//.renovate/disabledDatasources.json5',
+    'local>roger/k8s-gitops//.renovate/grafanaDashboards.json5',
+    'local>roger/k8s-gitops//.renovate/groups.json5',
+    'local>roger/k8s-gitops//.renovate/labels.json5',
+    'local>roger/k8s-gitops//.renovate/overrides.json5',
+    'local>roger/k8s-gitops//.renovate/semanticCommits.json5',
     ':disableRateLimiting',
     ':dependencyDashboard',
     ':enablePreCommit',
     ':semanticCommits',
-    ':automergeDigest',
-    ':automergeBranch',
-    'local>roger/k8s-gitops//.renovate/automerge-github-actions.json',
-    'local>roger/k8s-gitops//.renovate/commit-message.json',
-    'local>roger/k8s-gitops//.renovate/pr-labels.json',
-    'local>roger/k8s-gitops//.renovate/semantic-commits.json',
-    'local>roger/k8s-gitops//.renovate/custom-managers.json5',
-    'local>roger/k8s-gitops//.renovate/allowedVersions.json5',
-    'local>roger/k8s-gitops//.renovate/versioning.json5',
-    'local>roger/k8s-gitops//.renovate/groups.json5',
-    'local>roger/k8s-gitops//.renovate/grafanaDashboards.json5',
-    'local>roger/k8s-gitops//.renovate/autoMerge.json5',
-    'local>roger/k8s-gitops//.renovate/disabledDatasources.json5',
+    ':timezone(America/Chicago)',
   ],
-  enabled: true,
-  timezone: 'America/Chicago',
-  dependencyDashboard: true,
-  // Deliberately distinct from the old GitHub-era "Renovate Dashboard"
-  // title: that issue (#8) was migrated over from GitHub and its stale
+
+  rebaseWhen: 'auto',
+  platformAutomerge: true,
+  // Forgejo-specific (not in refApp): needed for Renovate's SSH-signed commits
+  // (RENOVATE_GIT_PRIVATE_KEY) to be created via Forgejo's commit API.
+  platformCommit: 'enabled',
+  // GHCR/OCI images and github-actions releases often lack a releaseTimestamp;
+  // without this, Renovate's timestamp-required default marks them pending
+  // forever and never opens a PR, even once minimumReleaseAge would otherwise
+  // be satisfied.
+  minimumReleaseAgeBehaviour: 'timestamp-optional',
+  // Posting the renovate/minimum-release-age status check crashes on Forgejo
+  // (mirrors renovatebot/renovate#44119's GitHub case: an error setting the
+  // branch status gets swallowed by processBranch and reported as
+  // repository-changed, aborting every run right after the first branch is
+  // created). minimumReleaseAge gating itself still applies; this just stops
+  // Renovate from posting a status about it.
+  statusCheckNames: {
+    minimumReleaseAge: null,
+  },
+
+  // Deliberately distinct from the old GitHub-era "Renovate Dashboard" title:
+  // that issue (#8) was migrated over from GitHub and its stale
   // checkbox/branch state confused self-hosted Renovate's edited-branch
   // detection on Forgejo. Keeping a different title guarantees a clean
   // issue instead of Renovate reusing/reopening the old one.
   dependencyDashboardTitle: 'Renovate Dashboard (Forgejo)',
   suppressNotifications: [
+    'prEditedNotification',
     'prIgnoreNotification',
   ],
-  rebaseWhen: 'conflicted',
-  commitBodyTable: true,
-  platformCommit: 'enabled',
-  gitAuthor: 'Roger Rumao <rogerrum@users.noreply.github.com>',
-  commitBody: 'Signed-off-by: Roger Rumao <rogerrum@users.noreply.github.com>',
+
+  // No gitAuthor override (matches refApp): Renovate defaults commit author to
+  // the authenticated bot account's own identity, which is required for the
+  // commit's SSH signature to resolve to that account's registered signing
+  // key in Forgejo.
   ignorePaths: [
     'setup/**',
-    '.taskfiles/**',
-    '**/archive/**',
   ],
   'helm-values': {
     managerFilePatterns: [
       '/./.+\\.yaml$/',
-    ],
-    ignorePaths: [
-      '**/archive/**',
     ],
   },
   kubernetes: {
@@ -56,8 +69,7 @@
     ],
     ignorePaths: [
       '.github',
-    '.forgejo',
-    '**/archive/**',
-  ],
+      '.forgejo',
+    ],
   },
 }

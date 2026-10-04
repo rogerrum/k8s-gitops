@@ -1,0 +1,11 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
+    {
+      description: "Victoria Logs - 3-day cooldown before raising upgrade PRs",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/victoriametrics\\/helm-charts\\/victoria-logs/"],
+      minimumReleaseAge: "3 days",
+    },
+  ],
+}

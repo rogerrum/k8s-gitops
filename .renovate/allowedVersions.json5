@@ -1,32 +1,4 @@
 {
-  packageRules: [
-    // pin package versions
-//    {
-//      "matchDatasources": ["docker"],
-//      "allowedVersions": "<13",
-//      "matchPackageNames": [
-//        "postgres",
-//        "docker.io/library/postgres"
-//      ]
-//    },
-    {
-      "matchDatasources": ["docker"],
-      "allowedVersions": "<2",
-      "matchPackageNames": [
-        "influxdb"
-      ]
-    },
-    {
-      "matchDatasources": ["docker"],
-      "allowedVersions": "!/2021.11.28$/",
-      "matchPackageNames": [
-        "heimdall"
-      ]
-    },
-    {
-      "matchDatasources": ["helm"],
-      "allowedVersions": "<2",
-      "matchPackageNames": ["app-template"]
-    },
-  ],
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [],
 }

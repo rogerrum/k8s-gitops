@@ -11,24 +11,26 @@
     {
       customType: "regex",
       description: "Process Grafana dashboards",
-      fileMatch: ["./.+\\.yaml$"],
+      fileMatch: ["\\.ya?ml$"],
       matchStrings: [
-        '# renovate: dashboardName="(?<depName>.*)"\\n(?<indentation>\\s+)gnetId: (?<packageName>\\d+)\\n.+revision: (?<currentValue>\\d+)',
+        "dashboards\\/(?<depName>\\d+)\\/revisions\\/(?<currentValue>\\d+)\\/download",
       ],
-      autoReplaceStringTemplate: '# renovate: dashboardName="{{{depName}}}"\n{{{indentation}}}gnetId: {{{packageName}}}\n{{{indentation}}}revision: {{{newValue}}}',
+      autoReplaceStringTemplate: "dashboards/{{{depName}}}/revisions/{{{newValue}}}/download",
       datasourceTemplate: "custom.grafana-dashboards",
       versioningTemplate: "regex:^(?<major>\\d+)$",
     },
   ],
   packageRules: [
     {
-      addLabels: ["renovate/grafana-dashboard"],
       matchDatasources: ["custom.grafana-dashboards"],
       matchUpdateTypes: ["major"],
+      addLabels: ["renovate/grafana-dashboard"],
+      automerge: true,
+      automergeType: "pr",
       semanticCommitScope: "grafana-dashboards",
       semanticCommitType: "chore",
       commitMessageTopic: "dashboard {{depName}}",
-      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+      commitMessageExtra: "({{currentVersion}} → {{newVersion}})",
     },
   ],
 }
