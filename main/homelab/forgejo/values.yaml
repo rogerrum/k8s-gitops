@@ -121,6 +121,13 @@ forgejo:
     repository: forgejo/forgejo
     tag: 16.0.4-rootless
 
+  # OnRootMismatch skips the recursive chown of the data volume on every pod
+  # start once ownership is already correct, avoiding the slow
+  # "VolumePermissionChangeInProgress" startup delay on our large git data volume.
+  podSecurityContext:
+    fsGroup: 1000
+    fsGroupChangePolicy: OnRootMismatch
+
   persistence:
     create: false
     claimName: forgejo-config
