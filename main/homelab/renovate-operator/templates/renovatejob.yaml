@@ -12,7 +12,7 @@ spec:
   discoveryFilters:
     - roger/k8s-gitops
   # Native forgejo platform support landed in Renovate 41.41.0; must stay >= that.
-  image: ghcr.io/renovatebot/renovate:44.132.6@sha256:5aaf44a4e7a7f32c82f1854189317555739209283469b1240d630f1c8edf4d4a
+  image: ghcr.io/renovatebot/renovate:44.133.0@sha256:05c512c35c764ef6a179e69c3b30567eca254d67f13a0143479fe3c84852c67a
   parallelism: 1
   # Renovate's own SSH key for commit signing, separate from the instance's
   # server-side signing key in main/homelab/forgejo/: one key can only be
