@@ -49,7 +49,7 @@ grafanaDashboards:
     namespace: monitoring
     folder: networking
     # renovate: depName=13665
-    url: https://grafana.com/api/dashboards/13665/revisions/1/download
+    url: https://grafana.com/api/dashboards/13665/revisions/4/download
     datasources:
       - inputName: DS_PROMETHEUS
         datasourceName: Prometheus
