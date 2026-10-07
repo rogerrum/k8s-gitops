@@ -119,7 +119,7 @@ forgejo:
     rootless: true
     registry: code.forgejo.org
     repository: forgejo/forgejo
-    tag: 16.0.4-rootless
+    tag: 16.0.5-rootless
 
   # OnRootMismatch skips the recursive chown of the data volume on every pod
   # start once ownership is already correct, avoiding the slow
