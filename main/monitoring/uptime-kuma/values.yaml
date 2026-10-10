@@ -45,6 +45,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - up.rsr.net
       rules:
@@ -68,5 +69,3 @@ app-template:
 #      enabled: true
 #      type: secret
 #      name: *tls-cert
-
-

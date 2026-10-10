@@ -61,6 +61,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - karma.rsr.net
       rules:
@@ -71,4 +72,3 @@ app-template:
           backendRefs:
             - name: karma
               port: *port
-

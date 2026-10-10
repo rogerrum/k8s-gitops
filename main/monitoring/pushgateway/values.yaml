@@ -13,6 +13,7 @@ prometheus-pushgateway:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
 
       hostnames:
         - pushgateway.rsr.net
