@@ -163,6 +163,8 @@ app-template:
               subPath: code-server-home
           init-chmod-fix:
             - path: /config
+          venv-reset:
+            - path: /config
 
     hass-cache:
       storageClass: "longhorn"
@@ -266,6 +268,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - ha-config.rsr.net
       rules:
