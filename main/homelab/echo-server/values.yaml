@@ -1,31 +1,77 @@
 app-template:
+  defaultPodOptions:
+    securityContext:
+      fsGroup: 1001
+      fsGroupChangePolicy: OnRootMismatch
+      runAsGroup: 1001
+      runAsNonRoot: true
+      runAsUser: 1001
+      seccompProfile:
+        type: RuntimeDefault
+
   controllers:
     echo-server:
       containers:
         app:
           image:
-            repository: ghcr.io/mendhak/http-https-echo
-            tag: 42@sha256:a265f55c86cb3baead76fdf379dc8e9e6440ed121874e101e60b833e05bce8d4
+            repository: ghcr.io/home-operations/echo
+            tag: 0.2.5@sha256:1f1417684b255721eebb98b486df77b4619183330a1ef0f1f6b01e73601dbe41
           env:
-            HTTP_PORT: &port 8080
-            LOG_WITHOUT_NEWLINE: "true"
-            LOG_IGNORE_PATH: "/healthz"
+            ECHO_HTTP_PORT: &port 8080
+            ECHO_METRICS_PORT: &metrics-port 8081
+            ECHO_METRICS_ENABLED: "true"
+            ECHO_LOG_FORMAT: json
+            ECHO_PRETTY_PRINT: "true"
+            ECHO_KUBERNETES: "true"
+            ECHO_POD_NAME:
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            ECHO_POD_NAMESPACE:
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            ECHO_POD_IP:
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            ECHO_NODE_NAME:
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
           probes:
-            liveness:
+            liveness: &probes
               enabled: true
-            readiness:
-              enabled: true
+              custom: true
+              spec:
+                httpGet:
+                  path: /healthz
+                  port: *port
+                initialDelaySeconds: 0
+                periodSeconds: 10
+                timeoutSeconds: 1
+                failureThreshold: 3
+            readiness: *probes
             startup:
               enabled: true
+              custom: true
               spec:
+                httpGet:
+                  path: /healthz
+                  port: *port
                 failureThreshold: 30
                 periodSeconds: 5
           resources:
             requests:
               cpu: 5m
-              memory: 64M
+              memory: 64Mi
             limits:
-              memory: 64M
+              memory: 96Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
 
   service:
     app:
@@ -33,6 +79,16 @@ app-template:
       ports:
         http:
           port: *port
+        metrics:
+          port: *metrics-port
+
+  serviceMonitor:
+    app:
+      endpoints:
+        - port: metrics
+          path: /metrics
+          interval: 1m
+          scrapeTimeout: 30s
 
   route:
     app:
