@@ -6,6 +6,13 @@ app-template:
 
       pod:
         enableServiceLinks: false
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: storage
+                      operator: DoesNotExist
 
       containers:
         main:

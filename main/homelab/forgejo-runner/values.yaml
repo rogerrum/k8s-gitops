@@ -43,6 +43,8 @@ app-template:
                   - matchExpressions:
                       - key: node-role.kubernetes.io/control-plane
                         operator: DoesNotExist
+                      - key: storage
+                        operator: DoesNotExist
                       - key: kubernetes.io/arch
                         operator: In
                         values: [amd64]
@@ -78,6 +80,8 @@ app-template:
                 nodeSelectorTerms:
                   - matchExpressions:
                       - key: node-role.kubernetes.io/control-plane
+                        operator: DoesNotExist
+                      - key: storage
                         operator: DoesNotExist
                       - key: kubernetes.io/arch
                         operator: In
@@ -176,6 +180,13 @@ app-template:
         terminationGracePeriodSeconds: 300
         labels:
           app.kubernetes.io/component: forgejo-runner
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: storage
+                      operator: DoesNotExist
         securityContext:
           fsGroup: 1000
           fsGroupChangePolicy: OnRootMismatch

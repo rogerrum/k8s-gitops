@@ -91,6 +91,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - garage.rsr.net
       rules:
@@ -101,6 +102,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - s3-garage.rsr.net
       rules:
