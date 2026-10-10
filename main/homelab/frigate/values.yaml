@@ -34,17 +34,19 @@ app-template:
           securityContext:
             privileged: true
           resources:
+            claims:
+              - name: gpu
             requests:
               memory: 2000Mi
               cpu: 1500m
-              gpu.intel.com/i915: 1
+              generic-device-plugin/coral: 1
             limits:
               memory: 4000Mi
-              gpu.intel.com/i915: 1
+              generic-device-plugin/coral: 1
       pod:
-        nodeSelector:
-          google.feature.node.kubernetes.io/coral: "true"
-          intel.feature.node.kubernetes.io/gpu: "true"
+        resourceClaims:
+          - name: gpu
+            resourceClaimTemplateName: frigate
   service:
     main:
       controller: main
@@ -102,13 +104,20 @@ app-template:
       globalMounts:
 #        - path: /tmp/cache
         - path: /dev/shm
-    usb:
-      type: hostPath
-      hostPath: /dev/bus/usb
-      hostPathType: Directory
-      globalMounts:
-        - path: /dev/bus/usb
     media:
       existingClaim: nas-media-pvc
       globalMounts:
         - path: /media
+
+  rawResources:
+    gpu:
+      manifest:
+        apiVersion: resource.k8s.io/v1
+        kind: ResourceClaimTemplate
+        spec:
+          spec:
+            devices:
+              requests:
+                - name: gpu
+                  exactly:
+                    deviceClassName: gpu.intel.com
