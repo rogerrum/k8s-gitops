@@ -23,24 +23,19 @@ app-template:
                 failureThreshold: 3
             readiness: *probes
           securityContext:
-            privileged: true
+            allowPrivilegeEscalation: false
+            capabilities: { drop: ["ALL"] }
+            readOnlyRootFilesystem: true
           resources:
             requests:
               cpu: 10m
               memory: 200Mi
+              generic-device-plugin/zwave: 1
             limits:
               memory: 512Mi
+              generic-device-plugin/zwave: 1
 
   defaultPodOptions:
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: nortek.feature.node.kubernetes.io/zwave
-                  operator: In
-                  values:
-                    - "true"
     tolerations:
       - key: "arm64"
         operator: "Exists"
@@ -83,10 +78,4 @@ app-template:
         - path: /usr/src/app/store
     tmp:
       type: emptyDir
-
-    usb:
-      type: hostPath
-      hostPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C130101F-if00-port0
-      hostPathType: CharDevice
-
 
