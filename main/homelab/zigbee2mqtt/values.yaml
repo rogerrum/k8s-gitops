@@ -37,7 +37,7 @@ app-template:
             ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE: 115200
             ZIGBEE2MQTT_CONFIG_SERIAL_DISABLE_LED: "false"
             ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: zstack
-            ZIGBEE2MQTT_CONFIG_SERIAL_PORT: "/dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_72de2ed2c445ed11a8848da40a86e0b4-if00-port0"
+            ZIGBEE2MQTT_CONFIG_SERIAL_PORT: "/dev/ttyUSB0"
           envFrom:
             - secretRef:
                 name: zigbee2mqtt-secret
@@ -55,42 +55,46 @@ app-template:
             requests:
               cpu: 10m
               memory: 128Mi
+              generic-device-plugin/zigbee: 1
             limits:
               memory: 512Mi
+              generic-device-plugin/zigbee: 1
 
           securityContext:
-            privileged: true
+            allowPrivilegeEscalation: false
+            capabilities: { drop: ["ALL"] }
+            readOnlyRootFilesystem: true
+      initContainers:
+        init-chmod-fix:
+          image:
+            repository: busybox
+            tag: latest
+          command: [ 'sh', '-c', 'chown -R 1001:1001 /config && chmod -R u+rwX,g+rwX /config' ]
+          securityContext:
+            runAsUser: 0 # Temporary root privileges to override stale root-owned files
+            runAsNonRoot: false
   defaultPodOptions:
-
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - { key: "sonoff.feature.node.kubernetes.io/zigbee", operator: In, values: [ "true" ] }
+    securityContext:
+      runAsUser: 1001
+      runAsGroup: 1001
+      runAsNonRoot: true
+      supplementalGroups: [20] # dialout group, required for /dev/ttyUSB0 access
 
     tolerations:
       - key: "arm64"
         operator: "Exists"
-
-  #        securityContext:
-  #          runAsUser: 568
-  #          runAsGroup: 568
-  #          fsGroup: 568
-  #          fsGroupChangePolicy: OnRootMismatch
 
 
 
   persistence:
     config:
       existingClaim: zigbee2mqtt-config
-      globalMounts:
-        - path: /config
-
-    zigbee-usb:
-      enabled: true
-      type: hostPath
-      hostPath: /dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_72de2ed2c445ed11a8848da40a86e0b4-if00-port0
+      advancedMounts:
+        main:
+          main:
+            - path: /config
+          init-chmod-fix:
+            - path: /config
 
   service:
     main:
