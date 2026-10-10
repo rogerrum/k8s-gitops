@@ -102,6 +102,22 @@ applications:
     helm:
       enabled: true
 
+  - name: intel-gpu-resource-driver
+    namespace: kube-system
+    path: infrastructure/intel-gpu-resource-driver
+    manifest-paths: /infrastructure/intel-gpu-resource-driver
+    sync-wave: "-3"
+    helm:
+      enabled: true
+
+  - name: generic-device-plugin
+    namespace: kube-system
+    path: infrastructure/generic-device-plugin
+    manifest-paths: /infrastructure/generic-device-plugin
+    sync-wave: "-3"
+    helm:
+      enabled: true
+
   - name: kube-cleanup-operator
     namespace: kube-system
     path: infrastructure/kube-cleanup-operator

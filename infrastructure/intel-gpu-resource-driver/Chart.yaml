@@ -1,0 +1,8 @@
+name: intel-gpu-resource-driver
+apiVersion: v2
+version: 1.0.0
+dependencies:
+  - name: intel-gpu-resource-driver-chart
+    version: 0.12.1
+    repository: oci://ghcr.io/intel
+    alias: intel-gpu-resource-driver
