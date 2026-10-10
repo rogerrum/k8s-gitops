@@ -36,6 +36,11 @@ app-template:
               generic-device-plugin/zwave: 1
 
   defaultPodOptions:
+    securityContext:
+      runAsUser: 1001
+      runAsGroup: 1001
+      runAsNonRoot: true
+      supplementalGroups: [20] # dialout group, required for /dev/ttyACM0 access
     tolerations:
       - key: "arm64"
         operator: "Exists"
