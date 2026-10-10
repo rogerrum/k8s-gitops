@@ -1,6 +1,16 @@
 app-template:
   controllers:
     zwave:
+      initContainers:
+        init-chmod-fix:
+          image:
+            repository: busybox
+            tag: latest
+          command: [ 'sh', '-c', 'chown -R 1001:1001 /usr/src/app/store && chmod -R u+rwX,g+rwX /usr/src/app/store' ]
+          securityContext:
+            runAsUser: 0 # Temporary root privileges to override stale root-owned files
+            runAsNonRoot: false
+
       containers:
         app:
           image:
@@ -79,8 +89,12 @@ app-template:
   persistence:
     config:
       existingClaim: zwavejs2mqtt-config
-      globalMounts:
-        - path: /usr/src/app/store
+      advancedMounts:
+        zwave:
+          app:
+            - path: /usr/src/app/store
+          init-chmod-fix:
+            - path: /usr/src/app/store
     tmp:
       type: emptyDir
 
