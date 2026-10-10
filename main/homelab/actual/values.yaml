@@ -48,6 +48,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - actual.rsr.net
       rules:
@@ -66,6 +67,3 @@ app-template:
         main:
           main:
             - path: /data
-
-
-

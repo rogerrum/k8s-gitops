@@ -28,6 +28,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - tools.rsr.net
       rules:
@@ -38,4 +39,3 @@ app-template:
           backendRefs:
             - name: cyberchef
               port: 8000
-

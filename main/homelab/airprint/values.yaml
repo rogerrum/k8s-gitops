@@ -53,6 +53,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - airprint.rsr.net
       rules:
@@ -63,7 +64,3 @@ app-template:
           backendRefs:
             - name: airprint
               port: *port
-
-
-
-
