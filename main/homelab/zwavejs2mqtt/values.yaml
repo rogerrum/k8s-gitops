@@ -75,6 +75,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - zwavejs2mqtt.rsr.net
       rules:
@@ -97,4 +98,3 @@ app-template:
             - path: /usr/src/app/store
     tmp:
       type: emptyDir
-

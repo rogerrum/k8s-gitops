@@ -113,6 +113,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - zigbee.rsr.net
       rules:
@@ -123,5 +124,3 @@ app-template:
           backendRefs:
             - name: zigbee2mqtt
               port: 8080
-
-
