@@ -27,6 +27,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - oscar.rsr.net
       rules:

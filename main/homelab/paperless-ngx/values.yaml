@@ -4,7 +4,7 @@ app-template:
       forceRename: paperless
       annotations:
         reloader.stakater.com/auto: "true"
-      
+
       containers:
         app:
           image:
@@ -65,7 +65,7 @@ app-template:
               memory: 2Gi
             limits:
               memory: 6Gi
-    
+
     redis:
       containers:
         redis:
@@ -78,7 +78,7 @@ app-template:
               memory: 32Mi
             limits:
               memory: 128Mi
-  
+
   service:
     app:
       forceRename: paperless
@@ -92,7 +92,7 @@ app-template:
       ports:
         http:
           port: 6379
-  
+
   persistence:
     data:
       existingClaim: paperless-ngx-data
@@ -108,7 +108,7 @@ app-template:
         paperless:
           app:
             - path: /data/nas
-  
+
   route:
     app:
       annotations:
@@ -121,8 +121,8 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       rules:
         - backendRefs:
             - identifier: app
               port: http
-

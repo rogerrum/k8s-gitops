@@ -87,6 +87,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - planka.rsr.net
       rules:
@@ -110,4 +111,3 @@ app-template:
               subPath: attachments
             - path: /app/data/protected/background-images
               subPath: background-images
-

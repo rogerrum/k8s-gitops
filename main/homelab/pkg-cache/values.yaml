@@ -29,6 +29,13 @@ app-template:
   controllers:
     verdaccio:
       pod:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: storage
+                      operator: DoesNotExist
         securityContext:
           fsGroup: 65533
           fsGroupChangePolicy: "OnRootMismatch"
@@ -50,6 +57,14 @@ app-template:
               memory: 1Gi
 
     devpi:
+      pod:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: storage
+                      operator: DoesNotExist
       initContainers:
         init:
           image:
@@ -132,6 +147,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       rules:
         - matches:
             - path:
@@ -152,6 +168,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       rules:
         - matches:
             - path:
