@@ -156,6 +156,7 @@ forgejo:
     parentRefs:
       - name: internal
         namespace: kube-system
+        sectionName: https
     filters:
       - type: RequestHeaderModifier
         requestHeaderModifier:

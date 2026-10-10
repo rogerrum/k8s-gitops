@@ -13,6 +13,7 @@ spec:
   parentRefs:
     - name: public
       namespace: kube-system
+      sectionName: https
   rules:
     - matches:
         - path:

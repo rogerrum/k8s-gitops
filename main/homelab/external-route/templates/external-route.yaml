@@ -41,6 +41,7 @@ metadata:
 spec:
   parentRefs:
     - name: internal
+      sectionName: https
   hostnames:
     - {{ .host }}
   rules:
