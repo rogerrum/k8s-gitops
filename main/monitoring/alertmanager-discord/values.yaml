@@ -1,31 +1,34 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/common-3.0.1/charts/library/common/values.schema.json
 app-template:
-  image:
-    repository:  ghcr.io/rogerrum/alertmanager-discord
-    #tag: "1.0.6"
-    tag: "main"
-    pullPolicy: IfNotPresent
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: ghcr.io/rogerrum/alertmanager-discord
+            #tag: "1.0.6"
+            tag: "main"
+            pullPolicy: IfNotPresent
+          env:
+            DISCORD_AVATAR_URL: "https://avatars3.githubusercontent.com/u/3380462"
+            VERBOSE: "ON"
+            DISCORD_USERNAME: Alertmanager
+            DISCORD_WEBHOOK:
+              valueFrom:
+                secretKeyRef:
+                  name: alertmanager-discord-secret
+                  key: DISCORD_WEBHOOK
+          probes:
+            liveness:
+              enabled: false
+            readiness:
+              enabled: false
+            startup:
+              enabled: false
 
   service:
     main:
-      enabled: true
+      controller: main
       ports:
         http:
           port: &port 9094
-
-  env:
-    DISCORD_AVATAR_URL: "https://avatars3.githubusercontent.com/u/3380462"
-    VERBOSE: "ON"
-    DISCORD_USERNAME: Alertmanager
-    DISCORD_WEBHOOK:
-      valueFrom:
-        secretKeyRef:
-          name: alertmanager-discord-secret
-          key: DISCORD_WEBHOOK
-
-  probes:
-    liveness:
-      enabled: false
-    readiness:
-      enabled: false
-    startup:
-      enabled: false
