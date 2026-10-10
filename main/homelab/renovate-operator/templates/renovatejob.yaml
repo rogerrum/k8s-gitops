@@ -9,6 +9,13 @@ metadata:
     app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
     app.kubernetes.io/part-of: {{ $.Release.Name }}
 spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: storage
+                operator: DoesNotExist
   discoveryFilters:
     - roger/k8s-gitops
   # Native forgejo platform support landed in Renovate 41.41.0; must stay >= that.

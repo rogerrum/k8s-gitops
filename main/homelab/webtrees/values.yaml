@@ -91,6 +91,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - tree.rsr.net
       rules:

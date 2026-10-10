@@ -1,4 +1,11 @@
 renovate-operator:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: storage
+                operator: DoesNotExist
   config:
     # Default (1800s/30min) was getting hit: our hostRules fix
     # (abortOnError:false + a 60s per-host timeout on any flaky external
@@ -44,6 +51,7 @@ renovate-operator:
     parentRefs:
       - name: internal
         namespace: kube-system
+        sectionName: https
     hostnames:
       - renovate.rsr.net
   webhook:
