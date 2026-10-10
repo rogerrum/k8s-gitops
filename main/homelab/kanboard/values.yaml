@@ -63,6 +63,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - kanboard.rsr.net
       rules:
@@ -73,5 +74,3 @@ app-template:
           backendRefs:
             - name: kanboard
               port: *port
-
-

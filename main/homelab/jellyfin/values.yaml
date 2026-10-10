@@ -25,6 +25,13 @@ app-template:
   defaultPodOptions:
     nodeSelector:
       kubernetes.io/arch: amd64
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: storage
+                  operator: DoesNotExist
   persistence:
     cache:
       type: emptyDir
@@ -48,11 +55,10 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
   service:
     app:
       controller: jellyfin
       ports:
         http:
           port: 8096
-
-
