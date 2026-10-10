@@ -6,41 +6,41 @@ app-template:
 
   controllers:
     home-assistant:
+      strategy: Recreate
       pod:
+        hostNetwork: true
+        dnsPolicy: ClusterFirstWithHostNet
         securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
           fsGroup: 1000
           fsGroupChangePolicy: OnRootMismatch
-
-
-      initContainers:
-        init-chmod-fix:
-          image:
-            repository: busybox
-            tag: latest
-          command: [ 'sh', '-c', 'chown -R 1000:1000 /config && chmod -R u+rwX,g+rwX /config' ]
-          securityContext:
-            runAsUser: 0 # Temporary root privileges to override the 1001 ownership
-
-        fix-tts:
-          enabled: true
-          image:
-            repository: ghcr.io/home-operations/home-assistant
-            tag: 2026.9.2
-          command: [ 'sh', '-c', 'sed  "s/base_url = get_url(hass)/base_url = get_url(hass,prefer_external=True)/g" /usr/local/lib/python3.14/site-packages/homeassistant/components/media_player/browse_media.py > /ttsFix/tts.py' ]
-
+          runAsGroup: 1000
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
 
       containers:
         app:
           image:
             repository: ghcr.io/home-operations/home-assistant
-            tag: 2026.9.2
+            tag: &hass-image 2026.9.2
           env:
             TZ: "America/Chicago"
 #          envFrom:
 #            - secretRef:
 #                name: home-assistant-secret
+
+          probes:
+            liveness:
+              enabled: true
+            readiness:
+              enabled: true
+            startup:
+              enabled: true
+              spec:
+                periodSeconds: 10
+                failureThreshold: 60
+
           resources:
             requests:
               cpu: 50m
@@ -76,8 +76,49 @@ app-template:
           resources:
             requests:
               cpu: 10m
+              memory: 256Mi
             limits:
               memory: 1Gi
+
+      initContainers:
+        venv-reset:
+          image:
+            repository: ghcr.io/home-operations/home-assistant
+            tag: *hass-image
+          command: [ "/bin/bash", "-c" ]
+          args:
+            - |
+              set -eu
+              marker=/config/.hass-image-version
+              current="$(python3 -c 'from homeassistant.const import __version__; print(__version__)')"
+              previous="$(cat "$marker" 2>/dev/null || true)"
+              if [ "$current" != "$previous" ]; then
+                echo "HA image changed ($previous -> $current); wiping /config/.venv"
+                rm -rf /config/.venv/* /config/.venv/.[!.]* 2>/dev/null || true
+                printf '%s' "$current" > "$marker"
+              else
+                echo "HA image unchanged ($current); keeping /config/.venv cache"
+              fi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+        init-chmod-fix:
+          image:
+            repository: busybox
+            tag: latest
+          command: [ 'sh', '-c', 'chown -R 1000:1000 /config && chmod -R u+rwX,g+rwX /config' ]
+          securityContext:
+            runAsUser: 0 # Temporary root privileges to override the 1001 ownership
+
+        fix-tts:
+          enabled: true
+          image:
+            repository: ghcr.io/home-operations/home-assistant
+            tag: *hass-image
+          command: [ 'sh', '-c', 'sed  "s/base_url = get_url(hass)/base_url = get_url(hass,prefer_external=True)/g" /usr/local/lib/python3.14/site-packages/homeassistant/components/media_player/browse_media.py > /ttsFix/tts.py' ]
 
 
 
@@ -118,6 +159,8 @@ app-template:
             - path: /config
           code-server:
             - path: /config
+            - path: /home/coder
+              subPath: code-server-home
           init-chmod-fix:
             - path: /config
 
@@ -128,6 +171,9 @@ app-template:
       advancedMounts:
         home-assistant:
           app:
+            - path: /config/.venv
+              subPath: hass-venv
+          venv-reset:
             - path: /config/.venv
               subPath: hass-venv
     tmpfs:
@@ -142,8 +188,6 @@ app-template:
               subPath: code-server-tmp
             - path: /nonexistent
               subPath: nonexistent
-
-
     hass-gcp-sa-json:
       type: secret
       name: home-assistant-gcp-sa-secret
@@ -153,21 +197,11 @@ app-template:
             - path: /config/home-assistant-0ed67c5e16f3.json
               subPath: home-assistant-0ed67c5e16f3.json
               readOnly: true
-#      globalMounts:
-#        - path: /config/home-assistant-0ed67c5e16f3.json
-#          subPath: home-assistant-0ed67c5e16f3.json
-#          readOnly: true
-
-
     docker-env-empty:
       type: emptyDir
       advancedMounts:
         home-assistant:
           app:
-            - path: /.dockerenv
-              subPath: .dockerenv
-              readOnly: true
-          code-server:
             - path: /.dockerenv
               subPath: .dockerenv
               readOnly: true
