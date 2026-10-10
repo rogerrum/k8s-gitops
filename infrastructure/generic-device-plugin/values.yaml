@@ -1,6 +1,9 @@
 app-template:
   defaultPodOptions:
     priorityClassName: system-node-critical
+    tolerations:
+      - key: "arm64"
+        operator: "Exists"
 
   controllers:
     generic-device-plugin:
