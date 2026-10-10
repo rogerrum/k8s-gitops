@@ -94,14 +94,6 @@ applications:
     helm:
       enabled: true
 
-  - name: intel-gpu-plugins
-    namespace: kube-system
-    path: infrastructure/intel-gpu-plugins
-    manifest-paths: /infrastructure/intel-gpu-plugins
-    sync-wave: "-3"
-    helm:
-      enabled: true
-
   - name: intel-gpu-resource-driver
     namespace: kube-system
     path: infrastructure/intel-gpu-resource-driver
