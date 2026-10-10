@@ -10,6 +10,13 @@ app-template:
       pod:
         hostNetwork: true
         dnsPolicy: ClusterFirstWithHostNet
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: storage
+                      operator: DoesNotExist
         securityContext:
           fsGroup: 1000
           fsGroupChangePolicy: OnRootMismatch
@@ -46,7 +53,7 @@ app-template:
 
           resources:
             requests:
-              cpu: 50m
+              cpu: 300m
               memory: 512M
             limits:
               memory: 2Gi
@@ -78,7 +85,7 @@ app-template:
             HASS_SERVER: http://localhost:8123
           resources:
             requests:
-              cpu: 10m
+              cpu: 100m
               memory: 256Mi
             limits:
               memory: 1Gi
