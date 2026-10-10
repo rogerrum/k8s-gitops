@@ -10,6 +10,14 @@ app-template:
                 - matchExpressions:
                     - key: storage
                       operator: DoesNotExist
+        securityContext:
+          fsGroup: 10000
+          fsGroupChangePolicy: OnRootMismatch
+          runAsGroup: 10000
+          runAsNonRoot: true
+          runAsUser: 10000
+          seccompProfile:
+            type: RuntimeDefault
       initContainers:
         init-db:
           image:
@@ -35,22 +43,59 @@ app-template:
                 secretKeyRef:
                   name: teslamate-secret
                   key: DATABASE_PASS
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
 
       containers:
         main:
           image:
             repository: teslamate/teslamate
-            tag: "4.2.0"
+            tag: 4.3.0@sha256:516fc9f0a14369f541b1a70ff2f65dd9b57c2e01c1f533b6d43b375445404955
           env:
             TZ: "America/Chicago"
             DISABLE_MQTT: "false"
             MQTT_HOST: "emqx.default.svc.cluster.local"
             MQTT_PORT: 1883
+            MQTT_HOME_ASSISTANT_DISCOVERY: "true"
             DATABASE_NAME: teslamate
             DATABASE_HOST: postgres-lb.kube-system.svc.cluster.local
           envFrom:
             - secretRef:
                 name: teslamate-secret
+          probes:
+            liveness: &probes
+              enabled: true
+              custom: true
+              spec:
+                httpGet:
+                  path: /
+                  port: 4000
+                initialDelaySeconds: 0
+                periodSeconds: 30
+                timeoutSeconds: 5
+                failureThreshold: 3
+            readiness: *probes
+            # 4.1.0+ runs a one-time Ecto migration synchronously before the
+            # HTTP server starts; give it headroom on this long-lived DB.
+            startup:
+              enabled: true
+              custom: true
+              spec:
+                httpGet:
+                  path: /
+                  port: 4000
+                initialDelaySeconds: 0
+                periodSeconds: 15
+                timeoutSeconds: 5
+                failureThreshold: 60
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
 
           resources:
             requests:
@@ -58,6 +103,12 @@ app-template:
               cpu: 50m
             limits:
               memory: 500Mi
+
+  persistence:
+    tmp:
+      type: emptyDir
+      globalMounts:
+        - path: /tmp
 
   service:
     main:
