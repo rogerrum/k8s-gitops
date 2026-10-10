@@ -51,6 +51,8 @@ app-template:
       runAsGroup: 1001
       runAsNonRoot: true
       supplementalGroups: [20] # dialout group, required for /dev/ttyACM0 access
+      seccompProfile:
+        type: RuntimeDefault
     tolerations:
       - key: "arm64"
         operator: "Exists"
@@ -98,3 +100,7 @@ app-template:
             - path: /usr/src/app/store
     tmp:
       type: emptyDir
+      advancedMounts:
+        zwave:
+          app:
+            - path: /tmp
