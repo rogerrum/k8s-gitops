@@ -51,6 +51,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - matter.rsr.net
       rules:
@@ -76,5 +77,3 @@ app-template:
         main:
           main:
             - path: /tmp
-
-

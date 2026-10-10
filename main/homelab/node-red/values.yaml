@@ -3,6 +3,13 @@ app-template:
   controllers:
     main:
       pod:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: storage
+                      operator: DoesNotExist
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
@@ -55,6 +62,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - node-red.rsr.net
       rules:
@@ -82,4 +90,3 @@ app-template:
         operator: "Exists"
       - key: "arm64"
         operator: "Exists"
-

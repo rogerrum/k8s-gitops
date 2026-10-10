@@ -82,6 +82,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - food.rsr.net
       rules:
@@ -99,5 +100,3 @@ app-template:
       existingClaim: mealie-api-data
       globalMounts:
         - path: /app/data/
-
-
