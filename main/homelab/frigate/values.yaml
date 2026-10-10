@@ -63,6 +63,14 @@ app-template:
         webrtc:
           port: 8555
 
+  serviceMonitor:
+    main:
+      endpoints:
+        - port: http
+          path: /api/metrics
+          interval: 30s
+          scrapeTimeout: 10s
+
   route:
     main:
       enabled: true
