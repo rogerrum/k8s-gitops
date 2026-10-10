@@ -90,6 +90,7 @@ app-template:
       parentRefs:
         - name: internal
           namespace: kube-system
+          sectionName: https
       hostnames:
         - wyze.rsr.net
       rules:
@@ -100,4 +101,3 @@ app-template:
           backendRefs:
             - name: wyze-bridge
               port: 5000
-
