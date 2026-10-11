@@ -34,6 +34,15 @@ applications:
     sync-wave: "-2"
     helm:
       enabled: true
+    ignoreDifferences:
+      - group: argoproj.io
+        kind: Application
+        jqPathExpressions:
+          # ArgoCD itself adds pre-delete-finalizer.argocd.argoproj.io
+          # finalizers to child Applications whose chart has delete hooks
+          # (e.g. victoria-metrics); they aren't declared in git, so
+          # ignore them to avoid perpetual OutOfSync.
+          - '.metadata.finalizers'
 
   - name: local
     namespace: argocd
