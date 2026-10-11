@@ -80,7 +80,14 @@ jobs:
           ai-fallback-api-format: openai
           ai-fallback-model: ollama/llama3-1-8b
           ai-fallback-api-key: ${{ secrets.LITELLM_API_KEY }}
-          ai-response-format: json_object
+          # json_object only guarantees syntactically valid JSON, not that
+          # required keys are present -- our small local models (qwen/llama)
+          # were returning valid JSON that still omitted the required
+          # `verdict` key, failing both primary and fallback every run.
+          # json_schema actually enforces the verdict/review_markdown shape
+          # and is specifically called out as improving reliability with
+          # smaller local models.
+          ai-response-format: json_schema
           primary-model-context-tokens: 32768
 
           # Smart model (deep/final pass) -- local Ollama, same proxy
