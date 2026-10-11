@@ -1,0 +1,33 @@
+ollama:
+  baseUrl: http://192.168.1.16:11434/v1
+
+litellm:
+  # renovate: datasource=docker depName=ghcr.io/berriai/litellm
+  image: ghcr.io/berriai/litellm:v1.104.2
+
+  service:
+    port: 4000
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 1Gi
+
+# Models served through this proxy, all routed to the local Ollama server
+# above (192.168.1.16, the same box frigate's genai integration already
+# uses). No cloud API keys/billing involved.
+models:
+  - name: primary
+    # Fast pass: used for the bulk of PR review comments.
+    modelName: ollama/qwen2.5-coder-7b
+    model: ollama/qwen2.5-coder:7b-instruct
+  - name: smart
+    # Deep pass: used for the final/summary verdict on a PR.
+    modelName: ollama/qwen2.5-coder-14b
+    model: ollama/qwen2.5-coder:14b-instruct
+  - name: fallback
+    # Different model family, used if the primary model errors out.
+    modelName: ollama/llama3-1-8b
+    model: ollama/llama3.1:8b

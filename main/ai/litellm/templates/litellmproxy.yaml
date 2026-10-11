@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmproxy_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMProxy
+metadata:
+  name: {{ include "litellm.fullname" . }}
+  labels:
+    {{- include "litellm.labels" . | nindent 4 }}
+spec:
+  image: {{ .Values.litellm.image }}
+  replicas: 1
+  generalSettings:
+    health_check_endpoint: /v1/health
+  routerSettings:
+    routing_strategy: simple-shuffle
+    num_retries: 3
+    timeout: 600
+  litellmSettings:
+    success_callback:
+      - prometheus
+    prometheus_adapter: true
+    drop_params: true
+    merge_reasoning_content_in_choices: true
+    set_verbose: false
+  env:
+    - name: LITELLM_LOG
+      value: INFO
+    - name: LITELLM_MODE
+      value: PRODUCTION
+    - name: LITELLM_MASTER_KEY
+      valueFrom:
+        secretKeyRef:
+          name: {{ include "litellm.fullname" . }}
+          key: LITELLM_MASTER_KEY
+  resources:
+    {{- toYaml .Values.litellm.resources | nindent 4 }}
+  service:
+    type: ClusterIP
+    port: {{ .Values.litellm.service.port }}

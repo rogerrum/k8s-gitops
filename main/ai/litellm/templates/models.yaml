@@ -1,0 +1,20 @@
+{{- range .Values.models }}
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmmodel_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "litellm.labels" $ | nindent 4 }}
+spec:
+  modelName: {{ .modelName }}
+  params:
+    model: {{ .model }}
+    apiBase: {{ $.Values.ollama.baseUrl }}
+    # No apiKeyRef: Ollama is unauthenticated on the local LAN (same server
+    # frigate's genai integration already talks to).
+    dropParams: true
+  info:
+    supportsFunctionCalling: true
+{{- end }}
