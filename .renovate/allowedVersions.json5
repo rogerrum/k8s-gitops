@@ -1,4 +1,14 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  packageRules: [],
+  packageRules: [
+    {
+      // Dashboard 22413 (node-exporter-full): rev 7+ switched to the
+      // dashboard.grafana.app/v2 schema, which grafana-operator cannot
+      // import via spec.url. Keep Renovate from auto-merging past rev 6
+      // until grafana-operator supports the new schema.
+      matchDatasources: ["custom.grafana-dashboards"],
+      matchDepNames: ["22413"],
+      allowedVersions: "<=6",
+    },
+  ],
 }
