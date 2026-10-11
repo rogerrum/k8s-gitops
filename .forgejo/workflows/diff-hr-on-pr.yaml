@@ -32,10 +32,12 @@ env:
   conf_live_branch: main
   conf_ignore_known_labels_containing_versions: true
 
-permissions:
-  contents: read
-  pull-requests: write
-  issues: write
+# No `permissions:` block here: Forgejo Actions doesn't support the GitHub
+# Actions permissions field (it's silently ignored, hence the "has a
+# permissions field, which is not supported in Forgejo" workflow warning
+# this used to produce). Write access for the comment API call below comes
+# from the repo/instance's own Actions token settings (Settings > Actions >
+# General > default token permission), not from workflow YAML.
 
 jobs:
   helm-release-differ:
