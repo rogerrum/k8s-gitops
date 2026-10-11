@@ -49,17 +49,21 @@ async function helmTemplate(chartLocation) {
 const sourceChart = await helmChart(SourceChart)
 if (sourceChart) {
 
+    // Charts with no `dependencies:` (e.g. plain-manifest/CRD-templating
+    // charts like main/ai/litellm, which don't wrap app-template) have
+    // nothing to report a dependency version/registry bump for -- only the
+    // rendered-manifest diff below applies to them.
     const sourceChartName = sourceChart.name
-    const sourceChartVersion = sourceChart.dependencies[0].version
-    const sourceChartRepositoryUrl = sourceChart.dependencies[0].repository
+    const sourceChartVersion = sourceChart.dependencies?.[0]?.version
+    const sourceChartRepositoryUrl = sourceChart.dependencies?.[0]?.repository
 
     const currentManifests = await helmTemplate(SourceChart)
 
     // Generate target template from Helm values
     const targetChart = await helmChart(TargetChart)
     const targetChartName = targetChart.name
-    const targetChartVersion = targetChart.dependencies[0].version
-    const targetChartRepositoryUrl = targetChart.dependencies[0].repository
+    const targetChartVersion = targetChart.dependencies?.[0]?.version
+    const targetChartRepositoryUrl = targetChart.dependencies?.[0]?.repository
 
     const incomingManifests = await helmTemplate(TargetChart)
 

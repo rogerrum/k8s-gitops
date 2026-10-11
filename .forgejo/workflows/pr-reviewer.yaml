@@ -99,3 +99,13 @@ jobs:
           review-routing-mode: auto
           standards-file-candidates: AGENTS.md
           tool-allowed-gh-api-repos: roger/k8s-gitops
+          # Our local Ollama models (qwen2.5-coder-7b/14b, llama3.1:8b)
+          # don't reliably support native tool/function-calling: the
+          # default tool_mode=native_loop degrades to "0 tool calls" for
+          # them, and the follow-up corpus-only answer then comes back
+          # missing the required `verdict` JSON key for both primary and
+          # fallback models -- forcing a "review could not run" notice on
+          # every PR. Disabling the tool harness skips that broken path
+          # entirely; the specialist/deep-review pass (no tool harness)
+          # already produces valid structured JSON reliably.
+          tool-mode: "off"
