@@ -186,6 +186,28 @@ argo-cd:
             hs.status = "Healthy"
             hs.message = "CRD is healthy"
             return hs
+        grafana.integreatly.org/GrafanaFolder:
+          health.lua: |
+            -- ArgoCD's bundled health check treats FolderUIDMismatch=True as
+            -- Degraded even when reason=FolderUIDInferred (harmless: just
+            -- means no explicit spec.uid was set). Only FolderSynchronized
+            -- reflects whether the folder actually applied successfully.
+            hs = {}
+            hs.status = "Progressing"
+            hs.message = "Waiting for folder status"
+            if obj.status ~= nil and obj.status.conditions ~= nil then
+              for _, condition in ipairs(obj.status.conditions) do
+                if condition.type == "FolderSynchronized" then
+                  if condition.status == "True" then
+                    hs.status = "Healthy"
+                  else
+                    hs.status = "Degraded"
+                  end
+                  hs.message = condition.message
+                end
+              end
+            end
+            return hs
 
     metrics:
       enabled: true
@@ -233,7 +255,7 @@ argo-cd:
     #image:
     #  repository: "ghcr.io/rogerrum/argocd"
     #  tag: "latest"
-      
+
     metrics:
       enabled: true
       serviceMonitor:
@@ -342,7 +364,7 @@ argo-cd:
                     ],
                     "footer": {
                         "text": "ArgoCd"
-                    }, 
+                    },
                     "timestamp": "{{ (call .time.Now).Format "2006-01-02T15:04:05.999Z" }}"
                   }
                 ]
@@ -384,7 +406,7 @@ argo-cd:
                     ],
                     "footer": {
                         "text": "ArgoCd"
-                    }, 
+                    },
                     "timestamp": "{{ (call .time.Now).Format "2006-01-02T15:04:05.999Z" }}"
                   }
                 ]
@@ -426,7 +448,7 @@ argo-cd:
                     ],
                     "footer": {
                         "text": "ArgoCd"
-                    }, 
+                    },
                     "timestamp": "{{ (call .time.Now).Format "2006-01-02T15:04:05.999Z" }}"
                   }
                 ]
@@ -468,7 +490,7 @@ argo-cd:
                     ],
                     "footer": {
                         "text": "ArgoCd"
-                    }, 
+                    },
                     "timestamp": "{{ (call .time.Now).Format "2006-01-02T15:04:05.999Z" }}"
                   }
                 ]
@@ -510,7 +532,7 @@ argo-cd:
                     ],
                     "footer": {
                         "text": "ArgoCd"
-                    }, 
+                    },
                     "timestamp": "{{ (call .time.Now).Format "2006-01-02T15:04:05.999Z" }}"
                   }
                 ]
@@ -552,7 +574,7 @@ argo-cd:
                     ],
                     "footer": {
                         "text": "ArgoCd"
-                    }, 
+                    },
                     "timestamp": "{{ (call .time.Now).Format "2006-01-02T15:04:05.999Z" }}"
                   }
                 ]
@@ -604,7 +626,7 @@ argo-cd:
         - name: Content-Type
           value: application/json
     bots:
-      slack: 
+      slack:
         serviceAccount:
           create: false
 
@@ -618,4 +640,3 @@ grafanaDashboards:
     datasources:
       - inputName: DS_PROMETHEUS
         datasourceName: Prometheus
-
