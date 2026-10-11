@@ -1,0 +1,5 @@
+apiVersion: v2
+name: context7-mcp
+description: Registers the Context7 remote MCP server (docs lookup) as a LiteLLM MCP tool
+type: application
+version: 0.1.0
