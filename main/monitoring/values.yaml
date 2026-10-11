@@ -9,8 +9,6 @@ applications:
     path: main/monitoring/alertmanager-discord
     manifest-paths: /main/monitoring/alertmanager-discord
     sync-wave: "-1"
-    syncOptions:
-      - Replace=true
     helm:
       enabled: true
 
@@ -92,8 +90,6 @@ applications:
     path: main/monitoring/unifi-poller
     manifest-paths: /main/monitoring/unifi-poller
     sync-wave: "-1"
-    syncOptions:
-      - Replace=true
     helm:
       enabled: true
 
