@@ -1,0 +1,122 @@
+app-template:
+  externalSecrets:
+    mosquitto:
+      refreshInterval: 5m
+      secretStoreRef:
+        kind: ClusterSecretStore
+        name: onepassword-connect
+      target:
+        name: mosquitto-secret
+        template:
+          data:
+            # Mosquitto password file format: username:hashed_password
+            # Hash is a pre-computed PBKDF2-SHA512 string (mosquitto $7$
+            # scheme), not a plaintext password - mosquitto reads it as-is.
+            passwd: |
+              {{ .mqtt_password_hashed }}
+      dataFrom:
+        - extract:
+            key: emqx-config
+
+  defaultPodOptions:
+    securityContext:
+      fsGroup: 1001
+      fsGroupChangePolicy: OnRootMismatch
+      runAsGroup: 1001
+      runAsNonRoot: true
+      runAsUser: 1001
+      seccompProfile:
+        type: RuntimeDefault
+
+  configMaps:
+    config:
+      data:
+        mosquitto.conf: |
+          # Authentication: allow both anonymous and authenticated clients
+          # Mosquitto password file format: username:hashed_password
+          allow_anonymous true
+          password_file /mosquitto/config/passwd
+
+          # Persistence
+          persistence true
+          persistence_location /data
+          autosave_interval 60
+
+          # Performance & Logging
+          connection_messages false
+          per_listener_settings false
+
+          # Standard MQTT listener
+          listener 1883 0.0.0.0
+          protocol mqtt
+
+          # WebSocket listener (for web clients)
+          listener 9001 0.0.0.0
+          protocol websockets
+
+  controllers:
+    mosquitto:
+      containers:
+        app:
+          image:
+            repository: public.ecr.aws/docker/library/eclipse-mosquitto
+            tag: 2.0.22@sha256:199ea8ef2e35ec2b1b37e59cfd1dbae538ed4dfa4a2251a121a52215a6248a21
+          env:
+            TZ: America/Chicago
+          probes:
+            liveness:
+              enabled: true
+              type: TCP
+              spec:
+                port: 1883
+            readiness:
+              enabled: true
+              type: TCP
+              spec:
+                port: 1883
+          resources:
+            requests:
+              cpu: 10m
+            limits:
+              memory: 100Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+
+  persistence:
+    data:
+      storageClass: longhorn
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      globalMounts:
+        - path: /data
+    config-file:
+      type: configMap
+      name: mosquitto
+      globalMounts:
+        - path: /mosquitto/config/mosquitto.conf
+          subPath: mosquitto.conf
+          readOnly: true
+    passwd-file:
+      type: secret
+      name: mosquitto-secret
+      globalMounts:
+        - path: /mosquitto/config/passwd
+          subPath: passwd
+          readOnly: true
+
+  # ClusterIP for now - switch to LoadBalancer (with its own IP, distinct from
+  # emqx's) once ready to cut traffic over.
+  service:
+    mqtt:
+      controller: mosquitto
+      ports:
+        mqtt:
+          port: 1883
+          protocol: TCP
+        websocket:
+          port: 9001
+          protocol: TCP
+      type: ClusterIP

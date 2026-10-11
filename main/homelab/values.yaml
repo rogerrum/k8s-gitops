@@ -206,6 +206,14 @@ applications:
     helm:
       enabled: true
 
+  - name: mosquitto
+    namespace: default
+    path: main/homelab/mosquitto
+    manifest-paths: /main/homelab/mosquitto
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
   - name: planka
     namespace: default
     path: main/homelab/planka
