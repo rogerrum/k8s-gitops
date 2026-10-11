@@ -36,3 +36,23 @@ spec:
   service:
     type: ClusterIP
     port: {{ .Values.litellm.service.port }}
+  # litellm's cold start (importing its Python deps, building the router from
+  # model_list) regularly takes 60-90s. The operator's default probe timing
+  # (10s initial delay, 3x10s failures = ~40s) kills the container before it
+  # ever finishes starting, which just loops it in a perpetual restart.
+  livenessProbe:
+    httpGet:
+      path: /health/liveliness
+      port: {{ .Values.litellm.service.port }}
+    initialDelaySeconds: 90
+    periodSeconds: 15
+    timeoutSeconds: 5
+    failureThreshold: 6
+  readinessProbe:
+    httpGet:
+      path: /health/readiness
+      port: {{ .Values.litellm.service.port }}
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
