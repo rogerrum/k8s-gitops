@@ -1,0 +1,101 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+#
+# AI-powered PR review, ported from refApp2's .forgejo/workflows/pr-reviewer.yaml.
+# Unlike that version, every model here is a local Ollama model (see
+# main/ai/litellm/values.yaml) -- there is no paid/cloud LLM API involved, so
+# there's no billing risk if the action runs more than expected.
+#
+# Manual prerequisites before this workflow will actually work -- see
+# main/ai/STEPS.md for the full checklist (1Password items, Ollama models,
+# Forgejo Authorized Integration audience, repo secret).
+
+name: AI PR Review
+
+on: # yamllint disable-line rule:truthy
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+      - labeled
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: PR number to (re-)review
+        required: true
+
+enable-openid-connect: true
+
+concurrency:
+  group: ${{ forgejo.workflow }}-${{ forgejo.event.pull_request.number || forgejo.ref }}${{ forgejo.event.action == 'labeled' && format('-label-{0}', forgejo.run_id) || '' }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    name: AI PR Review
+    # Only run on same-repo PRs (never forks) -- PR diff content is fed to
+    # the LLM, and running this against a fork's untrusted branch/secrets
+    # combination is the classic prompt-injection/secret-exfiltration vector.
+    if: ${{ (forgejo.event_name == 'pull_request' && forgejo.event.pull_request.head.repo.full_name == forgejo.repository && !forgejo.event.pull_request.draft) || forgejo.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Resolve PR head for re-review
+        id: prctx
+        if: forgejo.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ forgejo.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          sha="$(gh api "repos/${FORGEJO_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha')"
+          echo "head_sha=$sha" >> "$FORGEJO_OUTPUT"
+
+      - name: Checkout PR
+        uses: https://github.com/actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          ref: ${{ forgejo.event.pull_request.head.sha || steps.prctx.outputs.head_sha }}
+
+      - name: AI PR Review
+        uses: https://github.com/misospace/pr-reviewer-action@768a1320d67f14b99737633a5f8ba58449c3caeb # v3.4.1
+        with:
+          # Platform
+          platform: forgejo
+          forgejo-api-url: http://forgejo-http.default.svc.cluster.local:3000/
+          forgejo-auth-method: authorized_integration
+          # Replace with the real audience UUID after creating the
+          # Authorized Integration in Forgejo's admin UI -- see STEPS.md.
+          forgejo-authorized-integration-audience: u:1:286bb93e-8cb4-4440-89e3-ba151bf40ada
+
+          # Primary model (fast pass) -- local Ollama, no API key/billing
+          ai-base-url: http://litellm.ai.svc.cluster.local:4000/v1
+          ai-api-format: openai
+          ai-model: ollama/qwen2.5-coder-7b
+          ai-api-key: ${{ secrets.LITELLM_API_KEY }}
+          ai-fallback-base-url: http://litellm.ai.svc.cluster.local:4000/v1
+          ai-fallback-api-format: openai
+          ai-fallback-model: ollama/llama3-1-8b
+          ai-fallback-api-key: ${{ secrets.LITELLM_API_KEY }}
+          ai-response-format: json_object
+          primary-model-context-tokens: 32768
+
+          # Smart model (deep/final pass) -- local Ollama, same proxy
+          ai-smart-base-url: http://litellm.ai.svc.cluster.local:4000/v1
+          ai-smart-api-key: ${{ secrets.LITELLM_API_KEY }}
+          ai-smart-api-format: openai
+          ai-smart-model: ollama/qwen2.5-coder-14b
+          smart-model-context-tokens: 32768
+
+          # Action config
+          allowed-source-hosts: github.com,ghcr.io,docker.io,quay.io,registry.k8s.io,charts.jetstack.io,git.rsr.net
+          ci-timeout-sec: "180"
+          claim-falsification: "true"
+          force-review: ${{ forgejo.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+          pr-number: ${{ github.event.pull_request.number || inputs.pr_number }}
+          review-routing-mode: auto
+          standards-file-candidates: AGENTS.md
+          tool-allowed-gh-api-repos: roger/k8s-gitops
