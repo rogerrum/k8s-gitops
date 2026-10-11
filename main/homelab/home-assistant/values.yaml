@@ -30,7 +30,7 @@ app-template:
         app:
           image:
             repository: ghcr.io/home-operations/home-assistant
-            tag: &hass-image 2026.9.2
+            tag: &hass-image 2026.10.0
           env:
             TZ: "America/Chicago"
 #          envFrom:
