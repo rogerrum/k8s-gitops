@@ -7,6 +7,16 @@ repo:
 
 
 applications:
+  - name: ai
+    namespace: ai
+    create-namespace: true
+    namespace-sync-wave: "-2"
+    path: main/ai
+    manifest-paths: /main/ai/templates;/main/ai/Chart.yaml;/main/ai/values.yaml
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
   - name: homelab
     namespace: argocd
     path: main/homelab

@@ -1,0 +1,29 @@
+repo:
+  url: https://github.com/rogerrum/k8s-gitops.git
+  revision: main
+
+
+applications:
+  - name: litellm-operator
+    namespace: ai
+    path: main/ai/litellm-operator
+    manifest-paths: /main/ai/litellm-operator
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
+  - name: litellm
+    namespace: ai
+    path: main/ai/litellm
+    manifest-paths: /main/ai/litellm
+    sync-wave: "0"
+    helm:
+      enabled: true
+
+  - name: context7-mcp
+    namespace: ai
+    path: main/ai/context7-mcp
+    manifest-paths: /main/ai/context7-mcp
+    sync-wave: "0"
+    helm:
+      enabled: true

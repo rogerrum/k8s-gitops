@@ -1,0 +1,9 @@
+apiVersion: v2
+name: litellm-operator
+description: Operator that renders LiteLLM proxy config from CRDs (LiteLLMProxy, LiteLLMModel, LiteLLMMCPServer)
+type: application
+version: 1.0.0
+dependencies:
+  - name: litellm-operator
+    version: 0.0.24
+    repository: oci://ghcr.io/home-operations/charts
