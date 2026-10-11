@@ -1,5 +1,8 @@
 ollama:
-  baseUrl: http://192.168.1.16:11434/v1
+  # No /v1 suffix: litellm's native "ollama/" model provider talks to
+  # Ollama's own API (/api/chat, /api/generate), not the OpenAI-compatible
+  # /v1 endpoints -- pointing api_base at /v1 here causes a 404 from Ollama.
+  baseUrl: http://192.168.1.16:11434
 
 litellm:
   # renovate: datasource=docker depName=ghcr.io/berriai/litellm
