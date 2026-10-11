@@ -364,5 +364,7 @@ applications:
     path: infrastructure/dragonfly-operator
     manifest-paths: /infrastructure/dragonfly-operator
     sync-wave: "-1"
+    syncOptions:
+      - ServerSideApply=true
     helm:
       enabled: true
