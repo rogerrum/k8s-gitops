@@ -49,6 +49,12 @@ applications:
           - emqx-config
       additionalValues:
         - http://localhost/frigate.yml
+    ignoreDifferences:
+      - group: resource.k8s.io
+        kind: ResourceClaimTemplate
+        jqPathExpressions:
+          - '.spec.spec.devices.requests[].exactly.allocationMode'
+          - '.spec.spec.devices.requests[].exactly.count'
 
   - name: home-assistant
     namespace: default
