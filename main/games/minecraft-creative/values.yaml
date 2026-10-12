@@ -51,7 +51,7 @@ app-template:
       type: statefulset
       statefulset:
         serviceName: minecraft-creative
-      replicas: 0
+      replicas: 1
       strategy: RollingUpdate
       containers:
         main:
@@ -84,6 +84,13 @@ app-template:
               plugins<https://github.com/sladkoff/minecraft-prometheus-exporter/releases/download/v3.1.2/minecraft-prometheus-exporter-3.1.2.jar
               plugins/PrometheusExporter</prometheus-exporter-config/config.yml
               plugins<https://cdn.modrinth.com/data/hXiIvTyT/versions/nY6VN1XH/EssentialsX-2.22.0.jar
+              # Geyser + Floodgate: lets Bedrock clients (iPhone/iPad/Switch/etc)
+              # join this Java server directly over UDP 19132 - no proxy needed.
+              # NOTE: only reachable while this StatefulSet is already running
+              # (mc-router's scale-to-zero only wakes on Java TCP handshakes,
+              # so wake it from a Java client first, or disable scale-to-zero).
+              plugins<https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
+              plugins<https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot
           envFrom:
             - secretRef:
                 name: minecraft-creative-secret
@@ -197,3 +204,13 @@ app-template:
           port: 8100
         metrics:
           port: 9940
+    # Dedicated LoadBalancer for Bedrock clients (Geyser/RakNet is UDP, so it
+    # can't ride mc-router's TCP proxy). Point your iOS/iPad Minecraft app at
+    # this Service's external IP, port 19132 - no hostname routing involved.
+    geyser:
+      controller: main
+      type: LoadBalancer
+      ports:
+        bedrock:
+          port: 19132
+          protocol: UDP
