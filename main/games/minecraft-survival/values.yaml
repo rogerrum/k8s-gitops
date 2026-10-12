@@ -61,6 +61,9 @@ app-template:
           env:
             EULA: "true"
             TYPE: PAPER
+            # pinned: LATEST+experimental resolves forward to 26.3, which
+            # some plugins (e.g. Prism) don't support yet
+            VERSION: "26.2"
             DIFFICULTY: normal
             MODE: survival
             ONLINE_MODE: "true"
