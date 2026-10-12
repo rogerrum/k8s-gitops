@@ -126,6 +126,20 @@ apps:
     namespace: default
     schedule: "30 9 * * 6"
 
+  - app: minecraft-survival
+    pvcSuffix: data
+    capacity: 10Gi
+    namespace: games
+    runAsUser: "1000"
+    schedule: "0 6 * * 0"
+
+  - app: minecraft-creative
+    pvcSuffix: data
+    capacity: 10Gi
+    namespace: games
+    runAsUser: "1000"
+    schedule: "30 6 * * 0"
+
 volsync-perfectra1n:
   fullnameOverride: volsync # Required for volsync-perfectra1n fork
   image: &image
