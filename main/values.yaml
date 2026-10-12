@@ -17,6 +17,16 @@ applications:
     helm:
       enabled: true
 
+  - name: games
+    namespace: games
+    create-namespace: true
+    namespace-sync-wave: "-2"
+    path: main/games
+    manifest-paths: /main/games/templates;/main/games/Chart.yaml;/main/games/values.yaml
+    sync-wave: "-1"
+    helm:
+      enabled: true
+
   - name: homelab
     namespace: argocd
     path: main/homelab

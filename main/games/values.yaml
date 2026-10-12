@@ -1,0 +1,29 @@
+repo:
+  url: https://github.com/rogerrum/k8s-gitops.git
+  revision: main
+
+
+applications:
+  - name: minecraft-survival
+    namespace: games
+    path: main/games/minecraft-survival
+    manifest-paths: /main/games/minecraft-survival
+    sync-wave: "0"
+    helm:
+      enabled: true
+
+  - name: minecraft-creative
+    namespace: games
+    path: main/games/minecraft-creative
+    manifest-paths: /main/games/minecraft-creative
+    sync-wave: "0"
+    helm:
+      enabled: true
+
+  - name: minecraft-router
+    namespace: games
+    path: main/games/minecraft-router
+    manifest-paths: /main/games/minecraft-router
+    sync-wave: "0"
+    helm:
+      enabled: true
