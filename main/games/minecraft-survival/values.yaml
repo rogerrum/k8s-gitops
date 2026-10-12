@@ -1,0 +1,189 @@
+app-template:
+
+  defaultPodOptions:
+    terminationGracePeriodSeconds: 120
+    securityContext:
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+      runAsGroup: 1000
+      runAsNonRoot: true
+      runAsUser: 1000
+
+  configMaps:
+    direct-auth-patch:
+      data:
+        # mc-router does plain TCP passthrough (no BungeeCord/Velocity proxy
+        # protocol), so Paper must NOT expect proxy-forwarded player info -
+        # otherwise direct client connections fail auth. These patches force
+        # that off while keeping ONLINE_MODE auth working normally.
+        paper-direct-auth.json: |
+          {
+            "file": "/data/config/paper-global.yml",
+            "ops": [
+              { "$set": { "path": "$.proxies['bungee-cord']['online-mode']", "value": true, "value-type": "bool" } },
+              { "$set": { "path": "$.proxies.velocity.enabled", "value": false, "value-type": "bool" } },
+              { "$set": { "path": "$.proxies.velocity['online-mode']", "value": true, "value-type": "bool" } }
+            ]
+          }
+        disable-bungee-forwarding.json: |
+          {
+            "file": "/data/spigot.yml",
+            "ops": [
+              { "$set": { "path": "$.settings.bungeecord", "value": false, "value-type": "bool" } }
+            ]
+          }
+        prometheus-exporter-config.json: |
+          {
+            "file": "/data/plugins/PrometheusExporter/config.yml",
+            "ops": [
+              { "$set": { "path": "$.host", "value": "0.0.0.0" } },
+              { "$set": { "path": "$.port", "value": 9940, "value-type": "int" } }
+            ]
+          }
+    prometheus-exporter-config:
+      data:
+        config.yml: |
+          host: 0.0.0.0
+          port: 9940
+
+  controllers:
+    main:
+      type: statefulset
+      statefulset:
+        serviceName: minecraft-survival
+      replicas: 0
+      strategy: RollingUpdate
+      containers:
+        main:
+          image:
+            repository: ghcr.io/itzg/minecraft-server
+            tag: 2026.10.0@sha256:5a2ab74ae179c11e2dbbce67f307cdcf2c1257b3abb0f654d3a310b3d8ea57da
+          env:
+            EULA: "true"
+            TYPE: PAPER
+            DIFFICULTY: normal
+            MODE: survival
+            ONLINE_MODE: "true"
+            OVERRIDE_SERVER_PROPERTIES: "true"
+            MEMORY: 3072M
+            USE_AIKAR_FLAGS: "true"
+            MAX_TICK_TIME: "-1"
+            PAUSE_WHEN_EMPTY_SECONDS: "300"
+            SPAWN_PROTECTION: "0"
+            OPS: rogerrum
+            WHITELIST: "rogerrum,axolotl"
+            MOTD: "§6§lSurvival§r\n§7Cozy SMP"
+            STOP_SERVER_ANNOUNCE_DELAY: "20"
+            PATCH_DEFINITIONS: /patch-defs
+            # bluemap: web map (route below); add more Modrinth plugin slugs as needed
+            MODRINTH_PROJECTS: |
+              bluemap
+              luckperms
+              nbtapi
+              locked-chests-plugin
+              prism
+            APPLY_EXTRA_FILES: |
+              plugins<https://github.com/sladkoff/minecraft-prometheus-exporter/releases/download/v3.1.2/minecraft-prometheus-exporter-3.1.2.jar
+              plugins/PrometheusExporter</prometheus-exporter-config/config.yml
+              plugins<https://cdn.modrinth.com/data/hXiIvTyT/versions/nY6VN1XH/EssentialsX-2.22.0.jar
+          envFrom:
+            - secretRef:
+                name: minecraft-survival-secret
+          probes:
+            liveness:
+              enabled: true
+              custom: true
+              spec:
+                exec:
+                  command: ["mc-monitor", "status", "--host", "127.0.0.1", "--port", "25565"]
+                initialDelaySeconds: 30
+                periodSeconds: 5
+                failureThreshold: 10
+            readiness:
+              enabled: true
+              custom: true
+              spec:
+                exec:
+                  command: ["mc-monitor", "status", "--host", "127.0.0.1", "--port", "25565"]
+                initialDelaySeconds: 30
+                periodSeconds: 5
+                failureThreshold: 10
+            startup:
+              enabled: true
+              custom: true
+              spec:
+                exec:
+                  command: ["mc-monitor", "status", "--host", "127.0.0.1", "--port", "25565"]
+                failureThreshold: 30
+                periodSeconds: 10
+          resources:
+            requests:
+              memory: 4Gi
+              cpu: 500m
+            limits:
+              memory: 4Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: ["ALL"]}
+
+  persistence:
+    data:
+      # PVC is created/restored by infrastructure/volsync (see apps list
+      # there), not by this chart - matches how volsync-backed apps
+      # (home-assistant, node-red, etc.) reference existingClaim here.
+      existingClaim: minecraft-survival-data
+      globalMounts:
+        - path: /data
+    direct-auth-patch:
+      type: configMap
+      identifier: direct-auth-patch
+      globalMounts:
+        - path: /patch-defs
+    prometheus-exporter-config:
+      type: configMap
+      identifier: prometheus-exporter-config
+      globalMounts:
+        - path: /prometheus-exporter-config/config.yml
+          subPath: config.yml
+          readOnly: true
+
+  route:
+    internal:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Games
+        gethomepage.dev/name: Minecraft Survival Map
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+          sectionName: https
+      hostnames:
+        - mc-survival-map.rsr.net
+      rules:
+        - matches:
+            - path: {type: PathPrefix, value: /}
+          backendRefs:
+            - name: minecraft-survival
+              port: 8100
+
+
+  service:
+    main:
+      controller: main
+      labels:
+        minecraft.rsr.net/server-metrics: "true"
+      annotations:
+        mc-router.itzg.me/externalServerName: "mc-survival.rsr.net"
+        mc-router.itzg.me/autoScaleAsleepMOTD: "§8[asleep] §6survival§r - connecting wakes it"
+        mc-router.itzg.me/autoScaleLoadingMOTD: "§e[starting] §6survival§r - give it a minute"
+        mc-router.itzg.me/autoScaleWaitTimeout: 5m
+      ports:
+        minecraft:
+          port: 25565
+          protocol: TCP
+        rcon:
+          port: 25575
+        bluemap:
+          port: 8100
+        metrics:
+          port: 9940
