@@ -130,14 +130,12 @@ apps:
     pvcSuffix: data
     capacity: 10Gi
     namespace: games
-    runAsUser: "1000"
     schedule: "0 6 * * 0"
 
   - app: minecraft-creative
     pvcSuffix: data
     capacity: 10Gi
     namespace: games
-    runAsUser: "1000"
     schedule: "30 6 * * 0"
 
 volsync-perfectra1n:
