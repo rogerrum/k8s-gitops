@@ -51,7 +51,7 @@ app-template:
       type: statefulset
       statefulset:
         serviceName: minecraft-creative
-      replicas: 1
+      replicas: 0
       strategy: RollingUpdate
       containers:
         main:
