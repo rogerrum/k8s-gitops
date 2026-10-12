@@ -66,7 +66,11 @@ app-template:
             VERSION: "26.2"
             DIFFICULTY: normal
             MODE: creative
-            ONLINE_MODE: "true"
+            # offline/cracked mode: no Mojang/Microsoft auth check, so any
+            # arbitrary name below works, and UUIDs are auto-derived locally
+            # (MD5 of the name) - don't flip back to "true" later without
+            # expecting player data/inventories tied to these UUIDs to reset.
+            ONLINE_MODE: "false"
             OVERRIDE_SERVER_PROPERTIES: "true"
             MEMORY: 3072M
             USE_AIKAR_FLAGS: "true"
