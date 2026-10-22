@@ -3,5 +3,5 @@ apiVersion: v2
 version: 1.0.0
 dependencies:
   - name: prometheus-blackbox-exporter
-    version: 11.20.0
+    version: 11.20.1
     repository:  oci://ghcr.io/prometheus-community/charts
