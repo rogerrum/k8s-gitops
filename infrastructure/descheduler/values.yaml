@@ -6,6 +6,13 @@ descheduler:
       operator: "Exists"
     - key: "arm"
       operator: "Exists"
+  resources:
+    requests:
+      cpu: 500m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
   deschedulerPolicyAPIVersion: descheduler/v1alpha2
   deschedulerPolicy:
     profiles:
@@ -20,18 +27,6 @@ descheduler:
                   - FailedBarePods
                   - PodsWithLocalStorage
                   - SystemCriticalPods
-          - name: RemoveFailedPods
-            args:
-              reasons:
-                - ContainerStatusUnknown
-                - NodeAffinity
-                - NodeShutdown
-                - Terminated
-                - UnexpectedAdmissionError
-              includingInitContainers: true
-              excludeOwnerKinds:
-                - Job
-              minPodLifetimeSeconds: 1800
           - name: RemovePodsViolatingInterPodAntiAffinity
           - name: RemovePodsViolatingNodeAffinity
             args:
@@ -73,9 +68,42 @@ descheduler:
               - RemovePodsViolatingNodeTaints
               - RemovePodsViolatingNodeAffinity
               - RemovePodsViolatingInterPodAntiAffinity
+
+      # Profile 2: Cleanup of already-terminal Failed pods. Runs with its own
+      # DefaultEvictor (nodeFit: false) because deleting a dead pod object
+      # must never depend on whether it could be rescheduled elsewhere --
+      # workloads pinned to a scarce/exclusive device resource (e.g. frigate's
+      # generic-device-plugin/coral) can never "fit" on another node, which
+      # previously blocked RemoveFailedPods from ever deleting their failed
+      # pods and let tens of thousands accumulate.
+      - name: CleanupFailedPods
+        pluginConfig:
+          - name: DefaultEvictor
+            args:
+              nodeFit: false
+              podProtections:
+                defaultDisabled:
+                  - FailedBarePods
+                  - PodsWithLocalStorage
+                  - SystemCriticalPods
+          - name: RemoveFailedPods
+            args:
+              reasons:
+                - ContainerStatusUnknown
+                - NodeAffinity
+                - NodeShutdown
+                - Terminated
+                - UnexpectedAdmissionError
+              includingInitContainers: true
+              excludeOwnerKinds:
+                - Job
+              minPodLifetimeSeconds: 1800
+        plugins:
+          deschedule:
+            enabled:
               - RemoveFailedPods
 
-      # Profile 2: Dedicated workflow to force restart Frigate regardless of destination nodes
+      # Profile 3: Dedicated workflow to force restart Frigate regardless of destination nodes
       - name: ForceFrigateRestart
         pluginConfig:
           - name: DefaultEvictor
