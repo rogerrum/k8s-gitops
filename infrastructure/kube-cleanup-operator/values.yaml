@@ -15,4 +15,4 @@ kube-cleanup-operator:
       memory: 64Mi
     limits:
       cpu: null
-      memory: 64Mi
+      memory: 512Mi
