@@ -18,7 +18,7 @@ app-template:
         main:
           image:
             repository: itzg/mc-router
-            tag: 1.48.0@sha256:3a9ece070b97c8c55666810fc81cb209e1dd775fce792187e296626b786859cc
+            tag: 1.50.0@sha256:d49d1332ec9b6aa07a2ca87e0ac2cfeda9dcfe7b29a4d1d7a0de24d3eedae3fe
           args:
             - --in-kube-cluster
             - --auto-scale-up
