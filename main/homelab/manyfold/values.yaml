@@ -79,7 +79,7 @@ app-template:
         redis:
           image:
             repository: ghcr.io/valkey-io/valkey
-            tag: 9.1.2
+            tag: 9.1.3
           args:
             - --save
             - ""
