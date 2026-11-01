@@ -5,5 +5,5 @@ type: application
 version: 1.0.0
 dependencies:
   - name: litellm-operator
-    version: 0.0.25
+    version: 0.0.26
     repository: oci://ghcr.io/home-operations/charts
