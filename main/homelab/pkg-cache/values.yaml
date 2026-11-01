@@ -43,7 +43,7 @@ app-template:
         main:
           image:
             repository: verdaccio/verdaccio
-            tag: 7.0.1
+            tag: 7.0.2
           securityContext:
             runAsUser: 10001
             runAsGroup: 65533
