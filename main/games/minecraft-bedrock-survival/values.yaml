@@ -1,0 +1,103 @@
+app-template:
+
+  defaultPodOptions:
+    terminationGracePeriodSeconds: 120
+    securityContext:
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+      runAsGroup: 1000
+      runAsNonRoot: true
+      runAsUser: 1000
+
+  controllers:
+    main:
+      # Always-on: unlike the Java servers, there is no mc-router equivalent
+      # that can scale this to zero and wake on connect - Bedrock uses
+      # RakNet/UDP, which mc-router cannot route or detect. Replicas stay at
+      # 1 permanently until a custom Bedrock-aware wake mechanism exists.
+      replicas: 1
+      containers:
+        main:
+          image:
+            repository: itzg/minecraft-bedrock-server
+            tag: latest@sha256:b6e05930eaa8bb21cad07b6d4797a6d64e68c6a7956d34f4c5d47af464ff51bf
+          env:
+            EULA: "TRUE"
+            TZ: America/Chicago
+            VERSION: LATEST
+            GAMEMODE: survival
+            DIFFICULTY: normal
+            LEVEL_NAME: Survival
+            SERVER_NAME: "Bedrock Survival"
+            # Classic RakNet transport (single fixed UDP port) instead of
+            # the newer NetherNet/WebRTC transport, so this can be exposed
+            # through one static LoadBalancer IP:port like the Java servers.
+            TRANSPORT: raknet
+            SERVER_PORT: &bedrockPort 19132
+            # No Xbox Live auth requirement - matches the Java servers'
+            # ONLINE_MODE: false (offline/cracked) approach so any player
+            # can join without a Microsoft account check.
+            ONLINE_MODE: "false"
+            ALLOW_LIST: "false"
+            OPS: rogerrum
+            VIEW_DISTANCE: 10
+            STOP_SERVER_ANNOUNCE_DELAY: "20"
+          probes:
+            liveness:
+              enabled: true
+              custom: true
+              spec:
+                exec:
+                  command: ["mc-monitor", "status-bedrock", "--host", "127.0.0.1", "--port", "19132"]
+                initialDelaySeconds: 30
+                periodSeconds: 5
+                failureThreshold: 10
+            readiness:
+              enabled: true
+              custom: true
+              spec:
+                exec:
+                  command: ["mc-monitor", "status-bedrock", "--host", "127.0.0.1", "--port", "19132"]
+                initialDelaySeconds: 30
+                periodSeconds: 5
+                failureThreshold: 10
+            startup:
+              enabled: true
+              custom: true
+              spec:
+                exec:
+                  command: ["mc-monitor", "status-bedrock", "--host", "127.0.0.1", "--port", "19132"]
+                failureThreshold: 30
+                periodSeconds: 10
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 250m
+            limits:
+              memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: ["ALL"]}
+
+  persistence:
+    data:
+      # PVC is created/restored by infrastructure/volsync (see apps list
+      # there), not by this chart - matches how volsync-backed apps
+      # (minecraft-survival, minecraft-creative) reference existingClaim here.
+      existingClaim: minecraft-bedrock-survival-data
+      globalMounts:
+        - path: /data
+
+  service:
+    main:
+      controller: main
+      type: LoadBalancer
+      annotations:
+        lbipam.cilium.io/ips: "192.168.100.58"
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Games
+        gethomepage.dev/name: Bedrock Survival
+      ports:
+        bedrock:
+          port: *bedrockPort
+          protocol: UDP

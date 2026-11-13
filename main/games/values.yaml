@@ -4,26 +4,18 @@ repo:
 
 
 applications:
-  - name: minecraft-survival
+  - name: minecraft-bedrock-survival
     namespace: games
-    path: main/games/minecraft-survival
-    manifest-paths: /main/games/minecraft-survival
+    path: main/games/minecraft-bedrock-survival
+    manifest-paths: /main/games/minecraft-bedrock-survival
     sync-wave: "0"
     helm:
       enabled: true
 
-  - name: minecraft-creative
+  - name: minecraft-bedrock-creative
     namespace: games
-    path: main/games/minecraft-creative
-    manifest-paths: /main/games/minecraft-creative
-    sync-wave: "0"
-    helm:
-      enabled: true
-
-  - name: minecraft-router
-    namespace: games
-    path: main/games/minecraft-router
-    manifest-paths: /main/games/minecraft-router
+    path: main/games/minecraft-bedrock-creative
+    manifest-paths: /main/games/minecraft-bedrock-creative
     sync-wave: "0"
     helm:
       enabled: true

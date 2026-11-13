@@ -126,17 +126,17 @@ apps:
     namespace: default
     schedule: "30 9 * * 6"
 
-  - app: minecraft-survival
+  - app: minecraft-bedrock-survival
     pvcSuffix: data
-    capacity: 10Gi
+    capacity: 5Gi
     namespace: games
-    schedule: "0 6 * * 0"
+    schedule: "0 7 * * 0"
 
-  - app: minecraft-creative
+  - app: minecraft-bedrock-creative
     pvcSuffix: data
-    capacity: 10Gi
+    capacity: 5Gi
     namespace: games
-    schedule: "30 6 * * 0"
+    schedule: "30 7 * * 0"
 
 volsync-perfectra1n:
   fullnameOverride: volsync # Required for volsync-perfectra1n fork

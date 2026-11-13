@@ -1,5 +1,5 @@
 apiVersion: v2
-name: minecraft-survival
+name: minecraft-bedrock-creative
 version: 1.0.0
 dependencies:
   - name: app-template
