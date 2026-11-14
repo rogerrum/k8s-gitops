@@ -90,8 +90,8 @@ app-template:
             USE_AIKAR_FLAGS: "true"
             MAX_TICK_TIME: "-1"
             PAUSE_WHEN_EMPTY_SECONDS: "300"
-            OPS: rogerrum
-            WHITELIST: "rogerrum,axolotl"
+            OPS: UnbuiltSpace217
+            WHITELIST: "UnbuiltSpace217"
             MOTD: "§b§lCreative§r\n§7Build freely"
             STOP_SERVER_ANNOUNCE_DELAY: "20"
             PATCH_DEFINITIONS: /patch-defs

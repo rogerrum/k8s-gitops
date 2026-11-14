@@ -8,6 +8,15 @@ app-template:
       runAsGroup: 1000
       runAsNonRoot: true
       runAsUser: 1000
+    # Storage nodes can suffer I/O contention; keep this off them to avoid
+    # slow world loads racing against the startup probe's window.
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: storage
+                  operator: DoesNotExist
 
   controllers:
     main:
@@ -44,7 +53,7 @@ app-template:
             # can join without a Microsoft account check.
             ONLINE_MODE: "false"
             ALLOW_LIST: "false"
-            OPS: rogerrum
+            OPS: UnbuiltSpace217
             VIEW_DISTANCE: 10
             STOP_SERVER_ANNOUNCE_DELAY: "20"
           probes:
@@ -52,8 +61,12 @@ app-template:
               enabled: true
               custom: true
               spec:
+                # explicit nethernet protocol: "auto" tries RakNet first,
+                # which no longer exists under this transport and wastes
+                # the probe's timeout budget on a connection that will
+                # never succeed
                 exec:
-                  command: ["mc-monitor", "status-bedrock", "--host", "127.0.0.1", "--port", "19132"]
+                  command: ["mc-monitor", "status-bedrock", "--host", "127.0.0.1", "--port", "19132", "--protocol", "nethernet"]
                 initialDelaySeconds: 30
                 periodSeconds: 5
                 failureThreshold: 10
@@ -62,7 +75,7 @@ app-template:
               custom: true
               spec:
                 exec:
-                  command: ["mc-monitor", "status-bedrock", "--host", "127.0.0.1", "--port", "19132"]
+                  command: ["mc-monitor", "status-bedrock", "--host", "127.0.0.1", "--port", "19132", "--protocol", "nethernet"]
                 initialDelaySeconds: 30
                 periodSeconds: 5
                 failureThreshold: 10
@@ -71,8 +84,9 @@ app-template:
               custom: true
               spec:
                 exec:
-                  command: ["mc-monitor", "status-bedrock", "--host", "127.0.0.1", "--port", "19132"]
-                failureThreshold: 30
+                  command: ["mc-monitor", "status-bedrock", "--host", "127.0.0.1", "--port", "19132", "--protocol", "nethernet"]
+                # allow up to 10 min before giving up (was 5 min)
+                failureThreshold: 60
                 periodSeconds: 10
           resources:
             requests:
