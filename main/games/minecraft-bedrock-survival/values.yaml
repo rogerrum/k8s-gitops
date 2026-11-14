@@ -54,7 +54,7 @@ app-template:
             # can join without a Microsoft account check.
             ONLINE_MODE: "false"
             ALLOW_LIST: "false"
-            OPS: UnbuiltSpace217
+            OPS: "Axolotl,UnbuiltSpace217"
             VIEW_DISTANCE: 10
             STOP_SERVER_ANNOUNCE_DELAY: "20"
           probes:

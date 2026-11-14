@@ -90,8 +90,15 @@ app-template:
             USE_AIKAR_FLAGS: "true"
             MAX_TICK_TIME: "-1"
             PAUSE_WHEN_EMPTY_SECONDS: "300"
-            OPS: UnbuiltSpace217
-            WHITELIST: "UnbuiltSpace217"
+            # NOTE: do NOT set OPS/WHITELIST to a Bedrock/Floodgate gamertag
+            # here - itzg's image always resolves usernames via the Mojang
+            # Playerdb API at boot (even with ONLINE_MODE=false), and Xbox
+            # gamertags aren't real Java accounts, so that lookup fails and
+            # crashes the whole container before Paper starts. Whitelist is
+            # disabled; once connected, self-op in-game/RCON with the
+            # Floodgate-prefixed name instead (e.g. "/op .<gamertag>") -
+            # that path resolves locally, no API call involved.
+            ENABLE_WHITELIST: "false"
             MOTD: "§b§lCreative§r\n§7Build freely"
             STOP_SERVER_ANNOUNCE_DELAY: "20"
             PATCH_DEFINITIONS: /patch-defs
