@@ -200,7 +200,7 @@ app-template:
         - matches:
             - path: {type: PathPrefix, value: /}
           backendRefs:
-            - name: minecraft-java-survival
+            - name: minecraft-java-survival-main
               port: 8100
 
   service:

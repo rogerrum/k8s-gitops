@@ -198,7 +198,7 @@ app-template:
         - matches:
             - path: {type: PathPrefix, value: /}
           backendRefs:
-            - name: minecraft-java-creative
+            - name: minecraft-java-creative-main
               port: 8100
 
   service:
