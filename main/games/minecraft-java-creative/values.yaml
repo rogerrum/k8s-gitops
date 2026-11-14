@@ -146,7 +146,12 @@ app-template:
               spec:
                 exec:
                   command: ["mc-monitor", "status", "--host", "127.0.0.1", "--port", "25565"]
-                failureThreshold: 30
+                # First boot downloads ~8 plugin jars (Geyser, Floodgate,
+                # BlueMap, EssentialsX, etc.) plus the Paper server jar
+                # itself before the port ever opens - 300s wasn't enough and
+                # kept killing the container mid-download. 180*10s = 30min
+                # window; subsequent boots are fast since plugins are cached.
+                failureThreshold: 180
                 periodSeconds: 10
           resources:
             requests:
