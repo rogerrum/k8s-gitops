@@ -29,11 +29,16 @@ app-template:
             DIFFICULTY: normal
             LEVEL_NAME: Survival
             SERVER_NAME: "Bedrock Survival"
-            # Classic RakNet transport (single fixed UDP port) instead of
-            # the newer NetherNet/WebRTC transport, so this can be exposed
-            # through one static LoadBalancer IP:port like the Java servers.
-            TRANSPORT: raknet
+            # Mojang permanently removed RakNet from both client and server
+            # as of Bedrock 1.26.60 (Oct 2026) - NetherNet (WebRTC-based) is
+            # now the only supported transport. Signaling still happens over
+            # one fixed TCP port (19132), but actual gameplay traffic for
+            # each connected player uses a UDP port from SERVER_UDP_PORTS,
+            # which must be advertised with our static LoadBalancer IP so
+            # clients behind NAT/LB know where to reach it.
+            TRANSPORT: nethernet
             SERVER_PORT: &bedrockPort 19132
+            SERVER_UDP_PORTS: "192.168.100.58:19140-19147:19140-19147"
             # No Xbox Live auth requirement - matches the Java servers'
             # ONLINE_MODE: false (offline/cracked) approach so any player
             # can join without a Microsoft account check.
@@ -98,6 +103,33 @@ app-template:
         gethomepage.dev/group: Games
         gethomepage.dev/name: Bedrock Survival
       ports:
+        # NetherNet signaling port (TCP) - clients connect here first.
         bedrock:
           port: *bedrockPort
+          protocol: TCP
+        # NetherNet gameplay UDP ports - one per concurrent player,
+        # must match SERVER_UDP_PORTS above.
+        bedrock-udp-19140:
+          port: 19140
+          protocol: UDP
+        bedrock-udp-19141:
+          port: 19141
+          protocol: UDP
+        bedrock-udp-19142:
+          port: 19142
+          protocol: UDP
+        bedrock-udp-19143:
+          port: 19143
+          protocol: UDP
+        bedrock-udp-19144:
+          port: 19144
+          protocol: UDP
+        bedrock-udp-19145:
+          port: 19145
+          protocol: UDP
+        bedrock-udp-19146:
+          port: 19146
+          protocol: UDP
+        bedrock-udp-19147:
+          port: 19147
           protocol: UDP
