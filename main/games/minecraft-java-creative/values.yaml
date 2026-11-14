@@ -57,6 +57,18 @@ app-template:
               { "$set": { "path": "$.bedrock.signaling.builtin.advertise-addresses", "value": ["192.168.100.61"], "value-type": "list" } }
             ]
           }
+        # BlueMap refuses to start its webserver until this Mojang resource
+        # download is explicitly accepted (see BlueMap's EULA notice in
+        # core.conf) - without this, the map is never reachable and the
+        # route returns "upstream connect error" since nothing is listening
+        # on port 8100.
+        bluemap-accept-download-patch.json: |
+          {
+            "file": "/data/plugins/BlueMap/core.conf",
+            "ops": [
+              { "$set": { "path": "$.accept-download", "value": true, "value-type": "bool" } }
+            ]
+          }
     prometheus-exporter-config:
       data:
         config.yml: |
