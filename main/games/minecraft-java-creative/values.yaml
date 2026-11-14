@@ -43,17 +43,16 @@ app-template:
           }
         # Mojang permanently removed RakNet as of Bedrock 1.26.60 (Oct 2026)
         # - NetherNet (WebRTC) is now mandatory, and Geyser only supports it
-        # from build 1237+ with this opt-in config flag. Signaling-address
-        # should be the external LoadBalancer IP so Bedrock clients behind
-        # NAT can reach it. NOTE: verify the exact generated key paths in
-        # plugins/Geyser-Spigot/config.yml on first boot - Geyser's schema
-        # may differ slightly by version.
+        # from build 1237+ with this opt-in config flag. advertise-addresses
+        # is a list - clients use it to reach the signaling server from
+        # behind NAT; confirmed key path is bedrock.signaling.advertise-addresses
+        # (not a flat bedrock.signaling-address string).
         geyser-nethernet-patch.json: |
           {
             "file": "/data/plugins/Geyser-Spigot/config.yml",
             "ops": [
               { "$set": { "path": "$.bedrock.transport", "value": "nethernet" } },
-              { "$set": { "path": "$.bedrock.signaling-address", "value": "192.168.100.61" } }
+              { "$set": { "path": "$.bedrock.signaling.advertise-addresses", "value": ["192.168.100.61"], "value-type": "list" } }
             ]
           }
     prometheus-exporter-config:
