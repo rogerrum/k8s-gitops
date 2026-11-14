@@ -45,14 +45,16 @@ app-template:
         # - NetherNet (WebRTC) is now mandatory, and Geyser only supports it
         # from build 1237+ with this opt-in config flag. advertise-addresses
         # is a list - clients use it to reach the signaling server from
-        # behind NAT; confirmed key path is bedrock.signaling.advertise-addresses
+        # behind NAT; confirmed via the real generated config on first boot -
+        # key path is bedrock.signaling.builtin.advertise-addresses
+        # (signaling.mode defaults to "builtin" already, no need to set it)
         # (not a flat bedrock.signaling-address string).
         geyser-nethernet-patch.json: |
           {
             "file": "/data/plugins/Geyser-Spigot/config.yml",
             "ops": [
               { "$set": { "path": "$.bedrock.transport", "value": "nethernet" } },
-              { "$set": { "path": "$.bedrock.signaling.advertise-addresses", "value": ["192.168.100.62"], "value-type": "list" } }
+              { "$set": { "path": "$.bedrock.signaling.builtin.advertise-addresses", "value": ["192.168.100.62"], "value-type": "list" } }
             ]
           }
     prometheus-exporter-config:
