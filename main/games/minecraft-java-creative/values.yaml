@@ -123,22 +123,26 @@ app-template:
             # Geyser + Floodgate (below): lets Bedrock clients (iPhone/iPad/
             # Switch/etc) join this Java server directly via NetherNet - no
             # separate router needed since there is no Java PC client to
-            # route for.
+            # route for. Geyser/Floodgate are pinned to a specific
+            # version/build (not "latest/latest") because the config schema
+            # has changed between builds (e.g. bedrock.signaling.builtin
+            # path) and "latest" isn't deterministic across pods/restarts,
+            # which previously broke the geyser-nethernet-patch.json below
+            # intermittently. Confirmed via live config inspection these
+            # builds use bedrock.signaling.builtin.advertise-addresses.
+            # BlueMap's core.conf is pre-seeded here (accept-download: true)
+            # before BlueMap's first boot since that can't be done via
+            # PATCH_DEFINITIONS (HOCON) - see bluemap-core-config configMap
+            # above.
+            # NOTE: APPLY_EXTRA_FILES does NOT support inline "#" comments in
+            # its multi-line value - every line is parsed as a src<dest
+            # directive, so keep all explanatory comments outside this block.
             APPLY_EXTRA_FILES: |
               plugins<https://github.com/sladkoff/minecraft-prometheus-exporter/releases/download/v3.1.2/minecraft-prometheus-exporter-3.1.2.jar
               plugins/PrometheusExporter</prometheus-exporter-config/config.yml
               plugins<https://cdn.modrinth.com/data/hXiIvTyT/versions/nY6VN1XH/EssentialsX-2.22.0.jar
-              # Pinned (not "latest/latest") - the Geyser config schema has
-              # changed between builds (e.g. bedrock.signaling.builtin path),
-              # and "latest" isn't deterministic across pods/restarts, which
-              # broke the geyser-nethernet-patch.json below intermittently.
-              # Confirmed via live config inspection these builds use
-              # bedrock.signaling.builtin.advertise-addresses.
               plugins<https://download.geysermc.org/v2/projects/geyser/versions/2.12.1/builds/1302/downloads/spigot
               plugins<https://download.geysermc.org/v2/projects/floodgate/versions/2.2.5/builds/141/downloads/spigot
-              # Pre-seed BlueMap's core.conf with accept-download: true before
-              # BlueMap's first boot - see bluemap-core-config configMap above
-              # for why this can't be done via PATCH_DEFINITIONS (HOCON).
               plugins/BlueMap</bluemap-core-config/core.conf
           envFrom:
             - secretRef:
