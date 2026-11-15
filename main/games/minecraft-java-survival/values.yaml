@@ -57,23 +57,22 @@ app-template:
               { "$set": { "path": "$.bedrock.signaling.builtin.advertise-addresses", "value": ["192.168.100.62"], "value-type": "list" } }
             ]
           }
-        # BlueMap refuses to start its webserver until this Mojang resource
-        # download is explicitly accepted (see BlueMap's EULA notice in
-        # core.conf) - without this, the map is never reachable and the
-        # route returns "upstream connect error" since nothing is listening
-        # on port 8100.
-        bluemap-accept-download-patch.json: |
-          {
-            "file": "/data/plugins/BlueMap/core.conf",
-            "ops": [
-              { "$set": { "path": "$.accept-download", "value": true, "value-type": "bool" } }
-            ]
-          }
     prometheus-exporter-config:
       data:
         config.yml: |
           host: 0.0.0.0
           port: 9940
+    bluemap-core-config:
+      data:
+        # BlueMap's core.conf is HOCON, which mc-image-helper's PATCH_DEFINITIONS
+        # can't reliably parse ("file format could not be identified"), so this
+        # gets pre-seeded via APPLY_EXTRA_FILES instead of a JSON patch. BlueMap
+        # loads this with Configurate, which fills in any remaining defaults and
+        # rewrites the file - without accept-download: true, BlueMap refuses to
+        # start its webserver (port 8100) and the map route "upstream connect
+        # error"s since nothing is listening.
+        core.conf: |
+          accept-download: true
 
   controllers:
     main:
@@ -131,8 +130,18 @@ app-template:
               plugins<https://github.com/sladkoff/minecraft-prometheus-exporter/releases/download/v3.1.2/minecraft-prometheus-exporter-3.1.2.jar
               plugins/PrometheusExporter</prometheus-exporter-config/config.yml
               plugins<https://cdn.modrinth.com/data/hXiIvTyT/versions/nY6VN1XH/EssentialsX-2.22.0.jar
-              plugins<https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
-              plugins<https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot
+              # Pinned (not "latest/latest") - the Geyser config schema has
+              # changed between builds (e.g. bedrock.signaling.builtin path),
+              # and "latest" isn't deterministic across pods/restarts, which
+              # broke the geyser-nethernet-patch.json below intermittently.
+              # Confirmed via live config inspection these builds use
+              # bedrock.signaling.builtin.advertise-addresses.
+              plugins<https://download.geysermc.org/v2/projects/geyser/versions/2.12.1/builds/1302/downloads/spigot
+              plugins<https://download.geysermc.org/v2/projects/floodgate/versions/2.2.5/builds/141/downloads/spigot
+              # Pre-seed BlueMap's core.conf with accept-download: true before
+              # BlueMap's first boot - see bluemap-core-config configMap above
+              # for why this can't be done via PATCH_DEFINITIONS (HOCON).
+              plugins/BlueMap</bluemap-core-config/core.conf
           envFrom:
             - secretRef:
                 name: minecraft-java-survival-secret
@@ -196,6 +205,13 @@ app-template:
       globalMounts:
         - path: /prometheus-exporter-config/config.yml
           subPath: config.yml
+          readOnly: true
+    bluemap-core-config:
+      type: configMap
+      identifier: bluemap-core-config
+      globalMounts:
+        - path: /bluemap-core-config/core.conf
+          subPath: core.conf
           readOnly: true
 
   route:
