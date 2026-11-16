@@ -30,7 +30,7 @@ app-template:
         main:
           image:
             repository: itzg/minecraft-bedrock-server
-            tag: latest@sha256:803e3f4200bcfbbbbb9cb70318ed85a1c780f6bc29744a093c76389c6f7e55bd
+            tag: latest@sha256:b6c5dc8c6decfb1e545e95f25da6c442000c1a9c5b46c102a82ea44b25573af0
           env:
             EULA: "TRUE"
             TZ: America/Chicago
