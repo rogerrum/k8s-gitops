@@ -197,7 +197,7 @@ app-template:
         runner:
           image:
             repository: data.forgejo.org/forgejo/runner
-            tag: 13.2.0@sha256:ca3d5eea46004789a175d1369eec6829d3ea9bfbe2011a06625b4bdaa55f7552
+            tag: 13.2.2@sha256:a8543a45fe62bebef0534d5c223cf485d3294e6dd2e42a82dbcbfd40c54a6a22
           command:
             - sh
             - -ec
