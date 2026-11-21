@@ -72,9 +72,6 @@ argo-cd:
                 name: frigate-helm-values
                 optional: true
             - secret:
-                name: emqx-helm-values
-                optional: true
-            - secret:
                 name: kured-helm-values
                 optional: true
 

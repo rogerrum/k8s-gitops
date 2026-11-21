@@ -21,20 +21,6 @@ applications:
     helm:
       enabled: true
 
-  - name: emqx
-    namespace: default
-    path: main/homelab/emqx
-    manifest-paths: /main/homelab/emqx
-    sync-wave: "-1"
-    helm:
-      enabled: true
-      secrets:
-        enabled: true
-        keys:
-          - emqx-config
-      additionalValues:
-        - http://localhost/emqx.yml
-
   - name: frigate
     namespace: default
     path: main/homelab/frigate
