@@ -1,0 +1,91 @@
+# govee2mqtt: bridges Govee devices to MQTT (Home Assistant auto-discovery)
+# using ONLY the Govee LAN API - no Govee cloud account/API key is configured
+# (GOVEE_EMAIL/GOVEE_PASSWORD/GOVEE_API_KEY are intentionally omitted). Each
+# device must have "LAN Control" enabled in the Govee Home app first.
+#
+# hostNetwork is required here (this repo has no multus/macvlan network
+# attachment like some reference setups use) so the pod can send/receive the
+# Govee LAN discovery multicast traffic (239.255.255.250) on the real LAN,
+# matching the same pattern used by airprint/esphome/home-assistant/wyze-bridge.
+app-template:
+  defaultPodOptions:
+    hostNetwork: true
+    dnsPolicy: ClusterFirstWithHostNet
+    securityContext:
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+      runAsGroup: 1000
+      runAsNonRoot: true
+      runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
+
+  controllers:
+    govee2mqtt:
+      containers:
+        app:
+          image:
+            repository: ghcr.io/wez/govee2mqtt
+            tag: latest@sha256:d5427fa1524e3e6f87c59e5cbc59e782036a2b5274e4f96cfb581d844aa2b6dc
+          env:
+            TZ: America/Chicago
+            GOVEE_MQTT_HOST: mosquitto.default.svc.cluster.local
+            GOVEE_MQTT_PORT: "1883"
+            GOVEE_TEMPERATURE_SCALE: F
+            RUST_LOG_STYLE: always
+            GOVEE_LAN_SCAN: "192.168.20.145"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+
+  service:
+    main:
+      controller: govee2mqtt
+      ports:
+        http:
+          port: &port 8056
+
+  route:
+    main:
+      enabled: true
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Home
+        gethomepage.dev/icon: mdi-led-strip-variant
+        gethomepage.dev/name: Govee2MQTT
+      parentRefs:
+        - name: internal
+          namespace: kube-system
+          sectionName: https
+      hostnames:
+        - govee.rsr.net
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: govee2mqtt
+              port: *port
+
+  persistence:
+    # /data is only used by govee2mqtt to cache Govee CLOUD API responses and
+    # store AWS IoT creds for a logged-in cloud account (platform_api/undoc_api
+    # in upstream source) - neither path runs here since no Govee cloud
+    # credentials are configured (LAN-only mode), so a PVC isn't needed.
+    data:
+      type: emptyDir
+      globalMounts:
+        - path: /data
+    tmp:
+      type: emptyDir
+      globalMounts:
+        - path: /tmp

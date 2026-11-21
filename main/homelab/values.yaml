@@ -293,3 +293,11 @@ applications:
     sync-wave: "-1"
     helm:
       enabled: true
+
+  - name: govee2mqtt
+    namespace: default
+    path: main/homelab/govee2mqtt
+    manifest-paths: /main/homelab/govee2mqtt
+    sync-wave: "-1"
+    helm:
+      enabled: true
