@@ -107,11 +107,16 @@ app-template:
           subPath: passwd
           readOnly: true
 
-  # ClusterIP for now - switch to LoadBalancer (with its own IP, distinct from
-  # emqx's) once ready to cut traffic over.
+  # LoadBalancer on the same static IP emqx used to own (192.168.100.57),
+  # now that emqx has been fully decommissioned - keeps any device/client
+  # pointed directly at that IP working without reconfiguration.
   service:
     mqtt:
       controller: mosquitto
+      type: LoadBalancer
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: 192.168.100.57
+        lbipam.cilium.io/ips: "192.168.100.57"
       ports:
         mqtt:
           port: 1883
@@ -119,4 +124,3 @@ app-template:
         websocket:
           port: 9001
           protocol: TCP
-      type: ClusterIP
