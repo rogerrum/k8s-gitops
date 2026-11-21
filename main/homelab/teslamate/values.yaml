@@ -57,7 +57,7 @@ app-template:
           env:
             TZ: "America/Chicago"
             DISABLE_MQTT: "false"
-            MQTT_HOST: "emqx.default.svc.cluster.local"
+            MQTT_HOST: "mosquitto.default.svc.cluster.local"
             MQTT_PORT: 1883
             MQTT_HOME_ASSISTANT_DISCOVERY: "true"
             DATABASE_NAME: teslamate
