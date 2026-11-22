@@ -160,22 +160,6 @@ applications:
     helm:
       enabled: true
 
-  - name: actual
-    namespace: default
-    path: main/homelab/actual
-    manifest-paths: /main/homelab/actual
-    sync-wave: "-1"
-    helm:
-      enabled: true
-
-  - name: nomie
-    namespace: default
-    path: main/homelab/nomie
-    manifest-paths: /main/homelab/nomie
-    sync-wave: "-1"
-    helm:
-      enabled: true
-
   - name: external-route
     namespace: kube-system
     path: main/homelab/external-route
