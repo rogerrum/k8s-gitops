@@ -20,13 +20,13 @@ applications:
     helm:
       enabled: true
 
-  - name: minecraft-java-survival
-    namespace: games
-    path: main/games/minecraft-java-survival
-    manifest-paths: /main/games/minecraft-java-survival
-    sync-wave: "0"
-    helm:
-      enabled: true
+#  - name: minecraft-java-survival
+#    namespace: games
+#    path: main/games/minecraft-java-survival
+#    manifest-paths: /main/games/minecraft-java-survival
+#    sync-wave: "0"
+#    helm:
+#      enabled: true
 
   - name: minecraft-java-creative
     namespace: games
