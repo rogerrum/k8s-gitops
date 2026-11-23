@@ -50,11 +50,13 @@ spec:
     # gap between "extraction complete" and the first branch being
     # processed after bumping this to 60s) -- fail fast and move on instead.
     # git.rsr.net's own PR-listing API call (state=all, limit=100) has grown
-    # slow (observed 14s+) as PR history has accumulated, and otherwise
-    # inherits the 10s global default below -- causing spurious ETIMEDOUT
-    # "Repository has unknown error" aborts. Give it its own longer budget.
+    # slow (observed 21s+ on later pages) as PR history has accumulated on
+    # SQLite-backed Forgejo, and otherwise inherits the 10s global default
+    # below -- causing spurious ETIMEDOUT "Repository has unknown error"
+    # aborts (30s wasn't enough margin either). Give it its own longer
+    # budget until Forgejo is migrated off SQLite (see forgejo values.yaml).
     - name: RENOVATE_HOST_RULES
-      value: '[{"matchHost":"git.rsr.net","allowInternal":true,"timeout":30000},{"abortOnError":false,"timeout":10000}]'
+      value: '[{"matchHost":"git.rsr.net","allowInternal":true,"timeout":60000},{"abortOnError":false,"timeout":10000}]'
     # git.rsr.net's TLS cert is issued by the internal step-ca CA. Without
     # this, Node's TLS client rejects the handshake with
     # UNABLE_TO_GET_ISSUER_CERT_LOCALLY, which Renovate's forgejo platform
