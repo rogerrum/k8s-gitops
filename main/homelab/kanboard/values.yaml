@@ -28,7 +28,7 @@ app-template:
         main:
           image:
             repository: kanboard/kanboard
-            tag: v1.2.56
+            tag: v1.2.57
           env:
             TZ: "America/Chicago"
             DB_DRIVER: "postgres"
