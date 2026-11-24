@@ -55,8 +55,8 @@ spec:
     {{- end }}
   syncPolicy:
     automated:
-      prune: {{ default true $app.prune }}
-      selfHeal: {{ default true $app.selfHeal }}
+      prune: {{ if hasKey $app "prune" }}{{ $app.prune }}{{ else }}true{{ end }}
+      selfHeal: {{ if hasKey $app "selfHeal" }}{{ $app.selfHeal }}{{ else }}true{{ end }}
     syncOptions:
       - SkipDryRunOnMissingResource=true
       - ApplyOutOfSyncOnly=true
