@@ -141,6 +141,34 @@ argo-cd:
             - .spec.dataFrom[].extract.conversionStrategy
             - .spec.dataFrom[].extract.decodingStrategy
             - .spec.dataFrom[].extract.metadataPolicy
+          # Without this, ArgoCD has no built-in health check for
+          # ExternalSecret and treats it as "Healthy" the instant the object
+          # is applied -- before the external-secrets operator has actually
+          # synced the real Secret from the provider. That breaks any
+          # PreSync-hook ordering that depends on a Secret existing before a
+          # later hook (e.g. forgejo's init-db Job), since ArgoCD would
+          # advance to the next hook immediately instead of waiting for the
+          # Secret to really be populated.
+          health.lua: |
+            hs = {}
+            if obj.status ~= nil and obj.status.conditions ~= nil then
+              for i, condition in ipairs(obj.status.conditions) do
+                if condition.type == "Ready" then
+                  if condition.status == "True" then
+                    hs.status = "Healthy"
+                    hs.message = "Secret synced successfully"
+                    return hs
+                  else
+                    hs.status = "Degraded"
+                    hs.message = condition.message or "Secret not synced"
+                    return hs
+                  end
+                end
+              end
+            end
+            hs.status = "Progressing"
+            hs.message = "Waiting for ExternalSecret to sync"
+            return hs
         apiextensions.k8s.io/CustomResourceDefinition:
           health.lua: |
             hs = {}
