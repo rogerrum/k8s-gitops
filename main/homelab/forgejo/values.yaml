@@ -7,6 +7,11 @@ forgejo:
       serviceMonitor:
         enabled: false # replaced by our own ServiceMonitor (templates/servicemonitor.yaml), which relabels job to gitea-http
     config:
+      database:
+        DB_TYPE: postgres
+        HOST: postgres-lb.kube-system.svc.cluster.local:5432
+        NAME: forgejo
+        SSL_MODE: disable
       metrics:
         ENABLED_ISSUE_BY_LABEL: true
         ENABLED_ISSUE_BY_REPOSITORY: true
@@ -89,6 +94,19 @@ forgejo:
         existingSecret: forgejo-oidc
         provider: openidConnect
         scopes: openid email profile
+    # DB credentials come from the forgejo-db ExternalSecret (same secret the
+    # init-db Job uses) rather than being inlined in git.
+    additionalConfigFromEnvs:
+      - name: GITEA__database__USER
+        valueFrom:
+          secretKeyRef:
+            name: forgejo-db
+            key: DB_USERNAME
+      - name: GITEA__database__PASSWD
+        valueFrom:
+          secretKeyRef:
+            name: forgejo-db
+            key: DB_PASSWORD
   extraContainerVolumeMounts:
     - name: signing-key
       mountPath: /data/signing
