@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/gateway.networking.k8s.io/tcproute_v1.json
+# Replacement for the forgejo chart's built-in tcpRoute.yaml (disabled via
+# values.yaml tcpRoute.enabled: false), which hardcodes the now-unserved
+# gateway.networking.k8s.io/v1alpha2 TCPRoute apiVersion. Keeps the same
+# name/labels/spec so ArgoCD adopts the existing live resource in-place.
+apiVersion: gateway.networking.k8s.io/v1
+kind: TCPRoute
+metadata:
+  name: forgejo-ssh
+  namespace: default
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
+    app: forgejo
+    app.kubernetes.io/name: forgejo
+    app.kubernetes.io/managed-by: Helm
+spec:
+  parentRefs:
+    - name: internal
+      namespace: kube-system
+      sectionName: forgejo-ssh
+  rules:
+    - backendRefs:
+        - kind: Service
+          name: forgejo-ssh
+          port: 22

@@ -136,12 +136,13 @@ forgejo:
     ssh:
       port: *sshPort
 
+  # The chart's built-in TCPRoute template hardcodes apiVersion
+  # gateway.networking.k8s.io/v1alpha2, but our envoy-gateway Gateway API CRDs
+  # (gateway-helm 1.10.0 / Gateway API 1.6.1) no longer serve v1alpha2 for
+  # TCPRoute (served: false) -- only v1. Disabled here; see
+  # templates/forgejo-tcproute.yaml for the replacement using apiVersion v1.
   tcpRoute:
-    enabled: true
-    parentRefs:
-      - name: internal
-        namespace: kube-system
-        sectionName: forgejo-ssh
+    enabled: false
 
 
   httpRoute:
