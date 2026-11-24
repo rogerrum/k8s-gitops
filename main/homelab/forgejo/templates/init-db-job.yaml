@@ -1,0 +1,53 @@
+# This chart (the official upstream `forgejo` chart) has no generic
+# init-container extension point -- its `initContainers:` values key only
+# configures resources for the chart's own fixed built-in init containers.
+# So the equivalent of this repo's usual app-template `init-db` initContainer
+# is implemented here as a Helm pre-upgrade hook Job instead: it runs before
+# every `helm upgrade` (i.e. every ArgoCD sync), is idempotent (postgres-init
+# safely no-ops if the db/role already exist), and ensures the Forgejo
+# Postgres database + role always exist before Forgejo itself starts/updates.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: forgejo-init-db
+  namespace: default
+  labels:
+    app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      name: forgejo-init-db
+      labels:
+        app.kubernetes.io/instance: {{ $.Release.Name }}  # Add this!
+        app.kubernetes.io/part-of: {{ $.Release.Name }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: init-db
+          image: ghcr.io/onedr0p/postgres-init:17.4
+          env:
+            - name: INIT_POSTGRES_HOST
+              value: postgres-lb.kube-system.svc.cluster.local
+            - name: INIT_POSTGRES_DBNAME
+              value: forgejo
+            - name: INIT_POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-db
+                  key: DB_USERNAME
+            - name: INIT_POSTGRES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-db
+                  key: DB_PASSWORD
+            - name: INIT_POSTGRES_SUPER_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-superuser-secret
+                  key: password

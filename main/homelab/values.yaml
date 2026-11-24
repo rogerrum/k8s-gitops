@@ -245,6 +245,10 @@ applications:
     path: main/homelab/forgejo
     manifest-paths: /main/homelab/forgejo
     sync-wave: "-1"
+    # Temporarily disabled during the SQLite->Postgres migration so we can
+    # manually scale the deployment to 0 without ArgoCD self-healing it back
+    # up mid-migration. Re-enable once the migration is verified complete.
+    selfHeal: false
     helm:
       enabled: true
 
