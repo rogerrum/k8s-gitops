@@ -28,10 +28,10 @@ applications:
 #    helm:
 #      enabled: true
 
-  - name: minecraft-java-creative
-    namespace: games
-    path: main/games/minecraft-java-creative
-    manifest-paths: /main/games/minecraft-java-creative
-    sync-wave: "0"
-    helm:
-      enabled: true
+#  - name: minecraft-java-creative
+#    namespace: games
+#    path: main/games/minecraft-java-creative
+#    manifest-paths: /main/games/minecraft-java-creative
+#    sync-wave: "0"
+#    helm:
+#      enabled: true
