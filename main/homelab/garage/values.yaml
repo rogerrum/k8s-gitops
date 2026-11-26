@@ -150,9 +150,10 @@ app-template:
           main:
             - path: /data
     meta:
-      type: nfs
-      server: 192.168.1.115
-      path: /kube-nfs/garage/meta
+      type: persistentVolumeClaim
+      storageClass: longhorn
+      accessMode: ReadWriteOnce
+      size: 10Gi
       advancedMounts:
         garage:
           main:
