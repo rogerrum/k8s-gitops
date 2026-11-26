@@ -6,7 +6,7 @@ ollama:
 
 litellm:
   # renovate: datasource=docker depName=ghcr.io/berriai/litellm
-  image: ghcr.io/berriai/litellm:1.110.3
+  image: ghcr.io/berriai/litellm:1.111.0
 
   service:
     port: 4000
